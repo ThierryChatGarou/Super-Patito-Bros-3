@@ -5,7 +5,7 @@
 #include<time.h>
 #include<graphics.h>
 
-int geexbox,nivel=0,mundo=0,menu=0,vidas=4,estado=1,tiempo=0,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,i,j,x,y,sec=0;
+int geexbox,nivel=0,mundo=0,menu=0,vidas=4,estado=1,tiempo=0,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,i,j,x,y,tecla,sec=0;
 float vx=0,vy=0;
 int paisaje[30][40];
 
@@ -2399,26 +2399,10 @@ for(y2=0;y2<30;y2++)
     }
   }
 }
-nivel0()
+
+
+refbloques()  //actualizar bloques
 {
-int ciclo=0,tecla;
-x=0;
-y=0;
-vx=0;
-vy=0;
-act_fondo(0);
-fondo();
-r_champ();
-rmonedas();
-r_pato();
-c_pato(4,22);
-
-while(ciclo<1)
-  {
-  tecla=0;
-
-///////////////////////////////////operaciones del los bloques
-
                  //el modulo es para que aparesca el bloque alineado a los demas
   if((x%16)!=0)  // comprobar que bloques necesitan actualizarse
     {
@@ -2435,51 +2419,12 @@ while(ciclo<1)
     bloque(x-(x%16),y-(y%16),paisaje[(y-(y%16))/16][(x-(x%16))/16]);  //actualizar bloque que esta arriba a la izquierda
     bloque(x-(x%16),y-(y%16)+16,paisaje[(y+16-(y%16))/16][(x-(x%16))/16]);  //actualizar bloque que esta abajo a la izquierda
     }
-
-  refchamp();
-  refpato();
-
-  if((x%16)!=0)
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-  else
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
+}
 
 
-  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque derecho   nota: (y%16)==0 es para que si se golpea un bloque por abajo no se cumpla
-    {
-    vx=0.0;
-    x=x-(x%16);
-    }
-  else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque izquierdo
-    {
-    vx=0.0;
-    x=x+16-(x%16);
-    }
-
-
-///////////////////////////////////interaccion de los bloques
-
-  /*if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==36)  //poder0  (pesado)
+bloque_poder0()  //poder0
+{
+  if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==36)  //poder0
     {
     if(vy>4) //velocidad de ruptura
       {
@@ -2520,11 +2465,414 @@ while(ciclo<1)
   {
   vx=0.0;
   x=x+16-(x%16);
-  }*/
+  }
+}
+
+
+bloque_caja0_moneda()  //caja0 con moneda
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==1) //caja0 con moneda
+    {
+    vy=-vy;
+    puntos=puntos+10;
+    monedas++;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja5
+    bloque(x-(x%16),y-(y%16),5);
+    cmoneda((x-(x%16))/16,(y-16-(y%16))/16);
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==1 && x%16!=0)
+    {
+    vy=-vy;
+    puntos=puntos+10;
+    monedas++;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
+    bloque(x+16-(x%16),y-(y%16),5);
+    cmoneda((x+16-(x%16))/16,(y-16-(y%16))/16);
+    }
+}
+
+
+bloque_caja0_10monedas()  //caja0 con 10 momedas
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==2) //caja0 con 10 monedas
+    {
+    vy=-vy;
+    y=y+16-(y%16);  //para que el bloque no entre en la caja al pegar por abajo y no realize mal conteo de las monedas
+    cajamone++;
+    monedas++;
+    puntos=puntos+10;
+    cmoneda((x-(x%16))/16,(y-32-(y%16))/16);  //deberia ser (y-16-(y%16))/16 pero el -32 es para compensar el error del conteo de las monedas
+    if(cajamone>=10)
+      {
+      paisaje[(y-16-(y%16))/16][(x-(x%16))/16]=5;  //caja5 el mismo error y se corrige a y-16-(y%16)
+      bloque(x-(x%16),y-16-(y%16),5);  //el mismo error y se corrige a y-16-(y%16)
+      cajamone=0;
+      }
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==2 && x%16!=0)
+    {
+    vy=-vy;
+    y=y+16-(y%16);  //para que el bloque no entre en la caja al pegar por abajo y no realize mal conteo de las monedas
+    cajamone++;
+    monedas++;
+    puntos=puntos+10;
+    cmoneda((x+16-(x%16))/16,(y-32-(y%16))/16);  //deberia ser (y-16-(y%16))/16 pero el -32 es para compensar el error del conteo de las monedas
+    if(cajamone>=10)
+      {
+      paisaje[(y-16-(y%16))/16][(x+16-(x%16))/16]=5;  //el mismo error y se corrige a y-16-(y%16)
+      bloque(x+16-(x%16),y-16-(y%16),5);  //el mismo error y se corrige a y-16-(y%16)
+      cajamone=0;
+      }
+    }
+}
+
+
+bloque_caja0_champinon()  //caja0 con champiñon
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==3)  //caja0 con champiñon
+    {
+    vy=-vy;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja5
+    bloque(x-(x%16),y-(y%16),5);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,1);
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==3 && x%16!=0)
+    {
+    vy=-vy;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
+    bloque(x+16-(x%16),y-(y%16),5);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,1);
+    }
+}
+
+
+bloque_caja0_vida()  //caja0 con vida
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==4)  //caja0 con vida
+    {
+    vy=-vy;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja5
+    bloque(x-(x%16),y-(y%16),5);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==4 && x%16!=0)
+    {
+    vy=-vy;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
+    bloque(x+16-(x%16),y-(y%16),5);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
+    }
+}
+
+
+bloque_cristal()  //cristal golpe por abajo
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==14 || paisaje[(y-(y%16))/16][(x-(x%16))/16]==15)  //cristal golpe por abajo
+    {
+    if(estado>1)
+      {
+      vy=vy+4;
+      paisaje[(y-(y%16))/16][(x-(x%16))/16]=75;
+      bloque(x-(x%16),y-(y%16),75);
+      }  
+    else
+      {
+      y=y+16-(y%16);
+      vy=-vy;
+      }
+    }
+  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==14 || paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==15) && x%16!=0)
+    {
+    if(estado>1)
+      {
+      vy=vy+4;
+      paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=75;
+      bloque(x+16-(x%16),y-(y%16),75);
+      }  
+    else
+      {
+      y=y+16-(y%16);
+      vy=-vy;
+      }
+    }
+}
+
+
+bloque_moneda()  //monedas
+{
+  if(paisaje[(y-16-(y%16))/16][(x-16-(x%16))/16]==35)  //moneda arriba izquierda
+    {
+    monedas++;
+    puntos=puntos+10;
+    paisaje[(y-16-(y%16))/16][(x-16-(x%16))/16]=75;
+    bloque(x-16-(x%16),y-16-(y%16),75);
+    }
+  if(paisaje[(y-16-(y%16))/16][(x-(x%16))/16]==35)  //moneda arriba centro
+    {
+    monedas++;
+    puntos=puntos+10;
+    paisaje[(y-16-(y%16))/16][(x-(x%16))/16]=75;
+    bloque(x-(x%16),y-16-(y%16),75);
+    }
+  if(paisaje[(y-16-(y%16))/16][(x+16-(x%16))/16]==35)  //moneda arriba derecha
+    {
+    monedas++;
+    puntos=puntos+10;
+    paisaje[(y-16-(y%16))/16][(x+16-(x%16))/16]=75;
+    bloque(x+16-(x%16),y-16-(y%16),75);
+    }
+  if(paisaje[(y-(y%16))/16][(x-16-(x%16))/16]==35)  //moneda centro izquierda
+    {
+    monedas++;
+    puntos=puntos+10;
+    paisaje[(y-(y%16))/16][(x-16-(x%16))/16]=75;
+    bloque(x-16-(x%16),y-(y%16),75); 
+    }
+  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==35)  //moneda centro derecha
+    {
+    monedas++;
+    puntos=puntos+10;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=75;
+    bloque(x+16-(x%16),y-(y%16),75);
+    }
+  if(paisaje[(y+16-(y%16))/16][(x-16-(x%16))/16]==35)  //moneda abajo izquierda
+    {
+    monedas++;
+    puntos=puntos+10;
+    paisaje[(y+16-(y%16))/16][(x-16-(x%16))/16]=75;
+    bloque(x-16-(x%16),y+16-(y%16),75);
+    }
+  if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==35)  //moneda abajo centro
+    {
+    monedas++;
+    puntos=puntos+10;
+    paisaje[(y+16-(y%16))/16][(x-(x%16))/16]=75;
+    bloque(x-(x%16),y+16-(y%16),75);
+    }
+  if(paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]==35)  //moneda abajo derecha
+    {
+    monedas++;
+    puntos=puntos+10;
+    paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]=75;
+    bloque(x+16-(x%16),y+16-(y%16),75);
+    }
+}
+
+
+bloque_nota0()  //nota0
+{
+  if((x%16)!=0)  //nota0  (muy pesado)
+    {
+    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==40 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]==40)  //rebote por arriba
+      {
+      vy=-6;
+      if(tecla==72)
+        {
+        vy=vy-4.0;
+        }
+      }
+    }
+  else
+  {
+    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==40)  //rebote por arriba
+      {
+      vy=-6;
+      if(tecla==72)
+        {
+        vy=vy-4.0;
+        }
+      }
+  }
+  if((x%16)!=0)  //dar chance a equivocarse por un bloque
+    {
+    if(paisaje[(y+32-(y%16))/16][(x-(x%16))/16]==40 && paisaje[(y+32-(y%16))/16][(x+16-(x%16))/16]==40)
+      {
+      if(tecla==72)
+        {
+        vy=-10.0;
+        }
+      }
+    }
+  else
+  {
+    if(paisaje[(y+32-(y%16))/16][(x-(x%16))/16]==40)
+      {
+      if(tecla==72)
+        {
+        vy=-10.0;
+        }
+      }
+  }
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==40)  //rebote por abajo
+    {
+    y=y-(y%16);
+    vy=-vy+4.0;
+    }
+  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==40) && x%16!=0)
+    {
+    y=y-(y%16);
+    vy=-vy+4.0;
+    }
+  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==40) //rebote derecho de nota0
+    {
+    vx=-vx;
+    x=x-(x%16);
+    }
+  else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==40) //rebote izquierdo de nota 0
+    {
+    vx=-vx;
+    x=x+16-(x%16);
+    }
+}
+
+
+tocar_champinon()  //tocar champiñon
+{
+  for(i=0;i<4;i++)
+    {
+    if(nchamp[i]!=0)
+      {
+      if(((x-(x%16))/16)==((champx[i]-(champx[i]%16))/16))
+        {
+        if(((y-(y%16))/16)==((champy[i]-(champy[i]%16))/16))
+          {
+          switch(nchamp[i])
+            {
+            case -4:
+              elichamp(i);
+              vidas++;
+              puntos=puntos+100;
+            break;
+            case -1:
+              elichamp(i);
+              estado++;
+              puntos=puntos+100;
+            break;
+            case 1:
+              elichamp(i);
+              estado++;
+              puntos=puntos+100;
+            break;
+            case 4:
+              elichamp(i);
+              vidas++;
+              puntos=puntos+100;
+            break;
+            }
+
+          }
+        }
+      }
+    }
+}
+
+pisar_pato()  //pisar pato
+{
+  for(i=0;i<8;i++)  //pisar pato
+    {
+    if(npato[i]!=0)
+      {
+      if(x-(x%16)==patox[i]-(patox[i]%16) || x-(x%16)==patox[i]+16-(patox[i]%16))
+        {
+        if(y+16-(y%16)==patoy[i]-(patoy[i]%16))  //+16 para cuando este arriba del pato en -16 sea -16+16=0 y se cumpla
+          {
+          vy=-2;
+          elipato(i);
+          puntos=puntos+100;
+          }
+        }
+      }
+    }
+}
+
+
+pato_mata()  //pato mata cuando los tocas
+{
+  for(i=0;i<8;i++)  //pato mata
+    {
+    if(npato[i]!=0)
+      {
+      if(x<=patox[i]+16 && x>=patox[i]-16)
+        {
+        if(y-(y%16)==patoy[i]-(patoy[i]%16))
+          {
+          estado--;
+          }
+        }
+      }
+    }
+}
 
 
 
-///////////////////////////////////teclado
+////////////////////////////////////////////////////////////////niveles
+
+
+nivel0()
+{
+int ciclo=0;
+x=0;
+y=0;
+vx=0;
+vy=0;
+act_fondo(0);
+fondo();
+r_champ();
+rmonedas();
+r_pato();
+c_pato(4,22);
+
+while(ciclo<1)
+  {
+  tecla=0;
+
+////////operaciones del los bloques
+
+  refbloques();  //actualizar bloques
+  refchamp();
+  refpato();
+
+  if((x%16)!=0)
+    {
+    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
+      {
+      vy=vy+0.5;
+      }
+    else
+      {
+      vy=0;
+      y=y-(y%16);
+      }
+    }
+  else
+    {
+    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
+      {
+      vy=vy+0.5;
+      }
+    else
+      {
+      vy=0;
+      y=y-(y%16);
+      }
+    }
+
+  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque derecho   nota: (y%16)==0 es para que si se golpea un bloque por abajo no se cumpla
+    {
+    vx=0.0;
+    x=x-(x%16);
+    }
+  else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque izquierdo
+    {
+    vx=0.0;
+    x=x+16-(x%16);
+    }
+
+////////interaccion de los bloques
+
+  bloque_poder0();  //poder0
+
+////////teclado
 
   if(kbhit())
     {
@@ -2596,116 +2944,17 @@ while(ciclo<1)
     }*/
 
 
-///////////////////////////////////interaccion de los bloques
+////////interaccion de los bloques
 
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==1) //caja0 con moneda
-    {
-    vy=-vy;
-    puntos=puntos+10;
-    monedas++;
-    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja5
-    bloque(x-(x%16),y-(y%16),5);
-    cmoneda((x-(x%16))/16,(y-16-(y%16))/16);
-    }
-  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==1 && x%16!=0)
-    {
-    vy=-vy;
-    puntos=puntos+10;
-    monedas++;
-    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
-    bloque(x+16-(x%16),y-(y%16),5);
-    cmoneda((x+16-(x%16))/16,(y-16-(y%16))/16);
-    }
+  bloque_caja0_moneda();  //caja0 con moneda
 
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==2) //caja0 con 10 monedas
-    {
-    vy=-vy;
-    y=y+16-(y%16);  //para que el bloque no entre en la caja al pegar por abajo y no realize mal conteo de las monedas
-    cajamone++;
-    monedas++;
-    puntos=puntos+10;
-    cmoneda((x-(x%16))/16,(y-32-(y%16))/16);  //deberia ser (y-16-(y%16))/16 pero el -32 es para compensar el error del conteo de las monedas
-    if(cajamone>=10)
-      {
-      paisaje[(y-16-(y%16))/16][(x-(x%16))/16]=5;  //caja5 el mismo error y se corrige a y-16-(y%16)
-      bloque(x-(x%16),y-16-(y%16),5);  //el mismo error y se corrige a y-16-(y%16)
-      cajamone=0;
-      }
-    }
-  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==2 && x%16!=0)
-    {
-    vy=-vy;
-    y=y+16-(y%16);  //para que el bloque no entre en la caja al pegar por abajo y no realize mal conteo de las monedas
-    cajamone++;
-    monedas++;
-    puntos=puntos+10;
-    cmoneda((x+16-(x%16))/16,(y-32-(y%16))/16);  //deberia ser (y-16-(y%16))/16 pero el -32 es para compensar el error del conteo de las monedas
-    if(cajamone>=10)
-      {
-      paisaje[(y-16-(y%16))/16][(x+16-(x%16))/16]=5;  //el mismo error y se corrige a y-16-(y%16)
-      bloque(x+16-(x%16),y-16-(y%16),5);  //el mismo error y se corrige a y-16-(y%16)
-      cajamone=0;
-      }
-    }
+  //bloque_caja0_10monedas();  //caja0 con 10 momedas
 
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==3) //caja0 con champiñon
-    {
-    vy=-vy;
-    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja5
-    bloque(x-(x%16),y-(y%16),5);
-    c_champ((x-(x%16))/16,(y-16-(y%16))/16,1);
-    }
-  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==3 && x%16!=0)
-    {
-    vy=-vy;
-    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
-    bloque(x+16-(x%16),y-(y%16),5);
-    c_champ((x-(x%16))/16,(y-16-(y%16))/16,1);
-    }
+  bloque_caja0_champinon();  //caja0 con champiñon
 
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==4) //caja0 con vida
-    {
-    vy=-vy;
-    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja5
-    bloque(x-(x%16),y-(y%16),5);
-    c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
-    }
-  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==4 && x%16!=0)
-    {
-    vy=-vy;
-    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
-    bloque(x+16-(x%16),y-(y%16),5);
-    c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
-    }
+  //bloque_caja0_vida();  //caja0 con vida
 
-  /*if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==14 || paisaje[(y-(y%16))/16][(x-(x%16))/16]==15)  //cristal golpe por abajo
-    {
-    if(estado>1)
-      {
-      vy=vy+4;
-      paisaje[(y-(y%16))/16][(x-(x%16))/16]=75;
-      bloque(x-(x%16),y-(y%16),75);
-      }  
-    else
-      {
-      y=y+16-(y%16);
-      vy=-vy;
-      }
-    }
-  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==14 || paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==15) && x%16!=0)
-    {
-    if(estado>1)
-      {
-      vy=vy+4;
-      paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=75;
-      bloque(x+16-(x%16),y-(y%16),75);
-      }  
-    else
-      {
-      y=y+16-(y%16);
-      vy=-vy;
-      }
-    }*/
+  //bloque_cristal();  //cristal golpe por abajo
 
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
     {
@@ -2718,198 +2967,21 @@ while(ciclo<1)
     vy=-vy;
     }
 
-  if(paisaje[(y-16-(y%16))/16][(x-16-(x%16))/16]==35)  //moneda arriba izquierda
-    {
-    monedas++;
-    puntos=puntos+10;
-    paisaje[(y-16-(y%16))/16][(x-16-(x%16))/16]=75;
-    bloque(x-16-(x%16),y-16-(y%16),75);
-    }
-  if(paisaje[(y-16-(y%16))/16][(x-(x%16))/16]==35)  //moneda arriba centro
-    {
-    monedas++;
-    puntos=puntos+10;
-    paisaje[(y-16-(y%16))/16][(x-(x%16))/16]=75;
-    bloque(x-(x%16),y-16-(y%16),75);
-    }
-  if(paisaje[(y-16-(y%16))/16][(x+16-(x%16))/16]==35)  //moneda arriba derecha
-    {
-    monedas++;
-    puntos=puntos+10;
-    paisaje[(y-16-(y%16))/16][(x+16-(x%16))/16]=75;
-    bloque(x+16-(x%16),y-16-(y%16),75);
-    }
-  if(paisaje[(y-(y%16))/16][(x-16-(x%16))/16]==35)  //moneda centro izquierda
-    {
-    monedas++;
-    puntos=puntos+10;
-    paisaje[(y-(y%16))/16][(x-16-(x%16))/16]=75;
-    bloque(x-16-(x%16),y-(y%16),75); 
-    }
-  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==35)  //moneda centro derecha
-    {
-    monedas++;
-    puntos=puntos+10;
-    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=75;
-    bloque(x+16-(x%16),y-(y%16),75);
-    }
-  if(paisaje[(y+16-(y%16))/16][(x-16-(x%16))/16]==35)  //moneda abajo izquierda
-    {
-    monedas++;
-    puntos=puntos+10;
-    paisaje[(y+16-(y%16))/16][(x-16-(x%16))/16]=75;
-    bloque(x-16-(x%16),y+16-(y%16),75);
-    }
-  if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==35)  //moneda abajo centro
-    {
-    monedas++;
-    puntos=puntos+10;
-    paisaje[(y+16-(y%16))/16][(x-(x%16))/16]=75;
-    bloque(x-(x%16),y+16-(y%16),75);
-    }
-  if(paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]==35)  //moneda abajo derecha
-    {
-    monedas++;
-    puntos=puntos+10;
-    paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]=75;
-    bloque(x+16-(x%16),y+16-(y%16),75);
-    }
+  bloque_moneda();  //monedas
 
-/*  if((x%16)!=0)  //nota0  (muy pesado)
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==40 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]==40)  //rebote por arriba
-      {
-      vy=-6;
-      if(tecla==72)
-        {
-        vy=vy-4.0;
-        }
-      }
-    }
-  else
-  {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==40)  //rebote por arriba
-      {
-      vy=-6;
-      if(tecla==72)
-        {
-        vy=vy-4.0;
-        }
-      }
-  }
-  if((x%16)!=0)  //dar chance a equivocarse por un bloque
-    {
-    if(paisaje[(y+32-(y%16))/16][(x-(x%16))/16]==40 && paisaje[(y+32-(y%16))/16][(x+16-(x%16))/16]==40)
-      {
-      if(tecla==72)
-        {
-        vy=-10.0;
-        }
-      }
-    }
-  else
-  {
-    if(paisaje[(y+32-(y%16))/16][(x-(x%16))/16]==40)
-      {
-      if(tecla==72)
-        {
-        vy=-10.0;
-        }
-      }
-  }
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==40)  //rebote por abajo
-    {
-    y=y-(y%16);
-    vy=-vy+4.0;
-    }
-  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==40) && x%16!=0)
-    {
-    y=y-(y%16);
-    vy=-vy+4.0;
-    }
-  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==40) //rebote derecho de nota0
-    {
-    vx=-vx;
-    x=x-(x%16);
-    }
-  else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==40) //rebote izquierdo de nota 0
-    {
-    vx=-vx;
-    x=x+16-(x%16);
-    } */
+  //bloque_nota0();  //nota0
 
+  tocar_champinon();  //tocar champiñon
 
-  for(i=0;i<4;i++)  //tocar champiñon
-    {
-    if(nchamp[i]!=0)
-      {
-      if(((x-(x%16))/16)==((champx[i]-(champx[i]%16))/16))
-        {
-        if(((y-(y%16))/16)==((champy[i]-(champy[i]%16))/16))
-          {
-          switch(nchamp[i])
-            {
-            case -4:
-              elichamp(i);
-              vidas++;
-              puntos=puntos+100;
-            break;
-            case -1:
-              elichamp(i);
-              estado++;
-              puntos=puntos+100;
-            break;
-            case 1:
-              elichamp(i);
-              estado++;
-              puntos=puntos+100;
-            break;
-            case 4:
-              elichamp(i);
-              vidas++;
-              puntos=puntos+100;
-            break;
-            }
+  pisar_pato();  //pisar pato
 
-          }
-        }
-      }
-    }
+  pato_mata();  //pato mata cuando los tocas
 
-  for(i=0;i<8;i++)  //pisar pato
-    {
-    if(npato[i]!=0)
-      {
-      if(x-(x%16)==patox[i]-(patox[i]%16) || x-(x%16)==patox[i]+16-(patox[i]%16))
-        {
-        if(y+16-(y%16)==patoy[i]-(patoy[i]%16))  //+16 para cuando este arriba del pato en -16 sea -16+16=0 y se cumpla
-          {
-          vy=-2;
-          elipato(i);
-          puntos=puntos+100;
-          }
-        }
-      }
-    }
+  movchamp();  //mover champiñones
 
-  for(i=0;i<8;i++)  //pato mata
-    {
-    if(npato[i]!=0)
-      {
-      if(x<=patox[i]+16 && x>=patox[i]-16)
-        {
-        if(y-(y%16)==patoy[i]-(patoy[i]%16))
-          {
-          estado--;
-          }
-        }
-      }
-    }
-
-
-  movchamp();
   mdemone();
-  movpato();
+
+  movpato();  //mover patos
 
   if(x>=624) //si llega a la orilla derecha pasar al siguiente nivel
     {
@@ -2927,15 +2999,12 @@ while(ciclo<1)
     estado=0;
     }
 
-
-
   x=x+vx;
   y=y+vy;
 
-  dibchamp();
-  dibpatos();
+  dibchamp();  //dibujar champiñones
 
-
+  dibpatos();  //dibujar patos
 
   switch(estado)
     {
@@ -2974,7 +3043,6 @@ while(ciclo<1)
     break;
     case 4:
     break;
-
     }
 
   gotoxy(4,28);
@@ -2990,8 +3058,6 @@ while(ciclo<1)
   printf("%d",tiempo);
 
   delay(16);
-
-
 
 }
 return(0);
