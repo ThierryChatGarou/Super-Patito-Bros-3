@@ -2789,12 +2789,6 @@ for(j=0;j<30;j++)
 }
 
 
-secuencia()
-{
-
-}
-
-
 fondo()
 {
 int x2,y2;
@@ -3298,33 +3292,22 @@ panel()
   line(0,416,0,479);
   line(0,479,639,479);
   line(639,416,639,479);
-  gotoxy(4,28);
-  printf("Nivel ");
-  gotoxy(4,29);
-  printf("Vidas ");
-  // faltavelocidad
-  gotoxy(15,29);
-  printf("Puntos ");
-  gotoxy(36,28);
-  printf("monedas ");
-  gotoxy(36,29);
-  printf("Tiempo ");
 }
 
 
 panelnumerico()
 {
-  gotoxy(10,28);
-  printf("%d-%d",mundo,nivel);
-  gotoxy(10,29);
-  printf("%d",vidas);
+  gotoxy(4,28);
+  printf("Nivel %d-%d   ",mundo,nivel);
+  gotoxy(4,29);
+  printf("Vidas %d   ",vidas);
   // faltavelocidad
-  gotoxy(22,29);
-  printf("%d",puntos);
-  gotoxy(44,28);
-  printf("%d",monedas);
-  gotoxy(44,29);
-  printf("%d",tiempo);
+  gotoxy(15,29);
+  printf("Puntos %d  ",puntos);
+  gotoxy(36,28);
+  printf("monedas %d  ",monedas);
+  gotoxy(36,29);
+  printf("Tiempo %d  ",tiempo);
 }
 
 
@@ -3372,12 +3355,12 @@ verestado()  //verificar el estado de pato y dibujarlo segun el estado
 
 ayuda()
 {
-setfillstyle(1,9);  //azul claro
-bar(i,j,i+15,j+15);
+setfillstyle(1,0);  //azul claro
+bar(40,8,624,320);
 gotoxy(24,2);
 printf("AYUDA DE SUPER PATITO BROS");
 gotoxy(8,5);
-printf("Û Uso del teclado para jugar");
+printf("Û Uso del teclado para jugar:");
 gotoxy(8,7);
 printf("- Usa las flechas en tu teclado para desplazarte");
 gotoxy(8,8);
@@ -3394,12 +3377,71 @@ gotoxy(8,16);
 printf("- Avanza siempre hacia la derecha pasando los obstaculos,");
 gotoxy(8,17);
 printf("al llegar a la orrila derecha de la pantalla pasaras al siguente nivel");
-gotoxy(8,20);
+gotoxy(20,20);
 printf("PRESIONA CUALQUIER TECLA PARA CONTINUAR");
 bioskey(0);  //funciona igual que getch(); pero getch(); no funciona
 fondo();
 panel();
 }
+
+
+segundos()
+{
+sec++;
+if(sec%22==0)  //realizar un conteo del tiempo del juego
+  {
+  sec=0;
+  tiempo--;
+  if(tiempo==0)
+    {
+    estado=0;
+    }
+  }
+}
+
+
+patofuera()
+{
+int n;
+for(n=0;n<8;n++)
+  {
+  if(patox[n]>=640) //si llega a la orilla derecha eliminar pato
+    {
+    elipato(n);
+    }
+  else if(x<=-4) //si llega a la orilla izquierda eliminar pato
+    {
+    elipato(n);
+    }
+  else if(y>=464) //caida
+    {
+    elipato(n);
+    }
+  }
+}
+
+
+champifuera()
+{
+int n;
+for(n=0;n<8;n++)
+  {
+  if(champx[n]>=640) //si llega a la orilla derecha eliminar champiñon
+    {
+    elichamp(n);
+    }
+  else if(x<=-4) //si llega a la orilla izquierda eliminar champiñon
+    {
+    elichamp(n);
+    }
+  else if(y>=464) //caida
+    {
+    elichamp(n);
+    }
+  }
+}
+
+
 
 
 
@@ -3409,6 +3451,8 @@ panel();
 nivel0()
 {
 ciclo=0;
+tiempo=200;
+invensible=0;
 x=16;
 y=384;
 vx=0;
@@ -3419,8 +3463,8 @@ panel();
 r_champ();
 rmonedas();
 r_pato();
-c_pato(4,22);
-c_pato(22,22);
+c_pato(4,24);
+c_pato(22,24);
 
 while(ciclo<1)
   {
@@ -3475,12 +3519,10 @@ while(ciclo<1)
 
 ////////teclado
 
-  if(kbhit())
-    {
-    tecla = bioskey(0);  //capturar tecla presionada
-    gotoxy(1,1); 
-    printf("%d",tecla);
-    }
+  if(bioskey(1))  //funciona igual que kbhit()
+  {
+  tecla = bioskey(0);  //capturar tecla presionada
+  }
   if(tecla == 0);
     {
     if(vx<0)  //disminuir la velocidad
@@ -3596,6 +3638,10 @@ while(ciclo<1)
 
   pato_mata();  //pato mata cuando los tocas
 
+  patofuera();  //verificar si un pato se salio de la pantalla
+
+  champifuera();  //verificar si un champiñon se salio de la pantalla
+
   movchamp();  //mover champiñones
 
   mdemone();
@@ -3624,6 +3670,8 @@ while(ciclo<1)
   dibchamp();  //dibujar champiñones
 
   dibpatos();  //dibujar patos
+
+  segundos();  //realizar un conteo del tiempo del juego
 
   verestado();  //verificar el estado de pato y dibujarlo segun el estado
 
