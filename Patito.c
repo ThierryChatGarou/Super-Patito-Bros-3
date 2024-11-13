@@ -4,7 +4,7 @@
 #include<dos.h>
 #include<graphics.h>
 
-int geexbox,nivel=0,menu=0,nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,auxiliar;
+int geexbox,nivel=0,menu=0,npato[8],patox[8],patoy[8],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,auxiliar;
 float vx=0,vy=0;
 int paisaje[30][40]={75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,
 		     75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,
@@ -1275,15 +1275,36 @@ for(x=0;x<4;x++)
 }
 
 
-c_champ(int x, int y)
+c_pato(int x, int y)
 {
 int n,p;
+for(n=0;n<4;n++)
+  {
+  if(npato[n]==0)
+    {
+    p=n;
+    npato[n]=1;
+    n=4;
+    }
+  }
+x=x*16;
+y=y*16;
+patox[p]=x;
+patoy[p]=y;
+}
+
+
+c_champ(int x, int y, int T)
+{
+int n,p;
+if(T<5)
+{
 for(n=0;n<4;n++)
   {
   if(nchamp[n]==0)
     {
     p=n;
-    nchamp[n]=1;
+    nchamp[n]=T;
     n=4;
     }
   }
@@ -1291,6 +1312,7 @@ x=x*16;
 y=y*16;
 champx[p]=x;
 champy[p]=y;
+}
 }
 
 
@@ -1321,13 +1343,13 @@ for(n=0;n<4;n++)
   if(nchamp[n]!=0)
     {
 
-  if(nchamp[n]==1)  //determinar sentido
+    if(nchamp[n]>0)  //determinar sentido
       {
-    champx[n]++;
+      champx[n]++;
       }
-  if(nchamp[n]==-1)  //determinar sentido
+    if(nchamp[n]<0)  //determinar sentido
       {
-    champx[n]--;
+      champx[n]--;
       }
 
 
@@ -1349,12 +1371,12 @@ for(n=0;n<4;n++)
     }
   if(paisaje[(champy[n]-(champy[n]%16))/16][(champx[n]+16-(champx[n]%16))/16]<32) //limite de bloque derecho
     {
-    nchamp[n]=-1;
+    nchamp[n]=-nchamp[n];
     champx[n]=champx[n]-(champx[n]%16);
     }
   else if(paisaje[(champy[n]-(champy[n]%16))/16][(champx[n]-(champx[n]%16))/16]<32) //limite de bloque izquierdo
     {
-    nchamp[n]=1;
+    nchamp[n]=-nchamp[n];
     champx[n]=champx[n]+16-(champx[n]%16);
     }
   }
@@ -1368,11 +1390,27 @@ for(n=0;n<4;n++)
   {
   if(nchamp[n]!=0)
     {
-    setfillstyle(1,15);
-    bar(champx[n],champy[n],champx[n]+15,champy[n]+15);
+    switch (nchamp[n])
+      {
+      case -4:
+        setfillstyle(1,10);
+        bar(champx[n],champy[n],champx[n]+15,champy[n]+15);
+      break;
+      case -1:
+        setfillstyle(1,15);
+        bar(champx[n],champy[n],champx[n]+15,champy[n]+15);
+      break;
+      case 1:
+        setfillstyle(1,15);
+        bar(champx[n],champy[n],champx[n]+15,champy[n]+15);
+      break;
+      case 4:
+        setfillstyle(1,10);
+        bar(champx[n],champy[n],champx[n]+15,champy[n]+15);
+      break;
+      }
     }
   }
-
 }
 
 
@@ -2128,27 +2166,29 @@ while(ciclo<1)
     vy=-vy;
     paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja5
     bloque(x-(x%16),y-(y%16),5);
-    c_champ((x-(x%16))/16,(y-16-(y%16))/16);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,1);
     }
   else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==3 && x%16!=0)
     {
     vy=-vy;
     paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
     bloque(x+16-(x%16),y-(y%16),5);
-    c_champ((x-(x%16))/16,(y-16-(y%16))/16);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,1);
     }
 
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==4) //caja0
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==4) //caja0 con vida
     {
     vy=-vy;
     paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja5
     bloque(x-(x%16),y-(y%16),5);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
     }
   else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==4 && x%16!=0)
     {
     vy=-vy;
     paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
     bloque(x+16-(x%16),y-(y%16),5);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
     }
 
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos
