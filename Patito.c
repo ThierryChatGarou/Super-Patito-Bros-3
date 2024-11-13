@@ -26,8 +26,8 @@ int paisaje[30][40]={75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75
 		     75,75,75,75,75,75,75,75,75,75,75,75,75,75,35,35,35,86,87,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,
 		     75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,86,87,75,75,75,75,75,75,75,75,75,75,35,35,35,35,75,75,75,75,75,75,75,
 		     75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,84,85,86,87,84,85,75,75,75,75,75,75,75,75,35,35,35,35,75,75,75,75,75,75,75,
-		     4 ,75,75,75,80,80,80,80,35,35,75,75,75,84,85,86,87,86,87,86,87,84,85,75,75,4 ,75,75,75,35,35,35,35,75,75,75,75,75,75,75,
-		     0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,14,15,0 ,0 ,0 ,0 ,0 ,7 ,7 ,7 ,7 ,0 ,0 ,35,35,35,35,75,75,75,75,75,75,75,
+		     4 ,75,75,75,80,75,75,80,35,35,75,75,75,84,85,86,87,86,87,86,87,84,85,75,75,4 ,75,75,75,35,35,35,35,75,75,75,75,75,75,75,
+		     0 ,0 ,0 ,0 ,0 ,75,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,14,15,0 ,0 ,0 ,0 ,0 ,7 ,7 ,7 ,7 ,0 ,0 ,35,35,35,35,75,75,75,75,75,75,75,
 		     75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,
 		     75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,
 		     75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,
@@ -1369,13 +1369,15 @@ for(n=0;n<8;n++)
       {
       patox[n]--;
       }
-
-
     if((patox[n]%16)!=0)
       {
       if(paisaje[(patoy[n]+16-(patoy[n]%16))/16][(patox[n]-(patox[n]%16))/16]>=32 && paisaje[(patoy[n]+16-(patoy[n]%16))/16][(patox[n]+16-(patox[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
         {
         patoy[n]=patoy[n]+4;
+        }
+      else
+        {
+        patoy[n]=patoy[n]-(patoy[n]%16);
         }
       }
     else
@@ -1384,8 +1386,11 @@ for(n=0;n<8;n++)
         {
         patoy[n]=patoy[n]+4;
         }
+      else
+        {
+        patoy[n]=patoy[n]-(patoy[n]%16);
+        }
       }
-
     }
   if(paisaje[(patoy[n]-(patoy[n]%16))/16][(patox[n]+16-(patox[n]%16))/16]<32) //limite de bloque derecho
     {
@@ -1425,12 +1430,20 @@ for(n=0;n<4;n++)
         {
         champy[n]=champy[n]+4;
         }
+      else
+        {
+        champy[n]=champy[n]-(champy[n]%16);
+        }
       }
     else
       {
       if(paisaje[(champy[n]+16-(champy[n]%16))/16][(champx[n]-(champx[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
         {
         champy[n]=champy[n]+4;
+        }
+      else
+        {
+        champy[n]=champy[n]-(champy[n]%16);
         }
       }
 
@@ -1499,6 +1512,14 @@ elichamp(int x)
 nchamp[x]=0;
 champx[x]=0;
 champy[x]=0;
+}
+
+
+elipato(int x)
+{
+npato[x]=0;
+patox[x]=0;
+patoy[x]=0;
 }
 
 
@@ -2029,7 +2050,10 @@ fondo();
 r_champ();
 rmonedas();
 r_pato();
-c_pato(4,4);
+c_pato(4,18);
+c_pato(8,18);
+c_pato(16,18);
+c_pato(24,18);
 
 while(ciclo<1)
   {
@@ -2071,7 +2095,7 @@ while(ciclo<1)
       }
     }
   else
-  {
+    {
     if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
       {
       vy=vy+0.5;
@@ -2081,19 +2105,19 @@ while(ciclo<1)
       vy=0;
       y=y-(y%16);
       }
-  }
+    }
 
 
   if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque derecho   nota: (y%16)==0 es para que si se golpea un bloque por abajo no se cumpla
-  {
-  vx=0.0;
-  x=x-(x%16);
-  }
+    {
+    vx=0.0;
+    x=x-(x%16);
+    }
   else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque izquierdo
-  {
-  vx=0.0;
-  x=x+16-(x%16);
-  }
+    {
+    vx=0.0;
+    x=x+16-(x%16);
+    }
 
 
 ///////////////////////////////////interaccion de los bloques
@@ -2412,6 +2436,35 @@ while(ciclo<1)
         if(((y-(y%16))/16)==((champy[auxiliar]-(champy[auxiliar]%16))/16))
           {
           elichamp(auxiliar);
+          }
+        }
+      }
+    }
+
+  for(auxiliar=0;auxiliar<8;auxiliar++)  //pisar pato
+    {
+    if(npato[auxiliar]!=0)
+      {
+      if(x-(x%16)==patox[auxiliar]-(patox[auxiliar]%16) || x-(x%16)==patox[auxiliar]+16-(patox[auxiliar]%16))
+        {
+        if(y+16-(y%16)==patoy[auxiliar]-(patoy[auxiliar]%16))  //+16 para cuando este arriba del pato en -16 sea -16+16=0 y se cumpla
+          {
+          vy=-2;
+          elipato(auxiliar);
+          }
+        }
+      }
+    }
+
+  for(auxiliar=0;auxiliar<8;auxiliar++)  //pato mata
+    {
+    if(npato[auxiliar]!=0)
+      {
+      if(x<=patox[auxiliar]+16 && x>=patox[auxiliar]-16)
+        {
+        if(y-(y%16)==patoy[auxiliar]-(patoy[auxiliar]%16))
+          {
+          sound(222); delay(22); nosound();
           }
         }
       }
