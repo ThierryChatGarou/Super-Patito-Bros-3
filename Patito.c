@@ -4,7 +4,7 @@
 #include<dos.h>
 #include<graphics.h>
 
-int geexbox,nivel=0,menu=0,npato[8],patox[8],patoy[8],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,auxiliar;
+int geexbox,nivel=0,menu=0,vidas=4,estado=1,puntos=0,npato[8],patox[8],patoy[8],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,auxiliar;
 float vx=0,vy=0;
 int paisaje[30][40]={75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,
 		     75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,
@@ -2046,6 +2046,8 @@ for(y=0;y<30;y++)
 nivel0()
 {
 int ciclo=0,tecla,x=0,y=0;
+vx=0;
+vy=0;
 fondo();
 r_champ();
 rmonedas();
@@ -2464,7 +2466,7 @@ while(ciclo<1)
         {
         if(y-(y%16)==patoy[auxiliar]-(patoy[auxiliar]%16))
           {
-          sound(222); delay(22); nosound();
+          estado--;
           }
         }
       }
@@ -2474,12 +2476,6 @@ while(ciclo<1)
   movchamp();
   mdemone();
   movpato();
-
-
-
-
-
-
 
   if(x>=624) //si llega a la orilla derecha pasar al siguiente nivel
     {
@@ -2493,6 +2489,8 @@ while(ciclo<1)
     }
 
 
+
+
   x=x+vx;
   y=y+vy;
 
@@ -2501,7 +2499,17 @@ while(ciclo<1)
   setfillstyle(1,15);
   bar(x,y,x+15,y+15);
   delay(16);
-  }
+
+  if(estado==0)  //perdiste una vida
+    {
+    estado++;
+    vidas--;
+    ciclo=1;
+    nivel=0;
+    //musiquita y pantalla de perder
+    }
+
+}
 return(0);
 }
 
