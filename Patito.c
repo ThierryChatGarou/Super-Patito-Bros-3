@@ -4,7 +4,7 @@
 #include<dos.h>
 #include<graphics.h>
 
-int geexbox,nivel=0,menu=0,nchamp[4],champx[4],champy[4],auxiliar;
+int geexbox,nivel=0,menu=0,nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],auxiliar;
 float vx=0,vy=0;
 int paisaje[30][40]={75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,
 		     75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,
@@ -22,7 +22,7 @@ int paisaje[30][40]={75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75
 		     75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,14,14,14,75,75,75,75,
 		     75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,
 		     75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,84,85,75,75,75,75,75,75,75,75,75,40,75,75,40,75,75,75,75,75,75,75,75,
-		     75,75,75,75,75,75,75,75,75,4 ,4 ,1 ,4 ,75,75,75,75,86,87,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,
+		     75,75,75,75,75,75,75,75,75,1 ,1 ,3 ,1 ,75,75,75,75,86,87,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,
 		     75,75,75,75,75,75,75,75,75,75,75,75,75,75,35,35,35,86,87,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,
 		     75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,86,87,75,75,75,75,75,75,75,75,75,75,35,35,35,35,75,75,75,75,75,75,75,
 		     75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,84,85,86,87,84,85,75,75,75,75,75,75,75,75,35,35,35,35,75,75,75,75,75,75,75,
@@ -1257,6 +1257,24 @@ for(x=0;x<4;x++)
 }
 
 
+rmonedas()  //resetear monedas
+{
+int x;
+for(x=0;x<4;x++)
+  {
+  nmonedas[x]=0;
+  }
+for(x=0;x<4;x++)
+  {
+  monedax[x]=0;
+  }
+for(x=0;x<4;x++)
+  {
+  moneday[x]=0;
+  }
+}
+
+
 c_champ(int x, int y)
 {
 int n,p;
@@ -1273,6 +1291,25 @@ x=x*16;
 y=y*16;
 champx[p]=x;
 champy[p]=y;
+}
+
+
+cmoneda(int x, int y)
+{
+int n,p;
+for(n=0;n<4;n++)
+  {
+  if(nmonedas[n]==0)
+    {
+    p=n;
+    nmonedas[n]=1;
+    n=4;
+    }
+  }
+x=x*16;
+y=y*16;
+monedax[p]=x;
+moneday[p]=y;
 }
 
 
@@ -1806,6 +1843,41 @@ for(n=0;n<4;n++)
 }
 
 
+mdemone()  //mover dibujar eliminar moneda
+{
+int n;
+for(n=0;n<4;n++)
+  {
+  if(nmonedas[n]!=0)
+    {
+    bloque(monedax[n]-(monedax[n]%16),moneday[n]-(moneday[n]%16),paisaje[(moneday[n]-(moneday[n]%16))/16][(monedax[n]-(monedax[n]%16))/16]);
+    bloque(monedax[n]-(monedax[n]%16),moneday[n]+16-(moneday[n]%16),paisaje[(moneday[n]+16-(moneday[n]%16))/16][(monedax[n]-(monedax[n]%16))/16]);
+    if(monealt[n]>-32)
+      {
+      monealt[n]=monealt[n]-4;
+      moneday[n]=moneday[n]-4;
+      setfillstyle(1,15);
+      bar(monedax[n],moneday[n],monedax[n]+15,moneday[n]+15);
+      }
+    else if(monealt[n]>-64)
+      {
+      monealt[n]=monealt[n]-4;
+      moneday[n]=moneday[n]+4;
+      setfillstyle(1,15);
+      bar(monedax[n],moneday[n],monedax[n]+15,moneday[n]+15);
+      }
+    else
+      {
+      nmonedas[n]=0;
+      monealt[n]=0;
+      moneday[n]=0;
+      monedax[n]=0;
+      }
+    }  
+  }
+}
+
+
 fondo()
 {
 int x,y;
@@ -1824,6 +1896,7 @@ nivel0()
 int ciclo=0,tecla,x=0,y=0;
 fondo();
 r_champ();
+rmonedas();
 
 while(ciclo<1)
   {
@@ -2008,14 +2081,29 @@ while(ciclo<1)
 
 ///////////////////////////////////interaccion de los bloques
 
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==1) //caja0 con champiñon
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==1) //caja0 con moneda
+    {
+    vy=-vy;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja
+    bloque(x-(x%16),y-(y%16),5);
+    cmoneda((x-(x%16))/16,(y-16-(y%16))/16);
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==1 && x%16!=0)
+    {
+    vy=-vy;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
+    bloque(x+16-(x%16),y-(y%16),5);
+    cmoneda((x+16-(x%16))/16,(y-16-(y%16))/16);
+    }
+
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==3) //caja0 con champiñon
     {
     vy=-vy;
     paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja
     bloque(x-(x%16),y-(y%16),5);
     c_champ((x-(x%16))/16,(y-16-(y%16))/16);
     }
-  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==1 && x%16!=0)
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==3 && x%16!=0)
     {
     vy=-vy;
     paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
@@ -2168,6 +2256,7 @@ while(ciclo<1)
 
 
   movchamp();
+  mdemone();
 
 
 
