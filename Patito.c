@@ -40,6 +40,47 @@ return(0);
 }
 
 
+cuadrados()
+{
+int ciclo,tecla,x=0,y=0;
+while (ciclo!=84)
+{
+  setfillstyle(1,0x0F);
+  bar(x,y,x+22,y+22);
+  delay(22);
+  setfillstyle(1,0x00);
+  bar(x,y,x+22,y+22);
+  y++;
+  x++;
+  if(kbhit())
+    {
+    tecla=getch();
+    ciclo=tecla;
+    printf ("%i",tecla);
+    }
+  if(y==480)
+    {
+    y=-22;
+    }
+  if(y==-23)
+    {
+    y=479;
+    }
+  if(x==640)
+    {
+    x=-22;
+    }
+  if(x==-23)
+    {
+    x=639;
+    }
+}
+line(0,0,getmaxx(),getmaxy());
+getch();
+return(0);
+}
+
+
 Geexbox()
 {
 textcolor(0x0B);
