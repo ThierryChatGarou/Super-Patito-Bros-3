@@ -2,9 +2,10 @@
 #include<conio.h>
 #include<stdlib.h>
 #include<dos.h>
+#include<time.h>
 #include<graphics.h>
 
-int geexbox,nivel=0,menu=0,vidas=4,estado=1,puntos=0,npato[8],patox[8],patoy[8],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,i,j;
+int geexbox,nivel=0,menu=0,vidas=4,estado=1,puntos=0,npato[8],patox[8],patoy[8],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,i,j,tiempo,sec=0;
 float vx=0,vy=0;
 int paisaje[30][40]={75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,
 		     75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,
@@ -1093,6 +1094,25 @@ int pato3 [16][16]={
 22,0 ,0 ,0 ,0 ,0 ,15,15,15,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
 };
 
+int patito0 [16][16]={
+22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
+22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
+22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
+22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
+22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
+22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
+22,22,22,22,22,22,0 ,0 ,0 ,0 ,22,22,22,22,22,22,
+22,22,22,22,22,0 ,14,14,14,14,0 ,22,22,22,22,22,
+22,22,22,22,0 ,14,0 ,14,14,0 ,14,0 ,22,22,22,22,
+22,22,22,0 ,14,14,14,14,14,14,14,14,0 ,22,22,22,
+22,22,22,0 ,14,14,0 ,0 ,0 ,0 ,14,14,0 ,22,22,22,
+22,22,22,22,0 ,14,14,14,14,14,14,0 ,22,22,22,22,
+22,22,22,22,22,0 ,0 ,0 ,0 ,0 ,0 ,22,22,22,22,22,
+22,22,22,22,22,22,0 ,15,15,0 ,22,22,22,22,22,22,
+22,22,22,22,22,0 ,15,15,15,15,0 ,22,22,22,22,22,
+22,22,22,22,0 ,0 ,0 ,15,15,0 ,0 ,0 ,22,22,22,22,
+};
+
 
 
 
@@ -1548,15 +1568,23 @@ for(n=0;n<4;n++)
 }
 
 
-dibpato()
+dibpatos()
 {
 int n;
 for(n=0;n<8;n++)
   {
   if(npato[n]!=0)
     {
-    setfillstyle(1,14);
-    bar(patox[n],patoy[n],patox[n]+15,patoy[n]+15);
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+	{
+        if(pato0[j][i]!=22)
+          {
+          putpixel(patox[n]+i,patoy[n]+j,pato0[j][i]);
+          }
+	}
+      }
     }
   }
 }
@@ -2116,6 +2144,12 @@ for(n=0;n<4;n++)
 }
 
 
+secuencia()
+{
+
+}
+
+
 fondo()
 {
 int x,y;
@@ -2138,10 +2172,7 @@ fondo();
 r_champ();
 rmonedas();
 r_pato();
-c_pato(4,18);
-c_pato(8,18);
-c_pato(16,18);
-c_pato(20,18);
+c_pato(4,22);
 
 while(ciclo<1)
   {
@@ -2524,6 +2555,7 @@ while(ciclo<1)
         if(((y-(y%16))/16)==((champy[i]-(champy[i]%16))/16))
           {
           elichamp(i);
+          estado++;
           }
         }
       }
@@ -2581,28 +2613,56 @@ while(ciclo<1)
   y=y+vy;
 
   dibchamp();
-  dibpato();
-    for(j=0;j<16;j++)
-      {
-      for(i=0;i<16;i++)
-	{
-        if(pato0[j][i]!=22)
+  dibpatos();
+
+
+
+  switch(estado)
+    {
+    case 0:
+      estado++;
+      vidas--;
+      ciclo=1;
+      nivel=0;
+      //musiquita y pantalla de perder
+    break;
+    case 1:
+      for(j=0;j<16;j++)
+        {
+        for(i=0;i<16;i++)
           {
-          putpixel(x+i,y+j,pato0[j][i]);
+          if(patito0[j][i]!=22)
+            {
+            putpixel(x+i,y+j,patito0[j][i]);
+            }
           }
-	}
-      }
-  //setfillstyle(1,15);
-  //bar(x,y,x+15,y+15);
+        }
+    break;
+    case 2:
+      for(j=0;j<16;j++)
+        {
+        for(i=0;i<16;i++)
+          {
+          if(pato0[j][i]!=22)
+            {
+            putpixel(x+i,y+j,pato0[j][i]);
+            }
+          }
+        }
+    break;
+    case 3:
+    break;
+    case 4:
+    break;
+
+    }
+
   delay(16);
 
   if(estado==0)  //perdiste una vida
     {
-    estado++;
-    vidas--;
-    ciclo=1;
-    nivel=0;
-    //musiquita y pantalla de perder
+
+
     }
 
 }
