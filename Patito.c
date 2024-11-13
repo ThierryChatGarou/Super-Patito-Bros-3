@@ -1113,6 +1113,25 @@ int patito0 [16][16]={
 22,22,22,22,0 ,0 ,0 ,15,15,0 ,0 ,0 ,22,22,22,22,
 };
 
+int champi0 [16][16]={
+22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
+22,22,22,22,22,22,0 ,0 ,0 ,0 ,22,22,22,22,22,22,
+22,22,22,22,0 ,0 ,12,15,15,12,0 ,0 ,22,22,22,22,
+22,22,22,0 ,12,12,12,15,15,12,12,12,0 ,22,22,22,
+22,22,0 ,15,15,15,15,15,15,15,12,12,15,0 ,22,22,
+22,0 ,12,15,15,15,15,12,12,15,15,15,15,12,0 ,22,
+22,0 ,12,12,15,15,12,12,12,12,15,15,12,12,0 ,22,
+0 ,12,12,12,15,15,12,12,12,12,15,15,12,12,12,0 ,
+0 ,12,12,15,15,15,15,12,12,15,15,15,15,12,12,0 ,
+0 ,15,15,15,15,15,15,15,15,15,15,15,15,15,15,0 ,
+0 ,15,15,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,15,0 ,
+0 ,0 ,0 ,15,15,15,0 ,15,15,0 ,15,15,15,0 ,0 ,0 ,
+22,22,0 ,15,15,15,0 ,15,15,0 ,15,15,15,0 ,22,22,
+22,22,0 ,15,15,15,15,15,15,15,15,15,15,0 ,22,22,
+22,22,0 ,15,15,15,15,15,15,15,15,15,15,0 ,22,22,
+22,22,22,0 ,15,15,15,15,15,15,15,15,0 ,22,22,22,
+};
+
 
 
 
@@ -1578,12 +1597,12 @@ for(n=0;n<8;n++)
     for(j=0;j<16;j++)
       {
       for(i=0;i<16;i++)
-	{
+        {
         if(pato0[j][i]!=22)
           {
           putpixel(patox[n]+i,patoy[n]+j,pato0[j][i]);
           }
-	}
+        }
       }
     }
   }
@@ -1604,12 +1623,32 @@ for(n=0;n<4;n++)
         bar(champx[n],champy[n],champx[n]+15,champy[n]+15);
       break;
       case -1:
-        setfillstyle(1,15);
-        bar(champx[n],champy[n],champx[n]+15,champy[n]+15);
+        for(j=0;j<16;j++)
+          {
+          for(i=0;i<16;i++)
+            {
+            if(champi0[j][i]!=22)
+              {
+              putpixel(champx[n]+i,champy[n]+j,champi0[j][i]);
+              }
+            }
+          }
+        //setfillstyle(1,15);
+        //bar(champx[n],champy[n],champx[n]+15,champy[n]+15);
       break;
       case 1:
-        setfillstyle(1,15);
-        bar(champx[n],champy[n],champx[n]+15,champy[n]+15);
+        for(j=0;j<16;j++)
+          {
+          for(i=0;i<16;i++)
+            {
+            if(champi0[j][i]!=22)
+              {
+              putpixel(champx[n]+i,champy[n]+j,champi0[j][i]);
+              }
+            }
+          }
+        //setfillstyle(1,15);
+        //bar(champx[n],champy[n],champx[n]+15,champy[n]+15);
       break;
       case 4:
         setfillstyle(1,10);
@@ -2122,15 +2161,25 @@ for(n=0;n<4;n++)
       {
       monealt[n]=monealt[n]-4;
       moneday[n]=moneday[n]-4;
-      setfillstyle(1,15);
-      bar(monedax[n],moneday[n],monedax[n]+15,moneday[n]+15);
+      for(j=0;j<16;j++)
+        {
+        for(i=0;i<16;i++)
+          {
+	  putpixel(monedax[n]+i,moneday[n]+j,moneda0[j][i]);
+          }
+        }
       }
     else if(monealt[n]>-64)
       {
       monealt[n]=monealt[n]-4;
       moneday[n]=moneday[n]+4;
-      setfillstyle(1,15);
-      bar(monedax[n],moneday[n],monedax[n]+15,moneday[n]+15);
+      for(j=0;j<16;j++)
+        {
+        for(i=0;i<16;i++)
+          {
+	  putpixel(monedax[n]+i,moneday[n]+j,moneda0[j][i]);
+          }
+        }
       }
     else
       {
