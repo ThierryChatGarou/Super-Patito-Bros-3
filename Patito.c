@@ -5,7 +5,7 @@
 #include<time.h>
 #include<graphics.h>
 
-int geexbox,nivel=0,menu=0,vidas=4,estado=1,tiempo=0,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,i,j,sec=0;
+int geexbox,nivel=0,mundo=0,menu=0,vidas=4,estado=1,tiempo=0,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,i,j,sec=0;
 float vx=0,vy=0;
 int paisaje[30][40]={75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,
 		     75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,
@@ -2820,7 +2820,7 @@ while(ciclo<1)
   else if(x<=-4) //si llega a la orilla izquierda pasar al anterior nivel
     {
     ciclo=1;
-    nivel++;
+    nivel--;
     }
   else if(y>=464) //caida
     {
@@ -2916,13 +2916,27 @@ iniciargraficos();
 
 while(menu!=-1)
   {
-  switch (nivel)
+  switch (mundo)
     {
     case 0:
-      nivel0();
+      //mundo0();
+      switch (nivel)
+        {
+        case 0:
+          nivel0();
+        break;
+        case 1:
+          menu=-1;
+        break;
+        default:
+          menu=-1;
+        break;
+        }
     break;
     case 1:
-      menu=-1;
+      //mundo1();
+    break;
+    default:
     break;
     }
   }
