@@ -9,7 +9,7 @@
 #include<time.h>
 #include<graphics.h>
 
-int geexbox,nivel=0,mundo=0,menu=0,vidas=4,estado=1,tiempo=0,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,invensible=0,i,j,x,y,tecla,sec=0;
+int geexbox,nivel=0,mundo=0,menu=0,vidas=4,estado=1,tiempo=0,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,invensible=0,i,j,x,y,tecla,sec=0,ciclo=0;
 float vx=0,vy=0;
 int paisaje[30][40];
 
@@ -3280,19 +3280,99 @@ bloque_cuadrado1()  //puedes pararte sobre el bloque pero no golpearlo por abajo
 }
 
 
+panel()
+{
+  line(0,416,639,416);
+  line(0,416,0,479);
+  line(0,479,639,479);
+  line(639,416,639,479);
+  gotoxy(4,28);
+  printf("Nivel ");
+  gotoxy(4,29);
+  printf("Vidas ");
+  // faltavelocidad
+  gotoxy(15,29);
+  printf("Puntos ");
+  gotoxy(36,28);
+  printf("monedas ");
+  gotoxy(36,29);
+  printf("Tiempo ");
+}
+
+
+panelnumerico()
+{
+  gotoxy(10,28);
+  printf("%d-%d",mundo,nivel);
+  gotoxy(10,29);
+  printf("%d",vidas);
+  // faltavelocidad
+  gotoxy(22,29);
+  printf("%d",puntos);
+  gotoxy(44,28);
+  printf("%d",monedas);
+  gotoxy(44,29);
+  printf("%d",tiempo);
+}
+
+
+verestado()  //verificar el estado de pato y dibujarlo segun el estado
+{
+  switch(estado)
+    {
+    case 0:  //perdiste una vida
+      estado++;
+      vidas--;
+      ciclo=1;
+      nivel=0;
+      //musiquita y pantalla de perder
+    break;
+    case 1:
+      for(j=0;j<16;j++)
+        {
+        for(i=0;i<16;i++)
+          {
+          if(patito0[j][i]!=22)
+            {
+            putpixel(x+i,y+j,patito0[j][i]);
+            }
+          }
+        }
+    break;
+    case 2:
+      for(j=0;j<16;j++)
+        {
+        for(i=0;i<16;i++)
+          {
+          if(pato0[j][i]!=22)
+            {
+            putpixel(x+i,y+j,pato0[j][i]);
+            }
+          }
+        }
+    break;
+    case 3:
+    break;
+    case 4:
+    break;
+    }
+}
+
+
 
 ////////////////////////////////////////////////////////////////niveles
 
 
 nivel0()
 {
-int ciclo=0;
+ciclo=0;
 x=16;
 y=384;
 vx=0;
 vy=0;
 abrir(0,0);
 fondo();
+panel();
 r_champ();
 rmonedas();
 r_pato();
@@ -3488,56 +3568,9 @@ while(ciclo<1)
 
   dibpatos();  //dibujar patos
 
-  switch(estado)
-    {
-    case 0:  //perdiste una vida
-      estado++;
-      vidas--;
-      ciclo=1;
-      nivel=0;
-      //musiquita y pantalla de perder
-    break;
-    case 1:
-      for(j=0;j<16;j++)
-        {
-        for(i=0;i<16;i++)
-          {
-          if(patito0[j][i]!=22)
-            {
-            putpixel(x+i,y+j,patito0[j][i]);
-            }
-          }
-        }
-    break;
-    case 2:
-      for(j=0;j<16;j++)
-        {
-        for(i=0;i<16;i++)
-          {
-          if(pato0[j][i]!=22)
-            {
-            putpixel(x+i,y+j,pato0[j][i]);
-            }
-          }
-        }
-    break;
-    case 3:
-    break;
-    case 4:
-    break;
-    }
+  verestado();  //verificar el estado de pato y dibujarlo segun el estado
 
-  gotoxy(4,28);
-  printf("%d",nivel);
-  gotoxy(4,29);
-  printf("%d",vidas);
-  // faltavelocidad
-  gotoxy(38,29);
-  printf("%d",puntos);
-  gotoxy(44,28);
-  printf("%d",monedas);
-  gotoxy(44,29);
-  printf("%d",tiempo);
+  panelnumerico();  //actualizar datos numericos del panel
 
   delay(16);
 
