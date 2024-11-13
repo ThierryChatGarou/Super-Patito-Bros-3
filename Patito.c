@@ -4,7 +4,7 @@
 #include<dos.h>
 #include<graphics.h>
 
-int geexbox,nivel=0,menu=0,nchamp[4],champx[4],champy[4];
+int geexbox,nivel=0,menu=0,nchamp[4],champx[4],champy[4],auxiliar;
 float vx=0,vy=0;
 int paisaje[30][40]={75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,
 		     75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,
@@ -37,7 +37,7 @@ int paisaje[30][40]={75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75
 		     75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,
 		     75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75};
 
-int piso0 [16][16]={  //revisar colores
+int piso0 [16][16]={  
 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
 15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,
 15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,
@@ -1339,6 +1339,14 @@ for(n=0;n<4;n++)
 }
 
 
+elichamp(int x)
+{
+nchamp[x]=0;
+champx[x]=0;
+champy[x]=0;
+}
+
+
 bloque(int i, int j, int T)
 {
 int x,y;
@@ -2000,7 +2008,7 @@ while(ciclo<1)
 
 ///////////////////////////////////interaccion de los bloques
 
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==1) //caja0
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==1) //caja0 con champiñon
     {
     vy=-vy;
     paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja
@@ -2015,11 +2023,18 @@ while(ciclo<1)
     c_champ((x-(x%16))/16,(y-16-(y%16))/16);
     }
 
-
-
-
-
-
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==4) //caja0
+    {
+    vy=-vy;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja
+    bloque(x-(x%16),y-(y%16),5);
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==4 && x%16!=0)
+    {
+    vy=-vy;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
+    bloque(x+16-(x%16),y-(y%16),5);
+    }
 
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos
     {
@@ -2050,7 +2065,7 @@ while(ciclo<1)
   if(paisaje[(y-(y%16))/16][(x-16-(x%16))/16]==35)  //moneda centro izquierda
     {
     paisaje[(y-(y%16))/16][(x-16-(x%16))/16]=75;
-    bloque(x-16-(x%16),y-(y%16),75); //error
+    bloque(x-16-(x%16),y-(y%16),75); 
     }
   if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==35)  //moneda centro derecha
     {
@@ -2126,15 +2141,31 @@ while(ciclo<1)
     vy=-vy+4.0;
     }
   if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==40) //rebote derecho de nota0
-  {
-  vx=-vx;
-  x=x-(x%16);
-  }
+    {
+    vx=-vx;
+    x=x-(x%16);
+    }
   else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==40) //rebote izquierdo de nota 0
-  {
-  vx=-vx;
-  x=x+16-(x%16);
-  } */
+    {
+    vx=-vx;
+    x=x+16-(x%16);
+    } */
+
+
+  for(auxiliar=0;auxiliar<4;auxiliar++)  //tocar champiñon
+    {
+    if(nchamp[auxiliar]!=0)
+      {
+      if(((x-(x%16))/16)==((champx[auxiliar]-(champx[auxiliar]%16))/16))
+        {
+        if(((y-(y%16))/16)==((champy[auxiliar]-(champy[auxiliar]%16))/16))
+          {
+          elichamp(auxiliar);
+          }
+        }
+      }
+    }
+
 
   movchamp();
 
@@ -2143,13 +2174,12 @@ while(ciclo<1)
 
 
 
-
-  if(x==624) //si llega a la orilla derecha pasar al siguiente nivel
+  if(x>=624) //si llega a la orilla derecha pasar al siguiente nivel
     {
     ciclo=1;
     nivel++;
     }
-  else if(x==-4) //si llega a la orilla izquierda pasar al anterior nivel
+  else if(x<=-4) //si llega a la orilla izquierda pasar al anterior nivel
     {
     ciclo=1;
     nivel++;
@@ -2182,6 +2212,7 @@ if(kbhit())  //si se presiono una tecla para omitir la presentacion, pedir que s
 
 getch();
 iniciargraficos();
+
 while(menu!=-1)
   {
   switch (nivel)
