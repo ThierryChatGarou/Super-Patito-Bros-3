@@ -4,7 +4,7 @@
 #include<dos.h>
 #include<graphics.h>
 
-int geexbox,nivel=0,menu=0,nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],auxiliar;
+int geexbox,nivel=0,menu=0,nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,auxiliar;
 float vx=0,vy=0;
 int paisaje[30][40]={75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,
 		     75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,
@@ -22,7 +22,7 @@ int paisaje[30][40]={75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75
 		     75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,14,14,14,75,75,75,75,
 		     75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,
 		     75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,84,85,75,75,75,75,75,75,75,75,75,40,75,75,40,75,75,75,75,75,75,75,75,
-		     75,75,75,75,75,75,75,75,75,1 ,1 ,3 ,1 ,75,75,75,75,86,87,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,
+		     75,75,75,75,75,75,75,75,75,1 ,2 ,3 ,4 ,75,75,75,75,86,87,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,
 		     75,75,75,75,75,75,75,75,75,75,75,75,75,75,35,35,35,86,87,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,
 		     75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,86,87,75,75,75,75,75,75,75,75,75,75,35,35,35,35,75,75,75,75,75,75,75,
 		     75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,84,85,86,87,84,85,75,75,75,75,75,75,75,75,35,35,35,35,75,75,75,75,75,75,75,
@@ -2084,7 +2084,7 @@ while(ciclo<1)
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==1) //caja0 con moneda
     {
     vy=-vy;
-    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja5
     bloque(x-(x%16),y-(y%16),5);
     cmoneda((x-(x%16))/16,(y-16-(y%16))/16);
     }
@@ -2096,10 +2096,37 @@ while(ciclo<1)
     cmoneda((x+16-(x%16))/16,(y-16-(y%16))/16);
     }
 
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==2) //caja0 con 10 monedas
+    {
+    vy=-vy;
+    y=y+16-(y%16);  //para que el bloque no entre en la caja al pegar por abajo y no realize mal conteo de las monedas
+    cajamone++;
+    cmoneda((x-(x%16))/16,(y-32-(y%16))/16);  //deberia ser (y-16-(y%16))/16 pero el -32 es para compensar el error del conteo de las monedas
+    if(cajamone>=10)
+      {
+      paisaje[(y-16-(y%16))/16][(x-(x%16))/16]=5;  //caja5 el mismo error y se corrige a y-16-(y%16)
+      bloque(x-(x%16),y-16-(y%16),5);  //el mismo error y se corrige a y-16-(y%16)
+      cajamone=0;
+      }
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==2 && x%16!=0)
+    {
+    vy=-vy;
+    y=y+16-(y%16);  //para que el bloque no entre en la caja al pegar por abajo y no realize mal conteo de las monedas
+    cajamone++;
+    cmoneda((x+16-(x%16))/16,(y-32-(y%16))/16);  //deberia ser (y-16-(y%16))/16 pero el -32 es para compensar el error del conteo de las monedas
+    if(cajamone>=10)
+      {
+      paisaje[(y-16-(y%16))/16][(x+16-(x%16))/16]=5;  //el mismo error y se corrige a y-16-(y%16)
+      bloque(x+16-(x%16),y-16-(y%16),5);  //el mismo error y se corrige a y-16-(y%16)
+      cajamone=0;
+      }
+    }
+
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==3) //caja0 con champiñon
     {
     vy=-vy;
-    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja5
     bloque(x-(x%16),y-(y%16),5);
     c_champ((x-(x%16))/16,(y-16-(y%16))/16);
     }
@@ -2114,7 +2141,7 @@ while(ciclo<1)
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==4) //caja0
     {
     vy=-vy;
-    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja5
     bloque(x-(x%16),y-(y%16),5);
     }
   else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==4 && x%16!=0)
