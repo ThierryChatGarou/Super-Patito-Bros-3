@@ -1239,6 +1239,24 @@ return(0);
 }
 
 
+r_pato()  //resetear patos
+{
+int x;
+for(x=0;x<8;x++)
+  {
+  npato[x]=0;
+  }
+for(x=0;x<8;x++)
+  {
+  patox[x]=0;
+  }
+for(x=0;x<8;x++)
+  {
+  patoy[x]=0;
+  }
+}
+
+
 r_champ()  //resetear champiñones
 {
 int x;
@@ -1278,13 +1296,13 @@ for(x=0;x<4;x++)
 c_pato(int x, int y)
 {
 int n,p;
-for(n=0;n<4;n++)
+for(n=0;n<8;n++)
   {
   if(npato[n]==0)
     {
     p=n;
     npato[n]=1;
-    n=4;
+    n=8;
     }
   }
 x=x*16;
@@ -1335,6 +1353,54 @@ moneday[p]=y;
 }
 
 
+movpato()
+{
+int n;
+for(n=0;n<8;n++)
+  {
+  if(npato[n]!=0)
+    {
+
+    if(npato[n]==1)  //determinar sentido
+      {
+      patox[n]++;
+      }
+    if(npato[n]==-1)  //determinar sentido
+      {
+      patox[n]--;
+      }
+
+
+    if((patox[n]%16)!=0)
+      {
+      if(paisaje[(patoy[n]+16-(patoy[n]%16))/16][(patox[n]-(patox[n]%16))/16]>=32 && paisaje[(patoy[n]+16-(patoy[n]%16))/16][(patox[n]+16-(patox[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
+        {
+        patoy[n]=patoy[n]+4;
+        }
+      }
+    else
+      {
+      if(paisaje[(patoy[n]+16-(patoy[n]%16))/16][(patox[n]-(patox[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
+        {
+        patoy[n]=patoy[n]+4;
+        }
+      }
+
+    }
+  if(paisaje[(patoy[n]-(patoy[n]%16))/16][(patox[n]+16-(patox[n]%16))/16]<32) //limite de bloque derecho
+    {
+    npato[n]=-1;
+    patox[n]=patox[n]-(patox[n]%16);
+    }
+  else if(paisaje[(patoy[n]-(patoy[n]%16))/16][(patox[n]-(patox[n]%16))/16]<32) //limite de bloque izquierdo
+    {
+    npato[n]=1;
+    patox[n]=patox[n]+16-(patox[n]%16);
+    }
+  }
+}
+
+
 movchamp()
 {
 int n;
@@ -1378,6 +1444,20 @@ for(n=0;n<4;n++)
     {
     nchamp[n]=-nchamp[n];
     champx[n]=champx[n]+16-(champx[n]%16);
+    }
+  }
+}
+
+
+dibpato()
+{
+int n;
+for(n=0;n<8;n++)
+  {
+  if(npato[n]!=0)
+    {
+    setfillstyle(1,14);
+    bar(patox[n],patoy[n],patox[n]+15,patoy[n]+15);
     }
   }
 }
@@ -1880,6 +1960,19 @@ for(n=0;n<4;n++)
   }
 }
 
+refpato()
+{
+int n;
+for(n=0;n<8;n++)
+  {
+  if(npato[n]!=0)
+    {
+    bloque(patox[n]-(patox[n]%16),patoy[n]-(patoy[n]%16),paisaje[(patoy[n]-(patoy[n]%16))/16][(patox[n]-(patox[n]%16))/16]);  //actualizar arriba a la izquierda
+    bloque(patox[n]-(patox[n]%16)+16,patoy[n]-(patoy[n]%16),paisaje[(patoy[n]-(patoy[n]%16))/16][(patox[n]+16-(patox[n]%16))/16]);  //actualizar arriba a la derecha
+    }
+  }
+}
+
 
 mdemone()  //mover dibujar eliminar moneda
 {
@@ -1935,6 +2028,8 @@ int ciclo=0,tecla,x=0,y=0;
 fondo();
 r_champ();
 rmonedas();
+r_pato();
+c_pato(4,4);
 
 while(ciclo<1)
   {
@@ -1961,6 +2056,7 @@ while(ciclo<1)
     }
 
   refchamp();
+  refpato();
 
   if((x%16)!=0)
     {
@@ -2324,6 +2420,8 @@ while(ciclo<1)
 
   movchamp();
   mdemone();
+  movpato();
+
 
 
 
@@ -2346,6 +2444,7 @@ while(ciclo<1)
   y=y+vy;
 
   dibchamp();
+  dibpato();
   setfillstyle(1,15);
   bar(x,y,x+15,y+15);
   delay(16);
