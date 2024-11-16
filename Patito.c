@@ -469,6 +469,44 @@ int poder6 [16][16]={
 0 ,15,15,15,15,15,15,15,15,15,15,15,15,15,15,0 ,
 };
 
+int pausa0 [16][16]={
+10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,
+10,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,
+10,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,
+10,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,
+10,11,15,15,15,11,11,11,11,15,11,11,11,15,11,11,
+10,11,15,0 ,0 ,15,11,11,11,15,0 ,11,11,15,0 ,11,
+10,11,15,0 ,11,15,0 ,11,15,0 ,15,11,11,15,0 ,11,
+10,11,15,15,15,11,0 ,11,15,15,15,0 ,11,15,0 ,11,
+10,11,15,0 ,0 ,0 ,11,15,11,0 ,0 ,15,11,15,0 ,11,
+10,11,15,0 ,11,11,11,15,0 ,11,11,15,0 ,11,15,15,
+10,11,11,0 ,11,11,11,11,0 ,11,11,11,0 ,11,11,0 ,
+10,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,
+10,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,
+10,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,
+10,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,
+10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,
+};
+
+int pausa1 [16][16]={
+10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,
+11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,10,
+11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,10,
+11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,10,
+15,11,11,15,15,15,11,11,11,15,11,11,11,11,11,10,
+15,0 ,15,11,0 ,0 ,0 ,11,11,15,0 ,11,11,11,11,10,
+15,0 ,15,0 ,11,11,11,11,15,11,15,11,11,11,11,10,
+15,0 ,11,15,15,11,11,11,15,15,15,0 ,11,11,11,10,
+15,0 ,11,11,0 ,15,11,15,11,0 ,0 ,15,11,11,11,10,
+11,0 ,15,15,15,11,0 ,15,0 ,11,11,15,0 ,11,11,10,
+0 ,11,11,0 ,0 ,0 ,11,11,0 ,11,11,11,0 ,11,11,10,
+11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,10,
+11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,10,
+11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,10,
+11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,10,
+10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,
+};
+
 int nota0 [16][16]={
 11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,11,
 0 ,0 ,15,15,15,15,15,15,15,15,15,15,15,15,0 ,0 ,
@@ -1590,7 +1628,7 @@ for (geexbox=0;geexbox<50;geexbox++)
 textcolor(0x0C);
 textbackground(0x00);
 gotoxy(7,2);    cprintf("ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป");
-gotoxy(7,3);    cprintf("บ    Patito bros en C por Thierry Joseph Valery Garcia Greiner        บ");
+gotoxy(7,3);    cprintf("บ     Patito bros en C por Thierry Joseph Valery Garcia Greiner        บ");
 gotoxy(7,4);    cprintf("บ                                                                      บ");
 gotoxy(7,5);    cprintf("ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ");
 
@@ -3356,7 +3394,7 @@ verestado()  //verificar el estado de pato y dibujarlo segun el estado
 ayuda()
 {
 setfillstyle(1,0);  //azul claro
-bar(40,8,624,320);
+bar(40,8,624,336);
 gotoxy(24,2);
 printf("AYUDA DE SUPER PATITO BROS");
 gotoxy(8,5);
@@ -3368,18 +3406,54 @@ printf("la flecha de arriba es la de saltar.");
 gotoxy(8,9);
 printf("- F1 como te abras dado cuenta es para abrir este menu de ayuda");
 gotoxy(8,10);
-printf("- ESC es para salir del juego y abrir un menu");
+printf("- Enter es para pausar y despausar el juego");
 gotoxy(8,11);
+printf("- ESC es para salir del juego y abrir un menu");
+gotoxy(8,12);
 printf("- Alt+F4 es para salir del juego sin ningun aviso");
-gotoxy(8,14);
+gotoxy(8,15);
 printf("Û Como se juega?:");
-gotoxy(8,16);
-printf("- Avanza siempre hacia la derecha pasando los obstaculos,");
 gotoxy(8,17);
+printf("- Avanza siempre hacia la derecha pasando los obstaculos,");
+gotoxy(8,18);
 printf("al llegar a la orrila derecha de la pantalla pasaras al siguente nivel");
-gotoxy(20,20);
+gotoxy(20,21);
 printf("PRESIONA CUALQUIER TECLA PARA CONTINUAR");
 bioskey(0);  //funciona igual que getch(); pero getch(); no funciona
+fondo();
+panel();
+}
+
+
+pausa()
+{
+int x2,y2,n=0;
+tecla=0;
+for(y2=0;y2<16;y2++)
+  {
+  for(x2=0;x2<16;x2++)
+    {
+    putpixel(x2+304,y2+208,pausa0[y2][x2]);
+    }
+  }
+for(y2=0;y2<16;y2++)
+  {
+  for(x2=0;x2<16;x2++)
+    {
+    putpixel(x2+320,y2+208,pausa1[y2][x2]);
+    }
+  }
+while(n==0)
+  {
+  if(bioskey(1))  //funciona igual que kbhit()
+    {
+    tecla = bioskey(0);  //capturar tecla presionada
+    }
+  if(tecla==7181)
+    {
+    n=1;
+    }
+  }
 fondo();
 panel();
 }
@@ -3520,9 +3594,9 @@ while(ciclo<1)
 ////////teclado
 
   if(bioskey(1))  //funciona igual que kbhit()
-  {
-  tecla = bioskey(0);  //capturar tecla presionada
-  }
+    {
+    tecla = bioskey(0);  //capturar tecla presionada
+    }
   if(tecla == 0);
     {
     if(vx<0)  //disminuir la velocidad
@@ -3564,6 +3638,10 @@ while(ciclo<1)
       {
       vy=-8.0;
       }
+    }
+  if(tecla==7181)  //enter pausar el juego
+    {
+    pausa();
     }
   if(tecla==21248)  //suprimir  truco: elimina patos
     {
