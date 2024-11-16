@@ -2057,23 +2057,7 @@ gotoxy(7,12);   cprintf("บ                   EGA 64K       บ");
 gotoxy(7,13);   cprintf("บ                   EGA mono      บ");
 gotoxy(7,14);   cprintf("บ                   IBM 8514      บ");
 gotoxy(7,15);   cprintf("บ                   Hercules mono บ");
-gotoxy(7,16);   cprintf("บ                   AT&T 6300 PC  บ");
-gotoxy(7,17);   cprintf("บ                   VGA           บ");
-gotoxy(7,18);   cprintf("บ                   IBM 3270 PC   บ");
-gotoxy(7,19);   cprintf("บ                                 บ");
-gotoxy(7,20);   cprintf("บ Compatibilidad SVGA Activada    บ");
-gotoxy(7,21);   cprintf("ศอออออออออออออออออออออออออออออออออผ");
-
-gotoxy(44,8);    cprintf("ษอออออออออออออออออออออออออออออออออป");
-gotoxy(44,9);    cprintf("บ Entradas            Teclado     บ");
-gotoxy(44,10);   cprintf("บ Detectadas          Raton       บ");
-gotoxy(44,11);   cprintf("บ                                 บ");
-gotoxy(44,12);   cprintf("บ                                 บ");
-gotoxy(44,13);   cprintf("บ                                 บ");
-gotoxy(44,14);   cprintf("บ                                 บ");
-gotoxy(44,15);   cprintf("บ                                 บ");
-gotoxy(44,16);   cprintf("บ                                 บ");
-gotoxy(44,17);   cprintf("บ                                 บ");
+go                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    บ");
 gotoxy(44,18);   cprintf("บ                                 บ");
 gotoxy(44,19);   cprintf("บ                                 บ");
 gotoxy(44,20);   cprintf("บ                                 บ");
@@ -2311,6 +2295,127 @@ fclose(arch1);
 fclose(arch2);
 fclose(arch3);
 fclose(arch4);
+fclose(nivel0);
+fclose(nivel1);
+fclose(nivel2);
+fclose(nivel3);
+fclose(mundo);
+
+return (0);
+}
+
+
+guardar(int nivel,int escena)
+{
+FILE *nivel0,*nivel1,*nivel2,*nivel3,*mundo;
+int letra,x2,y2;
+
+switch (nivel)
+  {
+  case 0:
+    switch (escena)
+      {
+      case 0:
+        nivel0 = fopen("nivel0-0.txt","w+");
+      break;
+      case 1:
+        nivel1 = fopen("nivel0-1.txt","w+");
+      break;
+      case 2:
+        nivel2 = fopen("nivel0-2.txt","w+");
+      break;
+      case 3:
+        nivel3 = fopen("nivel0-3.txt","w+");
+      break;
+      default:
+        mundo = fopen("nivel0.txt","w+");
+      break;
+      }
+  break;
+  case 1:
+  break;
+  case 2:
+  break;
+  case 3:
+  break;
+  }
+
+if (nivel0!=NULL)
+  {
+  for(y2=0;y2<30;y2++)
+    {
+    for(x2=0;x2<40;x2++)
+      {
+      fprintf(nivel0,"%d",paisaje[y2][x2]);
+      if(paisaje[y2][x2]<10)
+        {
+        fprintf(nivel0," ");
+        }
+      fprintf(nivel0,",");
+      }
+    }
+  }
+if (nivel1!=NULL)
+  {
+  for(y2=0;y2<30;y2++)
+    {
+    for(x2=0;x2<40;x2++)
+      {
+      fprintf(nivel1,"%d",paisaje[y2][x2]);
+      if(paisaje[y2][x2]<10)
+        {
+        fprintf(nivel1," ");
+        }
+      fprintf(nivel1,",");
+      }
+    }
+  }
+if (nivel2!=NULL)
+  {
+  for(y2=0;y2<30;y2++)
+    {
+    for(x2=0;x2<40;x2++)
+      {
+      fprintf(nivel2,"%d",paisaje[y2][x2]);
+      if(paisaje[y2][x2]<10)
+        {
+        fprintf(nivel2," ");
+        }
+      fprintf(nivel2,",");
+      }
+    }
+  }
+if (nivel3!=NULL)
+  {
+  for(y2=0;y2<30;y2++)
+    {
+    for(x2=0;x2<40;x2++)
+      {
+      fprintf(nivel3,"%d",paisaje[y2][x2]);
+      if(paisaje[y2][x2]<10)
+        {
+        fprintf(nivel3," ");
+        }
+      fprintf(nivel3,",");
+      }
+    }
+  }
+if (mundo!=NULL)
+  {
+  for(y2=0;y2<30;y2++)
+    {
+    for(x2=0;x2<40;x2++)
+      {
+      fprintf(mundo,"%d",paisaje[y2][x2]);
+      if(paisaje[y2][x2]<10)
+        {
+        fprintf(mundo," ");
+        }
+      fprintf(mundo,",");
+      }
+    }
+  }
+
 fclose(nivel0);
 fclose(nivel1);
 fclose(nivel2);
@@ -4642,7 +4747,7 @@ for(n=0;n<8;n++)
 
 
 
-////////////////////////////////////////////////////////////////niveles
+//======================================================niveles=====================================================
 
 mundo0()
 {
@@ -5073,6 +5178,7 @@ while(ciclo<1)
   delay(16);
 
 }
+guardar(0,0);
 return(0);
 }
 
@@ -5362,6 +5468,7 @@ while(ciclo<1)
   delay(16);
 
 }
+guardar(0,1);
 return(0);
 }
 
@@ -5383,6 +5490,8 @@ if(kbhit())  //si se presiono una tecla para omitir la presentacion, pedir que s
 getch();
 iniciargraficos();
 
+copiar(0);
+
 while(menu!=-1)
   {
   if(menu=1)
@@ -5392,7 +5501,6 @@ while(menu!=-1)
   switch (nivel)
     {
     case 0:
-      copiar(nivel);
       mundo0();
       switch (escena)
         {
