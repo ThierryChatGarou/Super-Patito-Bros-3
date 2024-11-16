@@ -4315,6 +4315,12 @@ while(ciclo<1)
   refbloquemundo();  //actualizar bloques
   //refbloques();  //actualizar bloques
 
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<=32 && (y%16)==0 ) //detener en bloque de nivel
+    {
+    vx=0.0;
+    vy=0.0;
+    }
+
   if((x%16)!=0)
     {
     if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]<32 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]<32)  //limite del bloque de abajo
@@ -5012,6 +5018,7 @@ return(0);
 
 main()
 {
+textmode(64);  //C4350
 Geexbox();
 Thierry();
 Inicio();
