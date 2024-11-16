@@ -1880,6 +1880,9 @@ switch (mundo)
       break;
       case 3:
       break;
+      default:
+        archivo = fopen("0.txt","rb");
+      break;
       }
   break;
   case 1:
@@ -2880,7 +2883,23 @@ switch (T)
   break;*/
   case 99:
   break;
-  default:
+  case 200:
+  break;
+  case 201:
+  break;
+  case 202:
+  break;
+  case 203:
+  break;
+  case 204:
+  break;
+  case 205:
+  break;
+  case 206:
+  break;
+  case 207:
+  break;
+  default:  //efecto petroleo
   break;
   }
 
@@ -3926,6 +3945,167 @@ for(n=0;n<8;n++)
 ////////////////////////////////////////////////////////////////niveles
 
 
+mundo0()
+{
+ciclo=0;
+tiempo=200;
+invensible=0;
+x=16;
+y=16;
+vx=0;
+vy=0;
+abrir(0,-88);
+fondo();
+panel();
+
+while(ciclo<1)
+  {
+
+////////operaciones del los bloques
+
+  refbloques();  //actualizar bloques
+
+  if((x%16)!=0)
+    {
+    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]<32 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]<32)  //limite del bloque de abajo
+      {
+      vy=0;
+      y=y-(y%16);
+      }
+    }
+  else
+    {
+    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]<32)  //limite del bloque de abajo
+      {
+      vy=0;
+      y=y-(y%16);
+      }
+    }
+
+  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque derecho   nota: (y%16)==0 es para que si se golpea un bloque por abajo no se cumpla
+    {
+    vx=0.0;
+    x=x-(x%16);
+    }
+  else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque izquierdo
+    {
+    vx=0.0;
+    x=x+16-(x%16);
+    }
+
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //limite de arriba
+    {
+    vy=0;
+    y=y+16-(y%16);
+    }
+  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32) && x%16!=0)
+    {
+    vy=0;
+    y=y+16-(y%16);
+    }
+
+////////teclado
+
+  tecla=0;
+  if(bioskey(1))  //funciona igual que kbhit() con la diferecia que con bioskey que si no presionas una tecla despues de un tiempo se alenta el cheque del teclado
+    {
+    tecla = bioskey(0);  //capturar tecla presionada
+    }
+  if(tecla == 0);
+    {
+    if(vx<0)  //disminuir la velocidad
+      {
+      vx=vx+0.0625;
+      }
+    else if(vx>0)
+      {
+      vx=vx-0.0625;
+      }
+    if(vy<0)  //disminuir la velocidad
+      {
+      vy=vy+0.125;
+      }
+    else if(vy>0)
+      {
+      vy=vy-0.125;
+      }
+    }
+  if(tecla==19200)  //izquierda 75
+    {
+    vx=vx-4.0;
+    dir=-1;
+    }
+  if(tecla==19712)  //derecha 77
+    {
+    dir=1;
+    vx=4.0;
+    }
+  if(tecla==18432)  //arriba
+    {
+    vy=-4.0;
+    }
+  if(tecla==20480)  //abajo
+    {
+    vy=4.0;
+    }
+  if(tecla==27392)  //Alt+F4 salir
+    {
+    exit (2);
+    }
+  if(tecla==15104)  //F1 ayuda 
+    {
+    ayuda();
+    }
+  if(tecla==283)  //esc 27
+    {
+    ciclo=1;
+    menu=-1;  //de momento que no hay menu
+    //menu=1;  //menu
+    }
+  if(vx>4)  //limite de velocidad
+    {
+    vx=4;
+    }
+  if(vy>4)  //limite de velocidad (gravedad)
+    {
+    vy=4;
+    }
+  if(vx<-4)  //limite de velocidad
+    {
+    vx=-4;
+    }
+  if(vy<-4)  //limite de velocidad
+    {
+    vy=-4;
+    }
+
+
+////////interaccion de los bloques
+
+  if(x>=624) //si llega a la orilla derecha pasar al siguiente nivel
+    {
+    ciclo=1;
+    mundo++;
+    }
+  else if(x<=-4) //si llega a la orilla izquierda pasar al anterior nivel
+    {
+    ciclo=1;
+    mundo--;
+    }
+
+  x=x+vx;
+  y=y+vy;
+
+  verestado();  //verificar el estado de pato y dibujarlo segun el estado
+
+  panelnumerico();  //actualizar datos numericos del panel
+
+  delay(16);
+}
+return(0);
+}
+
+
 nivel0()
 {
 ciclo=0;
@@ -4501,7 +4681,7 @@ while(menu!=-1)
   switch (mundo)
     {
     case 0:
-      //mundo0();
+      mundo0();
       switch (nivel)
         {
         case 0:
