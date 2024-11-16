@@ -2839,7 +2839,7 @@ for(n=0;n<4;n++)
 
 convert()  //convertir bloques y monedas
 {
-t_moneda=tiempo-22;
+t_moneda=tiempo-44;
 for(j=0;j<30;j++)
   {
   for(i=0;i<40;i++)
@@ -3885,6 +3885,7 @@ return(0);
 
 nivel1()
 {
+int da,db;
 ciclo=0;
 tiempo=200;
 invensible=0;
@@ -3898,7 +3899,7 @@ panel();
 r_champ();
 rmonedas();
 r_pato();
-c_pato(24,23);
+c_pato(16,23);
 npato[0]=-1;
 
 while(ciclo<1)
@@ -4049,6 +4050,32 @@ while(ciclo<1)
   bloque_caja0_champinon();  //caja0 con champiñon
 
   //bloque_caja0_vida();  //caja0 con vida
+
+ ////////especial si golpea 18,20 (cristal0) que aparesca un poder0 en 18,19
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==14)  //golpe por abajo
+    {
+    if(((y-16-(y%16))/16 == 20) && ((x-(x%16))/16 == 18))
+      {
+      y=y+16-(y%16);
+      vy=-vy;
+      paisaje[(y-16-(y%16))/16][(x-(x%16))/16]=5;  //caja5
+      bloque(x-(x%16),y-16-(y%16),5);
+      paisaje[(y-32-(y%16))/16][(x-(x%16))/16]=36;  //poder0
+      bloque(x-(x%16),y-32-(y%16),36);
+      }
+    }
+  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==14) && x%16!=0)
+    {
+    if((y-16-(y%16))/16==20 && (x+16-(x%16))/16==18 && x%16!=0)
+      {
+      y=y+16-(y%16);
+      vy=-vy;
+      paisaje[(y-16-(y%16))/16][(x+16-(x%16))/16]=5;  //caja5
+      bloque(x+16-(x%16),y-16-(y%16),5);
+      paisaje[(y-32-(y%16))/16][(x+16-(x%16))/16]=36;  //poder0
+      bloque(x+16-(x%16),y-32-(y%16),36);
+      }
+    }
 
   bloque_cristal();  //cristal golpe por abajo
 
