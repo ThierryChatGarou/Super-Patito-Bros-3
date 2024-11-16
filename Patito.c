@@ -1715,6 +1715,63 @@ int g_niv2 [16][16]={
 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
 };
 
+int g_niv3 [16][16]={
+11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,11,11,0 ,0 ,0 ,0 ,0 ,15,15,15,0 ,0 ,0 ,0 ,0 ,
+11,11,11,11,0 ,0 ,0 ,15,0 ,0 ,0 ,15,0 ,0 ,0 ,0 ,
+11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,
+11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,
+11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,15,15,0 ,0 ,0 ,0 ,0 ,
+11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,0 ,
+11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,
+11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,
+11,11,11,11,0 ,0 ,0 ,15,0 ,0 ,0 ,15,0 ,0 ,0 ,0 ,
+11,11,11,0 ,0 ,0 ,0 ,0 ,15,15,15,0 ,0 ,0 ,0 ,0 ,
+11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+};
+
+int g_niv4 [16][16]={
+11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,0 ,
+11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,15,0 ,0 ,0 ,0 ,
+11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,15,0 ,0 ,0 ,0 ,
+11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,15,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,15,0 ,0 ,0 ,0 ,
+11,0 ,0 ,0 ,0 ,0 ,15,15,15,15,15,15,15,15,0 ,0 ,
+11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,0 ,
+11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,0 ,
+11,11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,0 ,
+11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,0 ,
+11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+};
+
+/*int g_niv [16][16]={
+11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+};*/
+
 int camino0 [16][16]={  
 15,15,15,15,15,0 ,14,14,14,14,0 ,15,15,15,15,15,
 15,15,15,15,15,0 ,14,14,14,14,0 ,15,15,15,15,15,
@@ -2088,8 +2145,7 @@ return(0);
 abrir(int nivel,int escena)
 {
 FILE *archivo;
-int letra,num=0;
-int x2,y2,cif=10;
+int letra,num=0,x2,y2,cif=10;
 
 switch (nivel)
   {
@@ -2097,18 +2153,18 @@ switch (nivel)
     switch (escena)
       {
       case 0:
-        archivo = fopen("0-0.txt","rb");
+        archivo = fopen("nivel0-0.txt","rb");
       break;
       case 1:
-        archivo = fopen("0-1.txt","rb");
+        archivo = fopen("nivel0-1.txt","rb");
       break;
       case 2:
-        archivo = fopen("0-2.txt","rb");
+        archivo = fopen("nivel0-2.txt","rb");
       break;
       case 3:
       break;
       default:
-        archivo = fopen("0.txt","rb");
+        archivo = fopen("nivel0.txt","rb");
       break;
       }
   break;
@@ -2122,7 +2178,7 @@ switch (nivel)
 
 if (archivo==NULL)
   {
-  printf( "No se puede abrir el archivo %i-%i.txt para el mapa del nivel %i escena %i",nivel,escena,nivel,escena);
+  printf( "No se puede abrir el archivo nivel%i-%i.txt para el mapa del nivel %i escena %i",nivel,escena,nivel,escena);
   getch();
   exit( 1 );
   }
@@ -2178,6 +2234,89 @@ if (fclose(archivo)!=0)
   gotoxy(1,1);
   printf( "Problemas al cerrar el archivo\n" );
   }
+return (0);
+}
+
+
+copiar(int n)
+{
+FILE *arch0,*arch1,*arch2,*arch3,*arch4,*nivel0,*nivel1,*nivel2,*nivel3,*mundo;
+int letra,x2,y2;
+
+switch (n)
+  {
+  case 0:
+        arch0 = fopen("0-0.txt","rb");
+        arch1 = fopen("0-1.txt","rb");
+        arch2 = fopen("0-2.txt","rb");
+        arch3 = fopen("0-3.txt","rb");
+        arch4 = fopen("0.txt","rb");
+        nivel0 = fopen("nivel0-0.txt","w");
+        nivel1 = fopen("nivel0-1.txt","w");
+        nivel2 = fopen("nivel0-2.txt","w");
+        nivel3 = fopen("nivel0-3.txt","w");
+        mundo = fopen("nivel0.txt","w");
+  break;
+  case 1:
+  break;
+  case 2:
+  break;
+  case 3:
+  break;
+  }
+
+if (arch0!=NULL && nivel0!=NULL)
+  {
+  while(feof(arch0)==0)
+    {
+    letra=getc(arch0);
+    putc(letra,nivel0);
+    }
+  }
+if (arch1!=NULL && nivel1!=NULL)
+  {
+  while(feof(arch1)==0)
+    {
+    letra=getc(arch1);
+    putc(letra,nivel1);
+    }
+  }
+if (arch2!=NULL && nivel2!=NULL)
+  {
+  while(feof(arch2)==0)
+    {
+    letra=getc(arch2);
+    putc(letra,nivel2);
+    }
+  }
+if (arch3!=NULL && nivel3!=NULL)
+  {
+  while(feof(arch3)==0)
+    {
+    letra=getc(arch3);
+    putc(letra,nivel3);
+    }
+  }
+if (arch4!=NULL && mundo!=NULL)
+  {
+  while(feof(arch4)==0)
+    {
+    letra=getc(arch4);
+    putc(letra,mundo);
+    }
+  }
+
+fclose(arch0);
+fclose(arch1);
+fclose(arch2);
+fclose(arch3);
+fclose(arch4);
+fclose(nivel0);
+fclose(nivel1);
+fclose(nivel2);
+fclose(nivel3);
+fclose(mundo);
+
 return (0);
 }
 
@@ -4505,7 +4644,6 @@ for(n=0;n<8;n++)
 
 ////////////////////////////////////////////////////////////////niveles
 
-
 mundo0()
 {
 ciclo=0;
@@ -5254,6 +5392,7 @@ while(menu!=-1)
   switch (nivel)
     {
     case 0:
+      copiar(nivel);
       mundo0();
       switch (escena)
         {
