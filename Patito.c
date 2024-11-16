@@ -1639,6 +1639,25 @@ int champi4 [16][16]={
 22,22,22,0 ,10,10,10,10,10,10,10,10,0 ,22,22,22,
 };
 
+int g_niv1 [16][16]={
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+};
+
 
 //Nombre de las tarjetas de video soportadas
 char *dname[] = {"Requiere deteccion",
@@ -2883,21 +2902,267 @@ switch (T)
   break;*/
   case 99:
   break;
-  case 200:
+  default:  //efecto petroleo
   break;
-  case 201:
+  }
+
+return (0);
+}
+
+
+bloque0(int i, int j, int T)
+{
+int x2,y2;
+switch (T)
+  {
+  case 0:  //bloques solidos
+
   break;
-  case 202:
+  case 1:
+
   break;
-  case 203:
+  case 2:
+
   break;
-  case 204:
+  case 3:
+
+  /*break;
+  case 4:
+
   break;
-  case 205:
+  case 5:
+
   break;
-  case 206:
+  case 6:
+
   break;
-  case 207:
+  case 7:
+
+  break;
+  case 8:
+  break;
+  case 9:
+  break;
+  case 10:
+
+  break;
+  case 11:
+  break;
+  case 12:
+  break;
+  case 13:
+  break;
+  case 14:
+
+  break;
+  case 15:
+
+  break;
+  case 16:
+
+  break;
+  case 17:
+
+  break;
+  case 18:
+
+  break;
+  case 19:
+
+  break;
+  case 20:
+
+  break;
+  case 21:
+
+  break;
+  case 22:
+
+  break;
+  case 23:
+
+  break;
+  case 24:
+
+  break;
+  case 25:
+
+  break;
+  case 26:
+
+  break;
+  case 27:
+
+  break;
+  case 28:
+
+  break;
+  case 29:
+
+  break;
+  case 30:
+
+  break;
+  case 31:
+
+  break;
+  case 32:  //apartir de 32 comienzan los bloques especiales
+    for(y2=0;y2<16;y2++)
+      {
+      for(x2=0;x2<16;x2++)
+	{
+	putpixel(x2+i,y2+j,g_niv1[y2][x2]);
+	}
+      }
+  break;
+  case 33:
+
+  break;
+  case 34:
+
+  break;
+  case 35:
+
+  break;
+  case 36:
+
+  break;
+  case 37:
+
+  break;
+  case 38:
+
+  break;
+  case 39:
+
+  break;
+  case 40:
+
+  break;
+  case 41:
+
+  break;
+  case 42:
+
+  break;
+  case 43:
+
+  break;
+  case 44:
+
+  break;
+  case 45:
+
+  break;
+  case 46:
+
+  break;*/
+  case 47:
+  break;
+  case 64:  //apartir de aqui comienzan los bloques tipo aire o fondo
+    setfillstyle(1,0); //negro
+    bar(i,j,i+15,j+15);  //15 es para que no borre un pixel de la siguiente figura
+  break;
+  case 65:
+    setfillstyle(1,1);  //azul
+    bar(i,j,i+15,j+15);
+  break;
+  case 66:
+    setfillstyle(1,2);  //verde
+    bar(i,j,i+15,j+15);
+  break;
+  case 67:
+    setfillstyle(1,3);  //cyan
+    bar(i,j,i+15,j+15);
+  break;
+  case 68:
+  break;
+  case 69:
+  break;
+  case 70:
+  break;
+  case 71:
+  break;
+  case 72:
+  break;
+  case 73:
+    setfillstyle(1,9);  //azul claro
+    bar(i,j,i+15,j+15);
+  break;
+  case 74:
+  break;
+  case 75:
+    setfillstyle(1,11); //cyan claro
+    bar(i,j,i+15,j+15);
+  break;
+  case 76:
+  break;
+  case 77:
+  break;
+  case 78:
+  break;
+  case 79:
+    setfillstyle(1,15);  //blanco
+    bar(i,j,i+15,j+15);
+  break;
+  /*case 80:
+
+  break;
+  case 81:
+
+  break;
+  case 82:
+
+  break;
+  case 83:
+
+  break;
+  case 84:
+
+  break;
+  case 85:
+
+  break;
+  case 86:
+
+  break;
+  case 87:
+
+  break;
+  case 88:
+
+  break;
+  case 89:
+
+  break;
+  case 90:
+
+  break;
+  case 91:
+
+  break;
+  case 92:
+
+  break;
+  case 93:
+
+  break;
+  case 94:
+
+  break;
+  case 95:
+
+  break;
+  case 96:
+
+  break;
+  case 97:
+
+  break;
+  case 98:
+
+  break;*/
+  case 99:
   break;
   default:  //efecto petroleo
   break;
@@ -3023,6 +3288,18 @@ for(y2=0;y2<30;y2++)
   }
 }
 
+fondomundo()
+{
+int x2,y2;
+for(y2=0;y2<30;y2++)
+  {
+  for(x2=0;x2<40;x2++)
+    {
+    bloque0(x2*16,y2*16,paisaje[y2][x2]);
+    }
+  }
+}
+
 
 refbloques()  //actualizar bloques
 {
@@ -3041,6 +3318,27 @@ refbloques()  //actualizar bloques
     {
     bloque(x-(x%16),y-(y%16),paisaje[(y-(y%16))/16][(x-(x%16))/16]);  //actualizar bloque que esta arriba a la izquierda
     bloque(x-(x%16),y-(y%16)+16,paisaje[(y+16-(y%16))/16][(x-(x%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+    }
+}
+
+
+refbloquemundo()  //actualizar bloques
+{
+                 //el modulo es para que aparesca el bloque alineado a los demas
+  if((x%16)!=0)  // comprobar que bloques necesitan actualizarse
+    {
+    bloque0(x-(x%16),y-(y%16),paisaje[(y-(y%16))/16][(x-(x%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+    bloque0(x-(x%16)+16,y-(y%16),paisaje[(y-(y%16))/16][(x+16-(x%16))/16]);  //actualizar bloque que esta arriba a la derecha
+    if((y%16)!=0)
+      {
+      bloque0(x-(x%16),y-(y%16)+16,paisaje[(y+16-(y%16))/16][(x-(x%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+      bloque0(x-(x%16)+16,y-(y%16)+16,paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]);  //actualizar bloque que esta abajo a la derecha
+      }
+    }
+  else if((y%16)!=0)
+    {
+    bloque0(x-(x%16),y-(y%16),paisaje[(y-(y%16))/16][(x-(x%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+    bloque0(x-(x%16),y-(y%16)+16,paisaje[(y+16-(y%16))/16][(x-(x%16))/16]);  //actualizar bloque que esta abajo a la izquierda
     }
 }
 
@@ -3955,7 +4253,7 @@ y=16;
 vx=0;
 vy=0;
 abrir(0,-88);
-fondo();
+fondomundo();
 panel();
 
 while(ciclo<1)
@@ -3963,7 +4261,8 @@ while(ciclo<1)
 
 ////////operaciones del los bloques
 
-  refbloques();  //actualizar bloques
+  refbloquemundo();  //actualizar bloques
+  //refbloques();  //actualizar bloques
 
   if((x%16)!=0)
     {
@@ -4023,11 +4322,11 @@ while(ciclo<1)
       }
     if(vy<0)  //disminuir la velocidad
       {
-      vy=vy+0.125;
+      vy=vy+0.0625;
       }
     else if(vy>0)
       {
-      vy=vy-0.125;
+      vy=vy-0.0625;
       }
     }
   if(tecla==19200)  //izquierda 75
