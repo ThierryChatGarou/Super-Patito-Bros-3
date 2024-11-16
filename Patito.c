@@ -1640,22 +1640,60 @@ int champi4 [16][16]={
 };
 
 int g_niv1 [16][16]={
+11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,0 ,0 ,
+11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,15,15,0 ,0 ,0 ,0 ,0 ,
+11,11,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,15,0 ,0 ,0 ,0 ,0 ,
+11,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,15,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,0 ,0 ,
+11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,0 ,0 ,
+11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,0 ,0 ,
+11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,0 ,0 ,
+11,11,11,11,0 ,0 ,0 ,0 ,15,15,15,15,15,0 ,0 ,0 ,
+11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+};
+
+int g_niv2 [16][16]={
+11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,11,11,11,0 ,0 ,0 ,0 ,0 ,15,15,0 ,0 ,0 ,0 ,0 ,
+11,11,11,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,15,0 ,0 ,0 ,0 ,
+11,11,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,
+11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,
+11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,0 ,
+11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,0 ,0 ,
+11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,0 ,0 ,0 ,
+11,11,11,11,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,11,11,0 ,0 ,0 ,0 ,15,15,15,15,15,15,0 ,0 ,0 ,
+11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+};
+
+int camino0 [16][16]={
+14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,
+14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,
+14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,
+14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,
+14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,
 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,
+15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,
+15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,
+15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,
 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
-0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
-0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
-0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
-0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
-0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
-0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
-0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
-0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
-0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
-0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
-0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
-0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,
+14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,
+14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,
+14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,
+14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,
 };
 
 
@@ -2925,9 +2963,10 @@ switch (T)
 
   break;
   case 3:
-
-  /*break;
-  case 4:
+    setfillstyle(1,15);  //arboles
+    bar(i,j,i+15,j+15);
+  break;
+  /*case 4:
 
   break;
   case 5:
@@ -3005,7 +3044,7 @@ switch (T)
   break;
   case 31:
 
-  break;
+  break;*/
   case 32:  //apartir de 32 comienzan los bloques especiales
     for(y2=0;y2<16;y2++)
       {
@@ -3016,7 +3055,13 @@ switch (T)
       }
   break;
   case 33:
-
+    for(y2=0;y2<16;y2++)
+      {
+      for(x2=0;x2<16;x2++)
+	{
+	putpixel(x2+i,y2+j,g_niv2[y2][x2]);
+	}
+      }
   break;
   case 34:
 
@@ -3033,7 +3078,7 @@ switch (T)
   case 38:
 
   break;
-  case 39:
+  /*case 39:
 
   break;
   case 40:
@@ -3105,8 +3150,14 @@ switch (T)
     setfillstyle(1,15);  //blanco
     bar(i,j,i+15,j+15);
   break;
-  /*case 80:
-
+  case 80:
+    for(y2=0;y2<16;y2++)
+      {
+      for(x2=0;x2<16;x2++)
+	{
+	putpixel(x2+i,y2+j,camino0[y2][x2]);
+	}
+      }
   break;
   case 81:
 
@@ -3120,7 +3171,7 @@ switch (T)
   case 84:
 
   break;
-  case 85:
+  /*case 85:
 
   break;
   case 86:
@@ -3417,7 +3468,7 @@ bloque_caja0_moneda()  //caja0 con moneda
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==1) //caja0 con moneda
     {
     vy=-vy;
-    puntos=puntos+10;
+    puntos=puntos+40;
     monedas++;
     paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja5
     bloque(x-(x%16),y-(y%16),5);
@@ -3426,7 +3477,7 @@ bloque_caja0_moneda()  //caja0 con moneda
   else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==1 && x%16!=0)
     {
     vy=-vy;
-    puntos=puntos+10;
+    puntos=puntos+40;
     monedas++;
     paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
     bloque(x+16-(x%16),y-(y%16),5);
@@ -3443,7 +3494,7 @@ bloque_caja0_10monedas()  //caja0 con 10 momedas
     y=y+16-(y%16);  //para que el bloque no entre en la caja al pegar por abajo y no realize mal conteo de las monedas
     cajamone++;
     monedas++;
-    puntos=puntos+10;
+    puntos=puntos+40;
     cmoneda((x-(x%16))/16,(y-32-(y%16))/16);  //deberia ser (y-16-(y%16))/16 pero el -32 es para compensar el error del conteo de las monedas
     if(cajamone>=10)
       {
@@ -3458,7 +3509,7 @@ bloque_caja0_10monedas()  //caja0 con 10 momedas
     y=y+16-(y%16);  //para que el bloque no entre en la caja al pegar por abajo y no realize mal conteo de las monedas
     cajamone++;
     monedas++;
-    puntos=puntos+10;
+    puntos=puntos+40;
     cmoneda((x+16-(x%16))/16,(y-32-(y%16))/16);  //deberia ser (y-16-(y%16))/16 pero el -32 es para compensar el error del conteo de las monedas
     if(cajamone>=10)
       {
@@ -3532,7 +3583,7 @@ cielo_moneda()  //cielo cyan con moneda
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==33) //cielo cyan con moneda
     {
     vy=-vy;
-    puntos=puntos+10;
+    puntos=puntos+40;
     monedas++;
     paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja5
     bloque(x-(x%16),y-(y%16),5);
@@ -3541,7 +3592,7 @@ cielo_moneda()  //cielo cyan con moneda
   else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==33 && x%16!=0)
     {
     vy=-vy;
-    puntos=puntos+10;
+    puntos=puntos+40;
     monedas++;
     paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
     bloque(x+16-(x%16),y-(y%16),5);
@@ -3555,7 +3606,7 @@ cristal0_moneda()  //cristal con moneda
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==16) //cielo cyan con moneda
     {
     vy=-vy;
-    puntos=puntos+10;
+    puntos=puntos+40;
     monedas++;
     paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja5
     bloque(x-(x%16),y-(y%16),5);
@@ -3564,7 +3615,7 @@ cristal0_moneda()  //cristal con moneda
   else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==16 && x%16!=0)
     {
     vy=-vy;
-    puntos=puntos+10;
+    puntos=puntos+40;
     monedas++;
     paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
     bloque(x+16-(x%16),y-(y%16),5);
@@ -3578,7 +3629,7 @@ cristal4_moneda()  //cristal con moneda
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==17) //cielo cyan con moneda
     {
     vy=-vy;
-    puntos=puntos+10;
+    puntos=puntos+40;
     monedas++;
     paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja5
     bloque(x-(x%16),y-(y%16),5);
@@ -3587,7 +3638,7 @@ cristal4_moneda()  //cristal con moneda
   else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==17 && x%16!=0)
     {
     vy=-vy;
-    puntos=puntos+10;
+    puntos=puntos+40;
     monedas++;
     paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
     bloque(x+16-(x%16),y-(y%16),5);
@@ -4248,8 +4299,8 @@ mundo0()
 ciclo=0;
 tiempo=200;
 invensible=0;
-x=16;
-y=16;
+x=32;
+y=32;
 vx=0;
 vy=0;
 abrir(0,-88);
@@ -4310,7 +4361,7 @@ while(ciclo<1)
     {
     tecla = bioskey(0);  //capturar tecla presionada
     }
-  if(tecla == 0);
+  /*if(tecla == 0);
     {
     if(vx<0)  //disminuir la velocidad
       {
@@ -4328,7 +4379,7 @@ while(ciclo<1)
       {
       vy=vy-0.0625;
       }
-    }
+    }*/
   if(tecla==19200)  //izquierda 75
     {
     vx=vx-4.0;
@@ -4346,6 +4397,10 @@ while(ciclo<1)
   if(tecla==20480)  //abajo
     {
     vy=4.0;
+    }
+  if(tecla==7181)  //Enter
+    {
+    ciclo=1;
     }
   if(tecla==27392)  //Alt+F4 salir
     {
