@@ -860,24 +860,24 @@ int moneda0 [16][16]={
 11,11,11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,11,11,11,11,11,
 };
 
-int moneda2 [16][16]={
-15,15,15,15,15,15,15,0 ,0 ,15,15,15,15,15,15,15,
-15,15,15,15,15,15,0 ,14,14,0 ,15,15,15,15,15,15,
-15,15,15,15,15,15,0 ,14,14,0 ,15,15,15,15,15,15,
-15,15,15,15,15,15,0 ,14,14,0 ,15,15,15,15,15,15,
-15,15,15,15,15,15,0 ,14,14,0 ,15,15,15,15,15,15,
-15,15,15,15,15,15,0 ,14,14,0 ,15,15,15,15,15,15,
-15,15,15,15,15,15,0 ,14,14,0 ,15,15,15,15,15,15,
-15,15,15,15,15,15,0 ,14,14,0 ,15,15,15,15,15,15,
-15,15,15,15,15,15,0 ,14,14,0 ,15,15,15,15,15,15,
-15,15,15,15,15,15,0 ,14,14,0 ,15,15,15,15,15,15,
-15,15,15,15,15,15,0 ,14,14,0 ,15,15,15,15,15,15,
-15,15,15,15,15,15,0 ,14,14,0 ,15,15,15,15,15,15,
-15,15,15,15,15,15,0 ,14,14,0 ,15,15,15,15,15,15,
-15,15,15,15,15,15,0 ,14,14,0 ,15,15,15,15,15,15,
-15,15,15,15,15,15,0 ,14,14,0 ,15,15,15,15,15,15,
-15,15,15,15,15,15,15,0 ,0 ,15,15,15,15,15,15,15,
-};
+/*int moneda2 [16][16]={
+11,11,11,11,11,11,11,0 ,0 ,11,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,14,14,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,14,14,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,14,14,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,14,14,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,14,14,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,14,14,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,14,14,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,14,14,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,14,14,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,14,14,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,14,14,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,14,14,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,14,14,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,14,14,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,11,0 ,0 ,11,11,11,11,11,11,11,
+};*/
 
 int moneda4 [16][16]={
 11,11,11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,11,11,11,11,11,
@@ -897,6 +897,25 @@ int moneda4 [16][16]={
 11,11,0 ,0 ,0 ,15,15,15,15,15,15,0 ,0 ,0 ,11,11,
 11,11,11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,11,11,11,11,11,
 };
+
+/*int moneda6 [16][16]={
+11,11,11,11,11,11,11,0 ,0 ,11,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,15,15,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,15,15,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,15,15,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,15,15,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,15,15,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,15,15,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,15,15,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,15,15,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,15,15,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,15,15,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,15,15,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,15,15,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,15,15,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,0 ,15,15,0 ,11,11,11,11,11,11,
+11,11,11,11,11,11,11,0 ,0 ,11,11,11,11,11,11,11,
+};*/
 
 int arbol0 [16][16]={
 11,11,11,11,11,0 ,0 ,0 ,0 ,0 ,11,11,11,11,11,11,
@@ -1221,7 +1240,7 @@ int cajaf7 [16][16]={
 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,11,11,11,11,11,
 };
 
-int cajaf10 [16][16]={
+/*int cajaf10 [16][16]={
 11,11,11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
 11,11,11,0 ,0 ,15,15,15,15,15,15,15,15,15,15,15,
 11,11,0 ,15,15,15,15,15,15,15,15,15,15,15,15,15,
@@ -1371,7 +1390,7 @@ int cajaf17 [16][16]={
 15,15,15,15,15,15,15,15,15,15,15,15,15,0 ,11,11,
 15,15,15,15,15,15,15,15,15,15,15,0 ,0 ,11,11,11,
 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,11,11,11,11,11,
-};
+};*/
 
 int pato0 [16][16]={
 22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
@@ -1392,7 +1411,7 @@ int pato0 [16][16]={
 0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,15,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
 };
 
-int pato1 [16][16]={
+/*int pato1 [16][16]={
 22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
 22,22,22,22,22,22,0 ,0 ,0 ,0 ,22,22,22,22,22,22,
 22,22,22,22,0 ,0 ,14,14,14,14,0 ,0 ,22,22,22,22,
@@ -1447,7 +1466,7 @@ int pato3 [16][16]={
 22,22,22,0 ,15,15,15,15,15,15,15,0 ,0 ,0 ,22,22,
 22,22,0 ,0 ,0 ,15,15,15,15,15,0 ,0 ,0 ,0 ,0 ,22,
 22,0 ,0 ,0 ,0 ,0 ,15,15,15,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
-};
+};*/
 
 int patito0 [16][16]={
 22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
@@ -2374,9 +2393,12 @@ switch (T)
       }
   break;
   case 32:  //apartir de 32 comienzan los bloques especiales
-
+    setfillstyle(1,11); //cyan claro con champiñon verde
+    bar(i,j,i+15,j+15);
   break;
   case 33:
+    setfillstyle(1,11); //cyan claro con moneda
+    bar(i,j,i+15,j+15);
   break;
   case 34:
     for(y2=0;y2<16;y2++)
@@ -2468,7 +2490,7 @@ switch (T)
 	}
       }
   break;
-  case 44:
+/*  case 44:
     for(y2=0;y2<16;y2++)
       {
       for(x2=0;x2<16;x2++)
@@ -2494,7 +2516,7 @@ switch (T)
 	putpixel(x2+i,y2+j,cajaf12[y2][x2]);
 	}
       }
-  break;
+  break;*/
   case 47:
   break;
   case 64:  //apartir de aqui comienzan los bloques tipo aire o fondo
@@ -2669,7 +2691,7 @@ switch (T)
 	}
       }
   break;
-  case 94:
+  /*case 94:
     for(y2=0;y2<16;y2++)
       {
       for(x2=0;x2<16;x2++)
@@ -2713,7 +2735,7 @@ switch (T)
 	putpixel(x2+i,y2+j,cajaf17[y2][x2]);
 	}
       }
-  break;
+  break;*/
   case 99:
   break;
   default:
@@ -3009,6 +3031,48 @@ bloque_caja0_vida()  //caja0 con vida
     paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
     bloque(x+16-(x%16),y-(y%16),5);
     c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
+    }
+}
+
+
+cielo_vida()  //cielo cyan con vida
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==32)  //cielo cyan con vida
+    {
+    vy=-vy;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja5
+    bloque(x-(x%16),y-(y%16),5);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==32 && x%16!=0)
+    {
+    vy=-vy;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
+    bloque(x+16-(x%16),y-(y%16),5);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
+    }
+}
+
+
+cielo_moneda()  //cielo cyan con moneda
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==33) //cielo cyan con moneda
+    {
+    vy=-vy;
+    puntos=puntos+10;
+    monedas++;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja5
+    bloque(x-(x%16),y-(y%16),5);
+    cmoneda((x-(x%16))/16,(y-16-(y%16))/16);
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==33 && x%16!=0)
+    {
+    vy=-vy;
+    puntos=puntos+10;
+    monedas++;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
+    bloque(x+16-(x%16),y-(y%16),5);
+    cmoneda((x+16-(x%16))/16,(y-16-(y%16))/16);
     }
 }
 
@@ -3483,11 +3547,11 @@ for(n=0;n<8;n++)
     {
     elipato(n);
     }
-  else if(x<=-4) //si llega a la orilla izquierda eliminar pato
+  else if(patox[n]<=-4) //si llega a la orilla izquierda eliminar pato
     {
     elipato(n);
     }
-  else if(y>=464) //caida
+  else if(patoy[n]>=464) //caida
     {
     elipato(n);
     }
@@ -3504,11 +3568,11 @@ for(n=0;n<8;n++)
     {
     elichamp(n);
     }
-  else if(x<=-4) //si llega a la orilla izquierda eliminar champiñon
+  else if(champx[n]<=-4) //si llega a la orilla izquierda eliminar champiñon
     {
     elichamp(n);
     }
-  else if(y>=464) //caida
+  else if(champy[n]>=464) //caida
     {
     elichamp(n);
     }
@@ -3589,11 +3653,11 @@ while(ciclo<1)
 
 ////////interaccion de los bloques
 
-  bloque_poder0();  //poder0
+  //bloque_poder0();  //poder0
 
 ////////teclado
 
-  if(bioskey(1))  //funciona igual que kbhit()
+  if(bioskey(1))  //funciona igual que kbhit() con la diferecia que con bioskey que si no presionas una tecla despues de un tiempo se alenta el cheque del teclado
     {
     tecla = bioskey(0);  //capturar tecla presionada
     }
@@ -3706,6 +3770,253 @@ while(ciclo<1)
 
   //bloque_nota0();  //nota0
 
+  //cielo_vida();  //cielo cyan con moneda
+
+  //cielo_moneda();  //cielo cyan con vida
+
+  bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
+
+  //bloque_cuadrado1();  //pisarlos pero no golpearlos  (blanco 15)
+
+  tocar_champinon();  //tocar champiñon
+
+  pisar_pato();  //pisar pato
+
+  pato_mata();  //pato mata cuando los tocas
+
+  patofuera();  //verificar si un pato se salio de la pantalla
+
+  champifuera();  //verificar si un champiñon se salio de la pantalla
+
+  movchamp();  //mover champiñones
+
+  mdemone();
+
+  movpato();  //mover patos
+
+  if(x>=624) //si llega a la orilla derecha pasar al siguiente nivel
+    {
+    ciclo=1;
+    nivel++;
+    }
+  else if(x<=-4) //si llega a la orilla izquierda pasar al anterior nivel
+    {
+    ciclo=1;
+    nivel--;
+    }
+  else if(y>=464) //caida
+    {
+    ciclo=1;
+    estado=0;
+    }
+
+  x=x+vx;
+  y=y+vy;
+
+  dibchamp();  //dibujar champiñones
+
+  dibpatos();  //dibujar patos
+
+  segundos();  //realizar un conteo del tiempo del juego
+
+  verestado();  //verificar el estado de pato y dibujarlo segun el estado
+
+  panelnumerico();  //actualizar datos numericos del panel
+
+  delay(16);
+
+}
+return(0);
+}
+
+
+nivel1()
+{
+ciclo=0;
+tiempo=200;
+invensible=0;
+x=16;
+y=368;
+vx=0;
+vy=0;
+abrir(0,1);
+fondo();
+panel();
+//r_champ();
+rmonedas();
+r_pato();
+c_pato(8,23);
+
+while(ciclo<1)
+  {
+  tecla=0;
+
+////////operaciones del los bloques
+
+  tinvensible();
+  refbloques();  //actualizar bloques
+  refchamp();
+  refpato();
+
+  if((x%16)!=0)
+    {
+    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
+      {
+      vy=vy+0.5;
+      }
+    else
+      {
+      vy=0;
+      y=y-(y%16);
+      }
+    }
+  else
+    {
+    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
+      {
+      vy=vy+0.5;
+      }
+    else
+      {
+      vy=0;
+      y=y-(y%16);
+      }
+    }
+
+  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque derecho   nota: (y%16)==0 es para que si se golpea un bloque por abajo no se cumpla
+    {
+    vx=0.0;
+    x=x-(x%16);
+    }
+  else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque izquierdo
+    {
+    vx=0.0;
+    x=x+16-(x%16);
+    }
+
+////////interaccion de los bloques
+
+  bloque_poder0();  //poder0
+
+////////teclado
+
+  if(bioskey(1))  //funciona igual que kbhit() con la diferecia que con bioskey que si no presionas una tecla despues de un tiempo se alenta el cheque del teclado
+    {
+    tecla = bioskey(0);  //capturar tecla presionada
+    }
+  if(tecla == 0);
+    {
+    if(vx<0)  //disminuir la velocidad
+      {
+      vx=vx+0.0625;
+      }
+    else if(vx>0)
+      {
+      vx=vx-0.0625;
+      }
+   /* if(vy<0)  //disminuir la velocidad (no se requiere)
+      {
+      vy=vy+0.125;
+      }
+    else if(vy>0)
+      {
+      vy=vy-0.125;
+      }*/
+    }
+  if(tecla==19200)  //izquierda 75
+    {
+    vx=vx-0.5;
+    }
+  if(tecla==19712)  //derecha 77
+    {
+    if(vx<1 && vx>=0)  //esto no deberia existir pero hay problemas para avanzar a la derecha
+      {
+      vx=vx+1.0;
+      }
+    vx=vx+0.5;
+    }
+  if(tecla==14624)  //espacio volar 32
+    {
+    vy=-4.0;
+    }
+  if(tecla==18432)  //saltar 72
+    {
+    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]<32 || (paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]<32 && x%16!=0))  //bloques en general
+      {
+      vy=-8.0;
+      }
+    }
+  if(tecla==7181)  //enter pausar el juego
+    {
+    pausa();
+    }
+  if(tecla==21248)  //suprimir  truco: elimina patos
+    {
+    r_pato();
+    }
+  if(tecla==27392)  //Alt+F4 salir
+    {
+    exit (2);
+    }
+  if(tecla==15104)  //F1 ayuda 
+    {
+    ayuda();
+    }
+  if(tecla==283)  //esc 27
+    {
+    ciclo=1;
+    menu=-1;  //de momento que no hay menu
+    //menu=1;  //menu
+    }
+  if(vx>4)  //limite de velocidad
+    {
+    vx=4;
+    }
+  if(vy>8)  //limite de velocidad (gravedad)
+    {
+    vy=8;
+    }
+  if(vx<-4)  //limite de velocidad
+    {
+    vx=-4;
+    }
+  /*if(vy<-4)  //limite de velocidad (no requiere)
+    {
+    vy=-4;
+    }*/
+
+
+////////interaccion de los bloques
+
+  //bloque_caja0_moneda();  //caja0 con moneda
+
+  //bloque_caja0_10monedas();  //caja0 con 10 momedas
+
+  //bloque_caja0_champinon();  //caja0 con champiñon
+
+  //bloque_caja0_vida();  //caja0 con vida
+
+  //bloque_cristal();  //cristal golpe por abajo
+
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
+    {
+    y=y+16-(y%16);
+    vy=-vy;
+    }
+  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32) && x%16!=0)
+    {
+    y=y+16-(y%16);
+    vy=-vy;
+    }
+
+  bloque_moneda();  //monedas
+
+  //bloque_nota0();  //nota0
+
+  //cielo_vida();  //cielo cyan con moneda
+
+  //cielo_moneda();  //cielo cyan con vida
+
   bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
 
   //bloque_cuadrado1();  //pisarlos pero no golpearlos  (blanco 15)
@@ -3794,7 +4105,7 @@ while(menu!=-1)
           nivel0();
         break;
         case 1:
-          //nivel1();
+          nivel1();
         break;
         case 2:
           //nivel2();
