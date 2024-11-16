@@ -9,7 +9,7 @@
 #include<time.h>
 #include<graphics.h>
 
-int geexbox,nivel=0,escena=0,mundo=0,menu=0,vidas=4,estado=1,tiempo=0,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,invensible=0,i,j,x,y,dir=1,paso=1,tecla,sec=0,t_huevo,t_moneda=-88,ciclo=0;
+int geexbox,nivel=0,escena=-22,mundo=0,menu=0,vidas=4,estado=1,tiempo=0,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,invensible=0,i,j,x,y,dir=1,paso=1,tecla,sec=0,t_huevo,t_moneda=-88,ciclo=0;
 float vx=0,vy=0;
 int paisaje[30][40];
 
@@ -2057,7 +2057,23 @@ gotoxy(7,12);   cprintf("บ                   EGA 64K       บ");
 gotoxy(7,13);   cprintf("บ                   EGA mono      บ");
 gotoxy(7,14);   cprintf("บ                   IBM 8514      บ");
 gotoxy(7,15);   cprintf("บ                   Hercules mono บ");
-go                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    บ");
+gotoxy(7,16);   cprintf("บ                   AT&T 6300 PC  บ");
+gotoxy(7,17);   cprintf("บ                   VGA           บ");
+gotoxy(7,18);   cprintf("บ                   IBM 3270 PC   บ");
+gotoxy(7,19);   cprintf("บ                                 บ");
+gotoxy(7,20);   cprintf("บ Compatibilidad SVGA Activada    บ");
+gotoxy(7,21);   cprintf("ศอออออออออออออออออออออออออออออออออผ");
+
+gotoxy(44,8);    cprintf("ษอออออออออออออออออออออออออออออออออป");
+gotoxy(44,9);    cprintf("บ Entradas            Teclado     บ");
+gotoxy(44,10);   cprintf("บ Detectadas          Raton       บ");
+gotoxy(44,11);   cprintf("บ                                 บ");
+gotoxy(44,12);   cprintf("บ                                 บ");
+gotoxy(44,13);   cprintf("บ                                 บ");
+gotoxy(44,14);   cprintf("บ                                 บ");
+gotoxy(44,15);   cprintf("บ                                 บ");
+gotoxy(44,16);   cprintf("บ                                 บ");
+gotoxy(44,17);   cprintf("บ                                 บ");
 gotoxy(44,18);   cprintf("บ                                 บ");
 gotoxy(44,19);   cprintf("บ                                 บ");
 gotoxy(44,20);   cprintf("บ                                 บ");
@@ -4498,6 +4514,7 @@ verestado()  //verificar el estado de pato y dibujarlo segun el estado
         estado++;
         vidas--;
         ciclo=1;
+        escena=-22;
         }
       //musiquita y pantalla de perder
     break;
@@ -4917,6 +4934,7 @@ while(ciclo<1)
 
   delay(16);
 }
+escena=0; //temporal
 return(0);
 }
 
@@ -5155,11 +5173,13 @@ while(ciclo<1)
     estado=1;
     vidas--;
     t_huevo=tiempo-4;
+    escena=-22;
     }
   else if(tiempo==0) //tiempo terminado
     {
     estado=0;
     t_huevo=tiempo-4;
+    escena=-22;
     }
 
   x=x+vx;
@@ -5445,11 +5465,13 @@ while(ciclo<1)
     estado=1;
     vidas--;
     t_huevo=tiempo-4;
+    escena=-22;
     }
   else if(tiempo==0) //tiempo terminado
     {
     estado=0;
     t_huevo=tiempo-4;
+    escena=-22;
     }
 
   x=x+vx;
@@ -5501,7 +5523,6 @@ while(menu!=-1)
   switch (nivel)
     {
     case 0:
-      mundo0();
       switch (escena)
         {
         case 0:
@@ -5517,7 +5538,8 @@ while(menu!=-1)
           //escena3();
         break;
         default:
-          menu=-1;
+          mundo0();
+          //menu=-1;
         break;
         }
     break;
