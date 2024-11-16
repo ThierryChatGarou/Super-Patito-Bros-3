@@ -2295,13 +2295,41 @@ switch (T)
 	}
       }
   break;
-  case 16:
+  case 16:   //con moneda
+    for(y2=0;y2<16;y2++)
+      {
+      for(x2=0;x2<16;x2++)
+	{
+	putpixel(x2+i,y2+j,cristal0[y2][x2]);
+	}
+      }
   break;
-  case 17:
+  case 17:  //con moneda
+    for(y2=0;y2<16;y2++)
+      {
+      for(x2=0;x2<16;x2++)
+	{
+	putpixel(x2+i,y2+j,cristal4[y2][x2]);
+	}
+      }
   break;
   case 18:
+    for(y2=0;y2<16;y2++)
+      {
+      for(x2=0;x2<16;x2++)
+	{
+	putpixel(x2+i,y2+j,cristal0[y2][x2]);
+	}
+      }
   break;
   case 19:
+    for(y2=0;y2<16;y2++)
+      {
+      for(x2=0;x2<16;x2++)
+	{
+	putpixel(x2+i,y2+j,cristal4[y2][x2]);
+	}
+      }
   break;
   case 20:
     for(y2=0;y2<16;y2++)
@@ -3110,6 +3138,90 @@ cielo_moneda()  //cielo cyan con moneda
 }
 
 
+cristal0_moneda()  //cristal con moneda
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==16) //cielo cyan con moneda
+    {
+    vy=-vy;
+    puntos=puntos+10;
+    monedas++;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja5
+    bloque(x-(x%16),y-(y%16),5);
+    cmoneda((x-(x%16))/16,(y-16-(y%16))/16);
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==16 && x%16!=0)
+    {
+    vy=-vy;
+    puntos=puntos+10;
+    monedas++;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
+    bloque(x+16-(x%16),y-(y%16),5);
+    cmoneda((x+16-(x%16))/16,(y-16-(y%16))/16);
+    }
+}
+
+
+cristal4_moneda()  //cristal con moneda
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==17) //cielo cyan con moneda
+    {
+    vy=-vy;
+    puntos=puntos+10;
+    monedas++;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja5
+    bloque(x-(x%16),y-(y%16),5);
+    cmoneda((x-(x%16))/16,(y-16-(y%16))/16);
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==17 && x%16!=0)
+    {
+    vy=-vy;
+    puntos=puntos+10;
+    monedas++;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
+    bloque(x+16-(x%16),y-(y%16),5);
+    cmoneda((x+16-(x%16))/16,(y-16-(y%16))/16);
+    }
+}
+
+
+cristal0_vida()  //cristal0 con vida
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==18)  //cristal0 con vida
+    {
+    vy=-vy;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja5
+    bloque(x-(x%16),y-(y%16),5);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==18 && x%16!=0)
+    {
+    vy=-vy;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
+    bloque(x+16-(x%16),y-(y%16),5);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
+    }
+}
+
+
+cristal4_vida()  //cristal4 con vida
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==19)  //cristal0 con vida
+    {
+    vy=-vy;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja5
+    bloque(x-(x%16),y-(y%16),5);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==19 && x%16!=0)
+    {
+    vy=-vy;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
+    bloque(x+16-(x%16),y-(y%16),5);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
+    }
+}
+
+
 bloque_cristal()  //cristal golpe por abajo
 {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==14 || paisaje[(y-(y%16))/16][(x-(x%16))/16]==15)  //cristal golpe por abajo
@@ -3820,6 +3932,14 @@ while(ciclo<1)
 
   //cielo_moneda();  //cielo cyan con vida
 
+  //cristal0_moneda();  //cristal0 con moneda
+
+  //cristal4_moneda();  //cristal4 con moneda
+
+  //cristal0_vida();  //cristal0 con vida
+
+  //cristal4_vida();  //cristal4 con vida
+
   bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
 
   //bloque_cuadrado1();  //pisarlos pero no golpearlos  (blanco 15)
@@ -4076,6 +4196,15 @@ while(ciclo<1)
       bloque(x+16-(x%16),y-32-(y%16),36);
       }
     }
+
+
+  cristal0_moneda();  //cristal0 con moneda
+
+  cristal4_moneda();  //cristal4 con moneda
+
+  cristal0_vida();  //cristal0 con vida
+
+  cristal4_vida();  //cristal4 con vida
 
   bloque_cristal();  //cristal golpe por abajo
 
