@@ -9,7 +9,7 @@
 #include<time.h>
 #include<graphics.h>
 
-int geexbox,nivel=0,mundo=0,menu=0,vidas=4,estado=1,tiempo=0,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,invensible=0,i,j,x,y,tecla,sec=0,ciclo=0;
+int geexbox,nivel=0,mundo=0,menu=0,vidas=4,estado=1,tiempo=0,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,invensible=0,i,j,x,y,tecla,sec=0,t_huevo,t_moneda=-88,ciclo=0;
 float vx=0,vy=0;
 int paisaje[30][40];
 
@@ -1487,6 +1487,25 @@ int patito0 [16][16]={
 22,22,22,22,0 ,0 ,0 ,15,15,0 ,0 ,0 ,22,22,22,22,
 };
 
+int huevo [16][16]={
+22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
+22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
+22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
+22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
+22,22,22,22,22,22,22,0 ,0 ,22,22,22,22,22,22,22,
+22,22,22,22,22,22,0 ,15,15,0 ,22,22,22,22,22,22,
+22,22,22,22,22,0 ,15,15,0 ,15,0 ,22,22,22,22,22,
+22,22,22,22,22,0 ,15,0 ,15,15,0 ,22,22,22,22,22,
+22,22,22,22,0 ,15,0 ,15,15,15,15,0 ,22,22,22,22,
+22,22,22,22,0 ,15,15,0 ,15,15,7 ,0 ,22,22,22,22,
+22,22,22,22,0 ,15,15,15,15,15,7 ,0 ,22,22,22,22,
+22,22,22,22,0 ,15,15,15,15,7 ,7 ,0 ,22,22,22,22,
+22,22,22,22,22,0 ,15,15,15,7 ,0 ,22,22,22,22,22,
+22,22,22,22,22,0 ,15,15,7 ,7 ,0 ,22,22,22,22,22,
+22,22,22,22,22,22,0 ,7 ,7 ,0 ,22,22,22,22,22,22,
+22,22,22,22,22,22,22,0 ,0 ,22,22,22,22,22,22,22,
+};
+
 int champi0 [16][16]={
 22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
 22,22,22,22,22,22,0 ,0 ,0 ,0 ,22,22,22,22,22,22,
@@ -2820,6 +2839,7 @@ for(n=0;n<4;n++)
 
 convert()  //convertir bloques y monedas
 {
+t_moneda=tiempo-22;
 for(j=0;j<30;j++)
   {
   for(i=0;i<40;i++)
@@ -2894,47 +2914,60 @@ if(invensible!=0)
 
 bloque_poder0()  //poder0
 {
-  if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==36)  //poder0
-    {
-    if(vy>4) //velocidad de ruptura
-      {
-      vy=-vy+2.0;
-      y=y+16-(y%16);
-      paisaje[(y-(y%16))/16][(x-(x%16))/16]=37;  //poder2
-      bloque(x-(x%16),y-(y%16),37);
-      convert();
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-  else if((paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]==36) && x%16!=0)  //poder0
-    {
-    if(vy>4) //velocidad de ruptura
-      {
-      vy=-vy+2.0;
-      y=y+16-(y%16);
-      paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=37;  //poder2
-      bloque(x+16-(x%16),y-(y%16),37);
-      convert();
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==36 && (y%16)==0 ) //limite derecho de poder0
+if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==36)  //poder0
   {
-  vx=0.0;
-  x=x-(x%16);
+  if(vy>4) //velocidad de ruptura
+    {
+    vy=-vy+2.0;
+    y=y+16-(y%16);
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=37;  //poder2
+    bloque(x-(x%16),y-(y%16),37);
+    convert();
+    }
+  else
+    {
+    vy=0;
+    y=y-(y%16);
+    }
+  if(tecla==18432)
+    {
+      vy=-8;
+    }
   }
-  else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==36 && (y%16)==0 ) //limite izquierdo de poder0
+else if((paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]==36) && x%16!=0)  //poder0
   {
-  vx=0.0;
-  x=x+16-(x%16);
+  if(vy>4) //velocidad de ruptura
+    {
+    vy=-vy+2.0;
+    y=y+16-(y%16);
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=37;  //poder2
+    bloque(x+16-(x%16),y-(y%16),37);
+    convert();
+    }
+  else
+    {
+    vy=0;
+    y=y-(y%16);
+    }
+  if(tecla==18432)
+    {
+      vy=-8;
+    }
+  }
+if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==36 && (y%16)==0 ) //limite derecho de poder0
+{
+vx=0.0;
+x=x-(x%16);
+}
+else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==36 && (y%16)==0 ) //limite izquierdo de poder0
+{
+vx=0.0;
+x=x+16-(x%16);
+}
+if(t_moneda==tiempo)
+  {
+  convert();
+  t_moneda=-88;
   }
 }
 
@@ -3312,6 +3345,7 @@ pato_mata()  //pato mata cuando los tocas
             {
             estado--;
             invensible=222;
+            t_huevo=tiempo-4;  //solo es necesario si su estado es 0
             }
           }
         }
@@ -3418,10 +3452,22 @@ verestado()  //verificar el estado de pato y dibujarlo segun el estado
   switch(estado)
     {
     case 0:  //perdiste una vida
-      estado++;
-      vidas--;
-      ciclo=1;
-      nivel=0;
+      for(j=0;j<16;j++)
+        {
+        for(i=0;i<16;i++)
+          {
+          if(huevo[j][i]!=22)
+            {
+            putpixel(x+i,y+j,huevo[j][i]);
+            }
+          }
+        }
+      if(t_huevo==tiempo)  //esperar 4 segundos antes de terminar el nivel
+        {
+        estado++;
+        vidas--;
+        ciclo=1;
+        }
       //musiquita y pantalla de perder
     break;
     case 1:
@@ -3606,7 +3652,6 @@ c_pato(22,24);
 
 while(ciclo<1)
   {
-  tecla=0;
 
 ////////operaciones del los bloques
 
@@ -3657,6 +3702,7 @@ while(ciclo<1)
 
 ////////teclado
 
+  tecla=0;
   if(bioskey(1))  //funciona igual que kbhit() con la diferecia que con bioskey que si no presionas una tecla despues de un tiempo se alenta el cheque del teclado
     {
     tecla = bioskey(0);  //capturar tecla presionada
@@ -3807,7 +3853,14 @@ while(ciclo<1)
   else if(y>=464) //caida
     {
     ciclo=1;
+    estado=1;
+    vidas--;
+    t_huevo=tiempo-4;
+    }
+  else if(tiempo==0) //tiempo terminado
+    {
     estado=0;
+    t_huevo=tiempo-4;
     }
 
   x=x+vx;
@@ -3842,14 +3895,14 @@ vy=0;
 abrir(0,1);
 fondo();
 panel();
-//r_champ();
+r_champ();
 rmonedas();
 r_pato();
-c_pato(8,23);
+c_pato(24,23);
+npato[0]=-1;
 
 while(ciclo<1)
   {
-  tecla=0;
 
 ////////operaciones del los bloques
 
@@ -3900,6 +3953,7 @@ while(ciclo<1)
 
 ////////teclado
 
+  tecla=0;
   if(bioskey(1))  //funciona igual que kbhit() con la diferecia que con bioskey que si no presionas una tecla despues de un tiempo se alenta el cheque del teclado
     {
     tecla = bioskey(0);  //capturar tecla presionada
@@ -3992,11 +4046,11 @@ while(ciclo<1)
 
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
 
-  //bloque_caja0_champinon();  //caja0 con champiñon
+  bloque_caja0_champinon();  //caja0 con champiñon
 
   //bloque_caja0_vida();  //caja0 con vida
 
-  //bloque_cristal();  //cristal golpe por abajo
+  bloque_cristal();  //cristal golpe por abajo
 
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
     {
@@ -4050,7 +4104,14 @@ while(ciclo<1)
   else if(y>=464) //caida
     {
     ciclo=1;
+    estado=1;
+    vidas--;
+    t_huevo=tiempo-4;
+    }
+  else if(tiempo==0) //tiempo terminado
+    {
     estado=0;
+    t_huevo=tiempo-4;
     }
 
   x=x+vx;
