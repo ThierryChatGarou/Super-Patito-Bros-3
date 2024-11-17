@@ -24,8 +24,8 @@
 #include<time.h>
 #include<graphics.h>
 
-int geexbox,nivel=0,escena=0,mundo=0,seguir=1,vidas=4,estado=1,tiempo=0,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nsalta[8],saltax[8],saltay[8],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,invensible=0,i,j,x,y,dir=1,paso=1,tecla,sec=0,t_huevo,t_moneda=-88,ciclo=0,jugar=0;
-float vx=0,vy=0,saltavx[8],saltavy[8];
+int geexbox,nivel=0,escena=0,mundo=0,seguir=1,vidas=4,estado=1,tiempo=0,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nsalta[4],saltax[4],saltay[4],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,invensible=0,i,j,x,y,dir=1,paso=1,tecla,sec=0,t_huevo,t_moneda=-88,ciclo=0,jugar=0;
+float vx=0,vy=0,saltavx[4],saltavy[4];
 
 int niv0[30][40],niv1[30][40],niv2[30][40],niv3[30][40],paisaje[30][40];
 
@@ -2777,17 +2777,25 @@ for(x2=0;x2<8;x2++)
 r_salta()  //resetear saltadores
 {
 int x2;
-for(x2=0;x2<8;x2++)
+for(x2=0;x2<4;x2++)
   {
   nsalta[x2]=0;
   }
-for(x2=0;x2<8;x2++)
+for(x2=0;x2<4;x2++)
   {
   saltax[x2]=0;
   }
-for(x2=0;x2<8;x2++)
+for(x2=0;x2<4;x2++)
   {
   saltay[x2]=0;
+  }
+for(x2=0;x2<4;x2++)
+  {
+  saltavy[x2]=0.0;
+  }
+for(x2=0;x2<4;x2++)
+  {
+  saltavx[x2]=0.0;
   }
 }
 
@@ -2850,13 +2858,13 @@ patoy[p]=y2;
 c_salta(int x2, int y2)
 {
 int n,p=0;
-for(n=0;n<8;n++)
+for(n=0;n<4;n++)
   {
   if(nsalta[n]==0)
     {
     p=n;
     nsalta[n]=1;
-    n=8;
+    n=4;
     }
   }
 x2=x2*16;
@@ -2963,7 +2971,7 @@ for(n=0;n<8;n++)
 movsalta()
 {
 int n;
-for(n=0;n<8;n++)
+for(n=0;n<4;n++)
   {
   if(nsalta[n]!=0)
     {
@@ -3097,7 +3105,7 @@ for(n=0;n<8;n++)
 dibsalta()
 {
 int n;
-for(n=0;n<8;n++)
+for(n=0;n<4;n++)
   {
   if(nsalta[n]!=0)
     {
@@ -3200,6 +3208,8 @@ elisalta(int x2)
 nsalta[x2]=0;
 saltax[x2]=0;
 saltay[x2]=0;
+saltavx[x2]=0.0;
+saltavy[x2]=0.0;
 }
 
 
@@ -4267,14 +4277,25 @@ for(n=0;n<8;n++)
 refsalta()
 {
 int n;
-for(n=0;n<8;n++)
+for(n=0;n<4;n++)
   {
   if(nsalta[n]!=0)
     {
-    bloque(saltax[n]-(saltax[n]%16),saltay[n]-(saltay[n]%16),paisaje[(saltay[n]-(saltay[n]%16))/16][(saltax[n]-(saltax[n]%16))/16]);  //actualizar arriba a la izquierda
-    bloque(saltax[n]-(saltax[n]%16)+16,saltay[n]-(saltay[n]%16),paisaje[(saltay[n]-(saltay[n]%16))/16][(saltax[n]+16-(saltax[n]%16))/16]);  //actualizar arriba a la derecha
-    bloque(saltax[n]-(saltax[n]%16),saltay[n]+16-(saltay[n]%16),paisaje[(saltay[n]+16-(saltay[n]%16))/16][(saltax[n]-(saltax[n]%16))/16]);  //actualizar abajo a la izquierda
-    bloque(saltax[n]-(saltax[n]%16)+16,saltay[n]+16-(saltay[n]%16),paisaje[(saltay[n]+16-(saltay[n]%16))/16][(saltax[n]+16-(saltax[n]%16))/16]);  //actualizar abajo a la derecha
+    if((saltax[n]%16)!=0)  // comprobar que bloques necesitan actualizarse
+      {
+      bloque(saltax[n]-(saltax[n]%16),saltay[n]-(saltay[n]%16),paisaje[(saltay[n]-(saltay[n]%16))/16][(saltax[n]-(saltax[n]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+      bloque(saltax[n]-(saltax[n]%16)+16,saltay[n]-(saltay[n]%16),paisaje[(saltay[n]-(saltay[n]%16))/16][(saltax[n]+16-(saltax[n]%16))/16]);  //actualizar bloque que esta arriba a la derecha
+      if((saltay[n]%16)!=0)
+        {
+        bloque(saltax[n]-(saltax[n]%16),saltay[n]-(saltay[n]%16)+16,paisaje[(saltay[n]+16-(saltay[n]%16))/16][(saltax[n]-(saltax[n]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+        bloque(saltax[n]-(saltax[n]%16)+16,saltay[n]-(saltay[n]%16)+16,paisaje[(saltay[n]+16-(saltay[n]%16))/16][(saltax[n]+16-(saltax[n]%16))/16]);  //actualizar bloque que esta abajo a la derecha
+        }
+      }
+    else if((saltay[n]%16)!=0)
+      {
+      bloque(saltax[n]-(saltax[n]%16),saltay[n]-(saltay[n]%16),paisaje[(saltay[n]-(saltay[n]%16))/16][(saltax[n]-(saltax[n]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+      bloque(saltax[n]-(saltax[n]%16),saltay[n]-(saltay[n]%16)+16,paisaje[(saltay[n]+16-(saltay[n]%16))/16][(saltax[n]-(saltax[n]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+      }
     }
   }
 }
@@ -5320,7 +5341,7 @@ pisar_pato()  //pisar pato
 
 pisar_salta()  //pisar saltadores
 {
-  for(i=0;i<8;i++)  //pisar saltadores
+  for(i=0;i<4;i++)  //pisar saltadores
     {
     if(nsalta[i]!=0)
       {
@@ -5363,7 +5384,7 @@ pato_mata()  //pato mata cuando los tocas
 
 salta_mata()  //saltador mata cuando los tocas
 {
-  for(i=0;i<8;i++)  //saltador mata
+  for(i=0;i<4;i++)  //saltador mata
     {
     if(nsalta[i]!=0)
       {
@@ -5726,7 +5747,7 @@ for(n=0;n<8;n++)
 saltafuera()
 {
 int n;
-for(n=0;n<8;n++)
+for(n=0;n<4;n++)
   {
   if(saltax[n]>=624) //si llega a la orilla derecha eliminar saltador
     {
