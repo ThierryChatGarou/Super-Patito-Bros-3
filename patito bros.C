@@ -2572,6 +2572,78 @@ bloque_saltar()  //bloque para saltar muy alto
 }
 
 
+cielo_abajo()  //flujo de aire hacia abajo
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==53 || paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==53)
+    {
+    vy=vy+1.0;
+    }
+}
+
+
+cielo_arriba()  //flujo de aire hacia arriba
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==54 || paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==54)
+    {
+    vy=vy-1.0;
+    }
+}
+
+
+cielo_izquierda()  //flujo de aire hacia la izquierda
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==55 || paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==55)
+    {
+    vx=vx-1.0;
+    }
+}
+
+
+cielo_derecha()  //flujo de aire hacia la derecha
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==56 || paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==56)
+    {
+    vx=vx+1.0;
+    }
+}
+
+
+agua_abajo()  //flujo de agua hacia abajo
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==57 || paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==57)
+    {
+    vy=vy+1.0;
+    }
+}
+
+
+agua_arriba()  //flujo de agua hacia arriba
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==58 || paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==58)
+    {
+    vy=vy-1.0;
+    }
+}
+
+
+agua_izquierda()  //flujo de agua hacia izquierda
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==59 || paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==59)
+    {
+    vx=vx-1.0;
+    }
+}
+
+
+agua_derecha()  //flujo de agua hacia derecha
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==60 || paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==60)
+    {
+    vx=vx+1.0;
+    }
+}
+
+
 bloque_agua()  
 {
 if((x%16)!=0)

@@ -157,7 +157,7 @@ while(ciclo<1)
       abrir(2,2);
       abrir(2,3);
       x=16;
-      y=384;
+      y=32;
       vx=0;
       vy=0;
       tiempo=400;
@@ -324,6 +324,22 @@ while(ciclo<1)
 ////////interaccion de los bloques
 
   //bloque_saltar();  //bloque para saltar muy alto
+
+  //cielo_abajo();  //flujo de aire hacia abajo
+
+  //cielo_arriba();  //flujo de aire hacia arriba
+
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+
+  //cielo_derecha();  //flujo de aire hacia la derecha
+
+  //agua_abajo();  //flujo de agua hacia abajo
+
+  //agua_arriba();  //flujo de agua hacia arriba
+
+  //agua_izquierda();  //flujo de agua hacia izquierda
+
+  //agua_derecha();  //flujo de agua hacia derecha
 
   bloque_caja0_moneda();  //caja0 con moneda
 
@@ -550,6 +566,22 @@ while(ciclo<1)
 ////////interaccion de los bloques
 
   //bloque_saltar();  //bloque para saltar muy alto
+
+  //cielo_abajo();  //flujo de aire hacia abajo
+
+  //cielo_arriba();  //flujo de aire hacia arriba
+
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+
+  //cielo_derecha();  //flujo de aire hacia la derecha
+
+  //agua_abajo();  //flujo de agua hacia abajo
+
+  //agua_arriba();  //flujo de agua hacia arriba
+
+  //agua_izquierda();  //flujo de agua hacia izquierda
+
+  //agua_derecha();  //flujo de agua hacia derecha
 
   //bloque_caja0_moneda();  //caja0 con moneda
 
@@ -828,6 +860,22 @@ if(tiempo%28==0 && sec%22==0)
 
   //bloque_saltar();  //bloque para saltar muy alto
 
+  //cielo_abajo();  //flujo de aire hacia abajo
+
+  //cielo_arriba();  //flujo de aire hacia arriba
+
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+
+  //cielo_derecha();  //flujo de aire hacia la derecha
+
+  //agua_abajo();  //flujo de agua hacia abajo
+
+  //agua_arriba();  //flujo de agua hacia arriba
+
+  //agua_izquierda();  //flujo de agua hacia izquierda
+
+  //agua_derecha();  //flujo de agua hacia derecha
+
   //bloque_caja0_moneda();  //caja0 con moneda
 
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
@@ -1061,6 +1109,22 @@ if(tiempo%8==0 && sec%22==0)
 ////////interaccion de los bloques
 
   bloque_saltar();  //bloque para saltar muy alto
+
+  //cielo_abajo();  //flujo de aire hacia abajo
+
+  //cielo_arriba();  //flujo de aire hacia arriba
+
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+
+  //cielo_derecha();  //flujo de aire hacia la derecha
+
+  //agua_abajo();  //flujo de agua hacia abajo
+
+  //agua_arriba();  //flujo de agua hacia arriba
+
+  //agua_izquierda();  //flujo de agua hacia izquierda
+
+  //agua_derecha();  //flujo de agua hacia derecha
 
   //bloque_caja0_moneda();  //caja0 con moneda
 
@@ -1309,6 +1373,22 @@ else
 
   bloque_saltar();  //bloque para saltar muy alto
 
+  //cielo_abajo();  //flujo de aire hacia abajo
+
+  //cielo_arriba();  //flujo de aire hacia arriba
+
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+
+  //cielo_derecha();  //flujo de aire hacia la derecha
+
+  //agua_abajo();  //flujo de agua hacia abajo
+
+  //agua_arriba();  //flujo de agua hacia arriba
+
+  //agua_izquierda();  //flujo de agua hacia izquierda
+
+  //agua_derecha();  //flujo de agua hacia derecha
+
   //bloque_caja0_moneda();  //caja0 con moneda
 
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
@@ -1534,6 +1614,22 @@ while(ciclo<1)
 ////////interaccion de los bloques
 
   bloque_saltar();  //bloque para saltar muy alto
+
+  //cielo_abajo();  //flujo de aire hacia abajo
+
+  //cielo_arriba();  //flujo de aire hacia arriba
+
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+
+  //cielo_derecha();  //flujo de aire hacia la derecha
+
+  //agua_abajo();  //flujo de agua hacia abajo
+
+  //agua_arriba();  //flujo de agua hacia arriba
+
+  //agua_izquierda();  //flujo de agua hacia izquierda
+
+  //agua_derecha();  //flujo de agua hacia derecha
 
   //bloque_caja0_moneda();  //caja0 con moneda
 
@@ -1808,6 +1904,22 @@ if(tiempo%28==0 && sec%22==0)
 
   bloque_saltar();  //bloque para saltar muy alto
 
+  //cielo_abajo();  //flujo de aire hacia abajo
+
+  //cielo_arriba();  //flujo de aire hacia arriba
+
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+
+  //cielo_derecha();  //flujo de aire hacia la derecha
+
+  //agua_abajo();  //flujo de agua hacia abajo
+
+  //agua_arriba();  //flujo de agua hacia arriba
+
+  //agua_izquierda();  //flujo de agua hacia izquierda
+
+  //agua_derecha();  //flujo de agua hacia derecha
+
   bloque_caja0_moneda();  //caja0 con moneda
 
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
@@ -2038,6 +2150,22 @@ if(tiempo%8==0 && sec%22==0)
 ////////interaccion de los bloques
 
   bloque_saltar();  //bloque para saltar muy alto
+
+  //cielo_abajo();  //flujo de aire hacia abajo
+
+  //cielo_arriba();  //flujo de aire hacia arriba
+
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+
+  //cielo_derecha();  //flujo de aire hacia la derecha
+
+  //agua_abajo();  //flujo de agua hacia abajo
+
+  //agua_arriba();  //flujo de agua hacia arriba
+
+  //agua_izquierda();  //flujo de agua hacia izquierda
+
+  //agua_derecha();  //flujo de agua hacia derecha
 
   //bloque_caja0_moneda();  //caja0 con moneda
 
@@ -2273,6 +2401,22 @@ while(ciclo<1)
 
   //bloque_saltar();  //bloque para saltar muy alto
 
+  //cielo_abajo();  //flujo de aire hacia abajo
+
+  //cielo_arriba();  //flujo de aire hacia arriba
+
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+
+  //cielo_derecha();  //flujo de aire hacia la derecha
+
+  agua_abajo();  //flujo de agua hacia abajo
+
+  //agua_arriba();  //flujo de agua hacia arriba
+
+  //agua_izquierda();  //flujo de agua hacia izquierda
+
+  //agua_derecha();  //flujo de agua hacia derecha
+
   //bloque_caja0_moneda();  //caja0 con moneda
 
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
@@ -2499,6 +2643,22 @@ while(ciclo<1)
 
   //bloque_saltar();  //bloque para saltar muy alto
 
+  //cielo_abajo();  //flujo de aire hacia abajo
+
+  //cielo_arriba();  //flujo de aire hacia arriba
+
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+
+  //cielo_derecha();  //flujo de aire hacia la derecha
+
+  //agua_abajo();  //flujo de agua hacia abajo
+
+  //agua_arriba();  //flujo de agua hacia arriba
+
+  //agua_izquierda();  //flujo de agua hacia izquierda
+
+  //agua_derecha();  //flujo de agua hacia derecha
+
   //bloque_caja0_moneda();  //caja0 con moneda
 
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
@@ -2566,9 +2726,9 @@ while(ciclo<1)
 
   //bloque_nota0();  //nota0
 
-  //bloque_agua();
+  bloque_agua();
 
-  bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
+  //bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
 
   //bloque_cuadrado1();  //pisarlos pero no golpearlos  (blanco 15)
 
@@ -2776,6 +2936,22 @@ if(tiempo%28==0 && sec%22==0)
 
   //bloque_saltar();  //bloque para saltar muy alto
 
+  //cielo_abajo();  //flujo de aire hacia abajo
+
+  //cielo_arriba();  //flujo de aire hacia arriba
+
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+
+  //cielo_derecha();  //flujo de aire hacia la derecha
+
+  //agua_abajo();  //flujo de agua hacia abajo
+
+  //agua_arriba();  //flujo de agua hacia arriba
+
+  //agua_izquierda();  //flujo de agua hacia izquierda
+
+  //agua_derecha();  //flujo de agua hacia derecha
+
   //bloque_caja0_moneda();  //caja0 con moneda
 
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
@@ -2817,7 +2993,7 @@ if(tiempo%28==0 && sec%22==0)
 
   //bloque_nota0();  //nota0
 
-  //bloque_agua();
+  bloque_agua();
 
   //bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
 
@@ -2920,6 +3096,7 @@ if(tiempo%28==0 && sec%22==0)
   delay(16);
 
 }
+
 guardar_fondo(2);
 return(0);
 }
@@ -3010,6 +3187,22 @@ if(tiempo%8==0 && sec%22==0)
 
   bloque_saltar();  //bloque para saltar muy alto
 
+  //cielo_abajo();  //flujo de aire hacia abajo
+
+  //cielo_arriba();  //flujo de aire hacia arriba
+
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+
+  //cielo_derecha();  //flujo de aire hacia la derecha
+
+  //agua_abajo();  //flujo de agua hacia abajo
+
+  //agua_arriba();  //flujo de agua hacia arriba
+
+  //agua_izquierda();  //flujo de agua hacia izquierda
+
+  //agua_derecha();  //flujo de agua hacia derecha
+
   //bloque_caja0_moneda();  //caja0 con moneda
 
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
@@ -3051,7 +3244,7 @@ if(tiempo%8==0 && sec%22==0)
 
   bloque_nota0();  //nota0
 
-  //bloque_agua();
+  bloque_agua();
 
   //bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
 
@@ -3242,6 +3435,22 @@ while(ciclo<1)
 ////////interaccion de los bloques
 
   //bloque_saltar();  //bloque para saltar muy alto
+
+  //cielo_abajo();  //flujo de aire hacia abajo
+
+  //cielo_arriba();  //flujo de aire hacia arriba
+
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+
+  //cielo_derecha();  //flujo de aire hacia la derecha
+
+  //agua_abajo();  //flujo de agua hacia abajo
+
+  //agua_arriba();  //flujo de agua hacia arriba
+
+  //agua_izquierda();  //flujo de agua hacia izquierda
+
+  //agua_derecha();  //flujo de agua hacia derecha
 
   bloque_caja0_moneda();  //caja0 con moneda
 
@@ -3468,6 +3677,22 @@ while(ciclo<1)
 ////////interaccion de los bloques
 
   //bloque_saltar();  //bloque para saltar muy alto
+
+  //cielo_abajo();  //flujo de aire hacia abajo
+
+  //cielo_arriba();  //flujo de aire hacia arriba
+
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+
+  //cielo_derecha();  //flujo de aire hacia la derecha
+
+  //agua_abajo();  //flujo de agua hacia abajo
+
+  //agua_arriba();  //flujo de agua hacia arriba
+
+  //agua_izquierda();  //flujo de agua hacia izquierda
+
+  //agua_derecha();  //flujo de agua hacia derecha
 
   //bloque_caja0_moneda();  //caja0 con moneda
 
@@ -3746,6 +3971,22 @@ if(tiempo%28==0 && sec%22==0)
 
   //bloque_saltar();  //bloque para saltar muy alto
 
+  //cielo_abajo();  //flujo de aire hacia abajo
+
+  //cielo_arriba();  //flujo de aire hacia arriba
+
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+
+  //cielo_derecha();  //flujo de aire hacia la derecha
+
+  //agua_abajo();  //flujo de agua hacia abajo
+
+  //agua_arriba();  //flujo de agua hacia arriba
+
+  //agua_izquierda();  //flujo de agua hacia izquierda
+
+  //agua_derecha();  //flujo de agua hacia derecha
+
   //bloque_caja0_moneda();  //caja0 con moneda
 
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
@@ -3979,6 +4220,22 @@ if(tiempo%8==0 && sec%22==0)
 ////////interaccion de los bloques
 
   bloque_saltar();  //bloque para saltar muy alto
+
+  //cielo_abajo();  //flujo de aire hacia abajo
+
+  //cielo_arriba();  //flujo de aire hacia arriba
+
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+
+  //cielo_derecha();  //flujo de aire hacia la derecha
+
+  //agua_abajo();  //flujo de agua hacia abajo
+
+  //agua_arriba();  //flujo de agua hacia arriba
+
+  //agua_izquierda();  //flujo de agua hacia izquierda
+
+  //agua_derecha();  //flujo de agua hacia derecha
 
   //bloque_caja0_moneda();  //caja0 con moneda
 
@@ -4229,6 +4486,22 @@ while(ciclo<1)
 ////////interaccion de los bloques
 
   bloque_saltar();  //bloque para saltar muy alto
+
+  //cielo_abajo();  //flujo de aire hacia abajo
+
+  //cielo_arriba();  //flujo de aire hacia arriba
+
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+
+  //cielo_derecha();  //flujo de aire hacia la derecha
+
+  //agua_abajo();  //flujo de agua hacia abajo
+
+  //agua_arriba();  //flujo de agua hacia arriba
+
+  //agua_izquierda();  //flujo de agua hacia izquierda
+
+  //agua_derecha();  //flujo de agua hacia derecha
 
   bloque_caja0_moneda();  //caja0 con moneda
 
@@ -4491,6 +4764,22 @@ while(ciclo<1)
 
   bloque_saltar();  //bloque para saltar muy alto
 
+  //cielo_abajo();  //flujo de aire hacia abajo
+
+  //cielo_arriba();  //flujo de aire hacia arriba
+
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+
+  //cielo_derecha();  //flujo de aire hacia la derecha
+
+  //agua_abajo();  //flujo de agua hacia abajo
+
+  //agua_arriba();  //flujo de agua hacia arriba
+
+  //agua_izquierda();  //flujo de agua hacia izquierda
+
+  //agua_derecha();  //flujo de agua hacia derecha
+
   bloque_caja0_moneda();  //caja0 con moneda
 
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
@@ -4752,6 +5041,22 @@ while(ciclo<1)
 
   bloque_saltar();  //bloque para saltar muy alto
 
+  //cielo_abajo();  //flujo de aire hacia abajo
+
+  //cielo_arriba();  //flujo de aire hacia arriba
+
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+
+  //cielo_derecha();  //flujo de aire hacia la derecha
+
+  //agua_abajo();  //flujo de agua hacia abajo
+
+  //agua_arriba();  //flujo de agua hacia arriba
+
+  //agua_izquierda();  //flujo de agua hacia izquierda
+
+  //agua_derecha();  //flujo de agua hacia derecha
+
   bloque_caja0_moneda();  //caja0 con moneda
 
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
@@ -4995,6 +5300,22 @@ while(ciclo<1)
 ////////interaccion de los bloques
 
   bloque_saltar();  //bloque para saltar muy alto
+
+  //cielo_abajo();  //flujo de aire hacia abajo
+
+  //cielo_arriba();  //flujo de aire hacia arriba
+
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+
+  //cielo_derecha();  //flujo de aire hacia la derecha
+
+  //agua_abajo();  //flujo de agua hacia abajo
+
+  //agua_arriba();  //flujo de agua hacia arriba
+
+  //agua_izquierda();  //flujo de agua hacia izquierda
+
+  //agua_derecha();  //flujo de agua hacia derecha
 
   bloque_caja0_moneda();  //caja0 con moneda
 

@@ -2167,7 +2167,7 @@ switch (T)
 	}
       }
   break;
-/*  case 44:
+  case 44:
     for(y2=0;y2<16;y2++)
       {
       for(x2=0;x2<16;x2++)
@@ -2193,7 +2193,7 @@ switch (T)
 	putpixel(x2+i,y2+j,cajaf12[y2][x2]);
 	}
       }
-  break;*/
+  break;
   case 47:
     for(y2=0;y2<16;y2++)
       {
@@ -2213,7 +2213,7 @@ switch (T)
       }
   break;
   case 49:
-    setfillstyle(1,9);  //azul claro
+    setfillstyle(1,9);  //azul
     bar(i,j,i+15,j+15);
   break;
   case 50:
@@ -2243,9 +2243,38 @@ switch (T)
 	}
       }
   break;
-  case 53:
-
+  case 53:  
+    setfillstyle(1,11);  //cielo flujo abajo
+    bar(i,j,i+15,j+15);
   break;
+  case 54:
+    setfillstyle(1,11);  //cielo flujo arriba
+    bar(i,j,i+15,j+15);
+  break;
+  case 55:
+    setfillstyle(1,11);  //cielo flujo izquierda
+    bar(i,j,i+15,j+15);
+  break;
+  case 56:
+    setfillstyle(1,11);  //cielo flujo derecha
+    bar(i,j,i+15,j+15);
+  break;
+  case 57:  
+    setfillstyle(1,9);  //azul flujo abajo
+    bar(i,j,i+15,j+15);
+  break;
+  case 58:
+    setfillstyle(1,9);  //azul flujo arriba
+    bar(i,j,i+15,j+15);
+  break;
+  case 59:
+    setfillstyle(1,9);  //azul flujo izquierda
+    bar(i,j,i+15,j+15);
+  break;
+  case 60:
+    setfillstyle(1,9);  //azul flujo derecha
+    bar(i,j,i+15,j+15);
+  break;  
   case 64:  //apartir de aqui comienzan los bloques tipo aire o fondo
     setfillstyle(1,0); //negro
     bar(i,j,i+15,j+15);  //15 es para que no borre un pixel de la siguiente figura
