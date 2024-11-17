@@ -2306,16 +2306,16 @@ if (arch4!=NULL && mundo!=NULL)
     }
   }
 
-fclose(arch0);
-fclose(arch1);
-fclose(arch2);
-fclose(arch3);
-fclose(arch4);
-fclose(nivel0);
-fclose(nivel1);
-fclose(nivel2);
-fclose(nivel3);
-fclose(mundo);
+  fclose(arch0);
+  fclose(nivel0);
+  fclose(arch1);
+  fclose(nivel1);
+  fclose(arch2);
+  fclose(nivel2);
+  fclose(arch3);
+  fclose(nivel3);
+  fclose(arch4);
+  fclose(mundo);
 
 return (0);
 }
@@ -2370,6 +2370,7 @@ if (nivel0!=NULL)
       fprintf(nivel0,",");
       }
     }
+  fclose(nivel0);
   }
 if (nivel1!=NULL)
   {
@@ -2385,6 +2386,7 @@ if (nivel1!=NULL)
       fprintf(nivel1,",");
       }
     }
+  fclose(nivel1);
   }
 if (nivel2!=NULL)
   {
@@ -2400,6 +2402,7 @@ if (nivel2!=NULL)
       fprintf(nivel2,",");
       }
     }
+  fclose(nivel2);
   }
 if (nivel3!=NULL)
   {
@@ -2415,6 +2418,7 @@ if (nivel3!=NULL)
       fprintf(nivel3,",");
       }
     }
+  fclose(nivel3);
   }
 if (mundo!=NULL)
   {
@@ -2430,13 +2434,8 @@ if (mundo!=NULL)
       fprintf(mundo,",");
       }
     }
+  fclose(mundo);
   }
-
-fclose(nivel0);
-fclose(nivel1);
-fclose(nivel2);
-fclose(nivel3);
-fclose(mundo);
 
 return (0);
 }
