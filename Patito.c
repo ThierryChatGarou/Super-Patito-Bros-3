@@ -24,7 +24,7 @@
 #include<time.h>
 #include<graphics.h>
 
-int geexbox,nivel=0,escena=0,mundo=0,seguir=1,vidas=4,estado=1,tiempo=0,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nsalta[4],saltax[4],saltay[4],nseguidor[8],seguidorx[8],seguidory[8],npeligro[4],peligrox[4],peligroy[4],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,invensible=0,i,j,x,y,dir=1,paso=1,tecla,sec=0,t_huevo,t_moneda=-88,ciclo=0,jugar=0;
+int patito,nivel=0,escena=0,mundo=0,seguir=1,vidas=4,estado=1,tiempo=0,volar=22,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nsalta[4],saltax[4],saltay[4],nseguidor[8],seguidorx[8],seguidory[8],npeligro[4],peligrox[4],peligroy[4],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,invensible=0,i,j,x,y,dir=1,paso=1,tecla,sec=0,t_huevo,t_moneda=-88,ciclo=0,jugar=0;
 float vx=0,vy=0,saltavx[4],saltavy[4],peligrovx[4],peligrovy[4];
 
 int niv0[30][40],niv1[30][40],niv2[30][40],niv3[30][40],paisaje[30][40];
@@ -679,7 +679,7 @@ int fuego4[16][16]={
 0 ,0 ,11,11,11,11,11,11,11,11,11,11,11,11,0 ,0 ,
 0 ,14,0 ,0 ,11,11,0 ,0 ,0 ,0 ,11,11,0 ,0 ,14,0 ,
 11,0 ,14,12,0 ,0 ,4 ,4 ,4 ,4 ,0 ,0 ,12,14,0 ,11,
-11,0 ,12,0 ,4 ,4 ,12,12,12,12,4 ,4 ,0 ,12,11,0 ,
+11,0 ,12,0 ,4 ,4 ,12,12,12,12,4 ,4 ,0 ,12,0 ,11,
 11,11,0 ,4 ,4 ,12,14,14,14,14,12,4 ,4 ,0 ,11,11,
 11,11,0 ,4 ,12,14,14,15,15,14,14,12,4 ,0 ,11,11,
 11,0 ,4 ,12,14,14,15,15,15,15,14,14,12,4 ,0 ,11,
@@ -688,7 +688,7 @@ int fuego4[16][16]={
 11,0 ,4 ,12,14,14,15,15,15,15,14,14,12,4 ,0 ,11,
 11,11,0 ,4 ,12,14,14,15,15,14,14,12,4 ,0 ,11,11,
 11,11,0 ,4 ,4 ,12,14,14,14,14,12,4 ,4 ,0 ,11,11,
-11,0 ,12,0 ,4 ,4 ,12,12,12,12,4 ,4 ,0 ,12,11,0 ,
+11,0 ,12,0 ,4 ,4 ,12,12,12,12,4 ,4 ,0 ,12,0 ,11,
 11,0 ,14,12,0 ,0 ,4 ,4 ,4 ,4 ,0 ,0 ,12,14,0 ,11,
 0 ,14,0 ,0 ,11,11,0 ,0 ,0 ,0 ,11,11,0 ,0 ,14,0 ,
 0 ,0 ,11,11,11,11,11,11,11,11,11,11,11,11,0 ,0 ,
@@ -2144,59 +2144,61 @@ char *dname[] = {"Requiere deteccion",
 		 "IBM 3270 PC"         };
 
 
-Geexbox()
+Patito()
 {
 textcolor(0x0B);
 textbackground(0x00);
 clrscr();
-gotoxy(1,24);
-printf ("         ooooo                     \n");
-printf ("        G*   *Go                   \n");
-printf ("       G           oG**Go  oG**Go  \n");
-printf ("       G    ***G   GooooG  GooooG  \n");
-printf ("       *o     oG   G       G       \n");
-printf ("        *GoooG*G   *GooG*  *GooG*  \n");
+gotoxy(20,24); cprintf ("    TTT    T  ");
+gotoxy(20,25); cprintf ("    T  T   T  ");
+gotoxy(20,26); cprintf ("    TTT   T T ");
+gotoxy(20,27); cprintf ("    T     TTT ");
+gotoxy(20,28); cprintf ("    T    T   T");
 
-textcolor(0x0C);
-gotoxy(35,24); cprintf ("oo     o  ");
-gotoxy(35,25); cprintf (" Go  oG*  ");
-gotoxy(35,26); cprintf ("  *Go*    ");
-gotoxy(35,27); cprintf ("  oGGo    ");
-gotoxy(35,28); cprintf (" oG  Go   ");
-gotoxy(35,29); cprintf ("G*    *G  ");
+textcolor(0x0F);
+gotoxy(34,24); cprintf (" TTTTT ");
+gotoxy(34,25); cprintf ("   T   ");
+gotoxy(34,26); cprintf ("   T   ");
+gotoxy(34,27); cprintf ("   T   ");
+gotoxy(34,28); cprintf ("   T   ");
 
 textcolor(0x0B);
-gotoxy(45,24); cprintf ("o               ");
-gotoxy(45,25); cprintf ("G               ");
-gotoxy(45,26); cprintf ("Go***o  oG**Go  ");
-gotoxy(45,27); cprintf ("G    *G G    G  ");
-gotoxy(45,28); cprintf ("G    oG G    G  ");
-gotoxy(45,29); cprintf ("G*ooo*  *GooG*  ");
+gotoxy(41,24); cprintf ("T");
+gotoxy(41,25); cprintf ("T");
+gotoxy(41,26); cprintf ("T");
+gotoxy(41,27); cprintf ("T");
+gotoxy(41,28); cprintf ("T");
 
-textcolor(0x0C);
-gotoxy(61,24); cprintf ("oo     o  ");
-gotoxy(61,25); cprintf (" Go  oG*  ");
-gotoxy(61,26); cprintf ("  *Go*    ");
-gotoxy(61,27); cprintf ("  oGGo    ");
-gotoxy(61,28); cprintf (" oG  Go   ");
-gotoxy(61,29); cprintf ("G*    *G  ");
+textcolor(0x0F);
+gotoxy(42,24); cprintf (" TTTTT ");
+gotoxy(42,25); cprintf ("   T   ");
+gotoxy(42,26); cprintf ("   T   ");
+gotoxy(42,27); cprintf ("   T   ");
+gotoxy(42,28); cprintf ("   T   ");
+
+textcolor(0x0B);
+gotoxy(49,24); cprintf (" TT   ");
+gotoxy(49,25); cprintf ("T  T  ");
+gotoxy(49,26); cprintf ("T  T  ");
+gotoxy(49,27); cprintf ("T  T  ");
+gotoxy(49,28); cprintf (" TT   ");
 
 gotoxy(1,50);
-for (geexbox=0;geexbox<22;geexbox++)
+for (patito=0;patito<22;patito++)
   {
   delay(40);
   if(kbhit())
     {
-    geexbox=40;
+    patito=40;
     }
   }
-for (geexbox=0;geexbox<30;geexbox++)
+for (patito=0;patito<30;patito++)
   {
   printf("\n");
   delay(40);
   if(kbhit())
     {
-    geexbox=40;
+    patito=40;
     }
   }
 return(0);
@@ -2216,21 +2218,21 @@ textcolor(0x0E); gotoxy(16,28); cprintf ("    €     €    €  €  €      € €    € €
 textcolor(0x0C); gotoxy(16,29); cprintf ("    €     €    €  €  €‹‹‹‹  €  €   €  €     €ﬂ        \n");
 
 gotoxy(1,50);
-for (geexbox=0;geexbox<22;geexbox++)
+for (patito=0;patito<22;patito++)
   {
   delay(40);
   if(kbhit())
     {
-    geexbox=40;
+    patito=40;
     }
   }
-for (geexbox=0;geexbox<30;geexbox++)
+for (patito=0;patito<30;patito++)
   {
   printf("\n");
   delay(40);
   if(kbhit())
     {
-    geexbox=40;
+    patito=40;
     }
   }
 return(0);
@@ -2243,7 +2245,7 @@ textcolor(0x01);
 textbackground(0x00);
 clrscr();
 
-for (geexbox=0;geexbox<50;geexbox++)
+for (patito=0;patito<50;patito++)
   {
   printf("    ∞∞∞∞±±±±≤≤≤≤€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€≤≤≤≤±±±±∞∞∞∞");
   }
@@ -2295,12 +2297,17 @@ errorgraficos()
   gotoxy(7,6);    cprintf("∫                                                                      ∫");
   gotoxy(7,7);    cprintf("∫ 1 Instala el archivo Egavga.bgi en tu sistema.                       ∫");
   gotoxy(7,8);    cprintf("∫ 2 Copia el archivo Egavga.bgi que se encuentra en la carpeta BGI     ∫");
-  gotoxy(7,9);    cprintf("∫   de tu carpeta de instalacion de Turbo C++ en la carpeta donde se   ∫");
-  gotoxy(7,10);   cprintf("∫   encuentra el archivo Patito bros.exe                               ∫");
+  gotoxy(7,9);    cprintf("∫   de tu carpeta de instalacion de Turbo C++ o en la carpeta donde se ∫");
+  gotoxy(7,10);   cprintf("∫   encuentra el programa Patito bros.exe                              ∫");
   gotoxy(7,11);   cprintf("∫ 3 Aumenta la capacidad de memoria para el programa                   ∫");
-  gotoxy(7,12);   cprintf("∫                                                                      ∫");
-  gotoxy(7,13);   cprintf("»ÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕº");
-  gotoxy(7,14);   cprintf("Presiona un tecla para salir.");
+  gotoxy(7,12);   cprintf("∫ 4 Si lo est†s ejecutando desde codigo fuente y marca falta de        ∫");
+  gotoxy(7,13);   cprintf("∫   memoria, cambia la generacion del codigo (desde turbo c) en el     ∫");
+  gotoxy(7,14);   cprintf("∫   menu \"Options -> Compiler -> Code generation\" y en la parte que    ∫");
+  gotoxy(7,15);   cprintf("∫   dice \"Model\" selecciona la opci¢n \"Huge\" y presiona \"OK\"           ∫");
+  gotoxy(7,16);   cprintf("∫   Problemas: Thierry_2222@hotmail.com                                ∫");
+  gotoxy(7,17);   cprintf("∫                                                                      ∫");
+  gotoxy(7,18);   cprintf("»ÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕº");
+  gotoxy(7,20);   cprintf("Presiona un tecla para salir.");
   getch();
   return(0);
 }
@@ -4595,7 +4602,17 @@ for(n=0;n<4;n++)
     {
     if((peligrox[n]%16)!=0)  // comprobar que bloques necesitan actualizarse
       {
-      bloque(peligrox[n]-(peligrox[n]%16),peligroy[n]-(peligroy[n]%1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ;  //actualizar bloque que esta arriba a la izquierda
+      bloque(peligrox[n]-(peligrox[n]%16),peligroy[n]-(peligroy[n]%16),paisaje[(peligroy[n]-(peligroy[n]%16))/16][(peligrox[n]-(peligrox[n]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+      bloque(peligrox[n]-(peligrox[n]%16)+16,peligroy[n]-(peligroy[n]%16),paisaje[(peligroy[n]-(peligroy[n]%16))/16][(peligrox[n]+16-(peligrox[n]%16))/16]);  //actualizar bloque que esta arriba a la derecha
+      if((peligroy[n]%16)!=0)
+        {
+        bloque(peligrox[n]-(peligrox[n]%16),peligroy[n]-(peligroy[n]%16)+16,paisaje[(peligroy[n]+16-(peligroy[n]%16))/16][(peligrox[n]-(peligrox[n]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+        bloque(peligrox[n]-(peligrox[n]%16)+16,peligroy[n]-(peligroy[n]%16)+16,paisaje[(peligroy[n]+16-(peligroy[n]%16))/16][(peligrox[n]+16-(peligrox[n]%16))/16]);  //actualizar bloque que esta abajo a la derecha
+        }
+      }
+    else if((peligroy[n]%16)!=0)
+      {
+      bloque(peligrox[n]-(peligrox[n]%16),peligroy[n]-(peligroy[n]%16),paisaje[(peligroy[n]-(peligroy[n]%16))/16][(peligrox[n]-(peligrox[n]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
       bloque(peligrox[n]-(peligrox[n]%16),peligroy[n]-(peligroy[n]%16)+16,paisaje[(peligroy[n]+16-(peligroy[n]%16))/16][(peligrox[n]-(peligrox[n]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
       }
     }
@@ -5333,7 +5350,7 @@ bloque_nota0()  //nota0
       vy=-6;
       if(tecla==18432)
         {
-        vy=vy-4.0;
+        vy=-10.0;
         }
       }
     }
@@ -5344,17 +5361,20 @@ bloque_nota0()  //nota0
       vy=-6;
       if(tecla==18432)
         {
-        vy=vy-4.0;
+        vy=-10.0;
         }
       }
   }
   if((x%16)!=0)  //dar chance a equivocarse por un bloque
     {
-    if(paisaje[(y+32-(y%16))/16][(x-(x%16))/16]==40 && paisaje[(y+32-(y%16))/16][(x+16-(x%16))/16]==40)
+    if(paisaje[(y+32-(y%16))/16][(x-(x%16))/16]==40 || paisaje[(y+32-(y%16))/16][(x+16-(x%16))/16]==40)
       {
-      if(tecla==18432)
+      if(vy<=0)
         {
-        vy=-10.0;
+        if(tecla==18432)
+          {
+          vy=-10.0;
+          }
         }
       }
     }
@@ -5362,9 +5382,12 @@ bloque_nota0()  //nota0
   {
     if(paisaje[(y+32-(y%16))/16][(x-(x%16))/16]==40)
       {
-      if(tecla==18432)
+      if(vy<=0)
         {
-        vy=-10.0;
+        if(tecla==18432)
+          {
+          vy=-10.0;
+          }
         }
       }
   }
@@ -5380,12 +5403,12 @@ bloque_nota0()  //nota0
     }
   if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==40) //rebote derecho de nota0
     {
-    vx=-vx;
+    vx=-vx-4.0;
     x=x-(x%16);
     }
   else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==40) //rebote izquierdo de nota 0
     {
-    vx=-vx;
+    vx=-vx+4.0;
     x=x+16-(x%16);
     }
 }
@@ -5404,7 +5427,7 @@ bloque_agua()
 {
 if((x%16)!=0)
   {
-  if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]<32 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]<32)  //verificar si hay bloques solidos
+  if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]<32 || paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]<32)  //verificar si hay bloques solidos
     {
     vy=vy+0.5;
     }
@@ -5873,16 +5896,25 @@ panel()
 
 panelnumerico()
 {
+  int n;
   gotoxy(4,28);
-  printf("Nivel %d-%d   ",nivel,escena);
+  printf("Nivel %d-%d ",nivel,escena);
   gotoxy(4,29);
   printf("Vidas %d   ",vidas);
-  // faltavelocidad
+  gotoxy(15,28);
+  for(n=0;n<volar;n++)
+    {
+    printf("ﬂ");
+    }
+  for(n=volar;n<22;n++)
+    {
+    printf(" ");
+    }
   gotoxy(15,29);
   printf("Puntos %d  ",puntos);
-  gotoxy(36,28);
+  gotoxy(40,28);
   printf("monedas %d  ",monedas);
-  gotoxy(36,29);
+  gotoxy(40,29);
   printf("Tiempo %d  ",tiempo);
 }
 
@@ -6108,6 +6140,14 @@ if(sec%22==0)  //realizar un conteo del tiempo del juego
     {
     estado=0;
     }
+  if(tiempo%2==0)  //para volar
+    {
+    volar++;
+    if(volar>22)
+      {
+      volar=22;
+      }
+    }
   }
 }
 
@@ -6199,7 +6239,7 @@ for(n=0;n<4;n++)
 champifuera()
 {
 int n;
-for(n=0;n<8;n++)
+for(n=0;n<4;n++)
   {
   if(champx[n]>=624) //si llega a la orilla derecha eliminar champiÒon
     {
@@ -6259,7 +6299,11 @@ teclado()
     }
   if(tecla==14624)  //espacio volar 32
     {
-    vy=-4.0;
+    if(volar>0)
+      {
+      volar--;
+      vy=-4.0;
+      }
     }
   if(tecla==18432)  //saltar 72
     {
@@ -6275,6 +6319,9 @@ teclado()
   if(tecla==21248)  //suprimir  truco: elimina patos
     {
     r_pato();
+    r_seguidor();
+    r_salta();
+    r_peligro();
     }
   if(tecla==27392)  //Alt+F4 salir
     {
@@ -7577,7 +7624,7 @@ else
 {
   if(tiempo%14==0 && sec%22==0)
     {
-    c_pato(29,17);
+    c_pato(29,19);
     }
 }
 
@@ -7845,15 +7892,15 @@ while(ciclo<1)
       }
     }
 
-////////especial para entrar a tuberia en 11,14 y 12,14
+////////especial para entrar a tuberia en 11,15 y 12,15
   if(tecla==20480)  //abajo
     {
-    if(((y-(y%16))/16 == 14) && ((x-(x%16))/16 == 12))
+    if(((y-(y%16))/16 == 15) && ((x-(x%16))/16 == 12))
       {
       ciclo=1;
       escena=20;  //escena secreta
       }
-    else if(((y-(y%16))/16 == 14) && ((x-(x%16))/16 == 11))
+    else if(((y-(y%16))/16 == 15) && ((x-(x%16))/16 == 11))
       {
       ciclo=1;
       escena=20;  //escena secreta
@@ -8014,7 +8061,7 @@ r_pato();
 r_seguidor();
 r_salta();
 r_peligro();
-c_pato(22,24);
+c_pato(22,23);
 
 while(ciclo<1)
   {
@@ -8075,18 +8122,14 @@ while(ciclo<1)
 
 ////////Especial  crear patos saliendo de la tuberia
 
-if(tiempo%22==0 && sec%22==0)
-  {
-  c_pato(18,22);
-  }
 if(tiempo%28==0 && sec%22==0)
   {
-  c_pato(25,17);
+  c_pato(8,14);
   }
 
 ////////interaccion de los bloques
 
-  //bloque_saltar();  //bloque para saltar muy alto
+  bloque_saltar();  //bloque para saltar muy alto
 
   bloque_caja0_moneda();  //caja0 con moneda
 
@@ -8106,7 +8149,7 @@ if(tiempo%28==0 && sec%22==0)
 
   bloque_cristal();  //cristal golpe por abajo
 
-  bloque_moneda0();  //monedas
+  //bloque_moneda0();  //monedas
 
   //bloque_moneda4();  //monedas
 
@@ -8114,7 +8157,7 @@ if(tiempo%28==0 && sec%22==0)
 
   cielo_vida();  //cielo cyan con moneda
 
-  cielo_moneda();  //cielo cyan con vida
+  //cielo_moneda();  //cielo cyan con vida
 
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
     {
@@ -8145,9 +8188,9 @@ if(tiempo%28==0 && sec%22==0)
 
   //pisar_peligro();  //pisar peligroso
 
-  //NITRO_mata();  //no toques la nitroglicerina
+  NITRO_mata();  //no toques la nitroglicerina
 
-  //fuego4_mata();  //no teques el fuego
+  fuego4_mata();  //no teques el fuego
 
   pato_mata();  //pato mata cuando los tocas
 
@@ -8319,13 +8362,13 @@ if(tiempo%8==0 && sec%22==0)
 
   bloque_saltar();  //bloque para saltar muy alto
 
-  bloque_caja0_moneda();  //caja0 con moneda
+  //bloque_caja0_moneda();  //caja0 con moneda
 
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
 
   bloque_caja0_champinon();  //caja0 con champiÒon
 
-  //bloque_caja0_vida();  //caja0 con vida
+  bloque_caja0_vida();  //caja0 con vida
 
   //cristal0_moneda();  //cristal0 con moneda
 
@@ -8345,7 +8388,7 @@ if(tiempo%8==0 && sec%22==0)
 
   //cielo_vida();  //cielo cyan con moneda
 
-  //cielo_moneda();  //cielo cyan con vida
+  cielo_moneda();  //cielo cyan con vida
 
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
     {
@@ -8360,13 +8403,13 @@ if(tiempo%8==0 && sec%22==0)
 
   //bloque_nota0();  //nota0
 
-  //bloque_agua();
+  bloque_agua();
 
   //bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
 
   //bloque_cuadrado1();  //pisarlos pero no golpearlos  (blanco 15)
 
-  //tocar_champinon();  //tocar champiÒon
+  tocar_champinon();  //tocar champiÒon
 
   pisar_pato();  //pisar pato
 
@@ -8396,9 +8439,9 @@ if(tiempo%8==0 && sec%22==0)
 
   //peligrofuera();  //verificar si un peligroso se salio de la pantalla
 
-  //champifuera();  //verificar si un champiÒon se salio de la pantalla
+  champifuera();  //verificar si un champiÒon se salio de la pantalla
 
-  //movchamp();  //mover champiÒones
+  movchamp();  //mover champiÒones
 
   mdemone();
 
@@ -8444,7 +8487,7 @@ if(tiempo%8==0 && sec%22==0)
   x=x+vx;
   y=y+vy;
 
-  //dibchamp();  //dibujar champiÒones
+  dibchamp();  //dibujar champiÒones
 
   dibpatos();  //dibujar patos
 
@@ -8976,9 +9019,9 @@ escena=1;
 
 //Especial regenerar monedas y poder
 
-niv1[15][8]=35;
-niv1[15][9]=35;
-niv1[15][10]=35;
+niv1[16][8]=35;
+niv1[16][9]=35;
+niv1[16][10]=35;
 niv1[20][7]=35;
 niv1[20][8]=35;
 niv1[20][9]=35;
@@ -8997,7 +9040,7 @@ return(0);
 main()
 {
 textmode(64);  //C4350
-Geexbox();
+Patito();
 Thierry();
 Inicio();
 //memoria();
