@@ -24,7 +24,7 @@
 #include<time.h>
 #include<graphics.h>
 
-int geexbox,nivel=0,escena=0,mundo=0,seguir=1,vidas=4,estado=1,tiempo=0,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,invensible=0,i,j,x,y,dir=1,paso=1,tecla,sec=0,t_huevo,t_moneda=-88,ciclo=0,jugar=0;
+int geexbox,nivel=0,escena=0,mundo=0,seguir=1,vidas=4,estado=1,tiempo=0,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,invensible=0,i,j,x,y,dir=1,paso=1,tecla,presiona,teclado[88],sec=0,t_huevo,t_moneda=-88,ciclo=0,jugar=0;
 float vx=0,vy=0;
 
 int niv0[30][40]={
@@ -3017,7 +3017,7 @@ for(n=0;n<8;n++)
       {
       for(i=0;i<16;i++)
         {
-        if(pato0[j][i]!=22)
+	if(pato0[j][i]!=22)
           {
           putpixel(patox[n]+i,patoy[n]+j,pato0[j][i]);
           }
@@ -4394,7 +4394,7 @@ if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==36)  //poder0
     vy=0;
     y=y-(y%16);
     }
-  if(tecla==18432)
+  if(teclado[71]==1)
     {
       vy=-8;
     }
@@ -4414,7 +4414,7 @@ else if((paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]==36) && x%16!=0)  //poder0
     vy=0;
     y=y-(y%16);
     }
-  if(tecla==18432)
+  if(teclado[71]==1)
     {
       vy=-8;
     }
@@ -4862,7 +4862,7 @@ bloque_nota0()  //nota0
     if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==40 || paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]==40)  //rebote por arriba
       {
       vy=-6;
-      if(tecla==18432)
+      if(teclado[71]==1)
         {
         vy=vy-4.0;
         }
@@ -4873,7 +4873,7 @@ bloque_nota0()  //nota0
     if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==40)  //rebote por arriba
       {
       vy=-6;
-      if(tecla==18432)
+      if(teclado[71]==1)
         {
         vy=vy-4.0;
         }
@@ -4883,7 +4883,7 @@ bloque_nota0()  //nota0
     {
     if(paisaje[(y+32-(y%16))/16][(x-(x%16))/16]==40 && paisaje[(y+32-(y%16))/16][(x+16-(x%16))/16]==40)
       {
-      if(tecla==18432)
+      if(teclado[71]==1)
         {
         vy=-10.0;
         }
@@ -4893,7 +4893,7 @@ bloque_nota0()  //nota0
   {
     if(paisaje[(y+32-(y%16))/16][(x-(x%16))/16]==40)
       {
-      if(tecla==18432)
+      if(teclado[71]==1)
         {
         vy=-10.0;
         }
@@ -4951,7 +4951,7 @@ if((x%16)!=0)
   {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==49 && paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==49)
     {
-    if(tecla==18432)  //saltar 72
+    if(teclado[71]==1)  //saltar 72
       {
       vy=-2.0;
       }
@@ -4979,7 +4979,7 @@ else
   {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==49)
     {
-    if(tecla==18432)  //saltar 72
+    if(teclado[71]==1)  //saltar 72
       {
       vy=-2.0;
       }
@@ -5007,7 +5007,7 @@ if((x%16)!=0)
   {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==50 && paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==50)
     {
-    if(tecla==18432)  //saltar 72
+    if(teclado[71]==1)  //saltar 72
       {
       vy=-8.0;
       }
@@ -5035,7 +5035,7 @@ else
   {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==50)
     {
-    if(tecla==18432)  //saltar 72
+    if(teclado[71]==1)  //saltar 72
       {
       vy=-8.0;
       }
@@ -5196,7 +5196,7 @@ bloque_cuadrado0()  //puedes pararte sobre el bloque pero no golpearlo por abajo
         }
       }
     }
-  if(tecla==18432)  //saltar
+  if(teclado[71]==1)  //saltar
     {
     if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==42 || (paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]==42 && x%16!=0))  //bloque cuadrado
       {
@@ -5230,7 +5230,7 @@ bloque_cuadrado1()  //puedes pararte sobre el bloque pero no golpearlo por abajo
         }
       }
     }
-  if(tecla==18432)  //saltar
+  if(teclado[71]==1)  //saltar
     {
     if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==45 || (paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]==45 && x%16!=0))  //bloque cuadrado
       {
@@ -5444,7 +5444,7 @@ panel();
 pausa()
 {
 int x2,y2,n=0;
-tecla=0;
+presiona=0;
 for(y2=0;y2<16;y2++)
   {
   for(x2=0;x2<16;x2++)
@@ -5463,9 +5463,9 @@ while(n==0)
   {
   if(bioskey(1))  //funciona igual que kbhit()
     {
-    tecla = bioskey(0);  //capturar tecla presionada
+    presiona = bioskey(0);  //capturar tecla presionada
     }
-  if(tecla==7181)
+  if(presiona==7181)  //enter
     {
     n=1;
     }
@@ -5532,14 +5532,36 @@ for(n=0;n<8;n++)
 }
 
 
-teclado()
+funcion_teclado()
 {
-  tecla=0;
-  if(bioskey(1))  //funciona igual que kbhit() con la diferecia que con bioskey que si no presionas una tecla despues de un tiempo se alenta el cheque del teclado
+  tecla=inportb(0x60);
+  presiona=0;
+  if(tecla<128)
     {
-    tecla = bioskey(0);  //capturar tecla presionada
+    teclado[tecla-1]=1;
     }
-  if(tecla == 0);
+  else
+    {
+    teclado[tecla-1-128]=0;
+    }
+  if(teclado[74]==1&&tecla==77)  //error grave
+    {
+    teclado[74]=0;
+    }
+  if(teclado[76]==1&&tecla==75)  //error grave
+    {
+    teclado[76]=0;
+    }
+  gotoxy(1,1);
+  for(i=0;i<88;++i)
+    {
+    if(teclado[i]==1)
+      {
+      presiona=1; 
+      printf("%d     ",tecla);
+      }
+    }
+  if(presiona==0);
     {
     if(vx<0)  //disminuir la velocidad
       {
@@ -5558,12 +5580,12 @@ teclado()
       vy=vy-0.125;
       }*/
     }
-  if(tecla==19200)  //izquierda 75
+  if(teclado[74]==1)  //izquierda ASCII=75, BIOSKEY=19200
     {
     vx=vx-0.5;
     dir=-1;
     }
-  if(tecla==19712)  //derecha 77
+  if(teclado[76]==1)  //derecha ASCII=77, BIOSKEY=19712
     {
     dir=1;
     if(vx<1 && vx>=0)  //esto no deberia existir pero hay problemas para avanzar a la derecha
@@ -5572,34 +5594,34 @@ teclado()
       }
     vx=vx+0.5;
     }
-  if(tecla==14624)  //espacio volar 32
+  if(teclado[56]==1)  //espacio volar ASCII=32, BIOSKEY=14624
     {
     vy=-4.0;
     }
-  if(tecla==18432)  //saltar 72
+  if(teclado[71]==1)  //saltar ASCII=72, BIOSKEY=18432
     {
     if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]<32 || (paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]<32 && x%16!=0))  //bloques en general
       {
       vy=-8.0;
       }
     }
-  if(tecla==7181)  //enter pausar el juego
+  if(teclado[27]==1)  //enter pausar el juego BIOSKEY=7181
     {
     pausa();
     }
-  if(tecla==21248)  //suprimir  truco: elimina patos
+  if(teclado[82]==1)  //suprimir  truco: elimina patos BIOSKEY=21248
     {
     r_pato();
     }
-  if(tecla==27392)  //Alt+F4 salir
+  if(teclado[55]==1 && teclado[61]==1)  //Alt+F4 salir BIOSKEY=27392
     {
     exit (2);
     }
-  if(tecla==15104)  //F1 ayuda 
+  if(teclado[58]==1)  //F1 ayuda BIOSKEY=15104
     {
     ayuda();
     }
-  if(tecla==283)  //esc 27
+  if(teclado[0]==1)  //esc 27 BIOSKEY=283
     {
     //menu();
     }
@@ -5903,7 +5925,7 @@ while(ciclo<1)
 
 ////////teclado
 
-  teclado();
+  funcion_teclado();
 
 ////////interaccion de los bloques
 
@@ -6091,7 +6113,7 @@ while(ciclo<1)
 
 ////////teclado
 
-  teclado();
+  funcion_teclado();
 
 ////////interaccion de los bloques
 
@@ -6304,7 +6326,7 @@ while(ciclo<1)
 
 ////////teclado
 
-  teclado();
+  funcion_teclado();
 
 ////////Especial  crear patos saliendo de la tuberia
 
@@ -6503,7 +6525,7 @@ while(ciclo<1)
 
 ////////teclado
 
-  teclado();
+  funcion_teclado();
 
 ////////Especial  crear patos saliendo de la tuberia
 
@@ -6702,7 +6724,7 @@ while(ciclo<1)
 
 ////////teclado
 
-  teclado();
+  funcion_teclado();
 
 ////////interaccion de los bloques
 
@@ -6890,7 +6912,7 @@ while(ciclo<1)
 
 ////////teclado
 
-  teclado();
+  funcion_teclado();
 
 ////////interaccion de los bloques
 
@@ -7103,7 +7125,7 @@ while(ciclo<1)
 
 ////////teclado
 
-  teclado();
+  funcion_teclado();
 
 ////////Especial  crear patos saliendo de la tuberia
 
@@ -7302,7 +7324,7 @@ while(ciclo<1)
 
 ////////teclado
 
-  teclado();
+  funcion_teclado();
 
 ////////Especial  crear patos saliendo de la tuberia
 
