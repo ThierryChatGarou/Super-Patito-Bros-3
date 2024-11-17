@@ -24,7 +24,7 @@
 #include<time.h>
 #include<graphics.h>
 
-int geexbox,nivel=0,escena=0,mundo=0,seguir=1,vidas=4,estado=1,tiempo=0,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,invensible=0,i,j,x,y,dir=1,paso=1,tecla,sec=0,t_huevo,t_moneda=-88,ciclo=0,jugar=0;
+int geexbox,nivel=0,escena=0,mundo=0,seguir=1,vidas=4,estado=1,tiempo=0,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nsalta[8],saltax[8],saltay[8],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,invensible=0,i,j,x,y,dir=1,paso=1,tecla,sec=0,t_huevo,t_moneda=-88,ciclo=0,jugar=0;
 float vx=0,vy=0;
 
 int niv0[30][40],niv1[30][40],niv2[30][40],niv3[30][40],paisaje[30][40];
@@ -2774,6 +2774,24 @@ for(x2=0;x2<8;x2++)
 }
 
 
+r_salta()  //resetear saltadores
+{
+int x2;
+for(x2=0;x2<8;x2++)
+  {
+  nsalta[x2]=0;
+  }
+for(x2=0;x2<8;x2++)
+  {
+  saltax[x2]=0;
+  }
+for(x2=0;x2<8;x2++)
+  {
+  saltay[x2]=0;
+  }
+}
+
+
 r_champ()  //resetear champiñones
 {
 int x2;
@@ -2826,6 +2844,25 @@ x2=x2*16;
 y2=y2*16;
 patox[p]=x2;
 patoy[p]=y2;
+}
+
+
+c_salta(int x2, int y2)
+{
+int n,p=0;
+for(n=0;n<8;n++)
+  {
+  if(nsalta[n]==0)
+    {
+    p=n;
+    nsalta[n]=1;
+    n=8;
+    }
+  }
+x2=x2*16;
+y2=y2*16;
+saltax[p]=x2;
+saltay[p]=y2;
 }
 
 
@@ -2923,6 +2960,59 @@ for(n=0;n<8;n++)
 }
 
 
+movsalta()
+{
+int n;
+for(n=0;n<8;n++)
+  {
+  if(nsalta[n]!=0)
+    {
+
+    if(nsalta[n]==1)  //determinar sentido
+      {
+      saltax[n]++;
+      }
+    if(nsalta[n]==-1)  //determinar sentido
+      {
+      saltax[n]--;
+      }
+    if((saltax[n]%16)!=0)
+      {
+      if(paisaje[(saltay[n]+16-(saltay[n]%16))/16][(saltax[n]-(saltax[n]%16))/16]>=32 && paisaje[(saltay[n]+16-(saltay[n]%16))/16][(saltax[n]+16-(saltax[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
+        {
+        saltay[n]=saltay[n]+4;
+        }
+      else
+        {
+        saltay[n]=saltay[n]-(saltay[n]%16);
+        }
+      }
+    else
+      {
+      if(paisaje[(saltay[n]+16-(saltay[n]%16))/16][(saltax[n]-(saltax[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
+        {
+        saltay[n]=saltay[n]+4;
+        }
+      else
+        {
+        saltay[n]=saltay[n]-(saltay[n]%16);
+        }
+      }
+    }
+  if(paisaje[(saltay[n]-(saltay[n]%16))/16][(saltax[n]+16-(saltax[n]%16))/16]<32) //limite de bloque derecho
+    {
+    nsalta[n]=-1;
+    saltax[n]=saltax[n]-(saltax[n]%16);
+    }
+  else if(paisaje[(saltay[n]-(saltay[n]%16))/16][(saltax[n]-(saltax[n]%16))/16]<32) //limite de bloque izquierdo
+    {
+    nsalta[n]=1;
+    saltax[n]=saltax[n]+16-(saltax[n]%16);
+    }
+  }
+}
+
+
 movchamp()
 {
 int n;
@@ -2993,6 +3083,28 @@ for(n=0;n<8;n++)
         if(pato0[j][i]!=22)
           {
           putpixel(patox[n]+i,patoy[n]+j,pato0[j][i]);
+          }
+        }
+      }
+    }
+  }
+}
+
+
+dibsalta()
+{
+int n;
+for(n=0;n<8;n++)
+  {
+  if(nsalta[n]!=0)
+    {
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        if(pato0[j][i]!=22)
+          {
+          putpixel(saltax[n]+i,saltay[n]+j,pato0[j][i]);
           }
         }
       }
@@ -3077,6 +3189,14 @@ elipato(int x2)
 npato[x2]=0;
 patox[x2]=0;
 patoy[x2]=0;
+}
+
+
+elisalta(int x2)
+{
+nsalta[x2]=0;
+saltax[x2]=0;
+saltay[x2]=0;
 }
 
 
@@ -4141,6 +4261,20 @@ for(n=0;n<8;n++)
 }
 
 
+refsalta()
+{
+int n;
+for(n=0;n<8;n++)
+  {
+  if(nsalta[n]!=0)
+    {
+    bloque(saltax[n]-(saltax[n]%16),saltay[n]-(saltay[n]%16),paisaje[(saltay[n]-(saltay[n]%16))/16][(saltax[n]-(saltax[n]%16))/16]);  //actualizar arriba a la izquierda
+    bloque(saltax[n]-(saltax[n]%16)+16,saltay[n]-(saltay[n]%16),paisaje[(saltay[n]-(saltay[n]%16))/16][(saltax[n]+16-(saltax[n]%16))/16]);  //actualizar arriba a la derecha
+    }
+  }
+}
+
+
 mdemone()  //mover dibujar eliminar moneda
 {
 int n;
@@ -5179,6 +5313,26 @@ pisar_pato()  //pisar pato
 }
 
 
+pisar_salta()  //pisar saltadores
+{
+  for(i=0;i<8;i++)  //pisar saltadores
+    {
+    if(nsalta[i]!=0)
+      {
+      if(x-(x%16)==saltax[i]-(saltax[i]%16) || x-(x%16)==saltax[i]+16-(saltax[i]%16))
+        {
+        if(y+16-(y%16)==saltay[i]-(saltay[i]%16))  //+16 para cuando este arriba del saltador en -16 sea -16+16=0 y se cumpla
+          {
+          vy=-2;
+          elisalta(i);
+          puntos=puntos+100;
+          }
+        }
+      }
+    }
+}
+
+
 pato_mata()  //pato mata cuando los tocas
 {
   for(i=0;i<8;i++)  //pato mata
@@ -5188,6 +5342,29 @@ pato_mata()  //pato mata cuando los tocas
       if(x<=patox[i]+16 && x>=patox[i]-16)
         {
         if(y-(y%16)==patoy[i]-(patoy[i]%16))
+          {
+          if(invensible==0)
+            {
+            estado--;
+            invensible=222;
+            t_huevo=tiempo-4;  //solo es necesario si su estado es 0
+            }
+          }
+        }
+      }
+    }
+}
+
+
+salta_mata()  //saltador mata cuando los tocas
+{
+  for(i=0;i<8;i++)  //saltador mata
+    {
+    if(nsalta[i]!=0)
+      {
+      if(x<=saltax[i]+16 && x>=saltax[i]-16)
+        {
+        if(y-(y%16)==saltay[i]-(saltay[i]%16))
           {
           if(invensible==0)
             {
@@ -5541,6 +5718,27 @@ for(n=0;n<8;n++)
 }
 
 
+saltafuera()
+{
+int n;
+for(n=0;n<8;n++)
+  {
+  if(saltax[n]>=624) //si llega a la orilla derecha eliminar saltador
+    {
+    elisalta(n);
+    }
+  else if(saltax[n]<=0) //si llega a la orilla izquierda eliminar saltador
+    {
+    elisalta(n);
+    }
+  else if(saltay[n]>=464) //caida
+    {
+    elisalta(n);
+    }
+  }
+}
+
+
 champifuera()
 {
 int n;
@@ -5878,6 +6076,8 @@ panel();
 r_champ();
 rmonedas();
 r_pato();
+r_salta();
+c_salta(8,24);
 c_pato(4,24);
 c_pato(22,24);
 
@@ -5890,6 +6090,7 @@ while(ciclo<1)
   refbloques();  //actualizar bloques
   refchamp();
   refpato();
+  refsalta();
 
   if((x%16)!=0)
     {
@@ -5990,13 +6191,19 @@ while(ciclo<1)
 
   pisar_pato();  //pisar pato
 
+  pisar_salta();  //pisar saltador
+
   //NITRO_mata();  //no toques la nitroglicerina
 
   //fuego4_mata();  //no teques el fuego
 
   pato_mata();  //pato mata cuando los tocas
 
+  salta_mata();  //saltador mata cuando los tocas
+
   patofuera();  //verificar si un pato se salio de la pantalla
+
+  saltafuera();  //verificar si un saltador se salio de la pantalla
 
   champifuera();  //verificar si un champiñon se salio de la pantalla
 
@@ -6005,6 +6212,8 @@ while(ciclo<1)
   mdemone();
 
   movpato();  //mover patos
+
+  movsalta();  //mover saltador
 
   if(monedas>=100) //por cada 100 monedas aumentar una vida
     {
@@ -6043,6 +6252,8 @@ while(ciclo<1)
   dibchamp();  //dibujar champiñones
 
   dibpatos();  //dibujar patos
+
+  dibsalta();  //dibujar saltador
 
   segundos();  //realizar un conteo del tiempo del juego
 
