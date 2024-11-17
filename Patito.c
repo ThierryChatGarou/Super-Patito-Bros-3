@@ -1232,6 +1232,25 @@ int estre0 [16][16]={
 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
 };
 
+int estre1 [16][16]={
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,15,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,15,0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,15,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+};
+
 int cajaf0 [16][16]={
 11,11,11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
 11,11,11,0 ,0 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,
@@ -1819,6 +1838,25 @@ int NITRO [16][16]={
 10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,
 10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,
 2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,
+};
+
+int saltar0 [16][16]={
+11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,
+11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,
+11,11,11,11,11,11,11,15,15,11,11,11,11,11,11,11,
+11,11,11,11,11,11,15,10,10,15,11,11,11,11,11,11,
+11,11,11,11,11,15,10,10,10,10,15,11,11,11,11,11,
+11,11,11,11,15,10,10,10,10,10,10,15,11,11,11,11,
+11,11,11,15,10,10,10,10,10,10,10,10,15,11,11,11,
+11,11,15,15,15,15,15,15,15,15,15,15,15,15,11,11,
+11,11,11,11,11,11,11,15,15,11,11,11,11,11,11,11,
+11,11,11,11,11,11,11,15,15,11,11,11,11,11,11,11,
+11,11,11,11,11,11,11,15,15,11,11,11,11,11,11,11,
+11,11,11,11,11,11,11,15,15,11,11,11,11,11,11,11,
+11,11,11,11,11,11,11,15,15,11,11,11,11,11,11,11,
+11,11,11,11,11,11,11,15,15,11,11,11,11,11,11,11,
+11,11,11,11,11,11,11,15,15,11,11,11,11,11,11,11,
+11,11,11,11,11,11,11,15,15,11,11,11,11,11,11,11,
 };
 
 int agua1 [16][16]={
@@ -3427,6 +3465,15 @@ switch (T)
 	}
       }
   break;
+  case 51:
+    for(y2=0;y2<16;y2++)
+      {
+      for(x2=0;x2<16;x2++)
+	{
+	putpixel(x2+i,y2+j,estre1[y2][x2]);
+	}
+      }
+  break;
   case 64:  //apartir de aqui comienzan los bloques tipo aire o fondo
     setfillstyle(1,0); //negro
     bar(i,j,i+15,j+15);  //15 es para que no borre un pixel de la siguiente figura
@@ -3444,6 +3491,13 @@ switch (T)
     bar(i,j,i+15,j+15);
   break;
   case 68:
+    for(y2=0;y2<16;y2++)
+      {
+      for(x2=0;x2<16;x2++)
+	{
+	putpixel(x2+i,y2+j,saltar0[y2][x2]);
+	}
+      }
   break;
   case 69:
   break;
@@ -4409,28 +4463,11 @@ bloque_caja0_vida()  //caja0 con vida
 }
 
 
-cielo_vida()  //cielo cyan con vida
+estrella_moneda()  //estrellas con moneda
 {
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==32)  //cielo cyan con vida
-    {
-    vy=-vy;
-    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja5
-    bloque(x-(x%16),y-(y%16),5);
-    c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
-    }
-  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==32 && x%16!=0)
-    {
-    vy=-vy;
-    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
-    bloque(x+16-(x%16),y-(y%16),5);
-    c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
-    }
-}
-
-
-cielo_moneda()  //cielo cyan con moneda
-{
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==33) //cielo cyan con moneda
+if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==51) //estrellas con moneda
+  {
+  if(vy<=0)
     {
     vy=-vy;
     puntos=puntos+40;
@@ -4439,7 +4476,10 @@ cielo_moneda()  //cielo cyan con moneda
     bloque(x-(x%16),y-(y%16),5);
     cmoneda((x-(x%16))/16,(y-16-(y%16))/16);
     }
-  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==33 && x%16!=0)
+  }
+else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==51 && x%16!=0)
+  {
+  if(vy<=0)
     {
     vy=-vy;
     puntos=puntos+40;
@@ -4448,12 +4488,67 @@ cielo_moneda()  //cielo cyan con moneda
     bloque(x+16-(x%16),y-(y%16),5);
     cmoneda((x+16-(x%16))/16,(y-16-(y%16))/16);
     }
+  }
+}
+
+
+cielo_vida()  //cielo cyan con vida
+{
+if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==32)  //cielo cyan con vida
+  {
+  if(vy<=0)
+    {
+    vy=-vy;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja5
+    bloque(x-(x%16),y-(y%16),5);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
+    }
+  }
+else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==32 && x%16!=0)
+  {
+  if(vy<=0)
+    {
+    vy=-vy;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
+    bloque(x+16-(x%16),y-(y%16),5);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
+    }
+  }
+}
+
+
+cielo_moneda()  //cielo cyan con moneda
+{
+if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==33) //cielo cyan con moneda
+  {
+  if(vy<=0)
+    {
+    vy=-vy;
+    puntos=puntos+40;
+    monedas++;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja5
+    bloque(x-(x%16),y-(y%16),5);
+    cmoneda((x-(x%16))/16,(y-16-(y%16))/16);
+    }
+  }
+else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==33 && x%16!=0)
+  {
+  if(vy<=0)
+    {
+    vy=-vy;
+    puntos=puntos+40;
+    monedas++;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
+    bloque(x+16-(x%16),y-(y%16),5);
+    cmoneda((x+16-(x%16))/16,(y-16-(y%16))/16);
+    }
+  }
 }
 
 
 cristal0_moneda()  //cristal con moneda
 {
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==16) //cielo cyan con moneda
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==16) //cristal con moneda
     {
     vy=-vy;
     puntos=puntos+40;
@@ -4476,7 +4571,7 @@ cristal0_moneda()  //cristal con moneda
 
 cristal4_moneda()  //cristal con moneda
 {
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==17) //cielo cyan con moneda
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==17) //cristal con moneda
     {
     vy=-vy;
     puntos=puntos+40;
@@ -4633,7 +4728,7 @@ bloque_nota0()  //nota0
 {
   if((x%16)!=0)  //nota0  (muy pesado)
     {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==40 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]==40)  //rebote por arriba
+    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==40 || paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]==40)  //rebote por arriba
       {
       vy=-6;
       if(tecla==18432)
@@ -4696,13 +4791,13 @@ bloque_nota0()  //nota0
 }
 
 
-/*bloque_saltar()  
+bloque_saltar()  //bloque para saltar muy alto
 {
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==xx)  //saltar
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==68 || paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==68)  //saltar
     {
-    vy=vy-6.0;
+    vy=vy-8.0;
     }
-}*/
+}
 
 
 bloque_agua()  
@@ -4831,6 +4926,33 @@ else
       {
       vx=vx+0.25;
       }
+    }
+  }
+}
+
+
+NITRO_mata()  //no toques la nitroglicerina
+{
+if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==48)
+  {
+  paisaje[(y-(y%16))/16][(x-(x%16))/16]=75;
+  bloque(x-(x%16),y-(y%16),75);
+  if(invensible==0)
+    {
+    estado--;
+    invensible=222;
+    t_huevo=tiempo-4;  //solo es necesario si su estado es 0
+    }
+  }
+else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==48 && x%16!=0)
+  {
+  paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=75;
+  bloque(x+16-(x%16),y-(y%16),75);
+  if(invensible==0)
+    {
+    estado--;
+    invensible=222;
+    t_huevo=tiempo-4;  //solo es necesario si su estado es 0
     }
   }
 }
@@ -5442,12 +5564,17 @@ while(ciclo<1)
 
 ////////interaccion de los bloques
 
-  if(x>=624) //si llega a la orilla derecha pasar ala siguiente escena
+  if(vidas==-1) //si perdiste
+    {
+    //perder();
+    vidas=4;
+    }
+  if(x>=624) //si llega a la orilla derecha pasar al siguiente mundo
     {
     ciclo=1;
     mundo++;
     }
-  else if(x<=0) //si llega a la orilla izquierda pasar a la anterior escena
+  else if(x<=0) //si llega a la orilla izquierda pasar al anterior mundo
     {
     ciclo=1;
     mundo--;
@@ -5620,6 +5747,8 @@ while(ciclo<1)
 
 ////////interaccion de los bloques
 
+  //bloque_saltar();  //bloque para saltar muy alto
+
   bloque_caja0_moneda();  //caja0 con moneda
 
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
@@ -5638,6 +5767,14 @@ while(ciclo<1)
 
   //bloque_cristal();  //cristal golpe por abajo
 
+  //bloque_moneda();  //monedas
+
+  //estrella_moneda();  //Estrella con moneda
+
+  //cielo_vida();  //cielo cyan con moneda
+
+  //cielo_moneda();  //cielo cyan con vida
+
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
     {
     y=y+16-(y%16);
@@ -5649,15 +5786,9 @@ while(ciclo<1)
     vy=-vy;
     }
 
-  //bloque_moneda();  //monedas
-
   //bloque_nota0();  //nota0
 
   //bloque_agua();
-
-  //cielo_vida();  //cielo cyan con moneda
-
-  //cielo_moneda();  //cielo cyan con vida
 
   bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
 
@@ -5666,6 +5797,8 @@ while(ciclo<1)
   tocar_champinon();  //tocar champiñon
 
   pisar_pato();  //pisar pato
+
+  //NITRO_mata();  //no toques la nitroglicerina
 
   pato_mata();  //pato mata cuando los tocas
 
@@ -5679,6 +5812,11 @@ while(ciclo<1)
 
   movpato();  //mover patos
 
+  if(monedas>=100) //por cada 100 monedas aumentar una vida
+    {
+    monedas=0;
+    vidas++;
+    }
   if(x>=624) //si llega a la orilla derecha pasar a la siguiente escena
     {
     ciclo=1;
@@ -5880,6 +6018,8 @@ while(ciclo<1)
 
 ////////interaccion de los bloques
 
+  //bloque_saltar();  //bloque para saltar muy alto
+
   //bloque_caja0_moneda();  //caja0 con moneda
 
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
@@ -5924,6 +6064,14 @@ while(ciclo<1)
 
   bloque_cristal();  //cristal golpe por abajo
 
+  bloque_moneda();  //monedas
+
+  //estrella_moneda();  //Estrella con moneda
+
+  //cielo_vida();  //cielo cyan con moneda
+
+  //cielo_moneda();  //cielo cyan con vida
+
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
     {
     y=y+16-(y%16);
@@ -5935,15 +6083,9 @@ while(ciclo<1)
     vy=-vy;
     }
 
-  bloque_moneda();  //monedas
-
   //bloque_nota0();  //nota0
 
   //bloque_agua();
-
-  //cielo_vida();  //cielo cyan con moneda
-
-  //cielo_moneda();  //cielo cyan con vida
 
   bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
 
@@ -5952,6 +6094,8 @@ while(ciclo<1)
   tocar_champinon();  //tocar champiñon
 
   pisar_pato();  //pisar pato
+
+  //NITRO_mata();  //no toques la nitroglicerina
 
   pato_mata();  //pato mata cuando los tocas
 
@@ -5965,6 +6109,11 @@ while(ciclo<1)
 
   movpato();  //mover patos
 
+  if(monedas>=100) //por cada 100 monedas aumentar una vida
+    {
+    monedas=0;
+    vidas++;
+    }
   if(x>=624) //si llega a la orilla derecha pasar a la siguiente escena
     {
     ciclo=1;
@@ -6022,7 +6171,7 @@ panel();
 r_champ();
 rmonedas();
 r_pato();
-c_pato(30,24);
+c_pato(12,22);
 
 while(ciclo<1)
   {
@@ -6162,8 +6311,20 @@ while(ciclo<1)
     vy=-4;
     }*/
 
+////////Especial  crear patos saliendo de la tuberia
+
+if(tiempo%22==0 && sec%22==0)
+  {
+  c_pato(18,22);
+  }
+if(tiempo%28==0 && sec%22==0)
+  {
+  c_pato(25,17);
+  }
 
 ////////interaccion de los bloques
+
+  //bloque_saltar();  //bloque para saltar muy alto
 
   //bloque_caja0_moneda();  //caja0 con moneda
 
@@ -6181,7 +6342,15 @@ while(ciclo<1)
 
   //cristal4_vida();  //cristal4 con vida
 
-  //bloque_cristal();  //cristal golpe por abajo
+  bloque_cristal();  //cristal golpe por abajo
+
+  bloque_moneda();  //monedas
+
+  //estrella_moneda();  //Estrella con moneda
+
+  cielo_vida();  //cielo cyan con moneda
+
+  cielo_moneda();  //cielo cyan con vida
 
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
     {
@@ -6194,15 +6363,9 @@ while(ciclo<1)
     vy=-vy;
     }
 
-  bloque_moneda();  //monedas
-
   //bloque_nota0();  //nota0
 
-  bloque_agua();
-
-  //cielo_vida();  //cielo cyan con moneda
-
-  //cielo_moneda();  //cielo cyan con vida
+  //bloque_agua();
 
   //bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
 
@@ -6211,6 +6374,8 @@ while(ciclo<1)
   tocar_champinon();  //tocar champiñon
 
   pisar_pato();  //pisar pato
+
+  //NITRO_mata();  //no toques la nitroglicerina
 
   pato_mata();  //pato mata cuando los tocas
 
@@ -6224,6 +6389,11 @@ while(ciclo<1)
 
   movpato();  //mover patos
 
+  if(monedas>=100) //por cada 100 monedas aumentar una vida
+    {
+    monedas=0;
+    vidas++;
+    }
   if(x>=624) //si llega a la orilla derecha pasar a la siguiente escena
     {
     ciclo=1;
@@ -6423,7 +6593,16 @@ while(ciclo<1)
     }*/
 
 
+////////Especial  crear patos saliendo de la tuberia
+
+if(tiempo%8==0 && sec%22==0)
+  {
+  c_pato(18,22);
+  }
+
 ////////interaccion de los bloques
+
+  bloque_saltar();  //bloque para saltar muy alto
 
   bloque_caja0_moneda();  //caja0 con moneda
 
@@ -6443,6 +6622,14 @@ while(ciclo<1)
 
   //bloque_cristal();  //cristal golpe por abajo
 
+  //bloque_moneda();  //monedas
+
+  //estrella_moneda();  //Estrella con moneda
+
+  //cielo_vida();  //cielo cyan con moneda
+
+  //cielo_moneda();  //cielo cyan con vida
+
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
     {
     y=y+16-(y%16);
@@ -6454,36 +6641,37 @@ while(ciclo<1)
     vy=-vy;
     }
 
-  //bloque_moneda();  //monedas
-
-  //bloque_nota0();  //nota0
+  bloque_nota0();  //nota0
 
   //bloque_agua();
-
-  //cielo_vida();  //cielo cyan con moneda
-
-  //cielo_moneda();  //cielo cyan con vida
 
   bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
 
   //bloque_cuadrado1();  //pisarlos pero no golpearlos  (blanco 15)
 
-  tocar_champinon();  //tocar champiñon
+  //tocar_champinon();  //tocar champiñon
 
   pisar_pato();  //pisar pato
+
+  //NITRO_mata();  //no toques la nitroglicerina
 
   pato_mata();  //pato mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
 
-  champifuera();  //verificar si un champiñon se salio de la pantalla
+  //champifuera();  //verificar si un champiñon se salio de la pantalla
 
-  movchamp();  //mover champiñones
+  //movchamp();  //mover champiñones
 
   mdemone();
 
   movpato();  //mover patos
 
+  if(monedas>=100) //por cada 100 monedas aumentar una vida
+    {
+    monedas=0;
+    vidas++;
+    }
   if(x>=624) //si llega a la orilla derecha pasar a la siguiente escena
     {
     ciclo=1;
@@ -6513,7 +6701,7 @@ while(ciclo<1)
   x=x+vx;
   y=y+vy;
 
-  dibchamp();  //dibujar champiñones
+  //dibchamp();  //dibujar champiñones
 
   dibpatos();  //dibujar patos
 
