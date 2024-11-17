@@ -2880,6 +2880,17 @@ int guionmedio [8][8]={
 {22,22,22,22,22,22,22,22},
 };
 
+int caracter_barra_sup [8][8]={
+{15,15,15,15,15,15,15,15},
+{15,15,15,15,15,15,15,15},
+{15,15,15,15,15,15,15,15},
+{15,15,15,15,15,15,15,15},
+{0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 },
+{22,22,22,22,22,22,22,22},
+{22,22,22,22,22,22,22,22},
+{22,22,22,22,22,22,22,22},
+};
+
 
 bloque(int i2, int j2, int T)  //crear bloque en posición x,y, y el tipo de bloque
 {
@@ -6248,6 +6259,22 @@ while(n<80  && txt[n]!='\0' && i2<632)
           putpixel(i+i2,j+j2,colorfondo);
           }
         if(guionmedio[j][i]==15)
+          {
+          putpixel(i+i2,j+j2,colortexto);
+          }
+        }
+      }
+    break;
+    case 'ß':
+    for(j=0;j<8;j++)
+      {
+      for(i=0;i<8;i++)
+        {
+        if(caracter_barra_sup[j][i]==0)
+          {
+          putpixel(i+i2,j+j2,colorfondo);
+          }
+        if(caracter_barra_sup[j][i]==15)
           {
           putpixel(i+i2,j+j2,colortexto);
           }

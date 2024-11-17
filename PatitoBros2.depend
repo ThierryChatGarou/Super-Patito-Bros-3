@@ -84,11 +84,11 @@
 	<dos.h>
 	"teclas.h"
 
-1577159068 source:c:\programasc\patito\patitobros2\mundo0.c
+1577190083 source:c:\programasc\patito\patitobros2\mundo0.c
 	<stdio.h>
 	"teclas.h"
 
-1419110872 source:c:\programasc\patito\patitobros2\patito1.c
+1577160473 source:c:\programasc\patito\patitobros2\patito1.c
 
 1419121084 source:c:\programasc\patito\patitobros2\patito2.c
 	<stdio.h>
@@ -103,7 +103,7 @@
 	"graphics.h"
 	"teclas.h"
 
-1577155027 source:c:\programasc\patito\patitobros2\patito.c
+1577160353 source:c:\programasc\patito\patitobros2\patito.c
 	<stdio.h>
 	"conio2.h"
 	<stdlib.h>

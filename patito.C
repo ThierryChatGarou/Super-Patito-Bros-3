@@ -3972,7 +3972,7 @@ void panelnumerico()
   gotoxy(15,29);
   printf("Puntos %li  ",puntos);
   gotoxy(40,28);
-  printf("monedas %d   ",monedas);
+  printf("Monedas %d   ",monedas);
   gotoxy(40,29);
   printf("Tiempo %d  ",tiempo);
 #else
@@ -3983,20 +3983,20 @@ void panelnumerico()
   sprintf(aux,"Vidas %d   ",vidas);
   texto(13*8,28*16,0,15,aux);
   //sprintf(aux,"ß");
-  sprintf(aux,"­");
+  sprintf(aux,"ß");
   for(n=0;n<volar;n++)
     {
     texto((24+n)*8,27*16,2,10,aux);
     }
   //sprintf(aux," ");
-  sprintf(aux,"­");
+  sprintf(aux,"ß");
   for(n=volar;n<22;n++)
     {
     texto((24+n)*8,27*16,4,13,aux);
     }
   sprintf(aux,"Puntos %li  ",puntos);
   texto(24*8,28*16,0,15,aux);
-  sprintf(aux,"monedas %d   ",monedas);
+  sprintf(aux,"Monedas %d   ",monedas);
   texto(49*8,27*16,0,15,aux);
   sprintf(aux,"Tiempo %d  ",tiempo);
   texto(49*8,28*16,0,15,aux);
@@ -4158,7 +4158,7 @@ int i,j,subiendo_o_bajando=0;
         if(nadando==1)
           {
           if(diry<0)
-	    {
+	        {
             if(pasoy==0)
               {
               for(j=0;j<16;j++)
@@ -4228,7 +4228,7 @@ int i,j,subiendo_o_bajando=0;
                 }
               }
             if(pasoy==2)
-	      {
+	          {
               for(j=0;j<16;j++)
                 {
                 for(i=0;i<16;i++)
@@ -4403,7 +4403,7 @@ int i,j,subiendo_o_bajando=0;
                     putpixel(x+i,y+j,pinguinorojo_bajando0[j][i]);
                     }
                   }
-		}
+	            }
               }
             if(pasoy==1)
               {

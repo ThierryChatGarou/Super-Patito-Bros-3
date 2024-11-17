@@ -7545,7 +7545,7 @@ return(0);
 escena_presentacion()
 {
 FILE *archivo;  //archivo de animacion
-int n,i,p_disparando,selector=0,selectory=320;
+int n,i,p_disparando,selector=0,selectory=320,selector_pressionado_a=0,selector_pressionado_b=0;
 char T;
 ciclo=0;
 nadando=0;
@@ -7629,14 +7629,30 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
     }
   if(tecla[KEY_CUR_ARRIBA])
     {
-	bloque(208,selectory,paisaje[(selectory-(selectory%16))/16][(208-(208%16))/16]);
-    selector--;
+    if(selector_pressionado_a==0)
+        {
+        selector_pressionado_a=1;
+        bloque(208,selectory,paisaje[(selectory-(selectory%16))/16][(208-(208%16))/16]);
+        selector--;
+        }
     }
+    else
+        {
+        selector_pressionado_a=0;
+        }
   if(tecla[KEY_CUR_ABAJO])
     {
-	bloque(208,selectory,paisaje[(selectory-(selectory%16))/16][(208-(208%16))/16]);
-    selector++;
+    if(selector_pressionado_b==0)
+        {
+        selector_pressionado_b=1;
+        bloque(208,selectory,paisaje[(selectory-(selectory%16))/16][(208-(208%16))/16]);
+        selector++;
+        }
     }
+    else
+        {
+        selector_pressionado_b=0;
+        }
 
   //controla conversion de bloques.
   if(t_moneda==tiempo)
