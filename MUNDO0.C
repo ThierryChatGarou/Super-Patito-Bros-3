@@ -1,4 +1,4 @@
-extern int ciclo,tiempo,x,y,o,p,invensible,dir,nivel,escena,vidas,mundo,monedas,estado,jugar,t_huevo,npato[8],sec,t_moneda,paisaje[30][40],niv1[30][40];
+extern int ciclo,tiempo,t_volar,retraso,x,y,o,p,invensible,dir,nivel,escena,vidas,mundo,monedas,estado,nadando,jugar,t_huevo,npato[8],sec,t_moneda,paisaje[30][40],niv1[30][40];
 extern float vx,vy;
 extern unsigned char tecla[128];
 
@@ -164,7 +164,7 @@ while(ciclo<1)
       abrircielo(3,2);
       abrircielo(3,3);
       x=16;
-      y=384;
+      y=336;
       vx=0;
       vy=0;
       tiempo=400;
@@ -175,15 +175,37 @@ while(ciclo<1)
   if(tecla[KEY_F4])  //Alt+F4 salir
     {
     DesinstalaTeclado();
+    closegraph();
     exit (2);
     }
   if(tecla[KEY_F1])  //F1 ayuda 
     {
-    ayuda();
+    //ayuda(); esta ayuda es dentro del juego
     }
-  if(tecla[KEY_ESC])  //esc 27
+  if(tecla[KEY_F2])  //editor de nivel
     {
+    editornivel();
+    abrir(0,-88);  //para recargar el mundo
+    fondomundo();
+    }
+  if(tecla[KEY_F3])
+    {
+    //presentacion();
     //menu();
+    }
+  if(tecla[KEY_NUM_MAS])
+    {
+    if(retraso>1)
+      {
+      retraso--;
+      }
+    }
+  if(tecla[KEY_NUM_MENOS])
+    {
+    if(retraso<48)
+      {
+      retraso++;
+      }
     }
   if(vx>4)  //limite de velocidad
     {
@@ -228,7 +250,7 @@ while(ciclo<1)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(20);
+  delay(retraso);
 }
 return(0);
 }
@@ -243,7 +265,7 @@ return(0);
 escena00()
 {
 ciclo=0;
-//invensible=0;
+nadando=0;
 act_fondo(0);
 act_cielo(0);
 fondo();
@@ -258,10 +280,10 @@ r_mina();
 r_disparo();
 r_explosionc();
 r_cristalroto();
+r_bala();
+r_tortuga();
 c_pato(4,24);
 c_pato(22,24);
-//c_mina(20,10);
-//c_peligro(20,18);
 
 while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los movimientos existentes, es decir un cambio de posicion de cada objeto
   {
@@ -276,11 +298,12 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_peligro();  //guardar las coordenadas anteriores de los patos saltadores seguidores
   //posicion_mina();  //guardar las coordenadas anteriores de las minas
   posicion_disparo();  //guardar las coordenadas anteriores de los disparos
+  //posicion_bala();  //guardar las coordenadas anteriores de las balas
+  //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
 
 ////////interaccion de los bloques
-  //bloque_saltar();  //bloque para saltar muy alto
   bloque_caja0_moneda();  //caja0 con moneda
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
   bloque_caja0_champinon();  //caja0 con champiñon
@@ -290,8 +313,8 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //cristal0_vida();  //cristal0 con vida
   //cristal4_vida();  //cristal4 con vida
   //bloque_cristal();  //cristal golpe por abajo
-  bloque_moneda0();  //monedas
-  bloque_moneda4();  //monedas
+  //bloque_moneda0();  //monedas
+  //bloque_moneda4();  //monedas
   //estrella_moneda();  //Estrella con moneda
   //cielo_vida();  //cielo cyan con moneda
   //cielo_moneda();  //cielo cyan con vida
@@ -302,6 +325,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 ////////interaccion de los bloques
   //bloque_poder0();  //poder0
   //bloque_nota0();  //nota0
+  //bloque_saltar();  //bloque para saltar muy alto
   //cielo_abajo();  //flujo de aire hacia abajo
   //cielo_arriba();  //flujo de aire hacia arriba
   //cielo_izquierda();  //flujo de aire hacia la izquierda
@@ -321,15 +345,19 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //pisar_seguidor();  //pisar seguidor
   //pisar_salta();  //pisar saltador
   //pisar_peligro();  //pisar peligroso
+  //pisar_bala();  //pisar las balas
+  //pisar_tortuga();  //pisar tortuga
 
   disparo_mata();  //Disparos que matan patos
-  NITRO_mata();  //no toques la nitroglicerina
+  //NITRO_mata();  //no toques la nitroglicerina
   //fuego4_mata();  //no teques el fuego
   pato_mata();  //pato mata cuando los tocas
   //seguidor_mata();  //seguidor mata cuando los tocas
   //salta_mata();  //saltador mata cuando los tocas
   //peligro_mata();  //peligroso mata cuando los tocas
   //mina_mata(); //mina mata
+  //bala_mata();  //las balas matan
+  //tortuga_mata();  //tortuga mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
   //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
@@ -337,54 +365,24 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //peligrofuera();  //verificar si un peligroso se salio de la pantalla
   champifuera();  //verificar si un champiñon se salio de la pantalla
   disparofuera();  //verificar si un disparo se salio de la pantalla
+  //balafuera();  //verificar si una bala se salio de la pantalla
+  //tortugafuera();  //verificar si una tortuga se salio de la pantalla
 
   movchamp();  //mover champiñones
-  mdemone();
+  mdemone();  //saltar monedas, generalmente es utilizado
   movpato();  //mover patos
   //movseguidor();  //mover seguidor
   //movsalta();  //mover saltador
   //movpeligro();  //mover peligroso
   //movmina();  //mover las minas
   movdisparo();  //mover disparo
+  //movbala();  //mover las balas
+  //movtortuga();  //mover tortugas
 
-////////teclado
+////////teclado y otros
   teclado();
 
-  if(monedas>=100) //por cada 100 monedas aumentar una vida
-    {
-    monedas=0;
-    vidas++;
-    }
-  if(x>=624) //si llega a la orilla derecha pasar a la siguiente escena
-    {
-    ciclo=1;
-    escena++;
-    x=2;
-    }
-  else if(x<=0) //si llega a la orilla izquierda pasar a la anterior escena
-    {
-    ciclo=1;
-    escena--;
-    x=608;
-    }
-  else if(y>=464) //caida
-    {
-    ciclo=1;
-    estado=1;
-    vidas--;
-    //t_huevo=tiempo-4; //parece no ser necesario
-    jugar=0;
-    }
-  else if(tiempo==0) //tiempo terminado
-    {
-    estado=0;
-    t_huevo=tiempo-4;
-    }
-  if(t_moneda==tiempo)
-    {
-    convert();
-    t_moneda=-88;
-    }
+  control();  //controla cambios de escenario, monedas, tiempo, conversion de bloques y vuelo.
 
 ////////Conviertiendo velocidad en posicion personaje principal
   x=x+vx;
@@ -399,6 +397,8 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //refpeligro();
   //refmina();
   refdisparo();
+  //refbala();
+  //reftortuga();
 
 ////////dibujando personajes, enemigos, paneles y marcadores
   verestado();  //verificar el estado del pato y dibujarlo segun el estado, personaje principal
@@ -409,14 +409,17 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //dibpeligro();  //dibujar peligroso
   //dibmina();  //dibujar minas
   dibdisparo();  //dibujar disparo
-  dibexplosion_chica();  //para dibujar explosiones chicas, activar junto con minas, TNTs y NITROS
-  dibcristalroto();
+  //dibexplosion_chica();  //para dibujar explosiones chicas, activar junto con minas, TNTs y NITROS
+  //dibcristalroto();  //efectos al romper un cristal
+  dibgolpe();  //utilizado para los disparos, generalmente muy utilizado
+  //dibbala();  //dibujar balas de cañones
+  //dibtortugas();  //dibujar tortugas
 
   segundos();  //realizar un conteo del tiempo del juego
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(20);
+  delay(retraso);
 
 }
 guardar_fondo(0);
@@ -427,7 +430,7 @@ return(0);
 escena01()  /////////////realiza los cambios peligrosos aqui, si resultan exitosos modifica la primera escena
 {
 ciclo=0;
-//invensible=0;
+nadando=0;
 act_fondo(1);
 act_cielo(1);
 fondo();
@@ -442,7 +445,9 @@ r_mina();
 r_disparo();
 r_explosionc();
 r_cristalroto();
-c_pato(16,23);
+r_bala();
+r_tortuga();
+c_pato(14,23);
 npato[0]=-1;
 
 while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los movimientos existentes, es decir un cambio de posicion de cada objeto
@@ -458,11 +463,12 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_peligro();  //guardar las coordenadas anteriores de los patos saltadores seguidores
   //posicion_mina();  //guardar las coordenadas anteriores de las minas
   posicion_disparo();  //guardar las coordenadas anteriores de los disparos
+  //posicion_bala();  //guardar las coordenadas anteriores de las balas
+  //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
 
 ////////interaccion de los bloques
-  //bloque_saltar();  //bloque para saltar muy alto
   //bloque_caja0_moneda();  //caja0 con moneda
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
   bloque_caja0_champinon();  //caja0 con champiñon
@@ -500,7 +506,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //cristal4_vida();  //cristal4 con vida
   bloque_cristal();  //cristal golpe por abajo
   bloque_moneda0();  //monedas
-  bloque_moneda4();  //monedas
+  //bloque_moneda4();  //monedas
   //estrella_moneda();  //Estrella con moneda
   //cielo_vida();  //cielo cyan con moneda
   //cielo_moneda();  //cielo cyan con vida
@@ -511,7 +517,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 ////////interaccion de los bloques
   bloque_poder0();  //poder0
   //bloque_nota0();  //nota0
-
+  //bloque_saltar();  //bloque para saltar muy alto
   //cielo_abajo();  //flujo de aire hacia abajo
   //cielo_arriba();  //flujo de aire hacia arriba
   //cielo_izquierda();  //flujo de aire hacia la izquierda
@@ -531,6 +537,8 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //pisar_seguidor();  //pisar seguidor
   //pisar_salta();  //pisar saltador
   //pisar_peligro();  //pisar peligroso
+  //pisar_bala();  //pisar las balas
+  //pisar_tortuga();  //pisar tortuga
 
   disparo_mata();  //Disparos que matan patos
   //NITRO_mata();  //no toques la nitroglicerina
@@ -540,6 +548,8 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //salta_mata();  //saltador mata cuando los tocas
   //peligro_mata();  //peligroso mata cuando los tocas
   //mina_mata(); //mina mata
+  //bala_mata();  //las balas matan
+  //tortuga_mata();  //tortuga mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
   //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
@@ -547,54 +557,24 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //peligrofuera();  //verificar si un peligroso se salio de la pantalla
   champifuera();  //verificar si un champiñon se salio de la pantalla
   disparofuera();  //verificar si un disparo se salio de la pantalla
+  //balafuera();  //verificar si una bala se salio de la pantalla
+  //tortugafuera();  //verificar si una tortuga se salio de la pantalla
 
   movchamp();  //mover champiñones
-  mdemone();
+  //mdemone();  //saltar monedas, generalmente es utilizado
   movpato();  //mover patos
   //movseguidor();  //mover seguidor
   //movsalta();  //mover saltador
   //movpeligro();  //mover peligroso
   //movmina();  //mover las minas
   movdisparo();  //mover disparo
+  //movbala();  //mover las balas
+  //movtortuga();  //mover tortugas
 
-////////teclado
+////////teclado y otros
   teclado();
 
-  if(monedas>=100) //por cada 100 monedas aumentar una vida
-    {
-    monedas=0;
-    vidas++;
-    }
-  if(x>=624) //si llega a la orilla derecha pasar a la siguiente escena
-    {
-    ciclo=1;
-    escena++;
-    x=2;
-    }
-  else if(x<=0) //si llega a la orilla izquierda pasar a la anterior escena
-    {
-    ciclo=1;
-    escena--;
-    x=608;
-    }
-  else if(y>=464) //caida
-    {
-    ciclo=1;
-    estado=1;
-    vidas--;
-    //t_huevo=tiempo-4; //parece no ser necesario
-    jugar=0;
-    }
-  else if(tiempo==0) //tiempo terminado
-    {
-    estado=0;
-    t_huevo=tiempo-4;
-    }
-  if(t_moneda==tiempo)
-    {
-    convert();
-    t_moneda=-88;
-    }
+  control();  //controla cambios de escenario, monedas, tiempo, conversion de bloques y vuelo.
 
 ////////Conviertiendo velocidad en posicion personaje principal
   x=x+vx;
@@ -609,6 +589,8 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //refpeligro();
   //refmina();
   refdisparo();
+  //refbala();
+  //reftortuga();
 
 ////////dibujando personajes, enemigos, paneles y marcadores
   verestado();  //verificar el estado del pato y dibujarlo segun el estado, personaje principal
@@ -620,14 +602,17 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //dibmina();  //dibujar minas
   dibdisparo();  //dibujar disparo
   //dibexplosion_chica();  //para dibujar explosiones chicas, activar junto con minas, TNTs y NITROS
-  dibcristalroto();
-
+  dibcristalroto();  //efectos al romper un cristal
+  dibgolpe();  //utilizado para los disparos, generalmente muy utilizado
+  //dibbala();  //dibujar balas de cañones
+  //dibtortugas();  //dibujar tortugas
 
   segundos();  //realizar un conteo del tiempo del juego
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(20);
+  delay(retraso);
+
 }
 guardar_fondo(1);
 return(0);
@@ -637,7 +622,7 @@ return(0);
 escena02()
 {
 ciclo=0;
-//invensible=0;
+nadando=0;
 act_fondo(2);
 act_cielo(2);
 fondo();
@@ -651,6 +636,9 @@ r_peligro();
 r_mina();
 r_disparo();
 r_explosionc();
+r_cristalroto();
+r_bala();
+r_tortuga();
 c_pato(13,24);
 
 while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los movimientos existentes, es decir un cambio de posicion de cada objeto
@@ -666,11 +654,12 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_peligro();  //guardar las coordenadas anteriores de los patos saltadores seguidores
   //posicion_mina();  //guardar las coordenadas anteriores de las minas
   posicion_disparo();  //guardar las coordenadas anteriores de los disparos
+  //posicion_bala();  //guardar las coordenadas anteriores de las balas
+  //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
 
 ////////interaccion de los bloques
-  //bloque_saltar();  //bloque para saltar muy alto
   //bloque_caja0_moneda();  //caja0 con moneda
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
   //bloque_caja0_champinon();  //caja0 con champiñon
@@ -687,7 +676,6 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   cielo_moneda();  //cielo cyan con vida
 
 ////////Especial  crear patos saliendo de la tuberia
-
 if(tiempo%22==0 && sec%22==0)
   {
   c_pato(18,22);
@@ -698,7 +686,7 @@ if(tiempo%28==0 && sec%22==0)
   }
 
 ////////especial para entrar a tuberia en 25,17 y 26,17
-  if(tecla[KEY_CUR_ARRIBA])  //arriba
+  if(tecla[KEY_ALT] || tecla[KEY_CUR_ARRIBA])  //arriba
     {
     if(((y-(y%16))/16 == 17) && ((x-(x%16))/16 == 26))
       {
@@ -718,6 +706,7 @@ if(tiempo%28==0 && sec%22==0)
 ////////interaccion de los bloques
   //bloque_poder0();  //poder0
   //bloque_nota0();  //nota0
+  //bloque_saltar();  //bloque para saltar muy alto
   //cielo_abajo();  //flujo de aire hacia abajo
   //cielo_arriba();  //flujo de aire hacia arriba
   //cielo_izquierda();  //flujo de aire hacia la izquierda
@@ -737,6 +726,8 @@ if(tiempo%28==0 && sec%22==0)
   //pisar_seguidor();  //pisar seguidor
   //pisar_salta();  //pisar saltador
   //pisar_peligro();  //pisar peligroso
+  //pisar_bala();  //pisar las balas
+  //pisar_tortuga();  //pisar tortuga
 
   disparo_mata();  //Disparos que matan patos
   //NITRO_mata();  //no toques la nitroglicerina
@@ -746,6 +737,8 @@ if(tiempo%28==0 && sec%22==0)
   //salta_mata();  //saltador mata cuando los tocas
   //peligro_mata();  //peligroso mata cuando los tocas
   //mina_mata(); //mina mata
+  //bala_mata();  //las balas matan
+  //tortuga_mata();  //tortuga mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
   //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
@@ -753,54 +746,24 @@ if(tiempo%28==0 && sec%22==0)
   //peligrofuera();  //verificar si un peligroso se salio de la pantalla
   champifuera();  //verificar si un champiñon se salio de la pantalla
   disparofuera();  //verificar si un disparo se salio de la pantalla
+  //balafuera();  //verificar si una bala se salio de la pantalla
+  //tortugafuera();  //verificar si una tortuga se salio de la pantalla
 
   movchamp();  //mover champiñones
-  mdemone();
+  mdemone();  //saltar monedas, generalmente es utilizado
   movpato();  //mover patos
   //movseguidor();  //mover seguidor
   //movsalta();  //mover saltador
   //movpeligro();  //mover peligroso
   //movmina();  //mover las minas
   movdisparo();  //mover disparo
+  //movbala();  //mover las balas
+  //movtortuga();  //mover tortugas
 
-////////teclado
+////////teclado y otros
   teclado();
 
-  if(monedas>=100) //por cada 100 monedas aumentar una vida
-    {
-    monedas=0;
-    vidas++;
-    }
-  if(x>=624) //si llega a la orilla derecha pasar a la siguiente escena
-    {
-    ciclo=1;
-    escena++;
-    x=2;
-    }
-  else if(x<=0) //si llega a la orilla izquierda pasar a la anterior escena
-    {
-    ciclo=1;
-    escena--;
-    x=608;
-    }
-  else if(y>=464) //caida
-    {
-    ciclo=1;
-    estado=1;
-    vidas--;
-    //t_huevo=tiempo-4; //parece no ser necesario
-    jugar=0;
-    }
-  else if(tiempo==0) //tiempo terminado
-    {
-    estado=0;
-    t_huevo=tiempo-4;
-    }
-  if(t_moneda==tiempo)
-    {
-    convert();
-    t_moneda=-88;
-    }
+  control();  //controla cambios de escenario, monedas, tiempo, conversion de bloques y vuelo.
 
 ////////Conviertiendo velocidad en posicion personaje principal
   x=x+vx;
@@ -815,6 +778,8 @@ if(tiempo%28==0 && sec%22==0)
   //refpeligro();
   //refmina();
   refdisparo();
+  //refbala();
+  //reftortuga();
 
 ////////dibujando personajes, enemigos, paneles y marcadores
   verestado();  //verificar el estado del pato y dibujarlo segun el estado, personaje principal
@@ -826,12 +791,16 @@ if(tiempo%28==0 && sec%22==0)
   //dibmina();  //dibujar minas
   dibdisparo();  //dibujar disparo
   //dibexplosion_chica();  //para dibujar explosiones chicas, activar junto con minas, TNTs y NITROS
+  dibcristalroto();  //efectos al romper un cristal
+  dibgolpe();  //utilizado para los disparos, generalmente muy utilizado
+  //dibbala();  //dibujar balas de cañones
+  //dibtortugas();  //dibujar tortugas
 
   segundos();  //realizar un conteo del tiempo del juego
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(20);
+  delay(retraso);
 
 }
 guardar_fondo(2);
@@ -842,7 +811,7 @@ return(0);
 escena03()
 {
 ciclo=0;
-//invensible=0;
+nadando=0;
 act_fondo(3);
 act_cielo(3);
 fondo();
@@ -856,6 +825,9 @@ r_peligro();
 r_mina();
 r_disparo();
 r_explosionc();
+r_cristalroto();
+r_bala();
+r_tortuga();
 c_pato(4,24);
 c_salta(15,24);
 c_pato(18,24);
@@ -873,11 +845,12 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_peligro();  //guardar las coordenadas anteriores de los patos saltadores seguidores
   //posicion_mina();  //guardar las coordenadas anteriores de las minas
   posicion_disparo();  //guardar las coordenadas anteriores de los disparos
+  //posicion_bala();  //guardar las coordenadas anteriores de las balas
+  //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
 
 ////////interaccion de los bloques
-  bloque_saltar();  //bloque para saltar muy alto
   //bloque_caja0_moneda();  //caja0 con moneda
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
   //bloque_caja0_champinon();  //caja0 con champiñon
@@ -894,7 +867,6 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //cielo_moneda();  //cielo cyan con vida
 
 ////////Especial  crear patos saliendo de la tuberia
-
 if(tiempo%8==0 && sec%22==0)
   {
   c_pato(18,22);
@@ -906,6 +878,7 @@ if(tiempo%8==0 && sec%22==0)
 ////////interaccion de los bloques
   //bloque_poder0();  //poder0
   bloque_nota0();  //nota0
+  bloque_saltar();  //bloque para saltar muy alto
   //cielo_abajo();  //flujo de aire hacia abajo
   //cielo_arriba();  //flujo de aire hacia arriba
   //cielo_izquierda();  //flujo de aire hacia la izquierda
@@ -925,6 +898,8 @@ if(tiempo%8==0 && sec%22==0)
   //pisar_seguidor();  //pisar seguidor
   pisar_salta();  //pisar saltador
   //pisar_peligro();  //pisar peligroso
+  //pisar_bala();  //pisar las balas
+  //pisar_tortuga();  //pisar tortuga
 
   disparo_mata();  //Disparos que matan patos
   //NITRO_mata();  //no toques la nitroglicerina
@@ -934,6 +909,8 @@ if(tiempo%8==0 && sec%22==0)
   salta_mata();  //saltador mata cuando los tocas
   //peligro_mata();  //peligroso mata cuando los tocas
   //mina_mata(); //mina mata
+  //bala_mata();  //las balas matan
+  //tortuga_mata();  //tortuga mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
   //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
@@ -941,54 +918,24 @@ if(tiempo%8==0 && sec%22==0)
   //peligrofuera();  //verificar si un peligroso se salio de la pantalla
   //champifuera();  //verificar si un champiñon se salio de la pantalla
   disparofuera();  //verificar si un disparo se salio de la pantalla
+  //balafuera();  //verificar si una bala se salio de la pantalla
+  //tortugafuera();  //verificar si una tortuga se salio de la pantalla
 
   //movchamp();  //mover champiñones
-  //mdemone();
+  //mdemone();  //saltar monedas, generalmente es utilizado
   movpato();  //mover patos
   //movseguidor();  //mover seguidor
   movsalta();  //mover saltador
   //movpeligro();  //mover peligroso
   //movmina();  //mover las minas
   movdisparo();  //mover disparo
+  //movbala();  //mover las balas
+  //movtortuga();  //mover tortugas
 
-////////teclado
+////////teclado y otros
   teclado();
 
-  if(monedas>=100) //por cada 100 monedas aumentar una vida
-    {
-    monedas=0;
-    vidas++;
-    }
-  if(x>=624) //si llega a la orilla derecha pasar a la siguiente escena
-    {
-    ciclo=1;
-    escena++;
-    x=2;
-    }
-  else if(x<=0) //si llega a la orilla izquierda pasar a la anterior escena
-    {
-    ciclo=1;
-    escena--;
-    x=608;
-    }
-  else if(y>=464) //caida
-    {
-    ciclo=1;
-    estado=1;
-    vidas--;
-    //t_huevo=tiempo-4; //parece no ser necesario
-    jugar=0;
-    }
-  else if(tiempo==0) //tiempo terminado
-    {
-    estado=0;
-    t_huevo=tiempo-4;
-    }
-  if(t_moneda==tiempo)
-    {
-    convert();
-    t_moneda=-88;
-    }
+  control();  //controla cambios de escenario, monedas, tiempo, conversion de bloques y vuelo.
 
 ////////Conviertiendo velocidad en posicion personaje principal
   x=x+vx;
@@ -1003,6 +950,8 @@ if(tiempo%8==0 && sec%22==0)
   //refpeligro();
   //refmina();
   refdisparo();
+  //refbala();
+  //reftortuga();
 
 ////////dibujando personajes, enemigos, paneles y marcadores
   verestado();  //verificar el estado del pato y dibujarlo segun el estado, personaje principal
@@ -1014,12 +963,16 @@ if(tiempo%8==0 && sec%22==0)
   //dibmina();  //dibujar minas
   dibdisparo();  //dibujar disparo
   //dibexplosion_chica();  //para dibujar explosiones chicas, activar junto con minas, TNTs y NITROS
+  //dibcristalroto();  //efectos al romper un cristal
+  dibgolpe();  //utilizado para los disparos, generalmente muy utilizado
+  //dibbala();  //dibujar balas de cañones
+  //dibtortugas();  //dibujar tortugas
 
   segundos();  //realizar un conteo del tiempo del juego
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(20);
+  delay(retraso);
 
 }
 guardar_fondo(3);
@@ -1036,8 +989,9 @@ return(0);
 escena10()
 {
 ciclo=0;
-//invensible=0;
+nadando=0;
 act_fondo(0);
+act_cielo(0);
 fondo();
 panel();
 r_champ();
@@ -1046,68 +1000,48 @@ r_pato();
 r_seguidor();
 r_salta();
 r_peligro();
+r_mina();
 r_disparo();
+r_explosionc();
+r_cristalroto();
+r_bala();
+r_tortuga();
 
-while(ciclo<1)
+while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los movimientos existentes, es decir un cambio de posicion de cada objeto
   {
+////////Guardando las coordenadas anteriores
+  o=x;
+  p=y;
 
-////////operaciones del los bloques
+  posicion_champ();  //guardar las coordenadas anteriores de los champiñones
+  posicion_pato();  //guardar las coordenadas anteriores de los patos
+  //posicion_seguidor();  //guardar las coordenadas anteriores de los patos seguidores
+  //posicion_salta();  //guardar las coordenadas anteriores de los patos saltadores
+  //posicion_peligro();  //guardar las coordenadas anteriores de los patos saltadores seguidores
+  //posicion_mina();  //guardar las coordenadas anteriores de las minas
+  posicion_disparo();  //guardar las coordenadas anteriores de los disparos
+  //posicion_bala();  //guardar las coordenadas anteriores de las balas
+  //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
-  tinvensible();
-  refbloques();  //actualizar bloques
-  refchamp();
-  refpato();
-  //refseguidor();
-  //refsalta();
-  //refpeligro();
-  refdisparo();
-
-  if((x%16)!=0)
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-  else
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-
-  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque derecho   nota: (y%16)==0 es para que si se golpea un bloque por abajo no se cumpla
-    {
-    vx=0.0;
-    x=x-(x%16);
-    }
-  else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque izquierdo
-    {
-    vx=0.0;
-    x=x+16-(x%16);
-    }
+  tinvensible();  //tiempo de inmunidad
 
 ////////interaccion de los bloques
-
-  //bloque_poder0();  //poder0
-
-////////teclado
-
-  teclado();
+  //bloque_caja0_moneda();  //caja0 con moneda
+  //bloque_caja0_10monedas();  //caja0 con 10 momedas
+  bloque_caja0_champinon();  //caja0 con champiñon
+  //bloque_caja0_vida();  //caja0 con vida
+  //cristal0_moneda();  //cristal0 con moneda
+  //cristal4_moneda();  //cristal4 con moneda
+  //cristal0_vida();  //cristal0 con vida
+  //cristal4_vida();  //cristal4 con vida
+  //bloque_cristal();  //cristal golpe por abajo
+  //bloque_moneda0();  //monedas
+  //bloque_moneda4();  //monedas
+  //estrella_moneda();  //Estrella con moneda
+  //cielo_vida();  //cielo cyan con moneda
+  //cielo_moneda();  //cielo cyan con vida
 
 ////////Especial  crear patos saliendo de la tuberia
-
 if((x-(x%16))/16 < 27)  //aparecer patos segun la posicion del patito
   {
   if(tiempo%8==0 && sec%22==0)
@@ -1123,176 +1057,107 @@ else
     }
 }
 
+////////funcion para deteccion de los bloques solidos
+  bloques_solidos();
+
 ////////interaccion de los bloques
-
-  bloque_saltar();  //bloque para saltar muy alto
-
-  //cielo_abajo();  //flujo de aire hacia abajo
-
-  //cielo_arriba();  //flujo de aire hacia arriba
-
-  //cielo_izquierda();  //flujo de aire hacia la izquierda
-
-  //cielo_derecha();  //flujo de aire hacia la derecha
-
-  //agua_abajo();  //flujo de agua hacia abajo
-
-  //agua_arriba();  //flujo de agua hacia arriba
-
-  //agua_izquierda();  //flujo de agua hacia izquierda
-
-  //agua_derecha();  //flujo de agua hacia derecha
-
-  //bloque_caja0_moneda();  //caja0 con moneda
-
-  //bloque_caja0_10monedas();  //caja0 con 10 momedas
-
-  bloque_caja0_champinon();  //caja0 con champiñon
-
-  //bloque_caja0_vida();  //caja0 con vida
-
-  //cristal0_moneda();  //cristal0 con moneda
-
-  //cristal4_moneda();  //cristal4 con moneda
-
-  //cristal0_vida();  //cristal0 con vida
-
-  //cristal4_vida();  //cristal4 con vida
-
-  //bloque_cristal();  //cristal golpe por abajo
-
-  //bloque_moneda0();  //monedas
-
-  //bloque_moneda4();  //monedas
-
-  //estrella_moneda();  //Estrella con moneda
-
-  //cielo_vida();  //cielo cyan con moneda
-
-  //cielo_moneda();  //cielo cyan con vida
-
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
-  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32) && x%16!=0)
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
-
+  //bloque_poder0();  //poder0
   //bloque_nota0();  //nota0
-
+  bloque_saltar();  //bloque para saltar muy alto
+  //cielo_abajo();  //flujo de aire hacia abajo
+  //cielo_arriba();  //flujo de aire hacia arriba
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+  //cielo_derecha();  //flujo de aire hacia la derecha
+  //agua();  //habilitar si se usa cualquier tipo de bloque con agua
+  //agua_abajo();  //flujo de agua hacia abajo
+  //agua_arriba();  //flujo de agua hacia arriba
+  //agua_izquierda();  //flujo de agua hacia izquierda
+  //agua_derecha();  //flujo de agua hacia derecha
   //bloque_agua();
-
-  bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
-
+  //bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
   //bloque_cuadrado1();  //pisarlos pero no golpearlos  (blanco 15)
 
+////////funciones para enemigos y peligros
   tocar_champinon();  //tocar champiñon
-
   pisar_pato();  //pisar pato
-
   //pisar_seguidor();  //pisar seguidor
-
   //pisar_salta();  //pisar saltador
-
   //pisar_peligro();  //pisar peligroso
+  //pisar_bala();  //pisar las balas
+  //pisar_tortuga();  //pisar tortuga
 
   disparo_mata();  //Disparos que matan patos
-
   //NITRO_mata();  //no toques la nitroglicerina
-
   //fuego4_mata();  //no teques el fuego
-
   pato_mata();  //pato mata cuando los tocas
-
   //seguidor_mata();  //seguidor mata cuando los tocas
-
   //salta_mata();  //saltador mata cuando los tocas
-
   //peligro_mata();  //peligroso mata cuando los tocas
+  //mina_mata(); //mina mata
+  //bala_mata();  //las balas matan
+  //tortuga_mata();  //tortuga mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
-
   //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
-
   //saltafuera();  //verificar si un saltador se salio de la pantalla
-
   //peligrofuera();  //verificar si un peligroso se salio de la pantalla
-
   champifuera();  //verificar si un champiñon se salio de la pantalla
-
   disparofuera();  //verificar si un disparo se salio de la pantalla
+  //balafuera();  //verificar si una bala se salio de la pantalla
+  //tortugafuera();  //verificar si una tortuga se salio de la pantalla
 
   movchamp();  //mover champiñones
-
-  mdemone();
-
+  //mdemone();  //saltar monedas, generalmente es utilizado
   movpato();  //mover patos
-
   //movseguidor();  //mover seguidor
-
   //movsalta();  //mover saltador
-
   //movpeligro();  //mover peligroso
-
+  //movmina();  //mover las minas
   movdisparo();  //mover disparo
+  //movbala();  //mover las balas
+  //movtortuga();  //mover tortugas
 
-  if(monedas>=100) //por cada 100 monedas aumentar una vida
-    {
-    monedas=0;
-    vidas++;
-    }
-  if(x>=624) //si llega a la orilla derecha pasar a la siguiente escena
-    {
-    ciclo=1;
-    escena++;
-    x=2;
-    }
-  else if(x<=0) //si llega a la orilla izquierda pasar a la anterior escena
-    {
-    ciclo=1;
-    escena--;
-    x=608;
-    }
-  else if(y>=464) //caida
-    {
-    ciclo=1;
-    estado=1;
-    vidas--;
-    //t_huevo=tiempo-4; //parece no ser necesario
-    jugar=0;
-    }
-  else if(tiempo==0) //tiempo terminado
-    {
-    estado=0;
-    t_huevo=tiempo-4;
-    }
+////////teclado y otros
+  teclado();
 
+  control();  //controla cambios de escenario, monedas, tiempo, conversion de bloques y vuelo.
+
+////////Conviertiendo velocidad en posicion personaje principal
   x=x+vx;
   y=y+vy;
 
+////////operaciones del los bloques, borrando dibujos viejos redibujando el fondo
+  refbloques();  //dibujar el fondo sobre el personaje principal
+  refchamp();
+  refpato();
+  //refseguidor();
+  //refsalta();
+  //refpeligro();
+  //refmina();
+  refdisparo();
+  //refbala();
+  //reftortuga();
+
+////////dibujando personajes, enemigos, paneles y marcadores
+  verestado();  //verificar el estado del pato y dibujarlo segun el estado, personaje principal
   dibchamp();  //dibujar champiñones
-
   dibpatos();  //dibujar patos
-
   //dibseguidor();  //dibujar seguidor
-
   //dibsalta();  //dibujar saltador
-
   //dibpeligro();  //dibujar peligroso
-
+  //dibmina();  //dibujar minas
   dibdisparo();  //dibujar disparo
+  //dibexplosion_chica();  //para dibujar explosiones chicas, activar junto con minas, TNTs y NITROS
+  //dibcristalroto();  //efectos al romper un cristal
+  dibgolpe();  //utilizado para los disparos, generalmente muy utilizado
+  //dibbala();  //dibujar balas de cañones
+  //dibtortugas();  //dibujar tortugas
 
   segundos();  //realizar un conteo del tiempo del juego
 
-  verestado();  //verificar el estado de pato y dibujarlo segun el estado
-
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(20);
+  delay(retraso);
 
 }
 guardar_fondo(0);
@@ -1303,8 +1168,9 @@ return(0);
 escena11()
 {
 ciclo=0;
-//invensible=0;
+nadando=0;
 act_fondo(1);
+act_cielo(1);
 fondo();
 panel();
 r_champ();
@@ -1313,94 +1179,37 @@ r_pato();
 r_seguidor();
 r_salta();
 r_peligro();
+r_mina();
 r_disparo();
+r_explosionc();
+r_cristalroto();
+r_bala();
+r_tortuga();
 c_pato(24,23);
 npato[0]=-1;
 
-while(ciclo<1)
+while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los movimientos existentes, es decir un cambio de posicion de cada objeto
   {
+////////Guardando las coordenadas anteriores
+  o=x;
+  p=y;
 
-////////operaciones del los bloques
+  posicion_champ();  //guardar las coordenadas anteriores de los champiñones
+  posicion_pato();  //guardar las coordenadas anteriores de los patos
+  //posicion_seguidor();  //guardar las coordenadas anteriores de los patos seguidores
+  //posicion_salta();  //guardar las coordenadas anteriores de los patos saltadores
+  //posicion_peligro();  //guardar las coordenadas anteriores de los patos saltadores seguidores
+  //posicion_mina();  //guardar las coordenadas anteriores de las minas
+  posicion_disparo();  //guardar las coordenadas anteriores de los disparos
+  //posicion_bala();  //guardar las coordenadas anteriores de las balas
+  //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
-  tinvensible();
-  refbloques();  //actualizar bloques
-  refchamp();
-  refpato();
-  //refseguidor();
-  //refsalta();
-  //refpeligro();
-  refdisparo();
-
-  if((x%16)!=0)
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-  else
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-
-  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque derecho   nota: (y%16)==0 es para que si se golpea un bloque por abajo no se cumpla
-    {
-    vx=0.0;
-    x=x-(x%16);
-    }
-  else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque izquierdo
-    {
-    vx=0.0;
-    x=x+16-(x%16);
-    }
+  tinvensible();  //tiempo de inmunidad
 
 ////////interaccion de los bloques
-
-  bloque_poder0();  //poder0
-
-////////teclado
-
-  teclado();
-
-////////interaccion de los bloques
-
-  bloque_saltar();  //bloque para saltar muy alto
-
-  //cielo_abajo();  //flujo de aire hacia abajo
-
-  //cielo_arriba();  //flujo de aire hacia arriba
-
-  //cielo_izquierda();  //flujo de aire hacia la izquierda
-
-  //cielo_derecha();  //flujo de aire hacia la derecha
-
-  //agua_abajo();  //flujo de agua hacia abajo
-
-  //agua_arriba();  //flujo de agua hacia arriba
-
-  //agua_izquierda();  //flujo de agua hacia izquierda
-
-  //agua_derecha();  //flujo de agua hacia derecha
-
   //bloque_caja0_moneda();  //caja0 con moneda
-
   bloque_caja0_10monedas();  //caja0 con 10 momedas
-
-  bloque_caja0_champinon();  //caja0 con champiñon
-
+  //bloque_caja0_champinon();  //caja0 con champiñon
   //bloque_caja0_vida();  //caja0 con vida
 
  ////////especial si golpea 12,22 (cristal0) que aparesca un poder0 en 12,21
@@ -1416,9 +1225,9 @@ while(ciclo<1)
       bloque(x-(x%16),y-32-(y%16),36);
       }
     }
-  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==14) && x%16!=0)
+  if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==14) && x%16!=0)
     {
-    if((y-(y%16))/16==22 && (x+16-(x%16))/16==12 && x%16!=0)
+    if((y-(y%16))/16==22 && (x+16-(x%16))/16==12)
       {
       y=y+16-(y%16);
       vy=-vy;
@@ -1445,147 +1254,117 @@ while(ciclo<1)
     }
 
   //cristal0_moneda();  //cristal0 con moneda
-
   //cristal4_moneda();  //cristal4 con moneda
-
   //cristal0_vida();  //cristal0 con vida
-
   //cristal4_vida();  //cristal4 con vida
-
   bloque_cristal();  //cristal golpe por abajo
-
   bloque_moneda0();  //monedas
-
   //bloque_moneda4();  //monedas
-
   //estrella_moneda();  //Estrella con moneda
-
   cielo_vida();  //cielo cyan con moneda
-
   //cielo_moneda();  //cielo cyan con vida
 
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
-  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32) && x%16!=0)
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
+////////funcion para deteccion de los bloques solidos
+  bloques_solidos();
 
+////////interaccion de los bloques
+  bloque_poder0();  //poder0
   //bloque_nota0();  //nota0
-
+  bloque_saltar();  //bloque para saltar muy alto
+  //cielo_abajo();  //flujo de aire hacia abajo
+  //cielo_arriba();  //flujo de aire hacia arriba
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+  //cielo_derecha();  //flujo de aire hacia la derecha
+  agua();  //habilitar si se usa cualquier tipo de bloque con agua
+  //agua_abajo();  //flujo de agua hacia abajo
+  //agua_arriba();  //flujo de agua hacia arriba
+  //agua_izquierda();  //flujo de agua hacia izquierda
+  //agua_derecha();  //flujo de agua hacia derecha
   bloque_agua();
-
   //bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
-
   //bloque_cuadrado1();  //pisarlos pero no golpearlos  (blanco 15)
 
+////////funciones para enemigos y peligros
   tocar_champinon();  //tocar champiñon
-
   pisar_pato();  //pisar pato
-
   //pisar_seguidor();  //pisar seguidor
-
   //pisar_salta();  //pisar saltador
-
   //pisar_peligro();  //pisar peligroso
+  //pisar_bala();  //pisar las balas
+  //pisar_tortuga();  //pisar tortuga
 
   disparo_mata();  //Disparos que matan patos
-
   //NITRO_mata();  //no toques la nitroglicerina
-
   //fuego4_mata();  //no teques el fuego
-
   pato_mata();  //pato mata cuando los tocas
-
   //seguidor_mata();  //seguidor mata cuando los tocas
-
   //salta_mata();  //saltador mata cuando los tocas
-
   //peligro_mata();  //peligroso mata cuando los tocas
+  //mina_mata(); //mina mata
+  //bala_mata();  //las balas matan
+  //tortuga_mata();  //tortuga mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
-
   //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
-
   //saltafuera();  //verificar si un saltador se salio de la pantalla
-
   //peligrofuera();  //verificar si un peligroso se salio de la pantalla
-
   champifuera();  //verificar si un champiñon se salio de la pantalla
-
   disparofuera();  //verificar si un disparo se salio de la pantalla
+  //balafuera();  //verificar si una bala se salio de la pantalla
+  //tortugafuera();  //verificar si una tortuga se salio de la pantalla
 
   movchamp();  //mover champiñones
-
-  mdemone();
-
+  mdemone();  //saltar monedas, generalmente es utilizado
   movpato();  //mover patos
-
   //movseguidor();  //mover seguidor
-
   //movsalta();  //mover saltador
-
   //movpeligro();  //mover peligroso
-
+  //movmina();  //mover las minas
   movdisparo();  //mover disparo
+  //movbala();  //mover las balas
+  //movtortuga();  //mover tortugas
 
-  if(monedas>=100) //por cada 100 monedas aumentar una vida
-    {
-    monedas=0;
-    vidas++;
-    }
-  if(x>=624) //si llega a la orilla derecha pasar a la siguiente escena
-    {
-    ciclo=1;
-    escena++;
-    x=2;
-    }
-  else if(x<=0) //si llega a la orilla izquierda pasar a la anterior escena
-    {
-    ciclo=1;
-    escena--;
-    x=608;
-    }
-  else if(y>=464) //caida
-    {
-    ciclo=1;
-    estado=1;
-    vidas--;
-    //t_huevo=tiempo-4;  //parece no ser necesario
-    jugar=0;
-    }
-  else if(tiempo==0) //tiempo terminado
-    {
-    estado=0;
-    t_huevo=tiempo-4;
-    }
+////////teclado y otros
+  teclado();
 
+  control();  //controla cambios de escenario, monedas, tiempo, conversion de bloques y vuelo.
+
+////////Conviertiendo velocidad en posicion personaje principal
   x=x+vx;
   y=y+vy;
 
+////////operaciones del los bloques, borrando dibujos viejos redibujando el fondo
+  refbloques();  //dibujar el fondo sobre el personaje principal
+  refchamp();
+  refpato();
+  //refseguidor();
+  //refsalta();
+  //refpeligro();
+  //refmina();
+  refdisparo();
+  //refbala();
+  //reftortuga();
+
+////////dibujando personajes, enemigos, paneles y marcadores
+  verestado();  //verificar el estado del pato y dibujarlo segun el estado, personaje principal
   dibchamp();  //dibujar champiñones
-
   dibpatos();  //dibujar patos
-
   //dibseguidor();  //dibujar seguidor
-
   //dibsalta();  //dibujar saltador
-
   //dibpeligro();  //dibujar peligroso
-
+  //dibmina();  //dibujar minas
   dibdisparo();  //dibujar disparo
+  //dibexplosion_chica();  //para dibujar explosiones chicas, activar junto con minas, TNTs y NITROS
+  dibcristalroto();  //efectos al romper un cristal
+  dibgolpe();  //utilizado para los disparos, generalmente muy utilizado
+  //dibbala();  //dibujar balas de cañones
+  //dibtortugas();  //dibujar tortugas
 
   segundos();  //realizar un conteo del tiempo del juego
 
-  verestado();  //verificar el estado de pato y dibujarlo segun el estado
-
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(20);
+  delay(retraso);
 
 }
 guardar_fondo(1);
@@ -1596,8 +1375,9 @@ return(0);
 escena12()
 {
 ciclo=0;
-//invensible=0;
+nadando=0;
 act_fondo(2);
+act_cielo(2);
 fondo();
 panel();
 r_champ();
@@ -1606,244 +1386,155 @@ r_pato();
 r_seguidor();
 r_salta();
 r_peligro();
+r_mina();
 r_disparo();
+r_explosionc();
+r_cristalroto();
+r_bala();
+r_tortuga();
 c_pato(22,23);
 
-while(ciclo<1)
+while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los movimientos existentes, es decir un cambio de posicion de cada objeto
   {
+////////Guardando las coordenadas anteriores
+  o=x;
+  p=y;
 
-////////operaciones del los bloques
+  posicion_champ();  //guardar las coordenadas anteriores de los champiñones
+  posicion_pato();  //guardar las coordenadas anteriores de los patos
+  //posicion_seguidor();  //guardar las coordenadas anteriores de los patos seguidores
+  //posicion_salta();  //guardar las coordenadas anteriores de los patos saltadores
+  //posicion_peligro();  //guardar las coordenadas anteriores de los patos saltadores seguidores
+  //posicion_mina();  //guardar las coordenadas anteriores de las minas
+  posicion_disparo();  //guardar las coordenadas anteriores de los disparos
+  //posicion_bala();  //guardar las coordenadas anteriores de las balas
+  //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
-  tinvensible();
-  refbloques();  //actualizar bloques
-  refchamp();
-  refpato();
-  //refseguidor();
-  //refsalta();
-  //refpeligro();
-  refdisparo();
-
-  if((x%16)!=0)
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-  else
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-
-  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque derecho   nota: (y%16)==0 es para que si se golpea un bloque por abajo no se cumpla
-    {
-    vx=0.0;
-    x=x-(x%16);
-    }
-  else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque izquierdo
-    {
-    vx=0.0;
-    x=x+16-(x%16);
-    }
+  tinvensible();  //tiempo de inmunidad
 
 ////////interaccion de los bloques
-
-  //bloque_poder0();  //poder0
-
-////////teclado
-
-  teclado();
+  bloque_caja0_moneda();  //caja0 con moneda
+  //bloque_caja0_10monedas();  //caja0 con 10 momedas
+  bloque_caja0_champinon();  //caja0 con champiñon
+  //bloque_caja0_vida();  //caja0 con vida
+  //cristal0_moneda();  //cristal0 con moneda
+  //cristal4_moneda();  //cristal4 con moneda
+  //cristal0_vida();  //cristal0 con vida
+  //cristal4_vida();  //cristal4 con vida
+  bloque_cristal();  //cristal golpe por abajo
+  //bloque_moneda0();  //monedas
+  bloque_moneda4();  //monedas
+  //estrella_moneda();  //Estrella con moneda
+  cielo_vida();  //cielo cyan con moneda
+  //cielo_moneda();  //cielo cyan con vida
 
 ////////Especial  crear patos saliendo de la tuberia
-
 if(tiempo%28==0 && sec%22==0)
   {
   c_pato(8,14);
   }
 
+////////funcion para deteccion de los bloques solidos
+  bloques_solidos();
+
 ////////interaccion de los bloques
-
-  bloque_saltar();  //bloque para saltar muy alto
-
-  //cielo_abajo();  //flujo de aire hacia abajo
-
-  cielo_arriba();  //flujo de aire hacia arriba
-
-  //cielo_izquierda();  //flujo de aire hacia la izquierda
-
-  //cielo_derecha();  //flujo de aire hacia la derecha
-
-  agua_abajo();  //flujo de agua hacia abajo
-
-  //agua_arriba();  //flujo de agua hacia arriba
-
-  //agua_izquierda();  //flujo de agua hacia izquierda
-
-  //agua_derecha();  //flujo de agua hacia derecha
-
-  bloque_caja0_moneda();  //caja0 con moneda
-
-  //bloque_caja0_10monedas();  //caja0 con 10 momedas
-
-  bloque_caja0_champinon();  //caja0 con champiñon
-
-  //bloque_caja0_vida();  //caja0 con vida
-
-  //cristal0_moneda();  //cristal0 con moneda
-
-  //cristal4_moneda();  //cristal4 con moneda
-
-  //cristal0_vida();  //cristal0 con vida
-
-  //cristal4_vida();  //cristal4 con vida
-
-  bloque_cristal();  //cristal golpe por abajo
-
-  //bloque_moneda0();  //monedas
-
-  //bloque_moneda4();  //monedas
-
-  //estrella_moneda();  //Estrella con moneda
-
-  cielo_vida();  //cielo cyan con moneda
-
-  //cielo_moneda();  //cielo cyan con vida
-
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
-  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32) && x%16!=0)
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
-
+  //bloque_poder0();  //poder0
   //bloque_nota0();  //nota0
-
+  //bloque_saltar();  //bloque para saltar muy alto
+  //cielo_abajo();  //flujo de aire hacia abajo
+  cielo_arriba();  //flujo de aire hacia arriba
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+  //cielo_derecha();  //flujo de aire hacia la derecha
+  agua();  //habilitar si se usa cualquier tipo de bloque con agua
+  //agua_abajo();  //flujo de agua hacia abajo
+  //agua_arriba();  //flujo de agua hacia arriba
+  //agua_izquierda();  //flujo de agua hacia izquierda
+  //agua_derecha();  //flujo de agua hacia derecha
   bloque_agua();
-
   //bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
-
   //bloque_cuadrado1();  //pisarlos pero no golpearlos  (blanco 15)
 
+////////funciones para enemigos y peligros
   tocar_champinon();  //tocar champiñon
-
   pisar_pato();  //pisar pato
-
   //pisar_seguidor();  //pisar seguidor
-
   //pisar_salta();  //pisar saltador
-
   //pisar_peligro();  //pisar peligroso
+  //pisar_bala();  //pisar las balas
+  //pisar_tortuga();  //pisar tortuga
 
   disparo_mata();  //Disparos que matan patos
-
   NITRO_mata();  //no toques la nitroglicerina
-
   fuego4_mata();  //no teques el fuego
-
   pato_mata();  //pato mata cuando los tocas
-
   //seguidor_mata();  //seguidor mata cuando los tocas
-
   //salta_mata();  //saltador mata cuando los tocas
-
   //peligro_mata();  //peligroso mata cuando los tocas
+  //mina_mata(); //mina mata
+  //bala_mata();  //las balas matan
+  //tortuga_mata();  //tortuga mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
-
   //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
-
   //saltafuera();  //verificar si un saltador se salio de la pantalla
-
   //peligrofuera();  //verificar si un peligroso se salio de la pantalla
-
   champifuera();  //verificar si un champiñon se salio de la pantalla
-
   disparofuera();  //verificar si un disparo se salio de la pantalla
+  //balafuera();  //verificar si una bala se salio de la pantalla
+  //tortugafuera();  //verificar si una tortuga se salio de la pantalla
 
   movchamp();  //mover champiñones
-
-  mdemone();
-
+  mdemone();  //saltar monedas, generalmente es utilizado
   movpato();  //mover patos
-
   //movseguidor();  //mover seguidor
-
   //movsalta();  //mover saltador
-
   //movpeligro();  //mover peligroso
-
+  //movmina();  //mover las minas
   movdisparo();  //mover disparo
+  //movbala();  //mover las balas
+  //movtortuga();  //mover tortugas
 
-  if(monedas>=100) //por cada 100 monedas aumentar una vida
-    {
-    monedas=0;
-    vidas++;
-    }
-  if(x>=624) //si llega a la orilla derecha pasar a la siguiente escena
-    {
-    ciclo=1;
-    escena++;
-    x=2;
-    }
-  else if(x<=0) //si llega a la orilla izquierda pasar a la anterior escena
-    {
-    ciclo=1;
-    escena--;
-    x=608;
-    }
-  else if(y>=464) //caida
-    {
-    ciclo=1;
-    estado=1;
-    vidas--;
-    //t_huevo=tiempo-4;  //parece no ser necesario
-    jugar=0;
-    }
-  else if(tiempo==0) //tiempo terminado
-    {
-    estado=0;
-    t_huevo=tiempo-4;
-    }
+////////teclado y otros
+  teclado();
 
+  control();  //controla cambios de escenario, monedas, tiempo, conversion de bloques y vuelo.
+
+////////Conviertiendo velocidad en posicion personaje principal
   x=x+vx;
   y=y+vy;
 
+////////operaciones del los bloques, borrando dibujos viejos redibujando el fondo
+  refbloques();  //dibujar el fondo sobre el personaje principal
+  refchamp();
+  refpato();
+  //refseguidor();
+  //refsalta();
+  //refpeligro();
+  //refmina();
+  refdisparo();
+  //refbala();
+  //reftortuga();
+
+////////dibujando personajes, enemigos, paneles y marcadores
+  verestado();  //verificar el estado del pato y dibujarlo segun el estado, personaje principal
   dibchamp();  //dibujar champiñones
-
   dibpatos();  //dibujar patos
-
   //dibseguidor();  //dibujar seguidor
-
   //dibsalta();  //dibujar saltador
-
   //dibpeligro();  //dibujar peligroso
-
+  //dibmina();  //dibujar minas
   dibdisparo();  //dibujar disparo
+  dibexplosion_chica();  //para dibujar explosiones chicas, activar junto con minas, TNTs y NITROS
+  dibcristalroto();  //efectos al romper un cristal
+  dibgolpe();  //utilizado para los disparos, generalmente muy utilizado
+  //dibbala();  //dibujar balas de cañones
+  //dibtortugas();  //dibujar tortugas
 
   segundos();  //realizar un conteo del tiempo del juego
 
-  verestado();  //verificar el estado de pato y dibujarlo segun el estado
-
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(20);
+  delay(retraso);
 
 }
 guardar_fondo(2);
@@ -1854,8 +1545,9 @@ return(0);
 escena13()
 {
 ciclo=0;
-//invensible=0;
+nadando=0;
 act_fondo(3);
+act_cielo(3);
 fondo();
 panel();
 r_champ();
@@ -1864,238 +1556,185 @@ r_pato();
 r_seguidor();
 r_salta();
 r_peligro();
+r_mina();
 r_disparo();
+r_explosionc();
+r_cristalroto();
+r_bala();
+r_tortuga();
 
-while(ciclo<1)
+while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los movimientos existentes, es decir un cambio de posicion de cada objeto
   {
+////////Guardando las coordenadas anteriores
+  o=x;
+  p=y;
 
-////////operaciones del los bloques
+  posicion_champ();  //guardar las coordenadas anteriores de los champiñones
+  posicion_pato();  //guardar las coordenadas anteriores de los patos
+  //posicion_seguidor();  //guardar las coordenadas anteriores de los patos seguidores
+  posicion_salta();  //guardar las coordenadas anteriores de los patos saltadores
+  //posicion_peligro();  //guardar las coordenadas anteriores de los patos saltadores seguidores
+  //posicion_mina();  //guardar las coordenadas anteriores de las minas
+  posicion_disparo();  //guardar las coordenadas anteriores de los disparos
+  //posicion_bala();  //guardar las coordenadas anteriores de las balas
+  //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
-  tinvensible();
-  refbloques();  //actualizar bloques
-  refchamp();
-  refpato();
-  //refseguidor();
-  //refsalta();
-  //refpeligro();
-  refdisparo();
-
-  if((x%16)!=0)
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-  else
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-
-  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque derecho   nota: (y%16)==0 es para que si se golpea un bloque por abajo no se cumpla
-    {
-    vx=0.0;
-    x=x-(x%16);
-    }
-  else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque izquierdo
-    {
-    vx=0.0;
-    x=x+16-(x%16);
-    }
+  tinvensible();  //tiempo de inmunidad
 
 ////////interaccion de los bloques
-
-  //bloque_poder0();  //poder0
-
-////////teclado
-
-  teclado();
-
-////////Especial
-
-////////interaccion de los bloques
-
-  bloque_saltar();  //bloque para saltar muy alto
-
-  cielo_abajo();  //flujo de aire hacia abajo
-
-  cielo_arriba();  //flujo de aire hacia arriba
-
-  //cielo_izquierda();  //flujo de aire hacia la izquierda
-
-  //cielo_derecha();  //flujo de aire hacia la derecha
-
-  //agua_abajo();  //flujo de agua hacia abajo
-
-  //agua_arriba();  //flujo de agua hacia arriba
-
-  //agua_izquierda();  //flujo de agua hacia izquierda
-
-  //agua_derecha();  //flujo de agua hacia derecha
-
   //bloque_caja0_moneda();  //caja0 con moneda
-
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
-
   bloque_caja0_champinon();  //caja0 con champiñon
-
   bloque_caja0_vida();  //caja0 con vida
 
+ ////////especial si golpea 27,20 (cristal0) que aparesca un poder0 en 27,19
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==14)  //golpe por abajo
+    {
+    if((y-(y%16))/16 == 20 && (x-(x%16))/16 == 27)
+      {
+      y=y+16-(y%16);
+      vy=-vy;
+      paisaje[(y-16-(y%16))/16][(x-(x%16))/16]=5;  //caja5
+      bloque(x-(x%16),y-16-(y%16),5);
+      paisaje[(y-32-(y%16))/16][(x-(x%16))/16]=36;  //poder0
+      bloque(x-(x%16),y-32-(y%16),36);
+      }
+    }
+  if(paisaje[(y-(y%16))/16][(x+15-((x+15)%16))/16]==14)
+    {
+    if((y-(y%16))/16 == 20 && (x+15-((x+15)%16))/16 == 27)
+      {
+      y=y+16-(y%16);
+      vy=-vy;
+      paisaje[(y-16-(y%16))/16][(x+15-((x+15)%16))/16]=5;  //caja5
+      bloque(x+15-((x+15)%16),y-16-(y%16),5);
+      paisaje[(y-32-(y%16))/16][(x+15-((x+15)%16))/16]=36;  //poder0
+      bloque(x+15-((x+15)%16),y-32-(y%16),36);
+      }
+    }
+
   //cristal0_moneda();  //cristal0 con moneda
-
   //cristal4_moneda();  //cristal4 con moneda
-
   //cristal0_vida();  //cristal0 con vida
-
   //cristal4_vida();  //cristal4 con vida
-
-  //bloque_cristal();  //cristal golpe por abajo
-
-  //bloque_moneda0();  //monedas
-
+  bloque_cristal();  //cristal golpe por abajo
+  bloque_moneda0();  //monedas
   //bloque_moneda4();  //monedas
-
   //estrella_moneda();  //Estrella con moneda
-
   //cielo_vida();  //cielo cyan con moneda
-
   cielo_moneda();  //cielo cyan con vida
 
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
-  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32) && x%16!=0)
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
+////////Especial  crear patos saliendo de la tuberia
+if(tiempo%14==0 && sec%22==0)
+  {
+  c_pato(21,8);
+  }
+if(tiempo%12==0 && sec%22==0)
+  {
+  c_salta(21,8);
+  }
 
+////////funcion para deteccion de los bloques solidos
+  bloques_solidos();
+
+////////interaccion de los bloques
+  bloque_poder0();  //poder0
   //bloque_nota0();  //nota0
-
+  //bloque_saltar();  //bloque para saltar muy alto
+  cielo_abajo();  //flujo de aire hacia abajo
+  cielo_arriba();  //flujo de aire hacia arriba
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+  //cielo_derecha();  //flujo de aire hacia la derecha
+  agua();  //habilitar si se usa cualquier tipo de bloque con agua
+  //agua_abajo();  //flujo de agua hacia abajo
+  //agua_arriba();  //flujo de agua hacia arriba
+  //agua_izquierda();  //flujo de agua hacia izquierda
+  //agua_derecha();  //flujo de agua hacia derecha
   bloque_agua();
-
   //bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
-
   //bloque_cuadrado1();  //pisarlos pero no golpearlos  (blanco 15)
 
+////////funciones para enemigos y peligros
   tocar_champinon();  //tocar champiñon
-
   pisar_pato();  //pisar pato
-
   //pisar_seguidor();  //pisar seguidor
-
-  //pisar_salta();  //pisar saltador
-
+  pisar_salta();  //pisar saltador
   //pisar_peligro();  //pisar peligroso
+  //pisar_bala();  //pisar las balas
+  //pisar_tortuga();  //pisar tortuga
 
   disparo_mata();  //Disparos que matan patos
-
   //NITRO_mata();  //no toques la nitroglicerina
-
   //fuego4_mata();  //no teques el fuego
-
   pato_mata();  //pato mata cuando los tocas
-
   //seguidor_mata();  //seguidor mata cuando los tocas
-
-  //salta_mata();  //saltador mata cuando los tocas
-
+  salta_mata();  //saltador mata cuando los tocas
   //peligro_mata();  //peligroso mata cuando los tocas
+  //mina_mata(); //mina mata
+  //bala_mata();  //las balas matan
+  //tortuga_mata();  //tortuga mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
-
   //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
-
-  //saltafuera();  //verificar si un saltador se salio de la pantalla
-
+  saltafuera();  //verificar si un saltador se salio de la pantalla
   //peligrofuera();  //verificar si un peligroso se salio de la pantalla
-
   champifuera();  //verificar si un champiñon se salio de la pantalla
-
   disparofuera();  //verificar si un disparo se salio de la pantalla
+  //balafuera();  //verificar si una bala se salio de la pantalla
+  //tortugafuera();  //verificar si una tortuga se salio de la pantalla
 
   movchamp();  //mover champiñones
-
-  mdemone();
-
+  mdemone();  //saltar monedas, generalmente es utilizado
   movpato();  //mover patos
-
   //movseguidor();  //mover seguidor
-
-  //movsalta();  //mover saltador
-
+  movsalta();  //mover saltador
   //movpeligro();  //mover peligroso
-
+  //movmina();  //mover las minas
   movdisparo();  //mover disparo
+  //movbala();  //mover las balas
+  //movtortuga();  //mover tortugas
 
-  if(monedas>=100) //por cada 100 monedas aumentar una vida
-    {
-    monedas=0;
-    vidas++;
-    }
-  if(x>=624) //si llega a la orilla derecha pasar a la siguiente escena
-    {
-    ciclo=1;
-    escena++;
-    x=2;
-    }
-  else if(x<=0) //si llega a la orilla izquierda pasar a la anterior escena
-    {
-    ciclo=1;
-    escena--;
-    x=608;
-    }
-  else if(y>=464) //caida
-    {
-    ciclo=1;
-    estado=1;
-    vidas--;
-    //t_huevo=tiempo-4;  //parece no ser necesario
-    jugar=0;
-    }
-  else if(tiempo==0) //tiempo terminado
-    {
-    estado=0;
-    t_huevo=tiempo-4;
-    }
+////////teclado y otros
+  teclado();
 
+  control();  //controla cambios de escenario, monedas, tiempo, conversion de bloques y vuelo.
+
+////////Conviertiendo velocidad en posicion personaje principal
   x=x+vx;
   y=y+vy;
 
+////////operaciones del los bloques, borrando dibujos viejos redibujando el fondo
+  refbloques();  //dibujar el fondo sobre el personaje principal
+  refchamp();
+  refpato();
+  //refseguidor();
+  refsalta();
+  //refpeligro();
+  //refmina();
+  refdisparo();
+  //refbala();
+  //reftortuga();
+
+////////dibujando personajes, enemigos, paneles y marcadores
+  verestado();  //verificar el estado del pato y dibujarlo segun el estado, personaje principal
   dibchamp();  //dibujar champiñones
-
   dibpatos();  //dibujar patos
-
   //dibseguidor();  //dibujar seguidor
-
-  //dibsalta();  //dibujar saltador
-
+  dibsalta();  //dibujar saltador
   //dibpeligro();  //dibujar peligroso
-
+  //dibmina();  //dibujar minas
   dibdisparo();  //dibujar disparo
+  //dibexplosion_chica();  //para dibujar explosiones chicas, activar junto con minas, TNTs y NITROS
+  dibcristalroto();  //efectos al romper un cristal
+  dibgolpe();  //utilizado para los disparos, generalmente muy utilizado
+  //dibbala();  //dibujar balas de cañones
+  //dibtortugas();  //dibujar tortugas
 
   segundos();  //realizar un conteo del tiempo del juego
 
-  verestado();  //verificar el estado de pato y dibujarlo segun el estado
-
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(20);
+  delay(retraso);
 
 }
 guardar_fondo(3);
@@ -2113,8 +1752,9 @@ return(0);
 escena20()
 {
 ciclo=0;
-//invensible=0;
+nadando=0;
 act_fondo(0);
+act_cielo(0);
 fondo();
 panel();
 r_champ();
@@ -2123,246 +1763,157 @@ r_pato();
 r_seguidor();
 r_salta();
 r_peligro();
+r_mina();
 r_disparo();
+r_explosionc();
+r_cristalroto();
+r_bala();
+r_tortuga();
 c_seguidor(6,24);
 c_pato(8,24);
 c_pato(22,24);
 
-while(ciclo<1)
+while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los movimientos existentes, es decir un cambio de posicion de cada objeto
   {
+////////Guardando las coordenadas anteriores
+  o=x;
+  p=y;
 
-////////operaciones del los bloques
+  posicion_champ();  //guardar las coordenadas anteriores de los champiñones
+  posicion_pato();  //guardar las coordenadas anteriores de los patos
+  posicion_seguidor();  //guardar las coordenadas anteriores de los patos seguidores
+  //posicion_salta();  //guardar las coordenadas anteriores de los patos saltadores
+  //posicion_peligro();  //guardar las coordenadas anteriores de los patos saltadores seguidores
+  //posicion_mina();  //guardar las coordenadas anteriores de las minas
+  posicion_disparo();  //guardar las coordenadas anteriores de los disparos
+  //posicion_bala();  //guardar las coordenadas anteriores de las balas
+  //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
-  tinvensible();
-  refbloques();  //actualizar bloques
-  refchamp();
-  refpato();
-  //refseguidor();
-  //refsalta();
-  //refpeligro();
-  refdisparo();
-
-  if((x%16)!=0)
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-  else
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-
-  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque derecho   nota: (y%16)==0 es para que si se golpea un bloque por abajo no se cumpla
-    {
-    vx=0.0;
-    x=x-(x%16);
-    }
-  else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque izquierdo
-    {
-    vx=0.0;
-    x=x+16-(x%16);
-    }
+  tinvensible();  //tiempo de inmunidad
 
 ////////interaccion de los bloques
-
-  //bloque_poder0();  //poder0
-
-////////teclado
-
-  teclado();
+  //bloque_caja0_moneda();  //caja0 con moneda
+  //bloque_caja0_10monedas();  //caja0 con 10 momedas
+  bloque_caja0_champinon();  //caja0 con champiñon
+  //bloque_caja0_vida();  //caja0 con vida
+  //cristal0_moneda();  //cristal0 con moneda
+  //cristal4_moneda();  //cristal4 con moneda
+  //cristal0_vida();  //cristal0 con vida
+  //cristal4_vida();  //cristal4 con vida
+  //bloque_cristal();  //cristal golpe por abajo
+  //bloque_moneda0();  //monedas
+  //bloque_moneda4();  //monedas
+  //estrella_moneda();  //Estrella con moneda
+  cielo_vida();  //cielo cyan con moneda
+  //cielo_moneda();  //cielo cyan con vida
 
 ////////Especial  crear patos saliendo de la tuberia
-
 if(tiempo%8==0 && sec%22==0)
   {
   c_pato(5,22);
   }
 
+////////funcion para deteccion de los bloques solidos
+  bloques_solidos();
+
 ////////interaccion de los bloques
-
-  //bloque_saltar();  //bloque para saltar muy alto
-
-  //cielo_abajo();  //flujo de aire hacia abajo
-
-  //cielo_arriba();  //flujo de aire hacia arriba
-
-  //cielo_izquierda();  //flujo de aire hacia la izquierda
-
-  //cielo_derecha();  //flujo de aire hacia la derecha
-
-  agua_abajo();  //flujo de agua hacia abajo
-
-  agua_arriba();  //flujo de agua hacia arriba
-
-  //agua_izquierda();  //flujo de agua hacia izquierda
-
-  //agua_derecha();  //flujo de agua hacia derecha
-
-  //bloque_caja0_moneda();  //caja0 con moneda
-
-  //bloque_caja0_10monedas();  //caja0 con 10 momedas
-
-  bloque_caja0_champinon();  //caja0 con champiñon
-
-  //bloque_caja0_vida();  //caja0 con vida
-
-  //cristal0_moneda();  //cristal0 con moneda
-
-  //cristal4_moneda();  //cristal4 con moneda
-
-  //cristal0_vida();  //cristal0 con vida
-
-  //cristal4_vida();  //cristal4 con vida
-
-  //bloque_cristal();  //cristal golpe por abajo
-
-  //bloque_moneda0();  //monedas
-
-  //bloque_moneda4();  //monedas
-
-  //estrella_moneda();  //Estrella con moneda
-
-  //cielo_vida();  //cielo cyan con moneda
-
-  //cielo_moneda();  //cielo cyan con vida
-
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
-  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32) && x%16!=0)
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
-
+  //bloque_poder0();  //poder0
   //bloque_nota0();  //nota0
-
+  //bloque_saltar();  //bloque para saltar muy alto
+  //cielo_abajo();  //flujo de aire hacia abajo
+  //cielo_arriba();  //flujo de aire hacia arriba
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+  //cielo_derecha();  //flujo de aire hacia la derecha
+  agua();  //habilitar si se usa cualquier tipo de bloque con agua
+  agua_abajo();  //flujo de agua hacia abajo
+  agua_arriba();  //flujo de agua hacia arriba
+  //agua_izquierda();  //flujo de agua hacia izquierda
+  //agua_derecha();  //flujo de agua hacia derecha
   bloque_agua();
-
   //bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
-
   //bloque_cuadrado1();  //pisarlos pero no golpearlos  (blanco 15)
 
+////////funciones para enemigos y peligros
   tocar_champinon();  //tocar champiñon
-
   pisar_pato();  //pisar pato
-
-  //pisar_seguidor();  //pisar seguidor
-
+  pisar_seguidor();  //pisar seguidor
   //pisar_salta();  //pisar saltador
-
   //pisar_peligro();  //pisar peligroso
+  //pisar_bala();  //pisar las balas
+  //pisar_tortuga();  //pisar tortuga
 
   disparo_mata();  //Disparos que matan patos
-
   //NITRO_mata();  //no toques la nitroglicerina
-
   //fuego4_mata();  //no teques el fuego
-
   pato_mata();  //pato mata cuando los tocas
-
-  //seguidor_mata();  //seguidor mata cuando los tocas
-
+  seguidor_mata();  //seguidor mata cuando los tocas
   //salta_mata();  //saltador mata cuando los tocas
-
   //peligro_mata();  //peligroso mata cuando los tocas
+  //mina_mata(); //mina mata
+  //bala_mata();  //las balas matan
+  //tortuga_mata();  //tortuga mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
-
-  //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
-
+  seguidorfuera();  //verificar si un seguidor se salio de la pantalla
   //saltafuera();  //verificar si un saltador se salio de la pantalla
-
   //peligrofuera();  //verificar si un peligroso se salio de la pantalla
-
   champifuera();  //verificar si un champiñon se salio de la pantalla
-
   disparofuera();  //verificar si un disparo se salio de la pantalla
+  //balafuera();  //verificar si una bala se salio de la pantalla
+  //tortugafuera();  //verificar si una tortuga se salio de la pantalla
 
   movchamp();  //mover champiñones
-
-  mdemone();
-
+  //mdemone();  //saltar monedas, generalmente es utilizado
   movpato();  //mover patos
-
-  //movseguidor();  //mover seguidor
-
+  movseguidor();  //mover seguidor
   //movsalta();  //mover saltador
-
   //movpeligro();  //mover peligroso
-
+  //movmina();  //mover las minas
   movdisparo();  //mover disparo
+  //movbala();  //mover las balas
+  //movtortuga();  //mover tortugas
 
-  if(monedas>=100) //por cada 100 monedas aumentar una vida
-    {
-    monedas=0;
-    vidas++;
-    }
-  if(x>=624) //si llega a la orilla derecha pasar a la siguiente escena
-    {
-    ciclo=1;
-    escena++;
-    x=2;
-    }
-  else if(x<=0) //si llega a la orilla izquierda pasar a la anterior escena
-    {
-    ciclo=1;
-    escena--;
-    x=608;
-    }
-  else if(y>=464) //caida
-    {
-    ciclo=1;
-    estado=1;
-    vidas--;
-    //t_huevo=tiempo-4; //parece no ser necesario
-    jugar=0;
-    }
-  else if(tiempo==0) //tiempo terminado
-    {
-    estado=0;
-    t_huevo=tiempo-4;
-    }
+////////teclado y otros
+  teclado();
 
+  control();  //controla cambios de escenario, monedas, tiempo, conversion de bloques y vuelo.
+
+////////Conviertiendo velocidad en posicion personaje principal
   x=x+vx;
   y=y+vy;
 
+////////operaciones del los bloques, borrando dibujos viejos redibujando el fondo
+  refbloques();  //dibujar el fondo sobre el personaje principal
+  refchamp();
+  refpato();
+  refseguidor();
+  //refsalta();
+  //refpeligro();
+  //refmina();
+  refdisparo();
+  //refbala();
+  //reftortuga();
+
+////////dibujando personajes, enemigos, paneles y marcadores
+  verestado();  //verificar el estado del pato y dibujarlo segun el estado, personaje principal
   dibchamp();  //dibujar champiñones
-
   dibpatos();  //dibujar patos
-
-  //dibseguidor();  //dibujar seguidor
-
+  dibseguidor();  //dibujar seguidor
   //dibsalta();  //dibujar saltador
-
   //dibpeligro();  //dibujar peligroso
-
+  //dibmina();  //dibujar minas
   dibdisparo();  //dibujar disparo
+  //dibexplosion_chica();  //para dibujar explosiones chicas, activar junto con minas, TNTs y NITROS
+  //dibcristalroto();  //efectos al romper un cristal
+  dibgolpe();  //utilizado para los disparos, generalmente muy utilizado
+  //dibbala();  //dibujar balas de cañones
+  //dibtortugas();  //dibujar tortugas
 
   segundos();  //realizar un conteo del tiempo del juego
 
-  verestado();  //verificar el estado de pato y dibujarlo segun el estado
-
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(20);
+  delay(retraso);
 
 }
 guardar_fondo(0);
@@ -2373,8 +1924,9 @@ return(0);
 escena21()
 {
 ciclo=0;
-//invensible=0;
+nadando=0;
 act_fondo(1);
+act_cielo(1);
 fondo();
 panel();
 r_champ();
@@ -2383,98 +1935,40 @@ r_pato();
 r_seguidor();
 r_salta();
 r_peligro();
+r_mina();
 r_disparo();
+r_explosionc();
+r_cristalroto();
+r_bala();
+r_tortuga();
 c_pato(16,23);
 npato[0]=-1;
 
-while(ciclo<1)
+while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los movimientos existentes, es decir un cambio de posicion de cada objeto
   {
+////////Guardando las coordenadas anteriores
+  o=x;
+  p=y;
 
-////////operaciones del los bloques
+  posicion_champ();  //guardar las coordenadas anteriores de los champiñones
+  posicion_pato();  //guardar las coordenadas anteriores de los patos
+  //posicion_seguidor();  //guardar las coordenadas anteriores de los patos seguidores
+  //posicion_salta();  //guardar las coordenadas anteriores de los patos saltadores
+  //posicion_peligro();  //guardar las coordenadas anteriores de los patos saltadores seguidores
+  //posicion_mina();  //guardar las coordenadas anteriores de las minas
+  posicion_disparo();  //guardar las coordenadas anteriores de los disparos
+  //posicion_bala();  //guardar las coordenadas anteriores de las balas
+  //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
-  tinvensible();
-  refbloques();  //actualizar bloques
-  refchamp();
-  refpato();
-  //refseguidor();
-  //refsalta();
-  //refpeligro();
-  refdisparo();
-
-  if((x%16)!=0)
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-  else
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-
-  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque derecho   nota: (y%16)==0 es para que si se golpea un bloque por abajo no se cumpla
-    {
-    vx=0.0;
-    x=x-(x%16);
-    }
-  else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque izquierdo
-    {
-    vx=0.0;
-    x=x+16-(x%16);
-    }
+  tinvensible();  //tiempo de inmunidad
 
 ////////interaccion de los bloques
-
-  bloque_poder0();  //poder0
-
-////////teclado
-
-  teclado();
-
-////////interaccion de los bloques
-
-  //bloque_saltar();  //bloque para saltar muy alto
-
-  //cielo_abajo();  //flujo de aire hacia abajo
-
-  //cielo_arriba();  //flujo de aire hacia arriba
-
-  //cielo_izquierda();  //flujo de aire hacia la izquierda
-
-  //cielo_derecha();  //flujo de aire hacia la derecha
-
-  //agua_abajo();  //flujo de agua hacia abajo
-
-  //agua_arriba();  //flujo de agua hacia arriba
-
-  //agua_izquierda();  //flujo de agua hacia izquierda
-
-  //agua_derecha();  //flujo de agua hacia derecha
-
   bloque_caja0_moneda();  //caja0 con moneda
-
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
-
   bloque_caja0_champinon();  //caja0 con champiñon
-
   bloque_caja0_vida();  //caja0 con vida
 
 ////////Especial crear patos saliendo de la tuberia
-
 if(tiempo%8==0 && sec%22==0)
   {
   c_pato(11,2);
@@ -2493,148 +1987,117 @@ if(tiempo%10==0 && sec%22==0)
   }
 
   //cristal0_moneda();  //cristal0 con moneda
-
   //cristal4_moneda();  //cristal4 con moneda
-
   //cristal0_vida();  //cristal0 con vida
-
   //cristal4_vida();  //cristal4 con vida
-
   bloque_cristal();  //cristal golpe por abajo
-
   //bloque_moneda0();  //monedas
-
   //bloque_moneda4();  //monedas
-
   //estrella_moneda();  //Estrella con moneda
-
   //cielo_vida();  //cielo cyan con moneda
-
   //cielo_moneda();  //cielo cyan con vida
 
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
-  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32) && x%16!=0)
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
+////////funcion para deteccion de los bloques solidos
+  bloques_solidos();
 
+////////interaccion de los bloques
+  //bloque_poder0();  //poder0
   //bloque_nota0();  //nota0
-
+  //bloque_saltar();  //bloque para saltar muy alto
+  //cielo_abajo();  //flujo de aire hacia abajo
+  //cielo_arriba();  //flujo de aire hacia arriba
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+  //cielo_derecha();  //flujo de aire hacia la derecha
+  agua();  //habilitar si se usa cualquier tipo de bloque con agua
+  agua_abajo();  //flujo de agua hacia abajo
+  //agua_arriba();  //flujo de agua hacia arriba
+  //agua_izquierda();  //flujo de agua hacia izquierda
+  //agua_derecha();  //flujo de agua hacia derecha
   bloque_agua();
-
   //bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
-
   //bloque_cuadrado1();  //pisarlos pero no golpearlos  (blanco 15)
 
+////////funciones para enemigos y peligros
   tocar_champinon();  //tocar champiñon
-
   pisar_pato();  //pisar pato
-
   //pisar_seguidor();  //pisar seguidor
-
   //pisar_salta();  //pisar saltador
-
   //pisar_peligro();  //pisar peligroso
+  //pisar_bala();  //pisar las balas
+  //pisar_tortuga();  //pisar tortuga
 
   disparo_mata();  //Disparos que matan patos
-
   //NITRO_mata();  //no toques la nitroglicerina
-
   //fuego4_mata();  //no teques el fuego
-
   pato_mata();  //pato mata cuando los tocas
-
   //seguidor_mata();  //seguidor mata cuando los tocas
-
   //salta_mata();  //saltador mata cuando los tocas
-
   //peligro_mata();  //peligroso mata cuando los tocas
+  //mina_mata(); //mina mata
+  //bala_mata();  //las balas matan
+  //tortuga_mata();  //tortuga mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
-
   //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
-
   //saltafuera();  //verificar si un saltador se salio de la pantalla
-
   //peligrofuera();  //verificar si un peligroso se salio de la pantalla
-
   champifuera();  //verificar si un champiñon se salio de la pantalla
-
   disparofuera();  //verificar si un disparo se salio de la pantalla
+  //balafuera();  //verificar si una bala se salio de la pantalla
+  //tortugafuera();  //verificar si una tortuga se salio de la pantalla
 
   movchamp();  //mover champiñones
-
-  mdemone();
-
+  mdemone();  //saltar monedas, generalmente es utilizado
   movpato();  //mover patos
-
   //movseguidor();  //mover seguidor
-
   //movsalta();  //mover saltador
-
   //movpeligro();  //mover peligroso
-
+  //movmina();  //mover las minas
   movdisparo();  //mover disparo
+  //movbala();  //mover las balas
+  //movtortuga();  //mover tortugas
 
-  if(monedas>=100) //por cada 100 monedas aumentar una vida
-    {
-    monedas=0;
-    vidas++;
-    }
-  if(x>=624) //si llega a la orilla derecha pasar a la siguiente escena
-    {
-    ciclo=1;
-    escena++;
-    x=2;
-    }
-  else if(x<=0) //si llega a la orilla izquierda pasar a la anterior escena
-    {
-    ciclo=1;
-    escena--;
-    x=608;
-    }
-  else if(y>=464) //caida
-    {
-    ciclo=1;
-    estado=1;
-    vidas--;
-    //t_huevo=tiempo-4;  //parece no ser necesario
-    jugar=0;
-    }
-  else if(tiempo==0) //tiempo terminado
-    {
-    estado=0;
-    t_huevo=tiempo-4;
-    }
+////////teclado y otros
+  teclado();
 
+  control();  //controla cambios de escenario, monedas, tiempo, conversion de bloques y vuelo.
+
+////////Conviertiendo velocidad en posicion personaje principal
   x=x+vx;
   y=y+vy;
 
+////////operaciones del los bloques, borrando dibujos viejos redibujando el fondo
+  refbloques();  //dibujar el fondo sobre el personaje principal
+  refchamp();
+  refpato();
+  //refseguidor();
+  //refsalta();
+  //refpeligro();
+  //refmina();
+  refdisparo();
+  //refbala();
+  //reftortuga();
+
+////////dibujando personajes, enemigos, paneles y marcadores
+  verestado();  //verificar el estado del pato y dibujarlo segun el estado, personaje principal
   dibchamp();  //dibujar champiñones
-
   dibpatos();  //dibujar patos
-
   //dibseguidor();  //dibujar seguidor
-
   //dibsalta();  //dibujar saltador
-
   //dibpeligro();  //dibujar peligroso
-
+  //dibmina();  //dibujar minas
   dibdisparo();  //dibujar disparo
+  //dibexplosion_chica();  //para dibujar explosiones chicas, activar junto con minas, TNTs y NITROS
+  dibcristalroto();  //efectos al romper un cristal
+  dibgolpe();  //utilizado para los disparos, generalmente muy utilizado
+  //dibbala();  //dibujar balas de cañones
+  //dibtortugas();  //dibujar tortugas
 
   segundos();  //realizar un conteo del tiempo del juego
 
-  verestado();  //verificar el estado de pato y dibujarlo segun el estado
-
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(20);
-
+  delay(retraso);
 }
 guardar_fondo(1);
 return(0);
@@ -2644,8 +2107,9 @@ return(0);
 escena22()
 {
 ciclo=0;
-//invensible=0;
+nadando=0;
 act_fondo(2);
+act_cielo(2);
 fondo();
 panel();
 r_champ();
@@ -2654,266 +2118,160 @@ r_pato();
 r_seguidor();
 r_salta();
 r_peligro();
+r_mina();
 r_disparo();
+r_explosionc();
+r_cristalroto();
+r_bala();
+r_tortuga();
 c_pato(13,24);
+c_salta(20,14);
+c_mina(14,14);
 
-while(ciclo<1)
+while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los movimientos existentes, es decir un cambio de posicion de cada objeto
   {
+////////Guardando las coordenadas anteriores
+  o=x;
+  p=y;
 
-////////operaciones del los bloques
+  posicion_champ();  //guardar las coordenadas anteriores de los champiñones
+  posicion_pato();  //guardar las coordenadas anteriores de los patos
+  //posicion_seguidor();  //guardar las coordenadas anteriores de los patos seguidores
+  posicion_salta();  //guardar las coordenadas anteriores de los patos saltadores
+  //posicion_peligro();  //guardar las coordenadas anteriores de los patos saltadores seguidores
+  posicion_mina();  //guardar las coordenadas anteriores de las minas
+  posicion_disparo();  //guardar las coordenadas anteriores de los disparos
+  //posicion_bala();  //guardar las coordenadas anteriores de las balas
+  //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
-  tinvensible();
-  refbloques();  //actualizar bloques
-  refchamp();
-  refpato();
-  //refseguidor();
-  //refsalta();
-  //refpeligro();
-  refdisparo();
-
-  if((x%16)!=0)
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-  else
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-
-  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque derecho   nota: (y%16)==0 es para que si se golpea un bloque por abajo no se cumpla
-    {
-    vx=0.0;
-    x=x-(x%16);
-    }
-  else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque izquierdo
-    {
-    vx=0.0;
-    x=x+16-(x%16);
-    }
+  tinvensible();  //tiempo de inmunidad
 
 ////////interaccion de los bloques
-
-  //bloque_poder0();  //poder0
-
-////////teclado
-
-  teclado();
-
-////////Especial  crear patos saliendo de la tuberia
-
-if(tiempo%22==0 && sec%22==0)
-  {
-  c_pato(18,22);
-  }
-if(tiempo%28==0 && sec%22==0)
-  {
-  c_pato(25,17);
-  }
-
-////////especial para entrar a tuberia en 25,17 y 26,17
-  if(tecla[KEY_CUR_ARRIBA])  //arriba
-    {
-    if(((y-(y%16))/16 == 17) && ((x-(x%16))/16 == 26))
-      {
-      ciclo=1;
-      escena=20;  //escena secreta
-      }
-    else if(((y-(y%16))/16 == 17) && ((x-(x%16))/16 == 25))
-      {
-      ciclo=1;
-      escena=20;  //escena secreta
-      }
-    }
-
-////////interaccion de los bloques
-
-  //bloque_saltar();  //bloque para saltar muy alto
-
-  //cielo_abajo();  //flujo de aire hacia abajo
-
-  //cielo_arriba();  //flujo de aire hacia arriba
-
-  //cielo_izquierda();  //flujo de aire hacia la izquierda
-
-  //cielo_derecha();  //flujo de aire hacia la derecha
-
-  agua_abajo();  //flujo de agua hacia abajo
-
-  agua_arriba();  //flujo de agua hacia arriba
-
-  agua_izquierda();  //flujo de agua hacia izquierda
-
-  agua_derecha();  //flujo de agua hacia derecha
-
-  //bloque_caja0_moneda();  //caja0 con moneda
-
+  bloque_caja0_moneda();  //caja0 con moneda
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
-
-  //bloque_caja0_champinon();  //caja0 con champiñon
-
+  bloque_caja0_champinon();  //caja0 con champiñon
   //bloque_caja0_vida();  //caja0 con vida
-
   //cristal0_moneda();  //cristal0 con moneda
-
   //cristal4_moneda();  //cristal4 con moneda
-
-  cristal0_vida();  //cristal0 con vida
-
+  //cristal0_vida();  //cristal0 con vida
   //cristal4_vida();  //cristal4 con vida
-
   bloque_cristal();  //cristal golpe por abajo
-
   bloque_moneda0();  //monedas
-
   //bloque_moneda4();  //monedas
-
   //estrella_moneda();  //Estrella con moneda
-
-  cielo_vida();  //cielo cyan con moneda
-
+  //cielo_vida();  //cielo cyan con moneda
   cielo_moneda();  //cielo cyan con vida
 
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
-  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32) && x%16!=0)
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
+////////especial nivel secreto al caerse en el hoyo
+    if(y>=448)
+      {
+      ciclo=1;
+      escena=20;  //escena secreta
+      }
 
-  //bloque_nota0();  //nota0
+////////funcion para deteccion de los bloques solidos
+  bloques_solidos();
 
+////////interaccion de los bloques
+  //bloque_poder0();  //poder0
+  bloque_nota0();  //nota0
+  //bloque_saltar();  //bloque para saltar muy alto
+  //cielo_abajo();  //flujo de aire hacia abajo
+  //cielo_arriba();  //flujo de aire hacia arriba
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+  //cielo_derecha();  //flujo de aire hacia la derecha
+  agua();  //habilitar si se usa cualquier tipo de bloque con agua
+  agua_abajo();  //flujo de agua hacia abajo
+  agua_arriba();  //flujo de agua hacia arriba
+  agua_izquierda();  //flujo de agua hacia izquierda
+  agua_derecha();  //flujo de agua hacia derecha
   bloque_agua();
-
-  //bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
-
+  bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
   //bloque_cuadrado1();  //pisarlos pero no golpearlos  (blanco 15)
 
+////////funciones para enemigos y peligros
   tocar_champinon();  //tocar champiñon
-
   pisar_pato();  //pisar pato
-
   //pisar_seguidor();  //pisar seguidor
-
-  //pisar_salta();  //pisar saltador
-
+  pisar_salta();  //pisar saltador
   //pisar_peligro();  //pisar peligroso
+  //pisar_bala();  //pisar las balas
+  //pisar_tortuga();  //pisar tortuga
 
   disparo_mata();  //Disparos que matan patos
-
   //NITRO_mata();  //no toques la nitroglicerina
-
-  //fuego4_mata();  //no teques el fuego
-
+  fuego4_mata();  //no teques el fuego
   pato_mata();  //pato mata cuando los tocas
-
   //seguidor_mata();  //seguidor mata cuando los tocas
-
-  //salta_mata();  //saltador mata cuando los tocas
-
+  salta_mata();  //saltador mata cuando los tocas
   //peligro_mata();  //peligroso mata cuando los tocas
+  mina_mata(); //mina mata
+  //bala_mata();  //las balas matan
+  //tortuga_mata();  //tortuga mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
-
   //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
-
-  //saltafuera();  //verificar si un saltador se salio de la pantalla
-
+  saltafuera();  //verificar si un saltador se salio de la pantalla
   //peligrofuera();  //verificar si un peligroso se salio de la pantalla
-
   champifuera();  //verificar si un champiñon se salio de la pantalla
-
   disparofuera();  //verificar si un disparo se salio de la pantalla
+  //balafuera();  //verificar si una bala se salio de la pantalla
+  //tortugafuera();  //verificar si una tortuga se salio de la pantalla
 
   movchamp();  //mover champiñones
-
-  mdemone();
-
+  mdemone();  //saltar monedas, generalmente es utilizado
   movpato();  //mover patos
-
   //movseguidor();  //mover seguidor
-
-  //movsalta();  //mover saltador
-
+  movsalta();  //mover saltador
   //movpeligro();  //mover peligroso
-
+  movmina();  //mover las minas
   movdisparo();  //mover disparo
+  //movbala();  //mover las balas
+  //movtortuga();  //mover tortugas
 
-  if(monedas>=100) //por cada 100 monedas aumentar una vida
-    {
-    monedas=0;
-    vidas++;
-    }
-  if(x>=624) //si llega a la orilla derecha pasar a la siguiente escena
-    {
-    ciclo=1;
-    escena++;
-    x=2;
-    }
-  else if(x<=0) //si llega a la orilla izquierda pasar a la anterior escena
-    {
-    ciclo=1;
-    escena--;
-    x=608;
-    }
-  else if(y>=464) //caida
-    {
-    ciclo=1;
-    estado=1;
-    vidas--;
-    //t_huevo=tiempo-4;  //parece no ser necesario
-    jugar=0;
-    }
-  else if(tiempo==0) //tiempo terminado
-    {
-    estado=0;
-    t_huevo=tiempo-4;
-    }
+////////teclado y otros
+  teclado();
 
+  control();  //controla cambios de escenario, monedas, tiempo, conversion de bloques y vuelo.
+
+////////Conviertiendo velocidad en posicion personaje principal
   x=x+vx;
   y=y+vy;
 
+////////operaciones del los bloques, borrando dibujos viejos redibujando el fondo
+  refbloques();  //dibujar el fondo sobre el personaje principal
+  refchamp();
+  refpato();
+  //refseguidor();
+  refsalta();
+  //refpeligro();
+  refmina();
+  refdisparo();
+  //refbala();
+  //reftortuga();
+
+////////dibujando personajes, enemigos, paneles y marcadores
+  verestado();  //verificar el estado del pato y dibujarlo segun el estado, personaje principal
   dibchamp();  //dibujar champiñones
-
   dibpatos();  //dibujar patos
-
   //dibseguidor();  //dibujar seguidor
-
-  //dibsalta();  //dibujar saltador
-
+  dibsalta();  //dibujar saltador
   //dibpeligro();  //dibujar peligroso
-
+  dibmina();  //dibujar minas
   dibdisparo();  //dibujar disparo
+  dibexplosion_chica();  //para dibujar explosiones chicas, activar junto con minas, TNTs y NITROS
+  dibcristalroto();  //efectos al romper un cristal
+  dibgolpe();  //utilizado para los disparos, generalmente muy utilizado
+  //dibbala();  //dibujar balas de cañones
+  //dibtortugas();  //dibujar tortugas
 
   segundos();  //realizar un conteo del tiempo del juego
 
-  verestado();  //verificar el estado de pato y dibujarlo segun el estado
-
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(20);
+  delay(retraso);
 
 }
-
 guardar_fondo(2);
 return(0);
 }
@@ -2922,8 +2280,9 @@ return(0);
 escena23()
 {
 ciclo=0;
-//invensible=0;
+nadando=0;
 act_fondo(3);
+act_cielo(3);
 fondo();
 panel();
 r_champ();
@@ -2932,248 +2291,178 @@ r_pato();
 r_seguidor();
 r_salta();
 r_peligro();
+r_mina();
 r_disparo();
-c_pato(4,24);
-c_salta(15,24);
-c_pato(18,24);
+r_explosionc();
+r_cristalroto();
+r_bala();
+r_tortuga();
+c_mina(38,20);
 
-while(ciclo<1)
+while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los movimientos existentes, es decir un cambio de posicion de cada objeto
   {
+////////Guardando las coordenadas anteriores
+  o=x;
+  p=y;
 
-////////operaciones del los bloques
+  //posicion_champ();  //guardar las coordenadas anteriores de los champiñones
+  //posicion_pato();  //guardar las coordenadas anteriores de los patos
+  //posicion_seguidor();  //guardar las coordenadas anteriores de los patos seguidores
+  //posicion_salta();  //guardar las coordenadas anteriores de los patos saltadores
+  //posicion_peligro();  //guardar las coordenadas anteriores de los patos saltadores seguidores
+  posicion_mina();  //guardar las coordenadas anteriores de las minas
+  posicion_disparo();  //guardar las coordenadas anteriores de los disparos
+  //posicion_bala();  //guardar las coordenadas anteriores de las balas
+  //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
-  tinvensible();
-  refbloques();  //actualizar bloques
-  //refchamp();
-  refpato();
-  //refseguidor();
-  refsalta();
-  //refpeligro();
-  refdisparo();
-
-  if((x%16)!=0)
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-  else
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-
-  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque derecho   nota: (y%16)==0 es para que si se golpea un bloque por abajo no se cumpla
-    {
-    vx=0.0;
-    x=x-(x%16);
-    }
-  else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque izquierdo
-    {
-    vx=0.0;
-    x=x+16-(x%16);
-    }
+  tinvensible();  //tiempo de inmunidad
 
 ////////interaccion de los bloques
-
-  //bloque_poder0();  //poder0
-
-////////teclado
-
-  teclado();
-
-////////Especial  crear patos saliendo de la tuberia
-
-if(tiempo%8==0 && sec%22==0)
-  {
-  c_pato(18,22);
-  }
-
-////////interaccion de los bloques
-
-  bloque_saltar();  //bloque para saltar muy alto
-
-  //cielo_abajo();  //flujo de aire hacia abajo
-
-  //cielo_arriba();  //flujo de aire hacia arriba
-
-  //cielo_izquierda();  //flujo de aire hacia la izquierda
-
-  //cielo_derecha();  //flujo de aire hacia la derecha
-
-  //agua_abajo();  //flujo de agua hacia abajo
-
-  //agua_arriba();  //flujo de agua hacia arriba
-
-  //agua_izquierda();  //flujo de agua hacia izquierda
-
-  //agua_derecha();  //flujo de agua hacia derecha
-
   //bloque_caja0_moneda();  //caja0 con moneda
-
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
-
   //bloque_caja0_champinon();  //caja0 con champiñon
-
   //bloque_caja0_vida();  //caja0 con vida
 
+ ////////especial si golpea 17,4 (cristal0) que aparesca un poder0 en 17,3
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==14)  //golpe por abajo
+    {
+    if((y-(y%16))/16 == 4 && (x-(x%16))/16 == 17)
+      {
+      y=y+16-(y%16);
+      vy=-vy;
+      paisaje[(y-16-(y%16))/16][(x-(x%16))/16]=5;  //caja5
+      bloque(x-(x%16),y-16-(y%16),5);
+      paisaje[(y-32-(y%16))/16][(x-(x%16))/16]=36;  //poder0
+      bloque(x-(x%16),y-32-(y%16),36);
+      }
+    }
+  if(paisaje[(y-(y%16))/16][(x+15-((x+15)%16))/16]==14)
+    {
+    if((y-(y%16))/16 == 4 && (x+15-((x+15)%16))/16 == 17)
+      {
+      y=y+16-(y%16);
+      vy=-vy;
+      paisaje[(y-16-(y%16))/16][(x+15-((x+15)%16))/16]=5;  //caja5
+      bloque(x+15-((x+15)%16),y-16-(y%16),5);
+      paisaje[(y-32-(y%16))/16][(x+15-((x+15)%16))/16]=36;  //poder0
+      bloque(x+15-((x+15)%16),y-32-(y%16),36);
+      }
+    }
+
   //cristal0_moneda();  //cristal0 con moneda
-
   //cristal4_moneda();  //cristal4 con moneda
-
   //cristal0_vida();  //cristal0 con vida
-
   //cristal4_vida();  //cristal4 con vida
-
-  //bloque_cristal();  //cristal golpe por abajo
-
-  //bloque_moneda0();  //monedas
-
+  bloque_cristal();  //cristal golpe por abajo
+  bloque_moneda0();  //monedas
   //bloque_moneda4();  //monedas
-
   //estrella_moneda();  //Estrella con moneda
-
   //cielo_vida();  //cielo cyan con moneda
-
   //cielo_moneda();  //cielo cyan con vida
 
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
-  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32) && x%16!=0)
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
+////////funcion para deteccion de los bloques solidos
+  bloques_solidos();
 
-  bloque_nota0();  //nota0
-
+////////interaccion de los bloques
+  bloque_poder0();  //poder0
+  //bloque_nota0();  //nota0
+  //bloque_saltar();  //bloque para saltar muy alto
+  //cielo_abajo();  //flujo de aire hacia abajo
+  //cielo_arriba();  //flujo de aire hacia arriba
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+  //cielo_derecha();  //flujo de aire hacia la derecha
+  agua();  //habilitar si se usa cualquier tipo de bloque con agua
+  //agua_abajo();  //flujo de agua hacia abajo
+  //agua_arriba();  //flujo de agua hacia arriba
+  //agua_izquierda();  //flujo de agua hacia izquierda
+  //agua_derecha();  //flujo de agua hacia derecha
   bloque_agua();
-
   //bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
-
   //bloque_cuadrado1();  //pisarlos pero no golpearlos  (blanco 15)
 
+////////funciones para enemigos y peligros
   //tocar_champinon();  //tocar champiñon
-
-  pisar_pato();  //pisar pato
-
+  //pisar_pato();  //pisar pato
   //pisar_seguidor();  //pisar seguidor
-
-  pisar_salta();  //pisar saltador
-
+  //pisar_salta();  //pisar saltador
   //pisar_peligro();  //pisar peligroso
+  //pisar_bala();  //pisar las balas
+  //pisar_tortuga();  //pisar tortuga
 
   disparo_mata();  //Disparos que matan patos
-
   //NITRO_mata();  //no toques la nitroglicerina
-
   //fuego4_mata();  //no teques el fuego
-
-  pato_mata();  //pato mata cuando los tocas
-
+  //pato_mata();  //pato mata cuando los tocas
   //seguidor_mata();  //seguidor mata cuando los tocas
-
-  salta_mata();  //saltador mata cuando los tocas
-
+  //salta_mata();  //saltador mata cuando los tocas
   //peligro_mata();  //peligroso mata cuando los tocas
+  mina_mata(); //mina mata
+  //bala_mata();  //las balas matan
+  //tortuga_mata();  //tortuga mata cuando los tocas
 
-  patofuera();  //verificar si un pato se salio de la pantalla
-
+  //patofuera();  //verificar si un pato se salio de la pantalla
   //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
-
-  saltafuera();  //verificar si un saltador se salio de la pantalla
-
+  //saltafuera();  //verificar si un saltador se salio de la pantalla
   //peligrofuera();  //verificar si un peligroso se salio de la pantalla
-
   //champifuera();  //verificar si un champiñon se salio de la pantalla
-
   disparofuera();  //verificar si un disparo se salio de la pantalla
+  //balafuera();  //verificar si una bala se salio de la pantalla
+  //tortugafuera();  //verificar si una tortuga se salio de la pantalla
 
   //movchamp();  //mover champiñones
-
-  mdemone();
-
-  movpato();  //mover patos
-
+  //mdemone();  //saltar monedas, generalmente es utilizado
+  //movpato();  //mover patos
   //movseguidor();  //mover seguidor
-
-  movsalta();  //mover saltador
-
+  //movsalta();  //mover saltador
   //movpeligro();  //mover peligroso
-
+  movmina();  //mover las minas
   movdisparo();  //mover disparo
+  //movbala();  //mover las balas
+  //movtortuga();  //mover tortugas
 
-  if(monedas>=100) //por cada 100 monedas aumentar una vida
-    {
-    monedas=0;
-    vidas++;
-    }
-  if(x>=624) //si llega a la orilla derecha pasar a la siguiente escena
-    {
-    ciclo=1;
-    escena++;
-    x=2;
-    }
-  else if(x<=0) //si llega a la orilla izquierda pasar a la anterior escena
-    {
-    ciclo=1;
-    escena--;
-    x=608;
-    }
-  else if(y>=464) //caida
-    {
-    ciclo=1;
-    estado=1;
-    vidas--;
-    //t_huevo=tiempo-4;  //parece no ser necesario
-    jugar=0;
-    }
-  else if(tiempo==0) //tiempo terminado
-    {
-    estado=0;
-    t_huevo=tiempo-4;
-    }
+////////teclado y otros
+  teclado();
 
+  control();  //controla cambios de escenario, monedas, tiempo, conversion de bloques y vuelo.
+
+////////Conviertiendo velocidad en posicion personaje principal
   x=x+vx;
   y=y+vy;
 
+////////operaciones del los bloques, borrando dibujos viejos redibujando el fondo
+  refbloques();  //dibujar el fondo sobre el personaje principal
+  //refchamp();
+  //refpato();
+  //refseguidor();
+  //refsalta();
+  //refpeligro();
+  refmina();
+  refdisparo();
+  //refbala();
+  //reftortuga();
+
+////////dibujando personajes, enemigos, paneles y marcadores
+  verestado();  //verificar el estado del pato y dibujarlo segun el estado, personaje principal
   //dibchamp();  //dibujar champiñones
-
-  dibpatos();  //dibujar patos
-
+  //dibpatos();  //dibujar patos
   //dibseguidor();  //dibujar seguidor
-
-  dibsalta();  //dibujar saltador
-
+  //dibsalta();  //dibujar saltador
   //dibpeligro();  //dibujar peligroso
-
+  dibmina();  //dibujar minas
   dibdisparo();  //dibujar disparo
+  dibexplosion_chica();  //para dibujar explosiones chicas, activar junto con minas, TNTs y NITROS
+  dibcristalroto();  //efectos al romper un cristal
+  dibgolpe();  //utilizado para los disparos, generalmente muy utilizado
+  //dibbala();  //dibujar balas de cañones
+  //dibtortugas();  //dibujar tortugas
 
   segundos();  //realizar un conteo del tiempo del juego
 
-  verestado();  //verificar el estado de pato y dibujarlo segun el estado
-
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(20);
-
+  delay(retraso);
 }
+
 guardar_fondo(3);
 return(0);
 }
@@ -3188,8 +2477,9 @@ return(0);
 escena30()
 {
 ciclo=0;
-//invensible=0;
+nadando=0;
 act_fondo(0);
+act_cielo(0);
 fondo();
 panel();
 r_champ();
@@ -3198,241 +2488,152 @@ r_pato();
 r_seguidor();
 r_salta();
 r_peligro();
+r_mina();
 r_disparo();
-c_seguidor(6,24);
-c_pato(4,24);
-c_pato(22,24);
+r_explosionc();
+r_cristalroto();
+r_bala();
+r_tortuga();
+c_peligro(24,21);
+//c_pato(22,24);
 
-while(ciclo<1)
+while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los movimientos existentes, es decir un cambio de posicion de cada objeto
   {
+////////Guardando las coordenadas anteriores
+  o=x;
+  p=y;
 
-////////operaciones del los bloques
+  posicion_champ();  //guardar las coordenadas anteriores de los champiñones
+  //posicion_pato();  //guardar las coordenadas anteriores de los patos
+  //posicion_seguidor();  //guardar las coordenadas anteriores de los patos seguidores
+  //posicion_salta();  //guardar las coordenadas anteriores de los patos saltadores
+  posicion_peligro();  //guardar las coordenadas anteriores de los patos saltadores seguidores
+  //posicion_mina();  //guardar las coordenadas anteriores de las minas
+  posicion_disparo();  //guardar las coordenadas anteriores de los disparos
+  //posicion_bala();  //guardar las coordenadas anteriores de las balas
+  //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
-  tinvensible();
-  refbloques();  //actualizar bloques
-  refchamp();
-  refpato();
-  //refseguidor();
-  //refsalta();
-  //refpeligro();
-  refdisparo();
-
-  if((x%16)!=0)
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-  else
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-
-  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque derecho   nota: (y%16)==0 es para que si se golpea un bloque por abajo no se cumpla
-    {
-    vx=0.0;
-    x=x-(x%16);
-    }
-  else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque izquierdo
-    {
-    vx=0.0;
-    x=x+16-(x%16);
-    }
+  tinvensible();  //tiempo de inmunidad
 
 ////////interaccion de los bloques
-
-  //bloque_poder0();  //poder0
-
-////////teclado
-
-  teclado();
-
-////////interaccion de los bloques
-
-  //bloque_saltar();  //bloque para saltar muy alto
-
-  //cielo_abajo();  //flujo de aire hacia abajo
-
-  //cielo_arriba();  //flujo de aire hacia arriba
-
-  //cielo_izquierda();  //flujo de aire hacia la izquierda
-
-  //cielo_derecha();  //flujo de aire hacia la derecha
-
-  //agua_abajo();  //flujo de agua hacia abajo
-
-  //agua_arriba();  //flujo de agua hacia arriba
-
-  //agua_izquierda();  //flujo de agua hacia izquierda
-
-  //agua_derecha();  //flujo de agua hacia derecha
-
-  bloque_caja0_moneda();  //caja0 con moneda
-
+  //bloque_caja0_moneda();  //caja0 con moneda
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
-
   bloque_caja0_champinon();  //caja0 con champiñon
-
   //bloque_caja0_vida();  //caja0 con vida
-
   //cristal0_moneda();  //cristal0 con moneda
-
   //cristal4_moneda();  //cristal4 con moneda
-
   //cristal0_vida();  //cristal0 con vida
-
   //cristal4_vida();  //cristal4 con vida
-
-  //bloque_cristal();  //cristal golpe por abajo
-
-  //bloque_moneda0();  //monedas
-
+  bloque_cristal();  //cristal golpe por abajo
+  bloque_moneda0();  //monedas
   //bloque_moneda4();  //monedas
-
   //estrella_moneda();  //Estrella con moneda
-
   //cielo_vida();  //cielo cyan con moneda
-
   //cielo_moneda();  //cielo cyan con vida
 
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
-  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32) && x%16!=0)
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
+////////funcion para deteccion de los bloques solidos
+  bloques_solidos();
 
+////////interaccion de los bloques
+  bloque_poder0();  //poder0
   //bloque_nota0();  //nota0
-
+  //bloque_saltar();  //bloque para saltar muy alto
+  //cielo_abajo();  //flujo de aire hacia abajo
+  //cielo_arriba();  //flujo de aire hacia arriba
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+  //cielo_derecha();  //flujo de aire hacia la derecha
+  //agua();  //habilitar si se usa cualquier tipo de bloque con agua
+  //agua_abajo();  //flujo de agua hacia abajo
+  //agua_arriba();  //flujo de agua hacia arriba
+  //agua_izquierda();  //flujo de agua hacia izquierda
+  //agua_derecha();  //flujo de agua hacia derecha
   //bloque_agua();
-
-  bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
-
+  //bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
   //bloque_cuadrado1();  //pisarlos pero no golpearlos  (blanco 15)
 
+////////funciones para enemigos y peligros
   tocar_champinon();  //tocar champiñon
-
-  pisar_pato();  //pisar pato
-
+  //pisar_pato();  //pisar pato
   //pisar_seguidor();  //pisar seguidor
-
   //pisar_salta();  //pisar saltador
-
-  //pisar_peligro();  //pisar peligroso
+  pisar_peligro();  //pisar peligroso
+  //pisar_bala();  //pisar las balas
+  //pisar_tortuga();  //pisar tortuga
 
   disparo_mata();  //Disparos que matan patos
-
   //NITRO_mata();  //no toques la nitroglicerina
-
   //fuego4_mata();  //no teques el fuego
-
-  pato_mata();  //pato mata cuando los tocas
-
+  //pato_mata();  //pato mata cuando los tocas
   //seguidor_mata();  //seguidor mata cuando los tocas
-
   //salta_mata();  //saltador mata cuando los tocas
+  peligro_mata();  //peligroso mata cuando los tocas
+  //mina_mata(); //mina mata
+  //bala_mata();  //las balas matan
+  //tortuga_mata();  //tortuga mata cuando los tocas
 
-  //peligro_mata();  //peligroso mata cuando los tocas
-
-  patofuera();  //verificar si un pato se salio de la pantalla
-
+  //patofuera();  //verificar si un pato se salio de la pantalla
   //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
-
   //saltafuera();  //verificar si un saltador se salio de la pantalla
-
-  //peligrofuera();  //verificar si un peligroso se salio de la pantalla
-
+  peligrofuera();  //verificar si un peligroso se salio de la pantalla
   champifuera();  //verificar si un champiñon se salio de la pantalla
-
   disparofuera();  //verificar si un disparo se salio de la pantalla
+  //balafuera();  //verificar si una bala se salio de la pantalla
+  //tortugafuera();  //verificar si una tortuga se salio de la pantalla
 
   movchamp();  //mover champiñones
-
-  mdemone();
-
-  movpato();  //mover patos
-
+  //mdemone();  //saltar monedas, generalmente es utilizado
+  //movpato();  //mover patos
   //movseguidor();  //mover seguidor
-
   //movsalta();  //mover saltador
-
-  //movpeligro();  //mover peligroso
-
+  movpeligro();  //mover peligroso
+  //movmina();  //mover las minas
   movdisparo();  //mover disparo
+  //movbala();  //mover las balas
+  //movtortuga();  //mover tortugas
 
-  if(monedas>=100) //por cada 100 monedas aumentar una vida
-    {
-    monedas=0;
-    vidas++;
-    }
-  if(x>=624) //si llega a la orilla derecha pasar a la siguiente escena
-    {
-    ciclo=1;
-    escena++;
-    x=2;
-    }
-  else if(x<=0) //si llega a la orilla izquierda pasar a la anterior escena
-    {
-    ciclo=1;
-    escena--;
-    x=608;
-    }
-  else if(y>=464) //caida
-    {
-    ciclo=1;
-    estado=1;
-    vidas--;
-    //t_huevo=tiempo-4; //parece no ser necesario
-    jugar=0;
-    }
-  else if(tiempo==0) //tiempo terminado
-    {
-    estado=0;
-    t_huevo=tiempo-4;
-    }
+////////teclado y otros
+  teclado();
 
+  control();  //controla cambios de escenario, monedas, tiempo, conversion de bloques y vuelo.
+
+////////Conviertiendo velocidad en posicion personaje principal
   x=x+vx;
   y=y+vy;
 
+////////operaciones del los bloques, borrando dibujos viejos redibujando el fondo
+  refbloques();  //dibujar el fondo sobre el personaje principal
+  refchamp();
+  //refpato();
+  //refseguidor();
+  //refsalta();
+  refpeligro();
+  //refmina();
+  refdisparo();
+  //refbala();
+  //reftortuga();
+
+////////dibujando personajes, enemigos, paneles y marcadores
+  verestado();  //verificar el estado del pato y dibujarlo segun el estado, personaje principal
   dibchamp();  //dibujar champiñones
-
-  dibpatos();  //dibujar patos
-
+  //dibpatos();  //dibujar patos
   //dibseguidor();  //dibujar seguidor
-
   //dibsalta();  //dibujar saltador
-
-  //dibpeligro();  //dibujar peligroso
-
+  dibpeligro();  //dibujar peligroso
+  //dibmina();  //dibujar minas
   dibdisparo();  //dibujar disparo
+  //dibexplosion_chica();  //para dibujar explosiones chicas, activar junto con minas, TNTs y NITROS
+  dibcristalroto();  //efectos al romper un cristal
+  dibgolpe();  //utilizado para los disparos, generalmente muy utilizado
+  //dibbala();  //dibujar balas de cañones
+  //dibtortugas();  //dibujar tortugas
 
   segundos();  //realizar un conteo del tiempo del juego
 
-  verestado();  //verificar el estado de pato y dibujarlo segun el estado
-
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(20);
-
+  delay(retraso);
 }
+
 guardar_fondo(0);
 return(0);
 }
@@ -3441,8 +2642,9 @@ return(0);
 escena31()
 {
 ciclo=0;
-//invensible=0;
+nadando=0;
 act_fondo(1);
+act_cielo(1);
 fondo();
 panel();
 r_champ();
@@ -3451,264 +2653,177 @@ r_pato();
 r_seguidor();
 r_salta();
 r_peligro();
+r_mina();
 r_disparo();
-c_pato(16,23);
-npato[0]=-1;
+r_explosionc();
+r_cristalroto();
+r_bala();
+r_tortuga();
+c_pato(26,14);
+c_salta(37,24);
 
-while(ciclo<1)
+////////especial  bloques falsos
+bloque(24*16,7*16,11);
+bloque(25*16,7*16,11);
+bloque(26*16,7*16,11);
+bloque(27*16,7*16,11);
+
+while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los movimientos existentes, es decir un cambio de posicion de cada objeto
   {
+////////Guardando las coordenadas anteriores
+  o=x;
+  p=y;
 
-////////operaciones del los bloques
+  posicion_champ();  //guardar las coordenadas anteriores de los champiñones
+  posicion_pato();  //guardar las coordenadas anteriores de los patos
+  //posicion_seguidor();  //guardar las coordenadas anteriores de los patos seguidores
+  posicion_salta();  //guardar las coordenadas anteriores de los patos saltadores
+  posicion_peligro();  //guardar las coordenadas anteriores de los patos saltadores seguidores
+  //posicion_mina();  //guardar las coordenadas anteriores de las minas
+  posicion_disparo();  //guardar las coordenadas anteriores de los disparos
+  //posicion_bala();  //guardar las coordenadas anteriores de las balas
+  //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
-  tinvensible();
-  refbloques();  //actualizar bloques
-  refchamp();
-  refpato();
-  //refseguidor();
-  //refsalta();
-  //refpeligro();
-  refdisparo();
-
-  if((x%16)!=0)
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-  else
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-
-  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque derecho   nota: (y%16)==0 es para que si se golpea un bloque por abajo no se cumpla
-    {
-    vx=0.0;
-    x=x-(x%16);
-    }
-  else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque izquierdo
-    {
-    vx=0.0;
-    x=x+16-(x%16);
-    }
+  tinvensible();  //tiempo de inmunidad
 
 ////////interaccion de los bloques
-
-  bloque_poder0();  //poder0
-
-////////teclado
-
-  teclado();
-
-////////interaccion de los bloques
-
-  //bloque_saltar();  //bloque para saltar muy alto
-
-  //cielo_abajo();  //flujo de aire hacia abajo
-
-  //cielo_arriba();  //flujo de aire hacia arriba
-
-  //cielo_izquierda();  //flujo de aire hacia la izquierda
-
-  //cielo_derecha();  //flujo de aire hacia la derecha
-
-  //agua_abajo();  //flujo de agua hacia abajo
-
-  //agua_arriba();  //flujo de agua hacia arriba
-
-  //agua_izquierda();  //flujo de agua hacia izquierda
-
-  //agua_derecha();  //flujo de agua hacia derecha
-
   //bloque_caja0_moneda();  //caja0 con moneda
-
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
-
   bloque_caja0_champinon();  //caja0 con champiñon
-
   //bloque_caja0_vida();  //caja0 con vida
-
- ////////especial si golpea 18,21 (cristal0) que aparesca un poder0 en 18,20
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==14)  //golpe por abajo
-    {
-    if(((y-(y%16))/16 == 21) && ((x-(x%16))/16 == 18))
-      {
-      y=y+16-(y%16);
-      vy=-vy;
-      paisaje[(y-16-(y%16))/16][(x-(x%16))/16]=5;  //caja5
-      bloque(x-(x%16),y-16-(y%16),5);
-      paisaje[(y-32-(y%16))/16][(x-(x%16))/16]=36;  //poder0
-      bloque(x-(x%16),y-32-(y%16),36);
-      }
-    }
-  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==14) && x%16!=0)
-    {
-    if((y-(y%16))/16==21 && (x+16-(x%16))/16==18 && x%16!=0)
-      {
-      y=y+16-(y%16);
-      vy=-vy;
-      paisaje[(y-16-(y%16))/16][(x+16-(x%16))/16]=5;  //caja5
-      bloque(x+16-(x%16),y-16-(y%16),5);
-      paisaje[(y-32-(y%16))/16][(x+16-(x%16))/16]=36;  //poder0
-      bloque(x+16-(x%16),y-32-(y%16),36);
-      }
-    }
-
-  //cristal0_moneda();  //cristal0 con moneda
-
+  cristal0_moneda();  //cristal0 con moneda
   //cristal4_moneda();  //cristal4 con moneda
-
-  //cristal0_vida();  //cristal0 con vida
-
+  cristal0_vida();  //cristal0 con vida
   //cristal4_vida();  //cristal4 con vida
-
   bloque_cristal();  //cristal golpe por abajo
-
   bloque_moneda0();  //monedas
-
   //bloque_moneda4();  //monedas
-
   //estrella_moneda();  //Estrella con moneda
-
   //cielo_vida();  //cielo cyan con moneda
-
   //cielo_moneda();  //cielo cyan con vida
 
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
+////////Especial  crear patos saliendo de la tuberia
+if(tiempo%22==0 && sec%22==0)
+  {
+  c_peligro(8,20);
+  }
+
+////////especial para entrar a tuberia en 29,13 y 29,14
+  if(tecla[KEY_CUR_ADELANTE])  //derecha
     {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
-  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32) && x%16!=0)
-    {
-    y=y+16-(y%16);
-    vy=-vy;
+    if(((y-(y%16))/16 == 13) && ((x-(x%16))/16 == 29))
+      {
+      ciclo=1;
+      escena=20;
+      }
+    else if(((y-(y%16))/16 == 14) && ((x-(x%16))/16 == 29))
+      {
+      ciclo=1;
+      escena=20;
+      }
     }
 
+////////funcion para deteccion de los bloques solidos
+  bloques_solidos();
+
+////////interaccion de los bloques
+  //bloque_poder0();  //poder0
   //bloque_nota0();  //nota0
-
+  //bloque_saltar();  //bloque para saltar muy alto
+  //cielo_abajo();  //flujo de aire hacia abajo
+  cielo_arriba();  //flujo de aire hacia arriba
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+  //cielo_derecha();  //flujo de aire hacia la derecha
+  //agua();  //habilitar si se usa cualquier tipo de bloque con agua
+  //agua_abajo();  //flujo de agua hacia abajo
+  //agua_arriba();  //flujo de agua hacia arriba
+  //agua_izquierda();  //flujo de agua hacia izquierda
+  //agua_derecha();  //flujo de agua hacia derecha
   //bloque_agua();
-
-  bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
-
+  //bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
   //bloque_cuadrado1();  //pisarlos pero no golpearlos  (blanco 15)
 
+////////funciones para enemigos y peligros
   tocar_champinon();  //tocar champiñon
-
   pisar_pato();  //pisar pato
-
   //pisar_seguidor();  //pisar seguidor
-
-  //pisar_salta();  //pisar saltador
-
-  //pisar_peligro();  //pisar peligroso
+  pisar_salta();  //pisar saltador
+  pisar_peligro();  //pisar peligroso
+  //pisar_bala();  //pisar las balas
+  //pisar_tortuga();  //pisar tortuga
 
   disparo_mata();  //Disparos que matan patos
-
   //NITRO_mata();  //no toques la nitroglicerina
-
-  //fuego4_mata();  //no teques el fuego
-
+  fuego4_mata();  //no teques el fuego
   pato_mata();  //pato mata cuando los tocas
-
   //seguidor_mata();  //seguidor mata cuando los tocas
-
-  //salta_mata();  //saltador mata cuando los tocas
-
-  //peligro_mata();  //peligroso mata cuando los tocas
+  salta_mata();  //saltador mata cuando los tocas
+  peligro_mata();  //peligroso mata cuando los tocas
+  //mina_mata(); //mina mata
+  //bala_mata();  //las balas matan
+  //tortuga_mata();  //tortuga mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
-
   //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
-
-  //saltafuera();  //verificar si un saltador se salio de la pantalla
-
-  //peligrofuera();  //verificar si un peligroso se salio de la pantalla
-
+  saltafuera();  //verificar si un saltador se salio de la pantalla
+  peligrofuera();  //verificar si un peligroso se salio de la pantalla
   champifuera();  //verificar si un champiñon se salio de la pantalla
-
   disparofuera();  //verificar si un disparo se salio de la pantalla
+  //balafuera();  //verificar si una bala se salio de la pantalla
+  //tortugafuera();  //verificar si una tortuga se salio de la pantalla
 
   movchamp();  //mover champiñones
-
-  mdemone();
-
+  mdemone();  //saltar monedas, generalmente es utilizado
   movpato();  //mover patos
-
   //movseguidor();  //mover seguidor
-
-  //movsalta();  //mover saltador
-
-  //movpeligro();  //mover peligroso
-
+  movsalta();  //mover saltador
+  movpeligro();  //mover peligroso
+  //movmina();  //mover las minas
   movdisparo();  //mover disparo
+  //movbala();  //mover las balas
+  //movtortuga();  //mover tortugas
 
-  if(monedas>=100) //por cada 100 monedas aumentar una vida
-    {
-    monedas=0;
-    vidas++;
-    }
-  if(x>=624) //si llega a la orilla derecha pasar a la siguiente escena
-    {
-    ciclo=1;
-    escena++;
-    x=2;
-    }
-  else if(x<=0) //si llega a la orilla izquierda pasar a la anterior escena
-    {
-    ciclo=1;
-    escena--;
-    x=608;
-    }
-  else if(y>=464) //caida
-    {
-    ciclo=1;
-    estado=1;
-    vidas--;
-    //t_huevo=tiempo-4;  //parece no ser necesario
-    jugar=0;
-    }
-  else if(tiempo==0) //tiempo terminado
-    {
-    estado=0;
-    t_huevo=tiempo-4;
-    }
+////////teclado y otros
+  teclado();
 
+  control();  //controla cambios de escenario, monedas, tiempo, conversion de bloques y vuelo.
+
+////////Conviertiendo velocidad en posicion personaje principal
   x=x+vx;
   y=y+vy;
 
+////////operaciones del los bloques, borrando dibujos viejos redibujando el fondo
+  refbloques();  //dibujar el fondo sobre el personaje principal
+  refchamp();
+  refpato();
+  //refseguidor();
+  refsalta();
+  refpeligro();
+  //refmina();
+  refdisparo();
+  //refbala();
+  //reftortuga();
+
+////////dibujando personajes, enemigos, paneles y marcadores
+  verestado();  //verificar el estado del pato y dibujarlo segun el estado, personaje principal
   dibchamp();  //dibujar champiñones
-
   dibpatos();  //dibujar patos
-
   //dibseguidor();  //dibujar seguidor
-
-  //dibsalta();  //dibujar saltador
-
-  //dibpeligro();  //dibujar peligroso
-
+  dibsalta();  //dibujar saltador
+  dibpeligro();  //dibujar peligroso
+  //dibmina();  //dibujar minas
   dibdisparo();  //dibujar disparo
+  //dibexplosion_chica();  //para dibujar explosiones chicas, activar junto con minas, TNTs y NITROS
+  dibcristalroto();  //efectos al romper un cristal
+  dibgolpe();  //utilizado para los disparos, generalmente muy utilizado
+  //dibbala();  //dibujar balas de cañones
+  //dibtortugas();  //dibujar tortugas
 
   segundos();  //realizar un conteo del tiempo del juego
 
-  verestado();  //verificar el estado de pato y dibujarlo segun el estado
-
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(20);
+  delay(retraso);
 
 }
 guardar_fondo(1);
@@ -3719,8 +2834,9 @@ return(0);
 escena32()
 {
 ciclo=0;
-//invensible=0;
+nadando=0;
 act_fondo(2);
+act_cielo(2);
 fondo();
 panel();
 r_champ();
@@ -3729,263 +2845,156 @@ r_pato();
 r_seguidor();
 r_salta();
 r_peligro();
+r_mina();
 r_disparo();
-c_pato(13,24);
+r_explosionc();
+r_cristalroto();
+r_bala();
+r_tortuga();
+//c_pato(4,24);
+//c_pato(22,24);
 
-while(ciclo<1)
+while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los movimientos existentes, es decir un cambio de posicion de cada objeto
   {
+////////Guardando las coordenadas anteriores
+  o=x;
+  p=y;
 
-////////operaciones del los bloques
+  //posicion_champ();  //guardar las coordenadas anteriores de los champiñones
+  //posicion_pato();  //guardar las coordenadas anteriores de los patos
+  //posicion_seguidor();  //guardar las coordenadas anteriores de los patos seguidores
+  //posicion_salta();  //guardar las coordenadas anteriores de los patos saltadores
+  posicion_peligro();  //guardar las coordenadas anteriores de los patos saltadores seguidores
+  //posicion_mina();  //guardar las coordenadas anteriores de las minas
+  posicion_disparo();  //guardar las coordenadas anteriores de los disparos
+  //posicion_bala();  //guardar las coordenadas anteriores de las balas
+  //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
-  tinvensible();
-  refbloques();  //actualizar bloques
-  refchamp();
-  refpato();
-  //refseguidor();
-  //refsalta();
-  //refpeligro();
-  refdisparo();
-
-  if((x%16)!=0)
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-  else
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-
-  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque derecho   nota: (y%16)==0 es para que si se golpea un bloque por abajo no se cumpla
-    {
-    vx=0.0;
-    x=x-(x%16);
-    }
-  else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque izquierdo
-    {
-    vx=0.0;
-    x=x+16-(x%16);
-    }
+  tinvensible();  //tiempo de inmunidad
 
 ////////interaccion de los bloques
-
-  //bloque_poder0();  //poder0
-
-////////teclado
-
-  teclado();
+  //bloque_caja0_moneda();  //caja0 con moneda
+  //bloque_caja0_10monedas();  //caja0 con 10 momedas
+  //bloque_caja0_champinon();  //caja0 con champiñon
+  //bloque_caja0_vida();  //caja0 con vida
+  //cristal0_moneda();  //cristal0 con moneda
+  //cristal4_moneda();  //cristal4 con moneda
+  //cristal0_vida();  //cristal0 con vida
+  //cristal4_vida();  //cristal4 con vida
+  bloque_cristal();  //cristal golpe por abajo
+  bloque_moneda0();  //monedas
+  //bloque_moneda4();  //monedas
+  //estrella_moneda();  //Estrella con moneda
+  //cielo_vida();  //cielo cyan con moneda
+  //cielo_moneda();  //cielo cyan con vida
 
 ////////Especial  crear patos saliendo de la tuberia
-
 if(tiempo%22==0 && sec%22==0)
   {
-  c_pato(18,22);
-  }
-if(tiempo%28==0 && sec%22==0)
-  {
-  c_pato(25,17);
+  c_peligro(33,4);
   }
 
-////////especial para entrar a tuberia en 25,17 y 26,17
-  if(tecla[KEY_CUR_ARRIBA])  //arriba
-    {
-    if(((y-(y%16))/16 == 17) && ((x-(x%16))/16 == 26))
-      {
-      ciclo=1;
-      escena=20;  //escena secreta
-      }
-    else if(((y-(y%16))/16 == 17) && ((x-(x%16))/16 == 25))
-      {
-      ciclo=1;
-      escena=20;  //escena secreta
-      }
-    }
+////////funcion para deteccion de los bloques solidos
+  bloques_solidos();
 
 ////////interaccion de los bloques
-
-  //bloque_saltar();  //bloque para saltar muy alto
-
-  //cielo_abajo();  //flujo de aire hacia abajo
-
-  //cielo_arriba();  //flujo de aire hacia arriba
-
-  //cielo_izquierda();  //flujo de aire hacia la izquierda
-
-  //cielo_derecha();  //flujo de aire hacia la derecha
-
-  //agua_abajo();  //flujo de agua hacia abajo
-
-  //agua_arriba();  //flujo de agua hacia arriba
-
-  //agua_izquierda();  //flujo de agua hacia izquierda
-
-  //agua_derecha();  //flujo de agua hacia derecha
-
-  //bloque_caja0_moneda();  //caja0 con moneda
-
-  //bloque_caja0_10monedas();  //caja0 con 10 momedas
-
-  //bloque_caja0_champinon();  //caja0 con champiñon
-
-  //bloque_caja0_vida();  //caja0 con vida
-
-  //cristal0_moneda();  //cristal0 con moneda
-
-  //cristal4_moneda();  //cristal4 con moneda
-
-  cristal0_vida();  //cristal0 con vida
-
-  //cristal4_vida();  //cristal4 con vida
-
-  bloque_cristal();  //cristal golpe por abajo
-
-  bloque_moneda0();  //monedas
-
-  //bloque_moneda4();  //monedas
-
-  //estrella_moneda();  //Estrella con moneda
-
-  cielo_vida();  //cielo cyan con moneda
-
-  cielo_moneda();  //cielo cyan con vida
-
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
-  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32) && x%16!=0)
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
-
+  //bloque_poder0();  //poder0
   //bloque_nota0();  //nota0
-
-  //bloque_agua();
-
+  //bloque_saltar();  //bloque para saltar muy alto
+  //cielo_abajo();  //flujo de aire hacia abajo
+  //cielo_arriba();  //flujo de aire hacia arriba
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+  //cielo_derecha();  //flujo de aire hacia la derecha
+  agua();  //habilitar si se usa cualquier tipo de bloque con agua
+  //agua_abajo();  //flujo de agua hacia abajo
+  //agua_arriba();  //flujo de agua hacia arriba
+  //agua_izquierda();  //flujo de agua hacia izquierda
+  //agua_derecha();  //flujo de agua hacia derecha
+  bloque_agua();
   //bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
+  bloque_cuadrado1();  //pisarlos pero no golpearlos  (blanco 15)
 
-  //bloque_cuadrado1();  //pisarlos pero no golpearlos  (blanco 15)
-
-  tocar_champinon();  //tocar champiñon
-
-  pisar_pato();  //pisar pato
-
+////////funciones para enemigos y peligros
+  //tocar_champinon();  //tocar champiñon
+  //pisar_pato();  //pisar pato
   //pisar_seguidor();  //pisar seguidor
-
   //pisar_salta();  //pisar saltador
-
-  //pisar_peligro();  //pisar peligroso
+  pisar_peligro();  //pisar peligroso
+  //pisar_bala();  //pisar las balas
+  //pisar_tortuga();  //pisar tortuga
 
   disparo_mata();  //Disparos que matan patos
-
   //NITRO_mata();  //no toques la nitroglicerina
-
-  //fuego4_mata();  //no teques el fuego
-
-  pato_mata();  //pato mata cuando los tocas
-
+  fuego4_mata();  //no teques el fuego
+  //pato_mata();  //pato mata cuando los tocas
   //seguidor_mata();  //seguidor mata cuando los tocas
-
   //salta_mata();  //saltador mata cuando los tocas
+  peligro_mata();  //peligroso mata cuando los tocas
+  //mina_mata(); //mina mata
+  //bala_mata();  //las balas matan
+  //tortuga_mata();  //tortuga mata cuando los tocas
 
-  //peligro_mata();  //peligroso mata cuando los tocas
-
-  patofuera();  //verificar si un pato se salio de la pantalla
-
+  //patofuera();  //verificar si un pato se salio de la pantalla
   //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
-
   //saltafuera();  //verificar si un saltador se salio de la pantalla
-
-  //peligrofuera();  //verificar si un peligroso se salio de la pantalla
-
-  champifuera();  //verificar si un champiñon se salio de la pantalla
-
+  peligrofuera();  //verificar si un peligroso se salio de la pantalla
+  //champifuera();  //verificar si un champiñon se salio de la pantalla
   disparofuera();  //verificar si un disparo se salio de la pantalla
+  //balafuera();  //verificar si una bala se salio de la pantalla
+  //tortugafuera();  //verificar si una tortuga se salio de la pantalla
 
-  movchamp();  //mover champiñones
-
-  mdemone();
-
-  movpato();  //mover patos
-
+  //movchamp();  //mover champiñones
+  //mdemone();  //saltar monedas, generalmente es utilizado
+  //movpato();  //mover patos
   //movseguidor();  //mover seguidor
-
   //movsalta();  //mover saltador
-
-  //movpeligro();  //mover peligroso
-
+  movpeligro();  //mover peligroso
+  //movmina();  //mover las minas
   movdisparo();  //mover disparo
+  //movbala();  //mover las balas
+  //movtortuga();  //mover tortugas
 
-  if(monedas>=100) //por cada 100 monedas aumentar una vida
-    {
-    monedas=0;
-    vidas++;
-    }
-  if(x>=624) //si llega a la orilla derecha pasar a la siguiente escena
-    {
-    ciclo=1;
-    escena++;
-    x=2;
-    }
-  else if(x<=0) //si llega a la orilla izquierda pasar a la anterior escena
-    {
-    ciclo=1;
-    escena--;
-    x=608;
-    }
-  else if(y>=464) //caida
-    {
-    ciclo=1;
-    estado=1;
-    vidas--;
-    //t_huevo=tiempo-4;  //parece no ser necesario
-    jugar=0;
-    }
-  else if(tiempo==0) //tiempo terminado
-    {
-    estado=0;
-    t_huevo=tiempo-4;
-    }
+////////teclado y otros
+  teclado();
 
+  control();  //controla cambios de escenario, monedas, tiempo, conversion de bloques y vuelo.
+
+////////Conviertiendo velocidad en posicion personaje principal
   x=x+vx;
   y=y+vy;
 
-  dibchamp();  //dibujar champiñones
+////////operaciones del los bloques, borrando dibujos viejos redibujando el fondo
+  refbloques();  //dibujar el fondo sobre el personaje principal
+  //refchamp();
+  //refpato();
+  //refseguidor();
+  //refsalta();
+  refpeligro();
+  //refmina();
+  refdisparo();
+  //refbala();
+  //reftortuga();
 
-  dibpatos();  //dibujar patos
-
+////////dibujando personajes, enemigos, paneles y marcadores
+  verestado();  //verificar el estado del pato y dibujarlo segun el estado, personaje principal
+  //dibchamp();  //dibujar champiñones
+  //dibpatos();  //dibujar patos
   //dibseguidor();  //dibujar seguidor
-
   //dibsalta();  //dibujar saltador
-
-  //dibpeligro();  //dibujar peligroso
-
+  dibpeligro();  //dibujar peligroso
+  //dibmina();  //dibujar minas
   dibdisparo();  //dibujar disparo
+  //dibexplosion_chica();  //para dibujar explosiones chicas, activar junto con minas, TNTs y NITROS
+  dibcristalroto();  //efectos al romper un cristal
+  dibgolpe();  //utilizado para los disparos, generalmente muy utilizado
+  //dibbala();  //dibujar balas de cañones
+  //dibtortugas();  //dibujar tortugas
 
   segundos();  //realizar un conteo del tiempo del juego
 
-  verestado();  //verificar el estado de pato y dibujarlo segun el estado
-
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(20);
+  delay(retraso);
 
 }
 guardar_fondo(2);
@@ -3996,8 +3005,9 @@ return(0);
 escena33()
 {
 ciclo=0;
-//invensible=0;
+nadando=0;
 act_fondo(3);
+act_cielo(3);
 fondo();
 panel();
 r_champ();
@@ -4006,246 +3016,150 @@ r_pato();
 r_seguidor();
 r_salta();
 r_peligro();
+r_mina();
 r_disparo();
-c_pato(4,24);
-c_salta(15,24);
-c_pato(18,24);
+r_explosionc();
+r_cristalroto();
+r_bala();
+r_tortuga();
+//c_pato(4,24);
+//c_pato(22,24);
 
-while(ciclo<1)
+while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los movimientos existentes, es decir un cambio de posicion de cada objeto
   {
+////////Guardando las coordenadas anteriores
+  o=x;
+  p=y;
 
-////////operaciones del los bloques
+  posicion_champ();  //guardar las coordenadas anteriores de los champiñones
+  //posicion_pato();  //guardar las coordenadas anteriores de los patos
+  //posicion_seguidor();  //guardar las coordenadas anteriores de los patos seguidores
+  //posicion_salta();  //guardar las coordenadas anteriores de los patos saltadores
+  //posicion_peligro();  //guardar las coordenadas anteriores de los patos saltadores seguidores
+  //posicion_mina();  //guardar las coordenadas anteriores de las minas
+  posicion_disparo();  //guardar las coordenadas anteriores de los disparos
+  //posicion_bala();  //guardar las coordenadas anteriores de las balas
+  //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
-  tinvensible();
-  refbloques();  //actualizar bloques
-  //refchamp();
-  refpato();
-  //refseguidor();
-  refsalta();
-  //refpeligro();
-  refdisparo();
-
-  if((x%16)!=0)
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-  else
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-
-  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque derecho   nota: (y%16)==0 es para que si se golpea un bloque por abajo no se cumpla
-    {
-    vx=0.0;
-    x=x-(x%16);
-    }
-  else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque izquierdo
-    {
-    vx=0.0;
-    x=x+16-(x%16);
-    }
+  tinvensible();  //tiempo de inmunidad
 
 ////////interaccion de los bloques
-
-  //bloque_poder0();  //poder0
-
-////////teclado
-
-  teclado();
-
-////////Especial  crear patos saliendo de la tuberia
-
-if(tiempo%8==0 && sec%22==0)
-  {
-  c_pato(18,22);
-  }
-
-////////interaccion de los bloques
-
-  bloque_saltar();  //bloque para saltar muy alto
-
-  //cielo_abajo();  //flujo de aire hacia abajo
-
-  //cielo_arriba();  //flujo de aire hacia arriba
-
-  //cielo_izquierda();  //flujo de aire hacia la izquierda
-
-  //cielo_derecha();  //flujo de aire hacia la derecha
-
-  //agua_abajo();  //flujo de agua hacia abajo
-
-  //agua_arriba();  //flujo de agua hacia arriba
-
-  //agua_izquierda();  //flujo de agua hacia izquierda
-
-  //agua_derecha();  //flujo de agua hacia derecha
-
-  //bloque_caja0_moneda();  //caja0 con moneda
-
+  bloque_caja0_moneda();  //caja0 con moneda
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
-
-  //bloque_caja0_champinon();  //caja0 con champiñon
-
+  bloque_caja0_champinon();  //caja0 con champiñon
   //bloque_caja0_vida();  //caja0 con vida
-
   //cristal0_moneda();  //cristal0 con moneda
-
   //cristal4_moneda();  //cristal4 con moneda
-
   //cristal0_vida();  //cristal0 con vida
-
   //cristal4_vida();  //cristal4 con vida
-
-  //bloque_cristal();  //cristal golpe por abajo
-
-  //bloque_moneda0();  //monedas
-
+  bloque_cristal();  //cristal golpe por abajo
+  bloque_moneda0();  //monedas
   //bloque_moneda4();  //monedas
-
   //estrella_moneda();  //Estrella con moneda
-
   //cielo_vida();  //cielo cyan con moneda
-
   //cielo_moneda();  //cielo cyan con vida
 
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
-  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32) && x%16!=0)
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
+////////funcion para deteccion de los bloques solidos
+  bloques_solidos();
 
-  bloque_nota0();  //nota0
-
-  //bloque_agua();
-
+////////interaccion de los bloques
+  //bloque_poder0();  //poder0
+  //bloque_nota0();  //nota0
+ //bloque_saltar();  //bloque para saltar muy alto
+  //cielo_abajo();  //flujo de aire hacia abajo
+  //cielo_arriba();  //flujo de aire hacia arriba
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+  //cielo_derecha();  //flujo de aire hacia la derecha
+  agua();  //habilitar si se usa cualquier tipo de bloque con agua
+  //agua_abajo();  //flujo de agua hacia abajo
+  //agua_arriba();  //flujo de agua hacia arriba
+  //agua_izquierda();  //flujo de agua hacia izquierda
+  //agua_derecha();  //flujo de agua hacia derecha
+  bloque_agua();
   //bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
-
   //bloque_cuadrado1();  //pisarlos pero no golpearlos  (blanco 15)
 
-  //tocar_champinon();  //tocar champiñon
-
-  pisar_pato();  //pisar pato
-
+////////funciones para enemigos y peligros
+  tocar_champinon();  //tocar champiñon
+  //pisar_pato();  //pisar pato
   //pisar_seguidor();  //pisar seguidor
-
-  pisar_salta();  //pisar saltador
-
+  //pisar_salta();  //pisar saltador
   //pisar_peligro();  //pisar peligroso
+  //pisar_bala();  //pisar las balas
+  //pisar_tortuga();  //pisar tortuga
 
   disparo_mata();  //Disparos que matan patos
-
   //NITRO_mata();  //no toques la nitroglicerina
-
   //fuego4_mata();  //no teques el fuego
-
-  pato_mata();  //pato mata cuando los tocas
-
+  //pato_mata();  //pato mata cuando los tocas
   //seguidor_mata();  //seguidor mata cuando los tocas
-
-  salta_mata();  //saltador mata cuando los tocas
-
+  //salta_mata();  //saltador mata cuando los tocas
   //peligro_mata();  //peligroso mata cuando los tocas
+  //mina_mata(); //mina mata
+  //bala_mata();  //las balas matan
+  //tortuga_mata();  //tortuga mata cuando los tocas
 
-  patofuera();  //verificar si un pato se salio de la pantalla
-
+  //patofuera();  //verificar si un pato se salio de la pantalla
   //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
-
-  saltafuera();  //verificar si un saltador se salio de la pantalla
-
+  //saltafuera();  //verificar si un saltador se salio de la pantalla
   //peligrofuera();  //verificar si un peligroso se salio de la pantalla
-
-  //champifuera();  //verificar si un champiñon se salio de la pantalla
-
+  champifuera();  //verificar si un champiñon se salio de la pantalla
   disparofuera();  //verificar si un disparo se salio de la pantalla
+  //balafuera();  //verificar si una bala se salio de la pantalla
+  //tortugafuera();  //verificar si una tortuga se salio de la pantalla
 
-  //movchamp();  //mover champiñones
-
-  mdemone();
-
-  movpato();  //mover patos
-
+  movchamp();  //mover champiñones
+  mdemone();  //saltar monedas, generalmente es utilizado
+  //movpato();  //mover patos
   //movseguidor();  //mover seguidor
-
-  movsalta();  //mover saltador
-
+  //movsalta();  //mover saltador
   //movpeligro();  //mover peligroso
-
+  //movmina();  //mover las minas
   movdisparo();  //mover disparo
+  //movbala();  //mover las balas
+  //movtortuga();  //mover tortugas
 
-  if(monedas>=100) //por cada 100 monedas aumentar una vida
-    {
-    monedas=0;
-    vidas++;
-    }
-  if(x>=624) //si llega a la orilla derecha pasar a la siguiente escena
-    {
-    ciclo=1;
-    escena++;
-    x=2;
-    }
-  else if(x<=0) //si llega a la orilla izquierda pasar a la anterior escena
-    {
-    ciclo=1;
-    escena--;
-    x=608;
-    }
-  else if(y>=464) //caida
-    {
-    ciclo=1;
-    estado=1;
-    vidas--;
-    //t_huevo=tiempo-4;  //parece no ser necesario
-    jugar=0;
-    }
-  else if(tiempo==0) //tiempo terminado
-    {
-    estado=0;
-    t_huevo=tiempo-4;
-    }
+////////teclado y otros
+  teclado();
 
+  control();  //controla cambios de escenario, monedas, tiempo, conversion de bloques y vuelo.
+
+////////Conviertiendo velocidad en posicion personaje principal
   x=x+vx;
   y=y+vy;
 
-  //dibchamp();  //dibujar champiñones
+////////operaciones del los bloques, borrando dibujos viejos redibujando el fondo
+  refbloques();  //dibujar el fondo sobre el personaje principal
+  refchamp();
+  //refpato();
+  //refseguidor();
+  //refsalta();
+  //refpeligro();
+  //refmina();
+  refdisparo();
+  //refbala();
+  //reftortuga();
 
-  dibpatos();  //dibujar patos
-
+////////dibujando personajes, enemigos, paneles y marcadores
+  verestado();  //verificar el estado del pato y dibujarlo segun el estado, personaje principal
+  dibchamp();  //dibujar champiñones
+  //dibpatos();  //dibujar patos
   //dibseguidor();  //dibujar seguidor
-
-  dibsalta();  //dibujar saltador
-
+  //dibsalta();  //dibujar saltador
   //dibpeligro();  //dibujar peligroso
-
+  //dibmina();  //dibujar minas
   dibdisparo();  //dibujar disparo
+  //dibexplosion_chica();  //para dibujar explosiones chicas, activar junto con minas, TNTs y NITROS
+  dibcristalroto();  //efectos al romper un cristal
+  dibgolpe();  //utilizado para los disparos, generalmente muy utilizado
+  //dibbala();  //dibujar balas de cañones
+  //dibtortugas();  //dibujar tortugas
 
   segundos();  //realizar un conteo del tiempo del juego
 
-  verestado();  //verificar el estado de pato y dibujarlo segun el estado
-
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(20);
+  delay(retraso);
 
 }
 guardar_fondo(3);
@@ -4261,85 +3175,67 @@ return(0);
 escena0_20()
 {
 ciclo=0;
-//invensible=0;
+nadando=0;
 //act_fondo(1);  //no se usa, ya que se esta usando la funcion abrir()
 //nota: abrir() carga el archivo se carga directamente a paisaje[]
 abrir(nivel,escena);  //se supone que es lo mismo que abrir(0,20);
+abrircielo(nivel,escena);
+convertbloqmon();
 fondo();
 panel();
-t_moneda=-88;  //para resetear la conversion de bloques y monedas
 r_champ();
 rmonedas();
 r_pato();
 r_seguidor();
 r_salta();
 r_peligro();
+r_mina();
 r_disparo();
+r_explosionc();
+r_cristalroto();
+r_bala();
+r_tortuga();
 vx=0.0;
 vy=0.0;
 x=80;
 y=32;
 
-while(ciclo<1)
+while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los movimientos existentes, es decir un cambio de posicion de cada objeto
   {
+////////Guardando las coordenadas anteriores
+  o=x;
+  p=y;
 
-////////operaciones del los bloques
+  //posicion_champ();  //guardar las coordenadas anteriores de los champiñones
+  //posicion_pato();  //guardar las coordenadas anteriores de los patos
+  //posicion_seguidor();  //guardar las coordenadas anteriores de los patos seguidores
+  //posicion_salta();  //guardar las coordenadas anteriores de los patos saltadores
+  //posicion_peligro();  //guardar las coordenadas anteriores de los patos saltadores seguidores
+  //posicion_mina();  //guardar las coordenadas anteriores de las minas
+  posicion_disparo();  //guardar las coordenadas anteriores de los disparos
+  //posicion_bala();  //guardar las coordenadas anteriores de las balas
+  //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
-  tinvensible();
-  refbloques();  //actualizar bloques
-  //refchamp();
-  //refpato();
-  //refseguidor();
-  //refsalta();
-  //refpeligro();
-  refdisparo();
-
-  if((x%16)!=0)
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-  else
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-
-  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque derecho   nota: (y%16)==0 es para que si se golpea un bloque por abajo no se cumpla
-    {
-    vx=0.0;
-    x=x-(x%16);
-    }
-  else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque izquierdo
-    {
-    vx=0.0;
-    x=x+16-(x%16);
-    }
+  tinvensible();  //tiempo de inmunidad
 
 ////////interaccion de los bloques
-
-  bloque_poder0();  //poder0
-
-////////teclado
-
-  teclado();
+  //bloque_caja0_moneda();  //caja0 con moneda
+  //bloque_caja0_10monedas();  //caja0 con 10 momedas
+  //bloque_caja0_champinon();  //caja0 con champiñon
+  //bloque_caja0_vida();  //caja0 con vida
+  //cristal0_moneda();  //cristal0 con moneda
+  //cristal4_moneda();  //cristal4 con moneda
+  //cristal0_vida();  //cristal0 con vida
+  //cristal4_vida();  //cristal4 con vida
+  bloque_cristal();  //cristal golpe por abajo
+  //bloque_moneda0();  //monedas
+  bloque_moneda4();  //monedas
+  //estrella_moneda();  //Estrella con moneda
+  //cielo_vida();  //cielo cyan con moneda
+  //cielo_moneda();  //cielo cyan con vida
 
 ////////especial para entrar a tuberia en 36,4 y 37,4
-  if(tecla[KEY_CUR_ARRIBA])  //arriba
+  if(tecla[KEY_ALT] || tecla[KEY_CUR_ARRIBA])  //arriba
     {
     if(((y-(y%16))/16 == 4) && ((x-(x%16))/16 == 37))
       {
@@ -4353,123 +3249,70 @@ while(ciclo<1)
       }
     }
 
+////////funcion para deteccion de los bloques solidos
+  bloques_solidos();
+
 ////////interaccion de los bloques
-
-  bloque_saltar();  //bloque para saltar muy alto
-
-  //cielo_abajo();  //flujo de aire hacia abajo
-
-  //cielo_arriba();  //flujo de aire hacia arriba
-
-  //cielo_izquierda();  //flujo de aire hacia la izquierda
-
-  //cielo_derecha();  //flujo de aire hacia la derecha
-
-  //agua_abajo();  //flujo de agua hacia abajo
-
-  //agua_arriba();  //flujo de agua hacia arriba
-
-  //agua_izquierda();  //flujo de agua hacia izquierda
-
-  //agua_derecha();  //flujo de agua hacia derecha
-
-  bloque_caja0_moneda();  //caja0 con moneda
-
-  //bloque_caja0_10monedas();  //caja0 con 10 momedas
-
-  //bloque_caja0_champinon();  //caja0 con champiñon
-
-  //bloque_caja0_vida();  //caja0 con vida
-
-  //cristal0_moneda();  //cristal0 con moneda
-
-  //cristal4_moneda();  //cristal4 con moneda
-
-  //cristal0_vida();  //cristal0 con vida
-
-  //cristal4_vida();  //cristal4 con vida
-
-  //bloque_cristal();  //cristal golpe por abajo
-
-  //bloque_moneda0();  //monedas
-
-  bloque_moneda4();  //monedas plateadas
-
-  //estrella_moneda();  //Estrella con moneda
-
-  //cielo_vida();  //cielo cyan con moneda
-
-  //cielo_moneda();  //cielo cyan con vida
-
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
-  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32) && x%16!=0)
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
-
+  //bloque_poder0();  //poder0
   //bloque_nota0();  //nota0
-
+  bloque_saltar();  //bloque para saltar muy alto
+  //cielo_abajo();  //flujo de aire hacia abajo
+  //cielo_arriba();  //flujo de aire hacia arriba
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+  //cielo_derecha();  //flujo de aire hacia la derecha
+  //agua();  //habilitar si se usa cualquier tipo de bloque con agua
+  //agua_abajo();  //flujo de agua hacia abajo
+  //agua_arriba();  //flujo de agua hacia arriba
+  //agua_izquierda();  //flujo de agua hacia izquierda
+  //agua_derecha();  //flujo de agua hacia derecha
   //bloque_agua();
-
   //bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
-
   //bloque_cuadrado1();  //pisarlos pero no golpearlos  (blanco 15)
 
+////////funciones para enemigos y peligros
   //tocar_champinon();  //tocar champiñon
-
   //pisar_pato();  //pisar pato
-
   //pisar_seguidor();  //pisar seguidor
-
   //pisar_salta();  //pisar saltador
-
   //pisar_peligro();  //pisar peligroso
+  //pisar_bala();  //pisar las balas
+  //pisar_tortuga();  //pisar tortuga
 
   disparo_mata();  //Disparos que matan patos
-
   //NITRO_mata();  //no toques la nitroglicerina
-
   //fuego4_mata();  //no teques el fuego
-
   //pato_mata();  //pato mata cuando los tocas
-
   //seguidor_mata();  //seguidor mata cuando los tocas
-
   //salta_mata();  //saltador mata cuando los tocas
-
   //peligro_mata();  //peligroso mata cuando los tocas
+  //mina_mata(); //mina mata
+  //bala_mata();  //las balas matan
+  //tortuga_mata();  //tortuga mata cuando los tocas
 
   //patofuera();  //verificar si un pato se salio de la pantalla
-
   //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
-
   //saltafuera();  //verificar si un saltador se salio de la pantalla
-
   //peligrofuera();  //verificar si un peligroso se salio de la pantalla
-
   //champifuera();  //verificar si un champiñon se salio de la pantalla
-
   disparofuera();  //verificar si un disparo se salio de la pantalla
+  //balafuera();  //verificar si una bala se salio de la pantalla
+  //tortugafuera();  //verificar si una tortuga se salio de la pantalla
 
   //movchamp();  //mover champiñones
-
-  //mdemone();
-
+  //mdemone();  //saltar monedas, generalmente es utilizado
   //movpato();  //mover patos
-
   //movseguidor();  //mover seguidor
-
   //movsalta();  //mover saltador
-
   //movpeligro();  //mover peligroso
-
+  //movmina();  //mover las minas
   movdisparo();  //mover disparo
+  //movbala();  //mover las balas
+  //movtortuga();  //mover tortugas
 
+////////teclado y otros
+  teclado();
+
+//no uso la funcion control(), ya que modifique algunas cosas
   if(monedas>=100) //por cada 100 monedas aumentar una vida
     {
     monedas=0;
@@ -4488,7 +3331,7 @@ while(ciclo<1)
     ciclo=1;
     estado=1;
     vidas--;
-    //t_huevo=tiempo-4;  //parece no ser necesario
+    //t_huevo=tiempo-4; //parece no ser necesario
     jugar=0;
     }
   else if(tiempo==0) //tiempo terminado
@@ -4496,29 +3339,52 @@ while(ciclo<1)
     estado=0;
     t_huevo=tiempo-4;
     }
+  if(t_moneda==tiempo)
+    {
+    convertir();
+    t_moneda=-88;
+    }
+  if(sec%4==0)  //usado para poder volar cada 4 cuadros
+    {
+    t_volar=0;
+    }
 
+////////Conviertiendo velocidad en posicion personaje principal
   x=x+vx;
   y=y+vy;
 
+////////operaciones del los bloques, borrando dibujos viejos redibujando el fondo
+  refbloques();  //dibujar el fondo sobre el personaje principal
+  //refchamp();
+  //refpato();
+  //refseguidor();
+  //refsalta();
+  //refpeligro();
+  //refmina();
+  refdisparo();
+  //refbala();
+  //reftortuga();
+
+////////dibujando personajes, enemigos, paneles y marcadores
+  verestado();  //verificar el estado del pato y dibujarlo segun el estado, personaje principal
   //dibchamp();  //dibujar champiñones
-
   //dibpatos();  //dibujar patos
-
   //dibseguidor();  //dibujar seguidor
-
   //dibsalta();  //dibujar saltador
-
   //dibpeligro();  //dibujar peligroso
-
+  //dibmina();  //dibujar minas
   dibdisparo();  //dibujar disparo
+  //dibexplosion_chica();  //para dibujar explosiones chicas, activar junto con minas, TNTs y NITROS
+  dibcristalroto();  //efectos al romper un cristal
+  dibgolpe();  //utilizado para los disparos, generalmente muy utilizado
+  //dibbala();  //dibujar balas de cañones
+  //dibtortugas();  //dibujar tortugas
 
   segundos();  //realizar un conteo del tiempo del juego
 
-  verestado();  //verificar el estado de pato y dibujarlo segun el estado
-
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(20);
+  delay(retraso);
 
 }
 vx=0.0;
@@ -4532,85 +3398,66 @@ return(0);
 escena1_20()
 {
 ciclo=0;
-//invensible=0;
+nadando=0;
 //act_fondo(1);  //no se usa, ya que se esta usando la funcion abrir()
 //nota: abrir() carga el archivo se carga directamente a paisaje[]
 abrir(nivel,escena);  //se supone que es lo mismo que abrir(1,20);
+abrircielo(nivel,escena);
+convertbloqmon();
 fondo();
 panel();
-t_moneda=-88;  //para resetear la conversion de bloques y monedas
 r_champ();
 rmonedas();
 r_pato();
 r_seguidor();
 r_salta();
 r_peligro();
+r_mina();
 r_disparo();
+r_explosionc();
+r_cristalroto();
+r_bala();
+r_tortuga();
 vx=0.0;
 vy=0.0;
 x=320;
 y=32;
 
-while(ciclo<1)
+while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los movimientos existentes, es decir un cambio de posicion de cada objeto
   {
+////////Guardando las coordenadas anteriores
+  o=x;
+  p=y;
 
-////////operaciones del los bloques
+  //posicion_champ();  //guardar las coordenadas anteriores de los champiñones
+  //posicion_pato();  //guardar las coordenadas anteriores de los patos
+  //posicion_seguidor();  //guardar las coordenadas anteriores de los patos seguidores
+  //posicion_salta();  //guardar las coordenadas anteriores de los patos saltadores
+  //posicion_peligro();  //guardar las coordenadas anteriores de los patos saltadores seguidores
+  //posicion_mina();  //guardar las coordenadas anteriores de las minas
+  posicion_disparo();  //guardar las coordenadas anteriores de los disparos
+  //posicion_bala();  //guardar las coordenadas anteriores de las balas
+  //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
-  tinvensible();
-  refbloques();  //actualizar bloques
-  //refchamp();
-  //refpato();
-  //refseguidor();
-  //refsalta();
-  //refpeligro();
-  refdisparo();
-
-  if((x%16)!=0)
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-  else
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-
-  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque derecho   nota: (y%16)==0 es para que si se golpea un bloque por abajo no se cumpla
-    {
-    vx=0.0;
-    x=x-(x%16);
-    }
-  else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque izquierdo
-    {
-    vx=0.0;
-    x=x+16-(x%16);
-    }
+  tinvensible();  //tiempo de inmunidad
 
 ////////interaccion de los bloques
-
-  //bloque_poder0();  //poder0
-
-////////teclado
-
-  teclado();
+  //bloque_caja0_moneda();  //caja0 con moneda
+  //bloque_caja0_10monedas();  //caja0 con 10 momedas
+  //bloque_caja0_champinon();  //caja0 con champiñon
+  //bloque_caja0_vida();  //caja0 con vida
+  //cristal0_moneda();  //cristal0 con moneda
+  //cristal4_moneda();  //cristal4 con moneda
+  //cristal0_vida();  //cristal0 con vida
+  //cristal4_vida();  //cristal4 con vida
+  //bloque_cristal();  //cristal golpe por abajo
+  //bloque_moneda0();  //monedas
+  bloque_moneda4();  //monedas
+  //estrella_moneda();  //Estrella con moneda
+  //cielo_vida();  //cielo cyan con moneda
+  //cielo_moneda();  //cielo cyan con vida
 
 ////////especial para entrar a tuberia en 4,22 y 4,23
-
   if(tecla[KEY_CUR_ATRAS])  //izquierda
     {
     if(((y-(y%16))/16 == 22) && ((x-(x%16))/16 == 4))
@@ -4626,7 +3473,6 @@ while(ciclo<1)
     }
 
 ////////especial para entrar a tuberia en 35,22 y 35,23
-
   if(tecla[KEY_CUR_ADELANTE])  //derecha
     {
     if(((y-(y%16))/16 == 22) && ((x-(x%16))/16 == 35))
@@ -4641,123 +3487,71 @@ while(ciclo<1)
       }
     }
 
+
+////////funcion para deteccion de los bloques solidos
+  bloques_solidos();
+
 ////////interaccion de los bloques
-
-  bloque_saltar();  //bloque para saltar muy alto
-
-  //cielo_abajo();  //flujo de aire hacia abajo
-
-  //cielo_arriba();  //flujo de aire hacia arriba
-
-  //cielo_izquierda();  //flujo de aire hacia la izquierda
-
-  //cielo_derecha();  //flujo de aire hacia la derecha
-
-  //agua_abajo();  //flujo de agua hacia abajo
-
-  //agua_arriba();  //flujo de agua hacia arriba
-
-  //agua_izquierda();  //flujo de agua hacia izquierda
-
-  //agua_derecha();  //flujo de agua hacia derecha
-
-  bloque_caja0_moneda();  //caja0 con moneda
-
-  //bloque_caja0_10monedas();  //caja0 con 10 momedas
-
-  bloque_caja0_champinon();  //caja0 con champiñon
-
-  //bloque_caja0_vida();  //caja0 con vida
-
-  //cristal0_moneda();  //cristal0 con moneda
-
-  //cristal4_moneda();  //cristal4 con moneda
-
-  //cristal0_vida();  //cristal0 con vida
-
-  //cristal4_vida();  //cristal4 con vida
-
-  //bloque_cristal();  //cristal golpe por abajo
-
-  //bloque_moneda0();  //monedas
-
-  bloque_moneda4();  //monedas plateadas
-
-  //estrella_moneda();  //Estrella con moneda
-
-  //cielo_vida();  //cielo cyan con moneda
-
-  //cielo_moneda();  //cielo cyan con vida
-
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
-  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32) && x%16!=0)
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
-
+  //bloque_poder0();  //poder0
   //bloque_nota0();  //nota0
-
+  bloque_saltar();  //bloque para saltar muy alto
+  //cielo_abajo();  //flujo de aire hacia abajo
+  //cielo_arriba();  //flujo de aire hacia arriba
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+  //cielo_derecha();  //flujo de aire hacia la derecha
+  //agua();  //habilitar si se usa cualquier tipo de bloque con agua
+  //agua_abajo();  //flujo de agua hacia abajo
+  //agua_arriba();  //flujo de agua hacia arriba
+  //agua_izquierda();  //flujo de agua hacia izquierda
+  //agua_derecha();  //flujo de agua hacia derecha
   //bloque_agua();
-
   //bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
-
   //bloque_cuadrado1();  //pisarlos pero no golpearlos  (blanco 15)
 
+////////funciones para enemigos y peligros
   //tocar_champinon();  //tocar champiñon
-
   //pisar_pato();  //pisar pato
-
   //pisar_seguidor();  //pisar seguidor
-
   //pisar_salta();  //pisar saltador
-
   //pisar_peligro();  //pisar peligroso
+  //pisar_bala();  //pisar las balas
+  //pisar_tortuga();  //pisar tortuga
 
   disparo_mata();  //Disparos que matan patos
-
   //NITRO_mata();  //no toques la nitroglicerina
-
   //fuego4_mata();  //no teques el fuego
-
   //pato_mata();  //pato mata cuando los tocas
-
   //seguidor_mata();  //seguidor mata cuando los tocas
-
   //salta_mata();  //saltador mata cuando los tocas
-
   //peligro_mata();  //peligroso mata cuando los tocas
+  //mina_mata(); //mina mata
+  //bala_mata();  //las balas matan
+  //tortuga_mata();  //tortuga mata cuando los tocas
 
   //patofuera();  //verificar si un pato se salio de la pantalla
-
   //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
-
   //saltafuera();  //verificar si un saltador se salio de la pantalla
-
   //peligrofuera();  //verificar si un peligroso se salio de la pantalla
-
   //champifuera();  //verificar si un champiñon se salio de la pantalla
-
   disparofuera();  //verificar si un disparo se salio de la pantalla
+  //balafuera();  //verificar si una bala se salio de la pantalla
+  //tortugafuera();  //verificar si una tortuga se salio de la pantalla
 
   //movchamp();  //mover champiñones
-
-  //mdemone();
-
+  //mdemone();  //saltar monedas, generalmente es utilizado
   //movpato();  //mover patos
-
   //movseguidor();  //mover seguidor
-
   //movsalta();  //mover saltador
-
   //movpeligro();  //mover peligroso
-
+  //movmina();  //mover las minas
   movdisparo();  //mover disparo
+  //movbala();  //mover las balas
+  //movtortuga();  //mover tortugas
 
+////////teclado y otros
+  teclado();
+
+//no uso la funcion control(), ya que modifique algunas cosas
   if(monedas>=100) //por cada 100 monedas aumentar una vida
     {
     monedas=0;
@@ -4776,7 +3570,7 @@ while(ciclo<1)
     ciclo=1;
     estado=1;
     vidas--;
-    //t_huevo=tiempo-4;  //parece no ser necesario
+    //t_huevo=tiempo-4; //parece no ser necesario
     jugar=0;
     }
   else if(tiempo==0) //tiempo terminado
@@ -4784,29 +3578,52 @@ while(ciclo<1)
     estado=0;
     t_huevo=tiempo-4;
     }
+  if(t_moneda==tiempo)
+    {
+    convertir();
+    t_moneda=-88;
+    }
+  if(sec%4==0)  //usado para poder volar cada 4 cuadros
+    {
+    t_volar=0;
+    }
 
+////////Conviertiendo velocidad en posicion personaje principal
   x=x+vx;
   y=y+vy;
 
+////////operaciones del los bloques, borrando dibujos viejos redibujando el fondo
+  refbloques();  //dibujar el fondo sobre el personaje principal
+  //refchamp();
+  //refpato();
+  //refseguidor();
+  //refsalta();
+  //refpeligro();
+  //refmina();
+  refdisparo();
+  //refbala();
+  //reftortuga();
+
+////////dibujando personajes, enemigos, paneles y marcadores
+  verestado();  //verificar el estado del pato y dibujarlo segun el estado, personaje principal
   //dibchamp();  //dibujar champiñones
-
   //dibpatos();  //dibujar patos
-
   //dibseguidor();  //dibujar seguidor
-
   //dibsalta();  //dibujar saltador
-
   //dibpeligro();  //dibujar peligroso
-
+  //dibmina();  //dibujar minas
   dibdisparo();  //dibujar disparo
+  //dibexplosion_chica();  //para dibujar explosiones chicas, activar junto con minas, TNTs y NITROS
+  //dibcristalroto();  //efectos al romper un cristal
+  dibgolpe();  //utilizado para los disparos, generalmente muy utilizado
+  //dibbala();  //dibujar balas de cañones
+  //dibtortugas();  //dibujar tortugas
 
   segundos();  //realizar un conteo del tiempo del juego
 
-  verestado();  //verificar el estado de pato y dibujarlo segun el estado
-
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(20);
+  delay(retraso);
 
 }
 x=344;
@@ -4837,85 +3654,67 @@ return(0);
 escena2_20()
 {
 ciclo=0;
-//invensible=0;
+nadando=0;
 //act_fondo(1);  //no se usa, ya que se esta usando la funcion abrir()
 //nota: abrir() carga el archivo se carga directamente a paisaje[]
 abrir(nivel,escena);  //se supone que es lo mismo que abrir(2,20);
+abrircielo(nivel,escena);
+convertbloqmon();
 fondo();
 panel();
-t_moneda=-88;  //para resetear la conversion de bloques y monedas
 r_champ();
 rmonedas();
 r_pato();
 r_seguidor();
 r_salta();
 r_peligro();
+r_mina();
 r_disparo();
+r_explosionc();
+r_cristalroto();
+r_bala();
+r_tortuga();
 vx=0.0;
 vy=0.0;
 x=80;
 y=32;
 
-while(ciclo<1)
+while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los movimientos existentes, es decir un cambio de posicion de cada objeto
   {
+////////Guardando las coordenadas anteriores
+  o=x;
+  p=y;
 
-////////operaciones del los bloques
+  //posicion_champ();  //guardar las coordenadas anteriores de los champiñones
+  //posicion_pato();  //guardar las coordenadas anteriores de los patos
+  //posicion_seguidor();  //guardar las coordenadas anteriores de los patos seguidores
+  //posicion_salta();  //guardar las coordenadas anteriores de los patos saltadores
+  //posicion_peligro();  //guardar las coordenadas anteriores de los patos saltadores seguidores
+  //posicion_mina();  //guardar las coordenadas anteriores de las minas
+  posicion_disparo();  //guardar las coordenadas anteriores de los disparos
+  //posicion_bala();  //guardar las coordenadas anteriores de las balas
+  //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
-  tinvensible();
-  refbloques();  //actualizar bloques
-  //refchamp();
-  //refpato();
-  //refseguidor();
-  //refsalta();
-  //refpeligro();
-  refdisparo();
-
-  if((x%16)!=0)
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-  else
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-
-  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque derecho   nota: (y%16)==0 es para que si se golpea un bloque por abajo no se cumpla
-    {
-    vx=0.0;
-    x=x-(x%16);
-    }
-  else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque izquierdo
-    {
-    vx=0.0;
-    x=x+16-(x%16);
-    }
+  tinvensible();  //tiempo de inmunidad
 
 ////////interaccion de los bloques
-
-  bloque_poder0();  //poder0
-
-////////teclado
-
-  teclado();
+  //bloque_caja0_moneda();  //caja0 con moneda
+  //bloque_caja0_10monedas();  //caja0 con 10 momedas
+  //bloque_caja0_champinon();  //caja0 con champiñon
+  //bloque_caja0_vida();  //caja0 con vida
+  //cristal0_moneda();  //cristal0 con moneda
+  //cristal4_moneda();  //cristal4 con moneda
+  //cristal0_vida();  //cristal0 con vida
+  //cristal4_vida();  //cristal4 con vida
+  //bloque_cristal();  //cristal golpe por abajo
+  //bloque_moneda0();  //monedas
+  bloque_moneda4();  //monedas
+  //estrella_moneda();  //Estrella con moneda
+  //cielo_vida();  //cielo cyan con moneda
+  //cielo_moneda();  //cielo cyan con vida
 
 ////////especial para entrar a tuberia en 36,4 y 37,4
-  if(tecla[KEY_CUR_ARRIBA])  //arriba
+  if(tecla[KEY_ALT] || tecla[KEY_CUR_ARRIBA])  //arriba
     {
     if(((y-(y%16))/16 == 4) && ((x-(x%16))/16 == 37))
       {
@@ -4929,123 +3728,70 @@ while(ciclo<1)
       }
     }
 
+////////funcion para deteccion de los bloques solidos
+  bloques_solidos();
+
 ////////interaccion de los bloques
-
-  bloque_saltar();  //bloque para saltar muy alto
-
-  //cielo_abajo();  //flujo de aire hacia abajo
-
-  //cielo_arriba();  //flujo de aire hacia arriba
-
-  //cielo_izquierda();  //flujo de aire hacia la izquierda
-
-  //cielo_derecha();  //flujo de aire hacia la derecha
-
-  //agua_abajo();  //flujo de agua hacia abajo
-
-  //agua_arriba();  //flujo de agua hacia arriba
-
-  //agua_izquierda();  //flujo de agua hacia izquierda
-
-  //agua_derecha();  //flujo de agua hacia derecha
-
-  bloque_caja0_moneda();  //caja0 con moneda
-
-  //bloque_caja0_10monedas();  //caja0 con 10 momedas
-
-  //bloque_caja0_champinon();  //caja0 con champiñon
-
-  //bloque_caja0_vida();  //caja0 con vida
-
-  //cristal0_moneda();  //cristal0 con moneda
-
-  //cristal4_moneda();  //cristal4 con moneda
-
-  //cristal0_vida();  //cristal0 con vida
-
-  //cristal4_vida();  //cristal4 con vida
-
-  //bloque_cristal();  //cristal golpe por abajo
-
-  //bloque_moneda0();  //monedas
-
-  bloque_moneda4();  //monedas plateadas
-
-  //estrella_moneda();  //Estrella con moneda
-
-  //cielo_vida();  //cielo cyan con moneda
-
-  //cielo_moneda();  //cielo cyan con vida
-
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
-  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32) && x%16!=0)
-    {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
-
+  //bloque_poder0();  //poder0
   //bloque_nota0();  //nota0
-
+ //bloque_saltar();  //bloque para saltar muy alto
+  //cielo_abajo();  //flujo de aire hacia abajo
+  //cielo_arriba();  //flujo de aire hacia arriba
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+  //cielo_derecha();  //flujo de aire hacia la derecha
+  //agua();  //habilitar si se usa cualquier tipo de bloque con agua
+  //agua_abajo();  //flujo de agua hacia abajo
+  //agua_arriba();  //flujo de agua hacia arriba
+  //agua_izquierda();  //flujo de agua hacia izquierda
+  //agua_derecha();  //flujo de agua hacia derecha
   //bloque_agua();
-
   //bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
-
   //bloque_cuadrado1();  //pisarlos pero no golpearlos  (blanco 15)
 
+////////funciones para enemigos y peligros
   //tocar_champinon();  //tocar champiñon
-
   //pisar_pato();  //pisar pato
-
   //pisar_seguidor();  //pisar seguidor
-
   //pisar_salta();  //pisar saltador
-
   //pisar_peligro();  //pisar peligroso
+  //pisar_bala();  //pisar las balas
+  //pisar_tortuga();  //pisar tortuga
 
   disparo_mata();  //Disparos que matan patos
-
   //NITRO_mata();  //no toques la nitroglicerina
-
   //fuego4_mata();  //no teques el fuego
-
   //pato_mata();  //pato mata cuando los tocas
-
   //seguidor_mata();  //seguidor mata cuando los tocas
-
   //salta_mata();  //saltador mata cuando los tocas
-
   //peligro_mata();  //peligroso mata cuando los tocas
+  //mina_mata(); //mina mata
+  //bala_mata();  //las balas matan
+  //tortuga_mata();  //tortuga mata cuando los tocas
 
   //patofuera();  //verificar si un pato se salio de la pantalla
-
   //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
-
   //saltafuera();  //verificar si un saltador se salio de la pantalla
-
   //peligrofuera();  //verificar si un peligroso se salio de la pantalla
-
   //champifuera();  //verificar si un champiñon se salio de la pantalla
-
   disparofuera();  //verificar si un disparo se salio de la pantalla
+  //balafuera();  //verificar si una bala se salio de la pantalla
+  //tortugafuera();  //verificar si una tortuga se salio de la pantalla
 
   //movchamp();  //mover champiñones
-
-  //mdemone();
-
+  //mdemone();  //saltar monedas, generalmente es utilizado
   //movpato();  //mover patos
-
   //movseguidor();  //mover seguidor
-
   //movsalta();  //mover saltador
-
   //movpeligro();  //mover peligroso
-
+  //movmina();  //mover las minas
   movdisparo();  //mover disparo
+  //movbala();  //mover las balas
+  //movtortuga();  //mover tortugas
 
+////////teclado y otros
+  teclado();
+
+//no uso la funcion control(), ya que modifique algunas cosas
   if(monedas>=100) //por cada 100 monedas aumentar una vida
     {
     monedas=0;
@@ -5064,7 +3810,7 @@ while(ciclo<1)
     ciclo=1;
     estado=1;
     vidas--;
-    //t_huevo=tiempo-4;  //parece no ser necesario
+    //t_huevo=tiempo-4; //parece no ser necesario
     jugar=0;
     }
   else if(tiempo==0) //tiempo terminado
@@ -5072,29 +3818,52 @@ while(ciclo<1)
     estado=0;
     t_huevo=tiempo-4;
     }
+  if(t_moneda==tiempo)
+    {
+    convertir();
+    t_moneda=-88;
+    }
+  if(sec%4==0)  //usado para poder volar cada 4 cuadros
+    {
+    t_volar=0;
+    }
 
+////////Conviertiendo velocidad en posicion personaje principal
   x=x+vx;
   y=y+vy;
 
+////////operaciones del los bloques, borrando dibujos viejos redibujando el fondo
+  refbloques();  //dibujar el fondo sobre el personaje principal
+  //refchamp();
+  //refpato();
+  //refseguidor();
+  //refsalta();
+  //refpeligro();
+  //refmina();
+  refdisparo();
+  //refbala();
+  //reftortuga();
+
+////////dibujando personajes, enemigos, paneles y marcadores
+  verestado();  //verificar el estado del pato y dibujarlo segun el estado, personaje principal
   //dibchamp();  //dibujar champiñones
-
   //dibpatos();  //dibujar patos
-
   //dibseguidor();  //dibujar seguidor
-
   //dibsalta();  //dibujar saltador
-
   //dibpeligro();  //dibujar peligroso
-
+  //dibmina();  //dibujar minas
   dibdisparo();  //dibujar disparo
+  //dibexplosion_chica();  //para dibujar explosiones chicas, activar junto con minas, TNTs y NITROS
+  //dibcristalroto();  //efectos al romper un cristal
+  dibgolpe();  //utilizado para los disparos, generalmente muy utilizado
+  //dibbala();  //dibujar balas de cañones
+  //dibtortugas();  //dibujar tortugas
 
   segundos();  //realizar un conteo del tiempo del juego
 
-  verestado();  //verificar el estado de pato y dibujarlo segun el estado
-
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(20);
+  delay(retraso);
 
 }
 vx=0.0;
@@ -5108,215 +3877,171 @@ return(0);
 escena3_20()
 {
 ciclo=0;
-//invensible=0;
+nadando=0;
 //act_fondo(1);  //no se usa, ya que se esta usando la funcion abrir()
 //nota: abrir() carga el archivo se carga directamente a paisaje[]
 abrir(nivel,escena);  //se supone que es lo mismo que abrir(3,20);
+abrircielo(nivel,escena);
+convertbloqmon();
 fondo();
 panel();
-t_moneda=-88;  //para resetear la conversion de bloques y monedas
 r_champ();
 rmonedas();
 r_pato();
 r_seguidor();
 r_salta();
 r_peligro();
+r_mina();
 r_disparo();
+r_explosionc();
+r_cristalroto();
+r_bala();
+r_tortuga();
 vx=0.0;
 vy=0.0;
-x=80;
-y=32;
+x=90;
+y=302;
 
-while(ciclo<1)
+while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los movimientos existentes, es decir un cambio de posicion de cada objeto
   {
+////////Guardando las coordenadas anteriores
+  o=x;
+  p=y;
 
-////////operaciones del los bloques
+  //posicion_champ();  //guardar las coordenadas anteriores de los champiñones
+  //posicion_pato();  //guardar las coordenadas anteriores de los patos
+  //posicion_seguidor();  //guardar las coordenadas anteriores de los patos seguidores
+  //posicion_salta();  //guardar las coordenadas anteriores de los patos saltadores
+  //posicion_peligro();  //guardar las coordenadas anteriores de los patos saltadores seguidores
+  //posicion_mina();  //guardar las coordenadas anteriores de las minas
+  posicion_disparo();  //guardar las coordenadas anteriores de los disparos
+  //posicion_bala();  //guardar las coordenadas anteriores de las balas
+  //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
-  tinvensible();
-  refbloques();  //actualizar bloques
-  //refchamp();
-  //refpato();
-  //refseguidor();
-  //refsalta();
-  //refpeligro();
-  refdisparo();
-
-  if((x%16)!=0)
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-  else
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
-      {
-      vy=vy+0.5;
-      }
-    else
-      {
-      vy=0;
-      y=y-(y%16);
-      }
-    }
-
-  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque derecho   nota: (y%16)==0 es para que si se golpea un bloque por abajo no se cumpla
-    {
-    vx=0.0;
-    x=x-(x%16);
-    }
-  else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque izquierdo
-    {
-    vx=0.0;
-    x=x+16-(x%16);
-    }
+  tinvensible();  //tiempo de inmunidad
 
 ////////interaccion de los bloques
-
-  bloque_poder0();  //poder0
-
-////////teclado
-
-  teclado();
-
-////////especial para entrar a tuberia en 36,4 y 37,4
-  if(tecla[KEY_CUR_ARRIBA])  //arriba
-    {
-    if(((y-(y%16))/16 == 4) && ((x-(x%16))/16 == 37))
-      {
-      ciclo=1;
-      escena=2;
-      }
-    else if(((y-(y%16))/16 == 4) && ((x-(x%16))/16 == 36))
-      {
-      ciclo=1;
-      escena=2;
-      }
-    }
-
-////////interaccion de los bloques
-
-  bloque_saltar();  //bloque para saltar muy alto
-
-  //cielo_abajo();  //flujo de aire hacia abajo
-
-  //cielo_arriba();  //flujo de aire hacia arriba
-
-  //cielo_izquierda();  //flujo de aire hacia la izquierda
-
-  //cielo_derecha();  //flujo de aire hacia la derecha
-
-  //agua_abajo();  //flujo de agua hacia abajo
-
-  //agua_arriba();  //flujo de agua hacia arriba
-
-  //agua_izquierda();  //flujo de agua hacia izquierda
-
-  //agua_derecha();  //flujo de agua hacia derecha
-
-  bloque_caja0_moneda();  //caja0 con moneda
-
+  //bloque_caja0_moneda();  //caja0 con moneda
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
-
   //bloque_caja0_champinon();  //caja0 con champiñon
-
   //bloque_caja0_vida();  //caja0 con vida
 
+ ////////especial si golpea 17,9 (cristal0) que aparesca un poder0 en 17,8
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==14)  //golpe por abajo
+    {
+    if(((y-(y%16))/16 == 9) && ((x-(x%16))/16 == 17))
+      {
+      y=y+16-(y%16);
+      vy=-vy;
+      paisaje[(y-16-(y%16))/16][(x-(x%16))/16]=5;  //caja5
+      bloque(x-(x%16),y-16-(y%16),5);
+      paisaje[(y-32-(y%16))/16][(x-(x%16))/16]=36;  //poder0
+      bloque(x-(x%16),y-32-(y%16),36);
+      }
+    }
+  if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==14) && x%16!=0)
+    {
+    if((y-(y%16))/16==9 && (x+16-(x%16))/16==17)
+      {
+      y=y+16-(y%16);
+      vy=-vy;
+      paisaje[(y-16-(y%16))/16][(x+16-(x%16))/16]=5;  //caja5
+      bloque(x+16-(x%16),y-16-(y%16),5);
+      paisaje[(y-32-(y%16))/16][(x+16-(x%16))/16]=36;  //poder0
+      bloque(x+16-(x%16),y-32-(y%16),36);
+      }
+    }
+
   //cristal0_moneda();  //cristal0 con moneda
-
   //cristal4_moneda();  //cristal4 con moneda
-
   //cristal0_vida();  //cristal0 con vida
-
   //cristal4_vida();  //cristal4 con vida
-
-  //bloque_cristal();  //cristal golpe por abajo
-
-  //bloque_moneda0();  //monedas
-
-  bloque_moneda4();  //monedas plateadas
-
-  //estrella_moneda();  //Estrella con moneda
-
+  bloque_cristal();  //cristal golpe por abajo
+  bloque_moneda0();  //monedas
+  //bloque_moneda4();  //monedas
+  estrella_moneda();  //Estrella con moneda
   //cielo_vida();  //cielo cyan con moneda
-
   //cielo_moneda();  //cielo cyan con vida
 
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
+////////especial para entrar a tuberia en 35,19 y 36,19
+  if(tecla[KEY_ALT] || tecla[KEY_CUR_ARRIBA])  //arriba
     {
-    y=y+16-(y%16);
-    vy=-vy;
-    }
-  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32) && x%16!=0)
-    {
-    y=y+16-(y%16);
-    vy=-vy;
+    if(((y-(y%16))/16 == 19) && ((x-(x%16))/16 == 35))
+      {
+      ciclo=1;
+      escena=2;
+      }
+    else if(((y-(y%16))/16 == 19) && ((x-(x%16))/16 == 36))
+      {
+      ciclo=1;
+      escena=2;
+      }
     }
 
+////////funcion para deteccion de los bloques solidos
+  bloques_solidos();
+
+////////interaccion de los bloques
+  bloque_poder0();  //poder0
   //bloque_nota0();  //nota0
-
-  //bloque_agua();
-
+  //bloque_saltar();  //bloque para saltar muy alto
+  //cielo_abajo();  //flujo de aire hacia abajo
+  //cielo_arriba();  //flujo de aire hacia arriba
+  //cielo_izquierda();  //flujo de aire hacia la izquierda
+  //cielo_derecha();  //flujo de aire hacia la derecha
+  agua();  //habilitar si se usa cualquier tipo de bloque con agua
+  //agua_abajo();  //flujo de agua hacia abajo
+  //agua_arriba();  //flujo de agua hacia arriba
+  //agua_izquierda();  //flujo de agua hacia izquierda
+  //agua_derecha();  //flujo de agua hacia derecha
+  bloque_agua();
   //bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
-
   //bloque_cuadrado1();  //pisarlos pero no golpearlos  (blanco 15)
 
+////////funciones para enemigos y peligros
   //tocar_champinon();  //tocar champiñon
-
   //pisar_pato();  //pisar pato
-
   //pisar_seguidor();  //pisar seguidor
-
   //pisar_salta();  //pisar saltador
-
   //pisar_peligro();  //pisar peligroso
+  //pisar_bala();  //pisar las balas
+  //pisar_tortuga();  //pisar tortuga
 
   disparo_mata();  //Disparos que matan patos
-
   //NITRO_mata();  //no toques la nitroglicerina
-
   //fuego4_mata();  //no teques el fuego
-
   //pato_mata();  //pato mata cuando los tocas
-
   //seguidor_mata();  //seguidor mata cuando los tocas
-
   //salta_mata();  //saltador mata cuando los tocas
-
   //peligro_mata();  //peligroso mata cuando los tocas
+  //mina_mata(); //mina mata
+  //bala_mata();  //las balas matan
+  //tortuga_mata();  //tortuga mata cuando los tocas
 
   //patofuera();  //verificar si un pato se salio de la pantalla
-
   //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
-
   //saltafuera();  //verificar si un saltador se salio de la pantalla
-
   //peligrofuera();  //verificar si un peligroso se salio de la pantalla
-
   //champifuera();  //verificar si un champiñon se salio de la pantalla
-
   disparofuera();  //verificar si un disparo se salio de la pantalla
+  //balafuera();  //verificar si una bala se salio de la pantalla
+  //tortugafuera();  //verificar si una tortuga se salio de la pantalla
 
   //movchamp();  //mover champiñones
-
-  //mdemone();
-
+  mdemone();  //saltar monedas, generalmente es utilizado
   //movpato();  //mover patos
-
   //movseguidor();  //mover seguidor
-
   //movsalta();  //mover saltador
-
   //movpeligro();  //mover peligroso
-
+  //movmina();  //mover las minas
   movdisparo();  //mover disparo
+  //movbala();  //mover las balas
+  //movtortuga();  //mover tortugas
 
+////////teclado y otros
+  teclado();
+
+//no uso la funcion control(), ya que modifique algunas cosas
   if(monedas>=100) //por cada 100 monedas aumentar una vida
     {
     monedas=0;
@@ -5335,7 +4060,7 @@ while(ciclo<1)
     ciclo=1;
     estado=1;
     vidas--;
-    //t_huevo=tiempo-4;  //parece no ser necesario
+    //t_huevo=tiempo-4; //parece no ser necesario
     jugar=0;
     }
   else if(tiempo==0) //tiempo terminado
@@ -5343,34 +4068,58 @@ while(ciclo<1)
     estado=0;
     t_huevo=tiempo-4;
     }
+  if(t_moneda==tiempo)
+    {
+    convertir();
+    t_moneda=-88;
+    }
+  if(sec%4==0)  //usado para poder volar cada 4 cuadros
+    {
+    t_volar=0;
+    }
 
+////////Conviertiendo velocidad en posicion personaje principal
   x=x+vx;
   y=y+vy;
 
+////////operaciones del los bloques, borrando dibujos viejos redibujando el fondo
+  refbloques();  //dibujar el fondo sobre el personaje principal
+  //refchamp();
+  //refpato();
+  //refseguidor();
+  //refsalta();
+  //refpeligro();
+  //refmina();
+  refdisparo();
+  //refbala();
+  //reftortuga();
+
+////////dibujando personajes, enemigos, paneles y marcadores
+  verestado();  //verificar el estado del pato y dibujarlo segun el estado, personaje principal
   //dibchamp();  //dibujar champiñones
-
   //dibpatos();  //dibujar patos
-
   //dibseguidor();  //dibujar seguidor
-
   //dibsalta();  //dibujar saltador
-
   //dibpeligro();  //dibujar peligroso
-
+  //dibmina();  //dibujar minas
   dibdisparo();  //dibujar disparo
+  //dibexplosion_chica();  //para dibujar explosiones chicas, activar junto con minas, TNTs y NITROS
+  dibcristalroto();  //efectos al romper un cristal
+  dibgolpe();  //utilizado para los disparos, generalmente muy utilizado
+  //dibbala();  //dibujar balas de cañones
+  //dibtortugas();  //dibujar tortugas
 
   segundos();  //realizar un conteo del tiempo del juego
 
-  verestado();  //verificar el estado de pato y dibujarlo segun el estado
-
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(20);
+  delay(retraso);
 
 }
+
 vx=0.0;
 vy=0.0;
-x=200;
-y=352;
+x=504;
+y=336;
 return(0);
 }

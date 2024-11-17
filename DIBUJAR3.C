@@ -1,0 +1,151 @@
+#include<stdio.h>
+
+//esta funcion tiene muchos problemas para corregir,aveces no carga bien las imagenes, porque el tamano tiene que ser multiplo de 4 en x
+//pero aun asi la funcion es estable y segura de usar
+void bmp16(int i, int j, char *nombrearchivo)
+{
+FILE *archivo;
+int n,m,bmp_largo,bmp_ancho;
+unsigned char dato,a,b;
+archivo = fopen(nombrearchivo,"rb");
+if (archivo!=NULL)
+  {
+  for(n=0;n<18;n++)  //omitir 18 bytes
+    {
+    (void) getc(archivo);
+    }
+//los siguientes 4 bytes son el largo de la imagen siendo:
+//  LSB               MSB        en este orden
+// 0-255 0-255 0-255 0-255
+//como el orden esta invertido uso esta forma de leer los primeros 16 bits (2 bytes), del tamano.
+  bmp_largo=getc(archivo);
+  bmp_largo= bmp_largo + 0x100 * (getc(archivo));
+  (void) getc(archivo);  //omitir 2 bytes
+  (void) getc(archivo);
+  bmp_ancho=getc(archivo);
+  bmp_ancho=bmp_ancho + 0x100 *(getc(archivo));
+  (void) getc(archivo);
+  (void) getc(archivo);
+  for(n=0;n<92;n++)
+    {
+    (void) getc(archivo);
+    }
+  for(m=bmp_ancho-1;m>=0;m--)
+    {
+    for(n=0;n<(bmp_largo/2);n++)
+      {
+      dato=getc(archivo);
+      a=dato & 0xf0;
+      a=dato>>4;  //11110000
+      b=dato &0x0f;  //00001111
+      switch(a)
+        {
+        case 0:
+        putpixel(i+n*2,j+m,0);
+        break;
+        case 4:
+        putpixel(i+n*2,j+m,1);
+        break;
+        case 2:
+        putpixel(i+n*2,j+m,2);
+        break;
+        case 6:
+        putpixel(i+n*2,j+m,3);
+        break;
+        case 1:
+        putpixel(i+n*2,j+m,4);
+        break;
+        case 5:
+        putpixel(i+n*2,j+m,5);
+        break;
+        case 3:
+        putpixel(i+n*2,j+m,6);
+        break;
+        case 7:
+        putpixel(i+n*2,j+m,7);
+        break;
+        case 8:
+        putpixel(i+n*2,j+m,8);
+        break;
+        case 12:
+        putpixel(i+n*2,j+m,9);
+        break;
+        case 10:
+        putpixel(i+n*2,j+m,10);
+        break;
+        case 14:
+        putpixel(i+n*2,j+m,11);
+        break;
+        case 9:
+        putpixel(i+n*2,j+m,12);
+        break;
+        case 13:
+        putpixel(i+n*2,j+m,13);
+        break;
+        case 11:
+        putpixel(i+n*2,j+m,14);
+        break;
+        case 15:
+        putpixel(i+n*2,j+m,15);
+        break;
+        }
+      switch(b)
+        {
+        case 0:
+        putpixel(i+n*2+1,j+m,0);
+        break;
+        case 4:
+        putpixel(i+n*2+1,j+m,1);
+        break;
+        case 2:
+        putpixel(i+n*2+1,j+m,2);
+        break;
+        case 6:
+        putpixel(i+n*2+1,j+m,3);
+        break;
+        case 1:
+        putpixel(i+n*2+1,j+m,4);
+        break;
+        case 5:
+        putpixel(i+n*2+1,j+m,5);
+        break;
+        case 3:
+        putpixel(i+n*2+1,j+m,6);
+        break;
+        case 7:
+        putpixel(i+n*2+1,j+m,7);
+        break;
+        case 8:
+        putpixel(i+n*2+1,j+m,8);
+        break;
+        case 12:
+        putpixel(i+n*2+1,j+m,9);
+        break;
+        case 10:
+        putpixel(i+n*2+1,j+m,10);
+        break;
+        case 14:
+        putpixel(i+n*2+1,j+m,11);
+        break;
+        case 9:
+        putpixel(i+n*2+1,j+m,12);
+        break;
+        case 13:
+        putpixel(i+n*2+1,j+m,13);
+        break;
+        case 11:
+        putpixel(i+n*2+1,j+m,14);
+        break;
+        case 15:
+        putpixel(i+n*2+1,j+m,15);
+        break;
+        }
+      }
+    }
+  if (fclose(archivo)!=0)
+    {
+    gotoxy(1,1);
+    printf( "Problemas al cerrar el archivo\n" );
+    }
+  }
+}
