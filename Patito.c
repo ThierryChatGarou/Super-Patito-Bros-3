@@ -1959,6 +1959,25 @@ int g_niv4 [16][16]={
 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
 };*/
 
+int arboles [16][16]={  
+15,15,15,15,15,15,0 ,0 ,0 ,15,15,15,15,15,15,15,
+15,15,15,0 ,0 ,0 ,2 ,2 ,2 ,0 ,0 ,15,15,15,15,15,
+15,15,0 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,0 ,0 ,0 ,15,15,
+15,15,0 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,0 ,15,
+15,15,0 ,2 ,2 ,0 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,0 ,15,
+15,0 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,0 ,15,15,
+0 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,0 ,15,
+0 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,0 ,2 ,2 ,2 ,2 ,0 ,
+15,0 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,0 ,
+15,15,0 ,2 ,2 ,2 ,0 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,0 ,
+15,15,15,0 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,0 ,
+15,15,15,0 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,0 ,15,
+15,15,0 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,0 ,15,
+15,0 ,2 ,2 ,2 ,2 ,2 ,0 ,0 ,2 ,2 ,2 ,0 ,0 ,15,15,
+15,15,0 ,2 ,2 ,2 ,0 ,15,15,0 ,0 ,0 ,15,15,15,15,
+15,15,15,0 ,0 ,0 ,15,15,15,15,15,15,15,15,15,15,
+};
+
 int camino0 [16][16]={  
 15,15,15,15,15,0 ,14,14,14,14,0 ,15,15,15,15,15,
 15,15,15,15,15,0 ,14,14,14,14,0 ,15,15,15,15,15,
@@ -3166,6 +3185,13 @@ switch (T)
       }
   break;
   case 11:
+    for(y2=0;y2<16;y2++)
+      {
+      for(x2=0;x2<16;x2++)
+	{
+	putpixel(x2+i,y2+j,hielo0[y2][x2]);
+	}
+      }
   break;
   case 12:
     for(y2=0;y2<16;y2++)
@@ -3177,6 +3203,7 @@ switch (T)
       }
   break;
   case 13:
+
   break;
   case 14:
     for(y2=0;y2<16;y2++)
@@ -3761,14 +3788,20 @@ switch (T)
 
   break;
   case 1:
-
+    setfillstyle(1,15); //blanco
+    bar(i,j,i+15,j+15);
   break;
   case 2:
 
   break;
   case 3:
-    setfillstyle(1,15);  //arboles
-    bar(i,j,i+15,j+15);
+    for(y2=0;y2<16;y2++)
+      {
+      for(x2=0;x2<16;x2++)
+	{
+	putpixel(x2+i,y2+j,arboles[y2][x2]);
+	}
+      }
   break;
   /*case 4:
 
@@ -4483,7 +4516,7 @@ bloque_caja0_champinon()  //caja0 con champiñon
     vy=-vy;
     paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
     bloque(x+16-(x%16),y-(y%16),5);
-    c_champ((x-(x%16))/16,(y-16-(y%16))/16,1);
+    c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,1);
     }
 }
 
@@ -4502,7 +4535,7 @@ bloque_caja0_vida()  //caja0 con vida
     vy=-vy;
     paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
     bloque(x+16-(x%16),y-(y%16),5);
-    c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
+    c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,4);
     }
 }
 
@@ -4555,7 +4588,7 @@ else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==32 && x%16!=0)
     vy=-vy;
     paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
     bloque(x+16-(x%16),y-(y%16),5);
-    c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
+    c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,4);
     }
   }
 }
@@ -4650,7 +4683,7 @@ cristal0_vida()  //cristal0 con vida
     vy=-vy;
     paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
     bloque(x+16-(x%16),y-(y%16),5);
-    c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
+    c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,4);
     }
 }
 
@@ -4669,7 +4702,7 @@ cristal4_vida()  //cristal4 con vida
     vy=-vy;
     paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
     bloque(x+16-(x%16),y-(y%16),5);
-    c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
+    c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,4);
     }
 }
 
@@ -6874,7 +6907,7 @@ panel();
 r_champ();
 rmonedas();
 r_pato();
-c_pato(16,23);
+c_pato(24,23);
 npato[0]=-1;
 
 while(ciclo<1)
@@ -6933,11 +6966,11 @@ while(ciclo<1)
 
 ////////interaccion de los bloques
 
-  //bloque_saltar();  //bloque para saltar muy alto
+  bloque_saltar();  //bloque para saltar muy alto
 
   //bloque_caja0_moneda();  //caja0 con moneda
 
-  //bloque_caja0_10monedas();  //caja0 con 10 momedas
+  bloque_caja0_10monedas();  //caja0 con 10 momedas
 
   bloque_caja0_champinon();  //caja0 con champiñon
 
@@ -7105,7 +7138,7 @@ panel();
 r_champ();
 rmonedas();
 r_pato();
-c_pato(23,24);
+c_pato(22,24);
 
 while(ciclo<1)
   {
@@ -7188,7 +7221,7 @@ if(tiempo%28==0 && sec%22==0)
 
   //cristal4_moneda();  //cristal4 con moneda
 
-  cristal0_vida();  //cristal0 con vida
+  //cristal0_vida();  //cristal0 con vida
 
   //cristal4_vida();  //cristal4 con vida
 
@@ -7305,8 +7338,6 @@ panel();
 r_champ();
 rmonedas();
 r_pato();
-c_pato(4,24);
-c_pato(22,24);
 
 while(ciclo<1)
   {
@@ -7920,8 +7951,27 @@ while(ciclo<1)
   delay(16);
 
 }
-ciclo=1;
+x=344;
+y=80;
+vx=0.0;
+vy=0.0;
 escena=1;
+
+//Especial regenerar monedas y poder
+
+niv1[15][8]=35;
+niv1[15][9]=35;
+niv1[15][10]=35;
+niv1[20][7]=35;
+niv1[20][8]=35;
+niv1[20][9]=35;
+niv1[18][4]=35;
+niv1[18][5]=35;
+niv1[18][6]=35;
+niv1[22][11]=14;
+niv1[22][12]=14;
+niv1[21][12]=75;
+
 return(0);
 }
 
