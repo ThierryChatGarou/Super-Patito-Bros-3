@@ -1,0 +1,50 @@
+Super Patito Bros 3
+
+====Intrucciones para compilar:====
+Se requiere Turbo C++ para poder compilar.
+--nesecitas activar las librerías de graficos, eso se hace en el menú principal, selecciona "Options -> Linker -> Libraries", aparecerá una ventana de título "Libraries", debes activar la opción que dice "Graphics Library", y presiona "OK".
+--necesitas cambiar la forma en que genera el código el compilador, eso se hace en el menu, selecciona "Options -> Compiler -> Code generation", aparecerá una ventana con 3 cuadros verdes, ve a la que dice "Model", seleciona la opción "Huge" y presiona "OK".
+--nesecitas crear un nuevo proyecto y agregar todos los archivos con extensión ".C", eso se hace en el menu, selecciona Project -> Open project..., aparecerá una ventana con el título "Open project file", pero "open" en este caso no es para abrir un proyecto sino para crear un nuevo proyecto, escribe un nombre para el proyecto y presiona el boton OK. Se cerrará la ventana y aparecera un cuadro azulverdoso en la parte inferior de la pantalla con el título "Project: <Nombre del proyecto>". ve nuevamente al menu project -> add item... , aparecerá un cuadro con el título add to project list, seleciona algun archivo con extencion ".C" y has clic en el boton add, has lo mismo con los demas archivos ".C" y finalmente has clic en Done. Compila mientras este abierta la ventana de patito.c porque es el archivo principal, si no está abierto has doble clic en patito.c en la ventana del proyecto.
+Si todo va bien, podrás compilar si errores.
+
+====Para usuarios de Windows====
+Ya que este es un juego para MSdos, las versiones recientes de Windows ya no ejecutan nativamente los programas MSdos, ahora lo emulan con un programa interno. Esto causa que el juego no funcione como debería o no funcione en lo absoluto.
+Las versiones de Windows incompatibles son:
+Milenium, NT, XP, Vista, Seven, y posteriores.
+Algunos de los problemas comunes son:
+-El teclado tiene hasta 1 segundo de retraso.
+-No obedece el teclado.
+-No inicia el modo gráfico.
+-No funciona nada.
+
+El emulador DosBox en su ultima versión no ha sido probado aún.
+Recomiendo que se use con Windows 95/98/98SE/98Plus, MSdos, Freedos, o compatible (puedes crear un disco de inicio de MSdos en cualquier version de windows).
+He adaptado un poco el juego para que sea jugable tanto en MSdos como en Windows, pero no hago milagros.
+
+====Para usuarios de MSdos:====
+Problemas comunes:
+--No aparece el raton en modo MSDOS:
+Para solucionar este problema he incluido el archivo "mouse.com", que instala un driver genérico para el ratón. Ejecutalo antes de iniciar el juego.
+
+====Requerimientos para jugar====
+--Sistemas operativos compatibles:
+MSdos, Freedos, Windows 3.1/95/98/98SE/98Plus/ME o compatible.
+Procesador PII a 433MHz, 32MB de RAM, 40MB de disco duro.
+
+====Sobre los archivos del juego====
+"PATITO.EXE" Es el juego en ejecutable msdos.
+"EGAVGA.BGI" es el driver de graficos de 16 colores 640 X 480.
+"patito bros.C" Es el archivo C principal.
+"MUNDO0.C" Es el codigo de cada nivel en el juego.
+"DIBUJAR.C" Contiene muchas funciones graficas.
+"DIBUJAR2.C" más funciones graficas.
+"DIBUJAR3.C" y más.
+"Editor.C" El editor de nivel.
+"teclado.h" Es una utilidad para el funcionamiento de varias teclas simultaneas.
+"teclas.h" Es una lista de los scancodes.
+"0.txt" Es el mapa del mundo.
+"0-0.txt" ... "x-x.txt", son los mapas de cada escena.
+"0-0.tim" ... "x-x.tim", son los mapas de cielo
+"0.tic" Es el archivo de configuracion de nivel.
+"Mouse.com" Es un driver para ratón perteneciente a la organización Freedos.
+

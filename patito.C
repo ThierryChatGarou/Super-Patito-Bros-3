@@ -6,18 +6,22 @@
 #include<stdio.h>
 #include<conio.h>
 #include<stdlib.h>
-#include<alloc.h>
-#include<process.h>
-#include<bios.h>
-#include<ctype.h>
+//#include<alloc.h>
+//#include<process.h>
+//#include<bios.h>
+//#include<ctype.h>
 #include<dos.h>
-#include<time.h>
+//#include<time.h>
 #include<graphics.h>
 #include"teclas.h"
 #include"teclado.h"
-#include"svgautil.h"
+//#include"svgautil.h"
 
-extern int ntortuga[8],tortugax[8],tortugay[8];
+#ifndef __HUGE__
+#error Patito debe compilarse en el modelo de memoria HUGE.
+#endif
+
+extern int ntortuga[8],tortugax[8],tortugay[8],segundo_invalido;
 
 int patito,nivel=0,escena=0,mundo=0,seguir=1,vidas=4,estado=1,tiempo=0,volar=22,t_volar=0,retraso=20,monedas=0,npato[8],patox[8],patoy[8],patoo[8],patop[8],nsalta[4],saltax[4],saltay[4],saltao[4],saltap[4],nseguidor[8],seguidorx[8],seguidory[8],seguidoro[8],seguidorp[8],npeligro[4],peligrox[4],peligroy[4],peligroo[4],peligrop[4],nmina[8],minax[8],minay[8],minao[8],minap[8],nchamp[4],champx[4],champy[4],champo[4],champp[4],nmonedas[4],monedax[4],moneday[4],monealt[4],ndisparo[4],disparox[4],disparoy[4],disparoo[4],disparop[4],cajamone=0,invensible=0,x,y,o,p,dir=1,paso=1,teclaso=0,sec=0,t_huevo,t_moneda=-88,tdisparo=0,saltar=1,ciclo=0,jugar=0,nadando=0;
 float vx=0,vy=0,saltavx[4],saltavy[4],peligrovx[4],peligrovy[4],disparovx[4],disparovy[4];
@@ -639,19 +643,28 @@ gotoxy(7,20);   cprintf("บ                               บ");
 gotoxy(7,21);   cprintf("ศอออออออออออออออออออออออออออออออผ");
 
 gotoxy(42,8);    cprintf("ษอออออออออออออออออออออออออออออออป");
-gotoxy(42,9);    cprintf("บ Entradas                      บ");
-gotoxy(42,10);   cprintf("บ Detectadas                    บ");
+gotoxy(42,9);    cprintf("บ Sistemas operativos           บ");
+gotoxy(42,10);   cprintf("บ Compatibles:                  บ");
 gotoxy(42,11);   cprintf("บ                               บ");
-gotoxy(42,12);   cprintf("บ                               บ");
-gotoxy(42,13);   cprintf("บ                               บ");
-gotoxy(42,14);   cprintf("บ                               บ");
-gotoxy(42,15);   cprintf("บ                               บ");
+gotoxy(42,12);   cprintf("บ -MSDOS                        บ");
+gotoxy(42,13);   cprintf("บ -Freedos y similares          บ");
+gotoxy(42,14);   cprintf("บ -Windows 9x                   บ");
+gotoxy(42,15);   cprintf("บ -Windows ME                   บ");
 gotoxy(42,16);   cprintf("บ                               บ");
 gotoxy(42,17);   cprintf("บ                               บ");
 gotoxy(42,18);   cprintf("บ                               บ");
 gotoxy(42,19);   cprintf("บ                               บ");
 gotoxy(42,20);   cprintf("บ                               บ");
 gotoxy(42,21);   cprintf("ศอออออออออออออออออออออออออออออออผ");
+
+gotoxy(8,26);   cprintf("Nota:");
+gotoxy(1,27);   cprintf("Las versiones actuales de windows no ejecutan nativamente MSDOS");
+gotoxy(1,28);   cprintf("por lo que puede haber problemas al emular. Los problemas conocidos son en:");
+gotoxy(1,29);   cprintf("Windows XP/NT: Atraso en la respuesta del teclado o congelamiento");
+gotoxy(1,30);   cprintf("Windows Vista y 7: Problemas para iniciar modo gr fico");
+gotoxy(1,31);   cprintf("Dosbox: Gr ficos muy lentos. Acelera los ciclos del CPU hasta estabilizar");
+gotoxy(1,32);   cprintf("Se recomienda usar un disco de arranque de MSDOS (no en sกmbolo de sistema)");
+
 textcolor(0xFC);
 textbackground(0x01);
 gotoxy(24,49);   cprintf("Presiona una tecla para continuar");
@@ -666,7 +679,7 @@ void errorgraficos()
   gotoxy(7,7);    cprintf("บ 1 Posiblemente falta el archivo Egavga.bgi                           บ");
   gotoxy(7,8);    cprintf("บ - Copia el archivo Egavga.bgi que se encuentra en la carpeta BGI     บ");
   gotoxy(7,9);    cprintf("บ   de tu carpeta de instalacion de Turbo C++ o en la carpeta donde se บ");
-  gotoxy(7,10);   cprintf("บ   encuentra el programa Patito bros.exe                              บ");
+  gotoxy(7,10);   cprintf("บ   encuentra el programa Patito.exe                                   บ");
   gotoxy(7,11);   cprintf("บ 2 Aumenta la capacidad de memoria para el programa                   บ");
   gotoxy(7,12);   cprintf("บ 3 Si ejecutaste el programa desde un acceso directo, ejecuta         บ");
   gotoxy(7,13);   cprintf("บ   directamente el programa.                                          บ");
@@ -674,7 +687,7 @@ void errorgraficos()
   gotoxy(7,15);   cprintf("บ   memoria, cambia la generacion del codigo (desde turbo c) en el     บ");
   gotoxy(7,16);   cprintf("บ   menu \"Options -> Compiler -> Code generation\" y en la parte que    บ");
   gotoxy(7,17);   cprintf("บ   dice \"Model\" selecciona la opciขn \"Huge\" y presiona \"OK\"           บ");
-  gotoxy(7,18);   cprintf("บ   Problemas: Thierry_2222@hotmail.com                                บ");
+  gotoxy(7,18);   cprintf("บ   Ayuda: Thierry_2222@hotmail.com                                    บ");
   gotoxy(7,19);   cprintf("บ                                                                      บ");
   gotoxy(7,20);   cprintf("ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ");
   gotoxy(7,22);   cprintf("Presiona un tecla para salir.");
@@ -694,6 +707,8 @@ detectgraph(&gdriver, &gmode);
 errorcode=graphresult();
 if (errorcode != grOk)  //Si ocurre un error
   {
+  textcolor(0x0F);
+  textbackground(0x01);
   clrscr();
   gotoxy(7,1);    printf("Error al cargar el driver de graficos: ");
   gotoxy(7,2);    printf("%s", grapherrormsg(errorcode));
@@ -714,159 +729,12 @@ initgraph(&gdriver, &gmode, "");
 errorcode = graphresult();  //comprobar si se inicio correctamente los graficos
 if (errorcode != grOk)  //Si ocurre un error
   {
+  textcolor(0x0F);
+  textbackground(0x01);
   clrscr();
   gotoxy(7,1);    printf("Error al cargar el driver de graficos: ");
   gotoxy(7,2);    printf("%s", grapherrormsg(errorcode));
   errorgraficos();
-  exit(1);
-  }
-}
-
-
-int huge DetectVGA256()
-{
-int vid;
-//0 = 320x200x256
-//1 = 640x400x256
-//2 = 640x480x256
-//3 = 800x600x256
-//4 = 1024x768x256
-//6 = 1280x1024x256
-vid=2;
-return vid;
-}
-
-
-void iniciargraficos256()  //256 colores, PELIGRO!! funcion inestable
-{
-int gdriver=DETECT, gmode, errorcode;
-
-installuserdriver("Svga256",DetectVGA256);
-initgraph(&gdriver, &gmode, "");
-errorcode = graphresult();  //comprobar si se inicio correctamente los graficos
-if (errorcode != grOk)  //Si ocurre un error
-  {
-  clrscr();
-  gotoxy(7,1);    printf("Error al cargar el driver de graficos: ");
-  gotoxy(7,2);    printf("%s", grapherrormsg(errorcode));
-  getch();
-  exit(1);
-  }
-}
-
-
-//Definiendo funciones para dibujar a color real
-// long RGB(char rVal, char gVal, char bVal);           
-//                                                           
-// Purpose: Returns the color value for a R,G,B triple 
-//        based on the current graphics mode.                
-//                                                        
-// Input:                                                
-//        char rVal - Red value   [0..255]                
-//        char gVal - Green value [0..255]                
-//        char bVal - Blue value  [0..255]                
-//                                                        
-// Returns:                                                
-//         long - Color value for this mode.                
-
-long RGB(char rVal, char gVal, char bVal)
-{
-__rColor xColor;
-xColor.c24.rVal = rVal;
-xColor.c24.gVal = gVal;
-xColor.c24.bVal = bVal;
-return (xColor.cval);
-}
-
-
-// long RealDrawColor(long color);                                  
-//                                                                   
-// Purpose: Sets the current drawing color for HC/TC modes.        
-//        Used for 'setcolor'                                        
-//                                                                
-// Input:                                                        
-//        long color - Color value                                
-//                                                                
-// Returns:                                                        
-//        long - Color value                                        
-
-long RealDrawColor(long color)
-{
-__rColor xColor;
-xColor.cval = color;
-setrgbpalette(1024,xColor.c24.rVal,xColor.c24.gVal,xColor.c24.bVal);
-return color;
-}
-
-
-// long RealFillColor(long color);                                  
-//                                                                   
-// Purpose: Sets the current fill color for HC/TC modes.        
-//        Used for 'setfillstyle' and 'setfillpattern'                
-//                                                                
-// Input:                                                        
-//        long color - Color value                                
-//                                                                
-// Returns:                                                        
-//        long - Color value                                        
-
-long RealFillColor(long color)
-{
-__rColor xColor;
-xColor.cval = color;
-setrgbpalette(1025,xColor.c24.rVal,xColor.c24.gVal,xColor.c24.bVal);
-return color;
-}
-
-
-// long RealColor(long color);                                          
-//                                                                   
-// Purpose: Sets the current color for HC/TC modes.                
-//        Used for 'putpixel' and 'floodfill'                        
-//                                                                
-// Input:                                                        
-//        long color - Color value                                
-//                                                                
-// Returns:                                                        
-//        long - Color value                                        
-
-long RealColor(long color)
-{
-__rColor xColor;
-xColor.cval = color;
-setrgbpalette(1026,xColor.c24.rVal,xColor.c24.gVal,xColor.c24.bVal);  //color 24 bits
-return color;
-}
-
-
-int huge DetectVGA24bit()  //funcion para elegir el modo grafico
-{
-int vid;
-//0 = 320x200x24-bit
-//1 = 640x350x24-bit
-//2 = 640x400x24-bit
-//3 = 640x480x24-bit
-//4 = 800x600x24-bit
-//5 = 1024x768x24-bit
-//6 = 1280x1024x24-bit
-vid=3;
-return vid;
-}
-
-
-void iniciargraficos_color_real()  //color real
-{
-int gdriver = DETECT, gmode, errorcode;
-
-installuserdriver("SvgaTC",DetectVGA24bit);
-initgraph(&gdriver,&gmode,"");
-errorcode = graphresult();  //comprobar si se inicio correctamente los graficos
-if (errorcode != grOk)  //Si ocurre un error
-  {
-  clrscr();
-  gotoxy(7,1);    printf("Error al cargar el driver de graficos: ");
-  gotoxy(7,2);    printf("%s", grapherrormsg(errorcode));
-  getch();
   exit(1);
   }
 }
@@ -879,6 +747,29 @@ int i,j;
 
 switch (nivel)
   {
+  case -2:
+    switch (escena)
+      {
+      case 0:
+        archivo = fopen("-2-0.txt","rb");
+      break;
+      case 1:
+        archivo = fopen("-2-1.txt","rb");
+      break;
+      case 2:
+        archivo = fopen("-2-2.txt","rb");
+      break;
+      case 3:
+        archivo = fopen("-2-3.txt","rb");
+      break;
+      case 20:  //escena secreta
+        archivo = fopen("-2-20.txt","rb");
+      break;
+      default:
+        archivo = fopen("0.txt","rb");
+      break;
+      }
+  break;
   case 0:
     switch (escena)
       {
@@ -1190,6 +1081,29 @@ int i,j;
 
 switch (nivel)
   {
+  case -2:
+    switch (escena)
+      {
+      case 0:
+        archivo = fopen("-2-0.tim","rb");
+      break;
+      case 1:
+        archivo = fopen("-2-1.tim","rb");
+      break;
+      case 2:
+        archivo = fopen("-2-2.tim","rb");
+      break;
+      case 3:
+        archivo = fopen("-2-3.tim","rb");
+      break;
+      case 20:  //escena secreta
+        archivo = fopen("-2-20.tim","rb");
+      break;
+      default:
+        archivo = fopen("0.tim","rb");
+      break;
+      }
+  break;
   case 0:
     switch (escena)
       {
@@ -1956,11 +1870,15 @@ for(n=0;n<4;n++)
 
 void movmina()
 {
-int n,e1=0,e2=0,e3=0,e4=0;
+int n,e1,e2,e3,e4;
 for(n=0;n<8;n++)
   {
   if(nmina[n]!=0)
     {
+    e1=0;
+    e2=0;
+    e3=0;
+    e4=0;
     if(minax[n]>x)  //seguir pato en tiempo real, seguir en x
       {
       minax[n]--;
@@ -4708,6 +4626,7 @@ printf("PRESIONA CUALQUIER TECLA PARA CONTINUAR");
 tomarletra();  //igual que el getch()
 fondo();
 panel();
+segundo_invalido=1;
 }
 
 
@@ -4741,6 +4660,7 @@ while(tecla[KEY_ENTER])  //esperar a que suelte la tecla enter para quitar la pa
 //  208/16=13
 bloque(304,208,paisaje[13][19]);
 bloque(320,208,paisaje[13][20]);
+segundo_invalido=1;
 }
 
 
@@ -4940,7 +4860,7 @@ if(tdisparo==0)  //determina si el pinguino estแ listo para disparar (ver movdis
 
 void elidisparo(int i)
 {
-c_golpe(disparox[i],disparoy[i]);
+//c_golpe(disparox[i],disparoy[i]);
 //borrando variables
 ndisparo[i]=0;
 //borrando rastro del dibujo, redibujando fondo
@@ -5012,10 +4932,12 @@ for(n=0;n<4;n++)
     if(paisaje[(disparoy[n]-(disparoy[n]%16))/16][(disparox[n]+16-(disparox[n]%16))/16]<32) //eliminar disparo al chocar con bloque derecho    
       {
       elidisparo(n);
+      c_golpe(disparox[n],disparoy[n]);
       }
     else if(paisaje[(disparoy[n]-(disparoy[n]%16))/16][(disparox[n]-(disparox[n]%16))/16]<32) //eliminar disparo al chocar con bloque izquierdo       
       {
       elidisparo(n);
+      c_golpe(disparox[n],disparoy[n]);
       }
     disparoy[n]=disparoy[n]+disparovy[n];
     disparox[n]=disparox[n]+disparovx[n];
@@ -5160,6 +5082,7 @@ for(n=0;n<4;n++)  //buscar disparos activos
             {
             elidisparo(n);
             elipato(m);
+            c_golpe(disparox[n],disparoy[n]);
             puntos=puntos+100;
             }
           }
@@ -5177,6 +5100,7 @@ for(n=0;n<4;n++)  //buscar disparos activos
             {
             elidisparo(n);
             elipato(m);
+            c_golpe(disparox[n],disparoy[n]);
             puntos=puntos+100;
             }
           }
@@ -5193,6 +5117,7 @@ for(n=0;n<4;n++)  //buscar disparos activos
             {
             elidisparo(n);
             elisalta(m);
+            c_golpe(disparox[n],disparoy[n]);
             puntos=puntos+100;
             }
           }
@@ -5210,6 +5135,7 @@ for(n=0;n<4;n++)  //buscar disparos activos
             {
             elidisparo(n);
             elisalta(m);
+            c_golpe(disparox[n],disparoy[n]);
             puntos=puntos+100;
             }
           }
@@ -5226,6 +5152,7 @@ for(n=0;n<4;n++)  //buscar disparos activos
             {
             elidisparo(n);
             eliseguidor(m);
+            c_golpe(disparox[n],disparoy[n]);
             puntos=puntos+100;
             }
           }
@@ -5243,6 +5170,7 @@ for(n=0;n<4;n++)  //buscar disparos activos
             {
             elidisparo(n);
             eliseguidor(m);
+            c_golpe(disparox[n],disparoy[n]);
             puntos=puntos+100;
             }
           }
@@ -5259,6 +5187,7 @@ for(n=0;n<4;n++)  //buscar disparos activos
             {
             elidisparo(n);
             elipeligro(m);
+            c_golpe(disparox[n],disparoy[n]);
             puntos=puntos+100;
             }
           }
@@ -5276,6 +5205,7 @@ for(n=0;n<4;n++)  //buscar disparos activos
             {
             elidisparo(n);
             elipeligro(m);
+            c_golpe(disparox[n],disparoy[n]);
             puntos=puntos+100;
             }
           }
@@ -5291,6 +5221,7 @@ for(n=0;n<4;n++)  //buscar disparos activos
           if(disparoy[n]<=minay[m]+16 && disparoy[n]>=minay[m]-16)
             {
             elidisparo(n);
+            //c_golpe(disparox[n],disparoy[n]);
             c_explosion_chica(minax[m],minay[m]);  //nota: coordenadas en pixeles
             elimina(m);
             puntos=puntos+100;
@@ -5310,6 +5241,7 @@ for(n=0;n<4;n++)  //buscar disparos activos
               {
               elidisparo(n);
               elitortuga(m);
+              c_golpe(disparox[n],disparoy[n]);
               puntos=puntos+100;
               }
             if(disparoy[n]<=tortugay[m]+16 && disparoy[n]>=tortugay[m]-16)  //golpe en el cuerpo
@@ -5327,6 +5259,7 @@ for(n=0;n<4;n++)  //buscar disparos activos
               {
               elidisparo(n);
               elitortuga(m);
+              c_golpe(disparox[n],disparoy[n]);
               puntos=puntos+100;
               }
             }
@@ -5665,11 +5598,11 @@ teclaso=0;
     {
     if(vx<0)  //disminuir la velocidad
       {
-      vx=vx+0.0625;
+      vx=vx+0.125;  //vx=vx+0.0625;
       }
     else if(vx>0)
       {
-      vx=vx-0.0625;
+      vx=vx-0.125;  //vx=vx-0.0625;
       }
    /* if(vy<0)  //disminuir la velocidad (no se requiere)
       {
@@ -5817,6 +5750,13 @@ if(kbhit())  //si se presiono una tecla para omitir la presentacion, pedir que s
   }
 
 getch();
+
+textcolor(0x0F);
+textbackground(0x00);
+clrscr();
+printf("        Cargando...");
+gotoxy(1,1);
+verificar_existencia();  //revisar que no falten archivos
 iniciargraficos();
 getpalette(&paleta);
 //iniciargraficos256();
@@ -5833,6 +5773,30 @@ while(seguir!=0)
     {
     switch (nivel)
       {
+      case -2:
+        switch (escena)
+          {
+          case 0:
+            tutorial0();
+            break;
+          case 1:
+            tutorial1();
+          break;
+          case 2:
+            tutorial2();
+          break;
+          case 3:
+            tutorial3();
+          break;
+          case 20:
+            //escena0_20();
+            jugar=0;
+          break;
+          default:
+            jugar=0;
+          break;
+          }
+      break;  //caso nivel=-1 esta reservado para el mundo
       case 0:
         switch (escena)
           {
@@ -5846,7 +5810,7 @@ while(seguir!=0)
             escena02();
           break;
           case 3:
-          escena03();
+            escena03();
           break;
           case 20:
             escena0_20();
@@ -5872,7 +5836,7 @@ while(seguir!=0)
             escena13();
           break;
           case 20:
-          escena1_20();
+            escena1_20();
           break;
           default:
             jugar=0;
@@ -5942,6 +5906,7 @@ while(seguir!=0)
           break;
           case 20:
             //escena4_20();
+            jugar=0;
           break;
           default:
             jugar=0;
@@ -5965,6 +5930,7 @@ while(seguir!=0)
           break;
           case 20:
             //escena5_20();
+            jugar=0;
           break;
           default:
             jugar=0;
@@ -5988,6 +5954,7 @@ while(seguir!=0)
           break;
           case 20:
             //escena6_20();
+            jugar=0;
           break;
           default:
             jugar=0;
@@ -6011,6 +5978,7 @@ while(seguir!=0)
           break;
           case 20:
             //escena7_20();
+            jugar=0;
           break;
           default:
             jugar=0;
@@ -6034,6 +6002,7 @@ while(seguir!=0)
           break;
           case 20:
             //escena8_20();
+            jugar=0;
           break;
           default:
             jugar=0;
@@ -6057,6 +6026,7 @@ while(seguir!=0)
           break;
           case 20:
             //escena9_20();
+            jugar=0;
           break;
           default:
             jugar=0;

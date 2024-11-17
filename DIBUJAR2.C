@@ -3407,7 +3407,7 @@ while(bucle==1)
   {
   setfillstyle(1,15);  //espero algun dia mejorar esta presentacion
   bar(0,0,640,480);
-  bmp16(80,0,"Patito16.bmp");  //posx,posy,"archivo.bmp" Nota: la resolucion de la imagen tiene que ser multiplo de 4 en x
+  bmp16(80,0,"Patito16.bmp",0);  //posx,posy,"archivo.bmp",cambiar_paleta Nota: la resolucion de la imagen tiene que ser multiplo de 4 en x
   c_ventana(12,18,27,21);
   texto(240,304,11,0,"ENTER - Empezar el juego");
   texto(240,320,11,0,"F2    - Editor de niveles");
