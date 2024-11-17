@@ -2967,7 +2967,6 @@ for(n=0;n<8;n++)
   {
   if(npato[n]!=0)
     {
-
     if(npato[n]==1)  //determinar sentido
       {
       patox[n]++;
@@ -2998,16 +2997,16 @@ for(n=0;n<8;n++)
         patoy[n]=patoy[n]-(patoy[n]%16);
         }
       }
-    }
-  if(paisaje[(patoy[n]-(patoy[n]%16))/16][(patox[n]+16-(patox[n]%16))/16]<32) //limite de bloque derecho
-    {
-    npato[n]=-1;
-    patox[n]=patox[n]-(patox[n]%16);
-    }
-  else if(paisaje[(patoy[n]-(patoy[n]%16))/16][(patox[n]-(patox[n]%16))/16]<32) //limite de bloque izquierdo
-    {
-    npato[n]=1;
-    patox[n]=patox[n]+16-(patox[n]%16);
+    if(paisaje[(patoy[n]-(patoy[n]%16))/16][(patox[n]+16-(patox[n]%16))/16]<32) //limite de bloque derecho
+      {
+      npato[n]=-1;
+      patox[n]=patox[n]-(patox[n]%16);
+      }
+    else if(paisaje[(patoy[n]-(patoy[n]%16))/16][(patox[n]-(patox[n]%16))/16]<32) //limite de bloque izquierdo
+      {
+      npato[n]=1;
+      patox[n]=patox[n]+16-(patox[n]%16);
+      }
     }
   }
 }
@@ -3052,19 +3051,19 @@ for(n=0;n<4;n++)
         saltay[n]=saltay[n]-(saltay[n]%16);
         }
       }
+    if(paisaje[(saltay[n]-(saltay[n]%16))/16][(saltax[n]+16-(saltax[n]%16))/16]<32) //limite de bloque derecho
+      {
+      nsalta[n]=-1;
+      saltax[n]=saltax[n]-(saltax[n]%16);
+      }
+    else if(paisaje[(saltay[n]-(saltay[n]%16))/16][(saltax[n]-(saltax[n]%16))/16]<32) //limite de bloque izquierdo
+      {
+      nsalta[n]=1;
+      saltax[n]=saltax[n]+16-(saltax[n]%16);
+      }
+    saltay[n]=saltay[n]+saltavy[n];
+    saltax[n]=saltax[n]+saltavx[n];
     }
-  if(paisaje[(saltay[n]-(saltay[n]%16))/16][(saltax[n]+16-(saltax[n]%16))/16]<32) //limite de bloque derecho
-    {
-    nsalta[n]=-1;
-    saltax[n]=saltax[n]-(saltax[n]%16);
-    }
-  else if(paisaje[(saltay[n]-(saltay[n]%16))/16][(saltax[n]-(saltax[n]%16))/16]<32) //limite de bloque izquierdo
-    {
-    nsalta[n]=1;
-    saltax[n]=saltax[n]+16-(saltax[n]%16);
-    }
-saltay[n]=saltay[n]+saltavy[n];
-saltax[n]=saltax[n]+saltavx[n];
   }
 }
 
@@ -3108,19 +3107,30 @@ for(n=0;n<4;n++)
         peligroy[n]=peligroy[n]-(peligroy[n]%16);
         }
       }
+    if(sec%80==0) //seguir a patito  
+      {
+      if(peligrox[n]>x)  
+        {
+        npeligro[n]=-1;
+        }
+      else if(peligrox[n]<x)       
+        {
+        npeligro[n]=1;
+        }
+      }
+    if(paisaje[(peligroy[n]-(peligroy[n]%16))/16][(peligrox[n]+16-(peligrox[n]%16))/16]<32) //limite de bloque derecho    
+      {
+      npeligro[n]=-1;
+      peligrox[n]=peligrox[n]-(peligrox[n]%16);
+      }
+    else if(paisaje[(peligroy[n]-(peligroy[n]%16))/16][(peligrox[n]-(peligrox[n]%16))/16]<32) //limite de bloque izquierdo       
+      {
+      npeligro[n]=1;
+      peligrox[n]=peligrox[n]+16-(peligrox[n]%16);
+      }
+    peligroy[n]=peligroy[n]+peligrovy[n];
+    peligrox[n]=peligrox[n]+peligrovx[n];
     }
-  if(paisaje[(peligroy[n]-(peligroy[n]%16))/16][(peligrox[n]+16-(peligrox[n]%16))/16]<32) //limite de bloque derecho
-    {
-    npeligro[n]=-1;
-    peligrox[n]=peligrox[n]-(peligrox[n]%16);
-    }
-  else if(paisaje[(peligroy[n]-(peligroy[n]%16))/16][(peligrox[n]-(peligrox[n]%16))/16]<32) //limite de bloque izquierdo
-    {
-    npeligro[n]=1;
-    peligrox[n]=peligrox[n]+16-(peligrox[n]%16);
-    }
-peligroy[n]=peligroy[n]+peligrovy[n];
-peligrox[n]=peligrox[n]+peligrovx[n];
   }
 }
 
@@ -3141,8 +3151,6 @@ for(n=0;n<4;n++)
       {
       champx[n]--;
       }
-
-
     if((champx[n]%16)!=0)
       {
       if(paisaje[(champy[n]+16-(champy[n]%16))/16][(champx[n]-(champx[n]%16))/16]>=32 && paisaje[(champy[n]+16-(champy[n]%16))/16][(champx[n]+16-(champx[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
@@ -3165,17 +3173,16 @@ for(n=0;n<4;n++)
         champy[n]=champy[n]-(champy[n]%16);
         }
       }
-
-    }
-  if(paisaje[(champy[n]-(champy[n]%16))/16][(champx[n]+16-(champx[n]%16))/16]<32) //limite de bloque derecho
-    {
-    nchamp[n]=-nchamp[n];
-    champx[n]=champx[n]-(champx[n]%16);
-    }
-  else if(paisaje[(champy[n]-(champy[n]%16))/16][(champx[n]-(champx[n]%16))/16]<32) //limite de bloque izquierdo
-    {
-    nchamp[n]=-nchamp[n];
-    champx[n]=champx[n]+16-(champx[n]%16);
+    if(paisaje[(champy[n]-(champy[n]%16))/16][(champx[n]+16-(champx[n]%16))/16]<32) //limite de bloque derecho
+      {
+      nchamp[n]=-nchamp[n];
+      champx[n]=champx[n]-(champx[n]%16);
+      }
+    else if(paisaje[(champy[n]-(champy[n]%16))/16][(champx[n]-(champx[n]%16))/16]<32) //limite de bloque izquierdo
+      {
+      nchamp[n]=-nchamp[n];
+      champx[n]=champx[n]+16-(champx[n]%16);
+      }
     }
   }
 }
@@ -6328,6 +6335,7 @@ rmonedas();
 r_pato();
 r_salta();
 r_peligro();
+c_peligro(6,24);
 c_pato(4,24);
 c_pato(22,24);
 
@@ -6341,7 +6349,7 @@ while(ciclo<1)
   refchamp();
   refpato();
   //refsalta();
-  //refpeligro();
+  refpeligro();
 
   if((x%16)!=0)
     {
@@ -6444,7 +6452,7 @@ while(ciclo<1)
 
   //pisar_salta();  //pisar saltador
 
-  //pisar_peligro();  //pisar peligroso
+  pisar_peligro();  //pisar peligroso
 
   //NITRO_mata();  //no toques la nitroglicerina
 
@@ -6454,13 +6462,13 @@ while(ciclo<1)
 
   //salta_mata();  //saltador mata cuando los tocas
 
-  //peligro_mata();  //peligroso mata cuando los tocas
+  peligro_mata();  //peligroso mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
 
   //saltafuera();  //verificar si un saltador se salio de la pantalla
 
-  //peligrofuera();  //verificar si un peligroso se salio de la pantalla
+  peligrofuera();  //verificar si un peligroso se salio de la pantalla
 
   champifuera();  //verificar si un champiñon se salio de la pantalla
 
@@ -6472,7 +6480,7 @@ while(ciclo<1)
 
   //movsalta();  //mover saltador
 
-  //movpeligro();  //mover peligroso
+  movpeligro();  //mover peligroso
 
   if(monedas>=100) //por cada 100 monedas aumentar una vida
     {
@@ -6514,7 +6522,7 @@ while(ciclo<1)
 
   //dibsalta();  //dibujar saltador
 
-  //dibpeligro();  //dibujar peligroso
+  dibpeligro();  //dibujar peligroso
 
   segundos();  //realizar un conteo del tiempo del juego
 
