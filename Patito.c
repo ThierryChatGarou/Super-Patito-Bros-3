@@ -24,8 +24,8 @@
 #include<time.h>
 #include<graphics.h>
 
-int geexbox,nivel=0,escena=0,mundo=0,seguir=1,vidas=4,estado=1,tiempo=0,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nsalta[4],saltax[4],saltay[4],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,invensible=0,i,j,x,y,dir=1,paso=1,tecla,sec=0,t_huevo,t_moneda=-88,ciclo=0,jugar=0;
-float vx=0,vy=0,saltavx[4],saltavy[4];
+int geexbox,nivel=0,escena=0,mundo=0,seguir=1,vidas=4,estado=1,tiempo=0,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nsalta[4],saltax[4],saltay[4],npeligro[4],peligrox[4],peligroy[4],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,invensible=0,i,j,x,y,dir=1,paso=1,tecla,sec=0,t_huevo,t_moneda=-88,ciclo=0,jugar=0;
+float vx=0,vy=0,saltavx[4],saltavy[4],peligrovx[4],peligrovy[4];
 
 int niv0[30][40],niv1[30][40],niv2[30][40],niv3[30][40],paisaje[30][40];
 
@@ -2800,6 +2800,32 @@ for(x2=0;x2<4;x2++)
 }
 
 
+r_peligro()  //resetear patos seguidores y saltadores
+{
+int x2;
+for(x2=0;x2<4;x2++)
+  {
+  npeligro[x2]=0;
+  }
+for(x2=0;x2<4;x2++)
+  {
+  peligrox[x2]=0;
+  }
+for(x2=0;x2<4;x2++)
+  {
+  peligroy[x2]=0;
+  }
+for(x2=0;x2<4;x2++)
+  {
+  peligrovy[x2]=0.0;
+  }
+for(x2=0;x2<4;x2++)
+  {
+  peligrovx[x2]=0.0;
+  }
+}
+
+
 r_champ()  //resetear champiñones
 {
 int x2;
@@ -2871,6 +2897,25 @@ x2=x2*16;
 y2=y2*16;
 saltax[p]=x2;
 saltay[p]=y2;
+}
+
+
+c_peligro(int x2, int y2)
+{
+int n,p=0;
+for(n=0;n<4;n++)
+  {
+  if(npeligro[n]==0)
+    {
+    p=n;
+    npeligro[n]=1;
+    n=4;
+    }
+  }
+x2=x2*16;
+y2=y2*16;
+peligrox[p]=x2;
+peligroy[p]=y2;
 }
 
 
@@ -3024,6 +3069,62 @@ saltax[n]=saltax[n]+saltavx[n];
 }
 
 
+movpeligro()
+{
+int n;
+for(n=0;n<4;n++)
+  {
+  if(npeligro[n]!=0)
+    {
+    if(npeligro[n]==1)  //determinar sentido
+      {
+      peligrox[n]++;
+      }
+    if(npeligro[n]==-1)  //determinar sentido
+      {
+      peligrox[n]--;
+      }
+    if((peligrox[n]%16)!=0)
+      {
+      if(paisaje[(peligroy[n]+16-(peligroy[n]%16))/16][(peligrox[n]-(peligrox[n]%16))/16]>=32 && paisaje[(peligroy[n]+16-(peligroy[n]%16))/16][(peligrox[n]+16-(peligrox[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
+        {
+        peligrovy[n]=peligrovy[n]+0.5;
+        }
+      else
+        {
+        peligrovy[n]=-4.0;
+        peligroy[n]=peligroy[n]-(peligroy[n]%16);
+        }
+      }
+    else
+      {
+      if(paisaje[(peligroy[n]+16-(peligroy[n]%16))/16][(peligrox[n]-(peligrox[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
+        {
+        peligrovy[n]=peligrovy[n]+0.5;
+        }
+      else
+        {
+        peligrovy[n]=-4.0;
+        peligroy[n]=peligroy[n]-(peligroy[n]%16);
+        }
+      }
+    }
+  if(paisaje[(peligroy[n]-(peligroy[n]%16))/16][(peligrox[n]+16-(peligrox[n]%16))/16]<32) //limite de bloque derecho
+    {
+    npeligro[n]=-1;
+    peligrox[n]=peligrox[n]-(peligrox[n]%16);
+    }
+  else if(paisaje[(peligroy[n]-(peligroy[n]%16))/16][(peligrox[n]-(peligrox[n]%16))/16]<32) //limite de bloque izquierdo
+    {
+    npeligro[n]=1;
+    peligrox[n]=peligrox[n]+16-(peligrox[n]%16);
+    }
+peligroy[n]=peligroy[n]+peligrovy[n];
+peligrox[n]=peligrox[n]+peligrovx[n];
+  }
+}
+
+
 movchamp()
 {
 int n;
@@ -3124,6 +3225,28 @@ for(n=0;n<4;n++)
 }
 
 
+dibpeligro()
+{
+int n;
+for(n=0;n<4;n++)
+  {
+  if(npeligro[n]!=0)
+    {
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        if(pato0[j][i]!=22)
+          {
+          putpixel(peligrox[n]+i,peligroy[n]+j,pato0[j][i]);
+          }
+        }
+      }
+    }
+  }
+}
+
+
 dibchamp()
 {
 int n;
@@ -3210,6 +3333,16 @@ saltax[x2]=0;
 saltay[x2]=0;
 saltavx[x2]=0.0;
 saltavy[x2]=0.0;
+}
+
+
+elipeligro(int x2)
+{
+npeligro[x2]=0;
+peligrox[x2]=0;
+peligroy[x2]=0;
+peligrovx[x2]=0.0;
+peligrovy[x2]=0.0;
 }
 
 
@@ -4301,6 +4434,33 @@ for(n=0;n<4;n++)
 }
 
 
+refpeligro()
+{
+int n;
+for(n=0;n<4;n++)
+  {
+  if(npeligro[n]!=0)
+    {
+    if((peligrox[n]%16)!=0)  // comprobar que bloques necesitan actualizarse
+      {
+      bloque(peligrox[n]-(peligrox[n]%16),peligroy[n]-(peligroy[n]%16),paisaje[(peligroy[n]-(peligroy[n]%16))/16][(peligrox[n]-(peligrox[n]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+      bloque(peligrox[n]-(peligrox[n]%16)+16,peligroy[n]-(peligroy[n]%16),paisaje[(peligroy[n]-(peligroy[n]%16))/16][(peligrox[n]+16-(peligrox[n]%16))/16]);  //actualizar bloque que esta arriba a la derecha
+      if((peligroy[n]%16)!=0)
+        {
+        bloque(peligrox[n]-(peligrox[n]%16),peligroy[n]-(peligroy[n]%16)+16,paisaje[(peligroy[n]+16-(peligroy[n]%16))/16][(peligrox[n]-(peligrox[n]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+        bloque(peligrox[n]-(peligrox[n]%16)+16,peligroy[n]-(peligroy[n]%16)+16,paisaje[(peligroy[n]+16-(peligroy[n]%16))/16][(peligrox[n]+16-(peligrox[n]%16))/16]);  //actualizar bloque que esta abajo a la derecha
+        }
+      }
+    else if((peligroy[n]%16)!=0)
+      {
+      bloque(peligrox[n]-(peligrox[n]%16),peligroy[n]-(peligroy[n]%16),paisaje[(peligroy[n]-(peligroy[n]%16))/16][(peligrox[n]-(peligrox[n]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+      bloque(peligrox[n]-(peligrox[n]%16),peligroy[n]-(peligroy[n]%16)+16,paisaje[(peligroy[n]+16-(peligroy[n]%16))/16][(peligrox[n]-(peligrox[n]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+      }
+    }
+  }
+}
+
+
 mdemone()  //mover dibujar eliminar moneda
 {
 int n;
@@ -5359,6 +5519,26 @@ pisar_salta()  //pisar saltadores
 }
 
 
+pisar_peligro()  //pisar patos peligrosos
+{
+  for(i=0;i<4;i++)  //pisar patos peligrosos
+    {
+    if(npeligro[i]!=0)
+      {
+      if(x-(x%16)==peligrox[i]-(peligrox[i]%16) || x-(x%16)==peligrox[i]+16-(peligrox[i]%16))
+        {
+        if(y+16-(y%16)==peligroy[i]-(peligroy[i]%16))  //+16 para cuando este arriba del peligroso en -16 sea -16+16=0 y se cumpla
+          {
+          vy=-2;
+          elipeligro(i);
+          puntos=puntos+100;
+          }
+        }
+      }
+    }
+}
+
+
 pato_mata()  //pato mata cuando los tocas
 {
   for(i=0;i<8;i++)  //pato mata
@@ -5391,6 +5571,29 @@ salta_mata()  //saltador mata cuando los tocas
       if(x<=saltax[i]+16 && x>=saltax[i]-16)
         {
         if(y-(y%16)==saltay[i]-(saltay[i]%16))
+          {
+          if(invensible==0)
+            {
+            estado--;
+            invensible=222;
+            t_huevo=tiempo-4;  //solo es necesario si su estado es 0
+            }
+          }
+        }
+      }
+    }
+}
+
+
+peligro_mata()  //peligroso mata cuando los tocas
+{
+  for(i=0;i<4;i++)  //peligroso mata
+    {
+    if(npeligro[i]!=0)
+      {
+      if(x<=peligrox[i]+16 && x>=peligrox[i]-16)
+        {
+        if(y-(y%16)==peligroy[i]-(peligroy[i]%16))
           {
           if(invensible==0)
             {
@@ -5765,6 +5968,27 @@ for(n=0;n<4;n++)
 }
 
 
+peligrofuera()
+{
+int n;
+for(n=0;n<4;n++)
+  {
+  if(peligrox[n]>=624) //si llega a la orilla derecha eliminar peligroso
+    {
+    elipeligro(n);
+    }
+  else if(peligrox[n]<=0) //si llega a la orilla izquierda eliminar peligroso
+    {
+    elipeligro(n);
+    }
+  else if(peligroy[n]>=464) //caida
+    {
+    elipeligro(n);
+    }
+  }
+}
+
+
 champifuera()
 {
 int n;
@@ -6103,6 +6327,8 @@ r_champ();
 rmonedas();
 r_pato();
 r_salta();
+r_peligro();
+c_peligro(6,24);
 c_pato(4,24);
 c_pato(22,24);
 
@@ -6116,6 +6342,7 @@ while(ciclo<1)
   refchamp();
   refpato();
   //refsalta();
+  refpeligro();
 
   if((x%16)!=0)
     {
@@ -6218,6 +6445,8 @@ while(ciclo<1)
 
   //pisar_salta();  //pisar saltador
 
+  pisar_peligro();  //pisar peligroso
+
   //NITRO_mata();  //no toques la nitroglicerina
 
   //fuego4_mata();  //no teques el fuego
@@ -6226,9 +6455,13 @@ while(ciclo<1)
 
   //salta_mata();  //saltador mata cuando los tocas
 
+  peligro_mata();  //peligroso mata cuando los tocas
+
   patofuera();  //verificar si un pato se salio de la pantalla
 
   //saltafuera();  //verificar si un saltador se salio de la pantalla
+
+  peligrofuera();  //verificar si un peligroso se salio de la pantalla
 
   champifuera();  //verificar si un champiñon se salio de la pantalla
 
@@ -6239,6 +6472,8 @@ while(ciclo<1)
   movpato();  //mover patos
 
   //movsalta();  //mover saltador
+
+  movpeligro();  //mover peligroso
 
   if(monedas>=100) //por cada 100 monedas aumentar una vida
     {
@@ -6279,6 +6514,8 @@ while(ciclo<1)
   dibpatos();  //dibujar patos
 
   //dibsalta();  //dibujar saltador
+
+  dibpeligro();  //dibujar peligroso
 
   segundos();  //realizar un conteo del tiempo del juego
 
