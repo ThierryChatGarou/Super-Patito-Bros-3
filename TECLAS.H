@@ -20,7 +20,7 @@
 #define KEY_E               0x12
 #define KEY_R               0x13
 #define KEY_T               0x14
-#define KEY_Z               0x15
+#define KEY_Y               0x15
 #define KEY_U               0x16
 #define KEY_I               0x17
 #define KEY_O               0x18
@@ -43,7 +43,7 @@
 #define KEY_MAYORQUE        0x29
 #define KEY_SHIFT_LEFT      0x2A
 #define KEY_FIS             0x2B
-#define KEY_Y               0x2C
+#define KEY_Z               0x2C
 #define KEY_X               0x2D
 #define KEY_C               0x2E
 #define KEY_V               0x2F
@@ -78,7 +78,7 @@
 #define KEY_NUM_5           0x4C
 #define KEY_CUR_ADELANTE    0x4D
 #define KEY_NUM_MAS         0x4E
-#define KEY_NUM_MENOS				0x4A
+#define KEY_NUM_MENOS	    0x4A
 #define KEY_CUR_END         0x4F
 #define KEY_CUR_ABAJO       0x50
 #define KEY_CUR_PG_DOWN     0x51
