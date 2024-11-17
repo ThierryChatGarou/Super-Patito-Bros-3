@@ -6328,7 +6328,6 @@ rmonedas();
 r_pato();
 r_salta();
 r_peligro();
-c_peligro(6,24);
 c_pato(4,24);
 c_pato(22,24);
 
@@ -6342,7 +6341,7 @@ while(ciclo<1)
   refchamp();
   refpato();
   //refsalta();
-  refpeligro();
+  //refpeligro();
 
   if((x%16)!=0)
     {
@@ -6445,7 +6444,7 @@ while(ciclo<1)
 
   //pisar_salta();  //pisar saltador
 
-  pisar_peligro();  //pisar peligroso
+  //pisar_peligro();  //pisar peligroso
 
   //NITRO_mata();  //no toques la nitroglicerina
 
@@ -6455,13 +6454,13 @@ while(ciclo<1)
 
   //salta_mata();  //saltador mata cuando los tocas
 
-  peligro_mata();  //peligroso mata cuando los tocas
+  //peligro_mata();  //peligroso mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
 
   //saltafuera();  //verificar si un saltador se salio de la pantalla
 
-  peligrofuera();  //verificar si un peligroso se salio de la pantalla
+  //peligrofuera();  //verificar si un peligroso se salio de la pantalla
 
   champifuera();  //verificar si un champiñon se salio de la pantalla
 
@@ -6473,7 +6472,7 @@ while(ciclo<1)
 
   //movsalta();  //mover saltador
 
-  movpeligro();  //mover peligroso
+  //movpeligro();  //mover peligroso
 
   if(monedas>=100) //por cada 100 monedas aumentar una vida
     {
@@ -6515,7 +6514,7 @@ while(ciclo<1)
 
   //dibsalta();  //dibujar saltador
 
-  dibpeligro();  //dibujar peligroso
+  //dibpeligro();  //dibujar peligroso
 
   segundos();  //realizar un conteo del tiempo del juego
 
@@ -6542,6 +6541,7 @@ r_champ();
 rmonedas();
 r_pato();
 r_salta();
+r_peligro();
 c_pato(16,23);
 npato[0]=-1;
 
@@ -6555,6 +6555,7 @@ while(ciclo<1)
   refchamp();
   refpato();
   //refsalta();
+  //refpeligro();
 
   if((x%16)!=0)
     {
@@ -6683,6 +6684,8 @@ while(ciclo<1)
 
   //pisar_salta();  //pisar saltador
 
+  //pisar_peligro();  //pisar peligroso
+
   //NITRO_mata();  //no toques la nitroglicerina
 
   //fuego4_mata();  //no teques el fuego
@@ -6691,9 +6694,13 @@ while(ciclo<1)
 
   //salta_mata();  //saltador mata cuando los tocas
 
+  //peligro_mata();  //peligroso mata cuando los tocas
+
   patofuera();  //verificar si un pato se salio de la pantalla
 
   //saltafuera();  //verificar si un saltador se salio de la pantalla
+
+  //peligrofuera();  //verificar si un peligroso se salio de la pantalla
 
   champifuera();  //verificar si un champiñon se salio de la pantalla
 
@@ -6704,6 +6711,8 @@ while(ciclo<1)
   movpato();  //mover patos
 
   //movsalta();  //mover saltador
+
+  //movpeligro();  //mover peligroso
 
   if(monedas>=100) //por cada 100 monedas aumentar una vida
     {
@@ -6745,6 +6754,8 @@ while(ciclo<1)
 
   //dibsalta();  //dibujar saltador
 
+  //dibpeligro();  //dibujar peligroso
+
   segundos();  //realizar un conteo del tiempo del juego
 
   verestado();  //verificar el estado de pato y dibujarlo segun el estado
@@ -6770,6 +6781,7 @@ r_champ();
 rmonedas();
 r_pato();
 r_salta();
+r_peligro();
 c_pato(13,24);
 
 while(ciclo<1)
@@ -6782,6 +6794,7 @@ while(ciclo<1)
   refchamp();
   refpato();
   //refsalta();
+  //refpeligro();
 
   if((x%16)!=0)
     {
@@ -6910,6 +6923,8 @@ if(tiempo%28==0 && sec%22==0)
 
   //pisar_salta();  //pisar saltador
 
+  //pisar_peligro();  //pisar peligroso
+
   //NITRO_mata();  //no toques la nitroglicerina
 
   //fuego4_mata();  //no teques el fuego
@@ -6918,9 +6933,13 @@ if(tiempo%28==0 && sec%22==0)
 
   //salta_mata();  //saltador mata cuando los tocas
 
+  //peligro_mata();  //peligroso mata cuando los tocas
+
   patofuera();  //verificar si un pato se salio de la pantalla
 
   //saltafuera();  //verificar si un saltador se salio de la pantalla
+
+  //peligrofuera();  //verificar si un peligroso se salio de la pantalla
 
   champifuera();  //verificar si un champiñon se salio de la pantalla
 
@@ -6931,6 +6950,8 @@ if(tiempo%28==0 && sec%22==0)
   movpato();  //mover patos
 
   //movsalta();  //mover saltador
+
+  //movpeligro();  //mover peligroso
 
   if(monedas>=100) //por cada 100 monedas aumentar una vida
     {
@@ -6972,6 +6993,8 @@ if(tiempo%28==0 && sec%22==0)
 
   //dibsalta();  //dibujar saltador
 
+  //dibpeligro();  //dibujar peligroso
+
   segundos();  //realizar un conteo del tiempo del juego
 
   verestado();  //verificar el estado de pato y dibujarlo segun el estado
@@ -6997,6 +7020,7 @@ r_champ();
 rmonedas();
 r_pato();
 r_salta();
+r_peligro();
 c_pato(4,24);
 c_salta(15,24);
 c_pato(18,24);
@@ -7011,6 +7035,7 @@ while(ciclo<1)
   //refchamp();
   refpato();
   refsalta();
+  //refpeligro();
 
   if((x%16)!=0)
     {
@@ -7120,6 +7145,8 @@ if(tiempo%8==0 && sec%22==0)
 
   pisar_salta();  //pisar saltador
 
+  //pisar_peligro();  //pisar peligroso
+
   //NITRO_mata();  //no toques la nitroglicerina
 
   //fuego4_mata();  //no teques el fuego
@@ -7128,9 +7155,13 @@ if(tiempo%8==0 && sec%22==0)
 
   salta_mata();  //saltador mata cuando los tocas
 
+  //peligro_mata();  //peligroso mata cuando los tocas
+
   patofuera();  //verificar si un pato se salio de la pantalla
 
   saltafuera();  //verificar si un saltador se salio de la pantalla
+
+  //peligrofuera();  //verificar si un peligroso se salio de la pantalla
 
   //champifuera();  //verificar si un champiñon se salio de la pantalla
 
@@ -7141,6 +7172,8 @@ if(tiempo%8==0 && sec%22==0)
   movpato();  //mover patos
 
   movsalta();  //mover saltador
+
+  //movpeligro();  //mover peligroso
 
   if(monedas>=100) //por cada 100 monedas aumentar una vida
     {
@@ -7182,6 +7215,8 @@ if(tiempo%8==0 && sec%22==0)
 
   dibsalta();  //dibujar saltador
 
+  //dibpeligro();  //dibujar peligroso
+
   segundos();  //realizar un conteo del tiempo del juego
 
   verestado();  //verificar el estado de pato y dibujarlo segun el estado
@@ -7213,6 +7248,7 @@ r_champ();
 rmonedas();
 r_pato();
 r_salta();
+r_peligro();
 
 while(ciclo<1)
   {
@@ -7224,6 +7260,7 @@ while(ciclo<1)
   refchamp();
   refpato();
   //refsalta();
+  //refpeligro();
 
   if((x%16)!=0)
     {
@@ -7343,6 +7380,8 @@ else
 
   //pisar_salta();  //pisar saltador
 
+  //pisar_peligro();  //pisar peligroso
+
   //NITRO_mata();  //no toques la nitroglicerina
 
   //fuego4_mata();  //no teques el fuego
@@ -7351,9 +7390,13 @@ else
 
   //salta_mata();  //saltador mata cuando los tocas
 
+  //peligro_mata();  //peligroso mata cuando los tocas
+
   patofuera();  //verificar si un pato se salio de la pantalla
 
   //saltafuera();  //verificar si un saltador se salio de la pantalla
+
+  //peligrofuera();  //verificar si un peligroso se salio de la pantalla
 
   champifuera();  //verificar si un champiñon se salio de la pantalla
 
@@ -7364,6 +7407,8 @@ else
   movpato();  //mover patos
 
   //movsalta();  //mover saltador
+
+  //movpeligro();  //mover peligroso
 
   if(monedas>=100) //por cada 100 monedas aumentar una vida
     {
@@ -7405,6 +7450,8 @@ else
 
   //dibsalta();  //dibujar saltador
 
+  //dibpeligro();  //dibujar peligroso
+
   segundos();  //realizar un conteo del tiempo del juego
 
   verestado();  //verificar el estado de pato y dibujarlo segun el estado
@@ -7430,6 +7477,7 @@ r_champ();
 rmonedas();
 r_pato();
 r_salta();
+r_peligro();
 c_pato(24,23);
 npato[0]=-1;
 
@@ -7443,6 +7491,7 @@ while(ciclo<1)
   refchamp();
   refpato();
   //refsalta();
+  //refpeligro();
 
   if((x%16)!=0)
     {
@@ -7586,6 +7635,8 @@ while(ciclo<1)
 
   //pisar_salta();  //pisar saltador
 
+  //pisar_peligro();  //pisar peligroso
+
   //NITRO_mata();  //no toques la nitroglicerina
 
   //fuego4_mata();  //no teques el fuego
@@ -7594,9 +7645,13 @@ while(ciclo<1)
 
   //salta_mata();  //saltador mata cuando los tocas
 
+  //peligro_mata();  //peligroso mata cuando los tocas
+
   patofuera();  //verificar si un pato se salio de la pantalla
 
   //saltafuera();  //verificar si un saltador se salio de la pantalla
+
+  //peligrofuera();  //verificar si un peligroso se salio de la pantalla
 
   champifuera();  //verificar si un champiñon se salio de la pantalla
 
@@ -7607,6 +7662,8 @@ while(ciclo<1)
   movpato();  //mover patos
 
   //movsalta();  //mover saltador
+
+  //movpeligro();  //mover peligroso
 
   if(monedas>=100) //por cada 100 monedas aumentar una vida
     {
@@ -7648,6 +7705,8 @@ while(ciclo<1)
 
   //dibsalta();  //dibujar saltador
 
+  //dibpeligro();  //dibujar peligroso
+
   segundos();  //realizar un conteo del tiempo del juego
 
   verestado();  //verificar el estado de pato y dibujarlo segun el estado
@@ -7673,6 +7732,7 @@ r_champ();
 rmonedas();
 r_pato();
 r_salta();
+r_peligro();
 c_pato(22,24);
 
 while(ciclo<1)
@@ -7685,6 +7745,7 @@ while(ciclo<1)
   refchamp();
   refpato();
   //refsalta();
+  //refpeligro();
 
   if((x%16)!=0)
     {
@@ -7798,6 +7859,8 @@ if(tiempo%28==0 && sec%22==0)
 
   //pisar_salta();  //pisar saltador
 
+  //pisar_peligro();  //pisar peligroso
+
   //NITRO_mata();  //no toques la nitroglicerina
 
   //fuego4_mata();  //no teques el fuego
@@ -7806,9 +7869,13 @@ if(tiempo%28==0 && sec%22==0)
 
   //salta_mata();  //saltador mata cuando los tocas
 
+  //peligro_mata();  //peligroso mata cuando los tocas
+
   patofuera();  //verificar si un pato se salio de la pantalla
 
   //saltafuera();  //verificar si un saltador se salio de la pantalla
+
+  //peligrofuera();  //verificar si un peligroso se salio de la pantalla
 
   champifuera();  //verificar si un champiñon se salio de la pantalla
 
@@ -7819,6 +7886,8 @@ if(tiempo%28==0 && sec%22==0)
   movpato();  //mover patos
 
   //movsalta();  //mover saltador
+
+  //movpeligro();  //mover peligroso
 
   if(monedas>=100) //por cada 100 monedas aumentar una vida
     {
@@ -7860,6 +7929,8 @@ if(tiempo%28==0 && sec%22==0)
 
   //dibsalta();  //dibujar saltador
 
+  //dibpeligro();  //dibujar peligroso
+
   segundos();  //realizar un conteo del tiempo del juego
 
   verestado();  //verificar el estado de pato y dibujarlo segun el estado
@@ -7885,6 +7956,7 @@ r_champ();
 rmonedas();
 r_pato();
 r_salta();
+r_peligro();
 
 while(ciclo<1)
   {
@@ -7896,6 +7968,7 @@ while(ciclo<1)
   refchamp();
   refpato();
   //refsalta();
+  //refpeligro();
 
   if((x%16)!=0)
     {
@@ -8005,6 +8078,8 @@ if(tiempo%8==0 && sec%22==0)
 
   //pisar_salta();  //pisar saltador
 
+  //pisar_peligro();  //pisar peligroso
+
   //NITRO_mata();  //no toques la nitroglicerina
 
   //fuego4_mata();  //no teques el fuego
@@ -8013,9 +8088,13 @@ if(tiempo%8==0 && sec%22==0)
 
   //salta_mata();  //saltador mata cuando los tocas
 
+  //peligro_mata();  //peligroso mata cuando los tocas
+
   patofuera();  //verificar si un pato se salio de la pantalla
 
   //saltafuera();  //verificar si un saltador se salio de la pantalla
+
+  //peligrofuera();  //verificar si un peligroso se salio de la pantalla
 
   //champifuera();  //verificar si un champiñon se salio de la pantalla
 
@@ -8026,6 +8105,8 @@ if(tiempo%8==0 && sec%22==0)
   movpato();  //mover patos
 
   //movsalta();  //mover saltador
+
+  //movpeligro();  //mover peligroso
 
   if(monedas>=100) //por cada 100 monedas aumentar una vida
     {
@@ -8067,6 +8148,8 @@ if(tiempo%8==0 && sec%22==0)
 
   //dibsalta();  //dibujar saltador
 
+  //dibpeligro();  //dibujar peligroso
+
   segundos();  //realizar un conteo del tiempo del juego
 
   verestado();  //verificar el estado de pato y dibujarlo segun el estado
@@ -8097,6 +8180,7 @@ r_champ();
 rmonedas();
 r_pato();
 r_salta();
+r_peligro();
 vx=0.0;
 vy=0.0;
 x=80;
@@ -8112,6 +8196,7 @@ while(ciclo<1)
   //refchamp();
   //refpato();
   //refsalta();
+  //refpeligro();
 
   if((x%16)!=0)
     {
@@ -8229,6 +8314,8 @@ while(ciclo<1)
 
   //pisar_salta();  //pisar saltador
 
+  //pisar_peligro();  //pisar peligroso
+
   //NITRO_mata();  //no toques la nitroglicerina
 
   //fuego4_mata();  //no teques el fuego
@@ -8237,9 +8324,13 @@ while(ciclo<1)
 
   //salta_mata();  //saltador mata cuando los tocas
 
+  //peligro_mata();  //peligroso mata cuando los tocas
+
   //patofuera();  //verificar si un pato se salio de la pantalla
 
   //saltafuera();  //verificar si un saltador se salio de la pantalla
+
+  //peligrofuera();  //verificar si un peligroso se salio de la pantalla
 
   //champifuera();  //verificar si un champiñon se salio de la pantalla
 
@@ -8250,6 +8341,8 @@ while(ciclo<1)
   //movpato();  //mover patos
 
   //movsalta();  //mover saltador
+
+  //movpeligro();  //mover peligroso
 
   if(monedas>=100) //por cada 100 monedas aumentar una vida
     {
@@ -8287,6 +8380,8 @@ while(ciclo<1)
 
   //dibsalta();  //dibujar saltador
 
+  //dibpeligro();  //dibujar peligroso
+
   segundos();  //realizar un conteo del tiempo del juego
 
   verestado();  //verificar el estado de pato y dibujarlo segun el estado
@@ -8317,6 +8412,7 @@ r_champ();
 rmonedas();
 r_pato();
 r_salta();
+r_peligro();
 vx=0.0;
 vy=0.0;
 x=320;
@@ -8332,6 +8428,7 @@ while(ciclo<1)
   //refchamp();
   //refpato();
   //refsalta();
+  //refpeligro();
 
   if((x%16)!=0)
     {
@@ -8466,6 +8563,8 @@ while(ciclo<1)
 
   //pisar_salta();  //pisar saltador
 
+  //pisar_peligro();  //pisar peligroso
+
   //NITRO_mata();  //no toques la nitroglicerina
 
   //fuego4_mata();  //no teques el fuego
@@ -8474,9 +8573,13 @@ while(ciclo<1)
 
   //salta_mata();  //saltador mata cuando los tocas
 
+  //peligro_mata();  //peligroso mata cuando los tocas
+
   //patofuera();  //verificar si un pato se salio de la pantalla
 
   //saltafuera();  //verificar si un saltador se salio de la pantalla
+
+  //peligrofuera();  //verificar si un peligroso se salio de la pantalla
 
   //champifuera();  //verificar si un champiñon se salio de la pantalla
 
@@ -8487,6 +8590,8 @@ while(ciclo<1)
   //movpato();  //mover patos
 
   //movsalta();  //mover saltador
+
+  //movpeligro();  //mover peligroso
 
   if(monedas>=100) //por cada 100 monedas aumentar una vida
     {
@@ -8523,6 +8628,8 @@ while(ciclo<1)
   //dibpatos();  //dibujar patos
 
   //dibsalta();  //dibujar saltador
+
+  //dibpeligro();  //dibujar peligroso
 
   segundos();  //realizar un conteo del tiempo del juego
 
