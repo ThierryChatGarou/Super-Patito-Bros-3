@@ -803,7 +803,7 @@ int disparador2[16][16]={
 22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
 };
 
-int fuego[16][16]={
+int fuego4[16][16]={
 0 ,0 ,11,11,11,11,11,11,11,11,11,11,11,11,0 ,0 ,
 0 ,14,0 ,0 ,11,11,0 ,0 ,0 ,0 ,11,11,0 ,0 ,14,0 ,
 11,0 ,14,12,0 ,0 ,4 ,4 ,4 ,4 ,0 ,0 ,12,14,0 ,11,
@@ -1141,16 +1141,16 @@ int moneda4 [16][16]={
 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
 0 ,0 ,0 ,0 ,0 ,15,15,15,15,15,15,0 ,0 ,0 ,0 ,0 ,
 0 ,0 ,0 ,15,15,15,15,15,15,15,15,15,15,0 ,0 ,0 ,
-0 ,0 ,15,15,15,15,15,15,15,6 ,15,15,15,15,0 ,0 ,
-0 ,0 ,15,15,15,15,15,15,15,6 ,15,15,15,15,0 ,0 ,
-0 ,15,15,15,15,15,15,15,15,6 ,15,15,15,15,15,0 ,
-0 ,15,15,15,15,15,15,15,15,6 ,15,15,15,15,15,0 ,
-0 ,15,15,15,15,15,15,15,15,6 ,15,15,15,15,15,0 ,
-0 ,15,15,15,15,15,15,15,15,6 ,15,15,15,15,15,0 ,
-0 ,15,15,15,15,15,15,15,15,6 ,15,15,15,15,15,0 ,
-0 ,15,15,15,15,15,15,15,15,6 ,15,15,15,15,15,0 ,
-0 ,0 ,15,15,15,15,15,15,15,6 ,15,15,15,15,0 ,0 ,
-0 ,0 ,15,15,15,15,15,6 ,6 ,6 ,15,15,15,15,0 ,0 ,
+0 ,0 ,15,15,15,15,7 ,7 ,7 ,0 ,15,15,15,15,0 ,0 ,
+0 ,0 ,15,15,15,15,7 ,15,15,0 ,15,15,15,15,0 ,0 ,
+0 ,15,15,15,15,15,7 ,15,15,0 ,15,15,15,15,15,0 ,
+0 ,15,15,15,15,15,7 ,15,15,0 ,15,15,15,15,15,0 ,
+0 ,15,15,15,15,15,7 ,15,15,0 ,15,15,15,15,15,0 ,
+0 ,15,15,15,15,15,7 ,15,15,0 ,15,15,15,15,15,0 ,
+0 ,15,15,15,15,15,7 ,15,15,0 ,15,15,15,15,15,0 ,
+0 ,15,15,15,15,15,7 ,15,15,0 ,15,15,15,15,15,0 ,
+0 ,0 ,15,15,15,15,7 ,15,15,0 ,15,15,15,15,0 ,0 ,
+0 ,0 ,15,15,15,15,7 ,0 ,0 ,0 ,15,15,15,15,0 ,0 ,
 0 ,0 ,0 ,15,15,15,15,15,15,15,15,15,15,0 ,0 ,0 ,
 0 ,0 ,0 ,0 ,0 ,15,15,15,15,15,15,0 ,0 ,0 ,0 ,0 ,
 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
@@ -3630,6 +3630,18 @@ switch (T)
 	}
       }
   break;
+  case 52:
+    for(y2=0;y2<16;y2++)
+      {
+      for(x2=0;x2<16;x2++)
+	{
+	putpixel(x2+i,y2+j,fuego4[y2][x2]);
+	}
+      }
+  break;
+  case 53:
+
+  break;
   case 64:  //apartir de aqui comienzan los bloques tipo aire o fondo
     setfillstyle(1,0); //negro
     bar(i,j,i+15,j+15);  //15 es para que no borre un pixel de la siguiente figura
@@ -5176,6 +5188,29 @@ else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==48 && x%16!=0)
 }
 
 
+fuego4_mata()  //no toques el fuego
+{
+if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==52)
+  {
+  if(invensible==0)
+    {
+    estado--;
+    invensible=222;
+    t_huevo=tiempo-4;  //solo es necesario si su estado es 0
+    }
+  }
+else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==52 && x%16!=0)
+  {
+  if(invensible==0)
+    {
+    estado--;
+    invensible=222;
+    t_huevo=tiempo-4;  //solo es necesario si su estado es 0
+    }
+  }
+}
+
+
 tocar_champinon()  //tocar champiñon
 {
   for(i=0;i<4;i++)
@@ -6049,6 +6084,8 @@ while(ciclo<1)
 
   //NITRO_mata();  //no toques la nitroglicerina
 
+  //fuego4_mata();  //no teques el fuego
+
   pato_mata();  //pato mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
@@ -6263,6 +6300,8 @@ while(ciclo<1)
 
   //NITRO_mata();  //no toques la nitroglicerina
 
+  //fuego4_mata();  //no teques el fuego
+
   pato_mata();  //pato mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
@@ -6461,6 +6500,8 @@ if(tiempo%28==0 && sec%22==0)
 
   //NITRO_mata();  //no toques la nitroglicerina
 
+  //fuego4_mata();  //no teques el fuego
+
   pato_mata();  //pato mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
@@ -6656,6 +6697,8 @@ if(tiempo%8==0 && sec%22==0)
 
   //NITRO_mata();  //no toques la nitroglicerina
 
+  //fuego4_mata();  //no teques el fuego
+
   pato_mata();  //pato mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
@@ -6847,6 +6890,8 @@ while(ciclo<1)
   pisar_pato();  //pisar pato
 
   //NITRO_mata();  //no toques la nitroglicerina
+
+  //fuego4_mata();  //no teques el fuego
 
   pato_mata();  //pato mata cuando los tocas
 
@@ -7077,6 +7122,8 @@ while(ciclo<1)
 
   //NITRO_mata();  //no toques la nitroglicerina
 
+  fuego4_mata();  //no teques el fuego
+
   pato_mata();  //pato mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
@@ -7275,6 +7322,8 @@ if(tiempo%28==0 && sec%22==0)
 
   //NITRO_mata();  //no toques la nitroglicerina
 
+  //fuego4_mata();  //no teques el fuego
+
   pato_mata();  //pato mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
@@ -7470,6 +7519,8 @@ if(tiempo%8==0 && sec%22==0)
 
   //NITRO_mata();  //no toques la nitroglicerina
 
+  //fuego4_mata();  //no teques el fuego
+
   pato_mata();  //pato mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
@@ -7661,6 +7712,8 @@ while(ciclo<1)
   //pisar_pato();  //pisar pato
 
   //NITRO_mata();  //no toques la nitroglicerina
+
+  //fuego4_mata();  //no teques el fuego
 
   //pato_mata();  //pato mata cuando los tocas
 
