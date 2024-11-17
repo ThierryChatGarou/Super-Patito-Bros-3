@@ -6,10 +6,14 @@ extern int paisaje[30][40],colorcielo[30][40],disparo0[16][16],disparo1[16][16],
 extern char c1,c2;
 extern unsigned char tecla[128];
 
+#include "patito.h"
 #include<stdio.h>
 #include<dos.h>
 #include<math.h>
 #include"teclas.h"
+#ifndef MSDOS
+#include <time.h>
+#endif // MSDOS
 
 int FPS,mostrar_FPS=0;  //cuenta los cuadros que transcurren en un segundo
 int ultimosegundo;  //ultimo segundo desde que se reseteo FPS
@@ -28,7 +32,11 @@ int npc[10];  //mapa de enemigos existentes en el escenario
 
 float saltavx[4],saltavy[4],peligrovx[4],peligrovy[4],balavx[8],balavy[8],tortugavx[8],tortugavy[8],tortugaangulo[8],cristalrotovx[8],cristalrotovy[8];
 
-//struct time hora;
+#ifdef MSDOS
+struct time hora;
+#else
+struct tm *hora;
+#endif // MSDOS
 
 int arboles0 [16][16]={
 {10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10},
@@ -5681,9 +5689,16 @@ for(n=0;n<4;n++)
 
 void obtener_segundos()
   {
-#warning no debe comentarse
-  /*gettime(&hora);
-  ultimosegundo=hora.ti_sec;*/
+#ifdef MSDOS
+  gettime(&hora);
+  ultimosegundo=hora.ti_sec;
+#else
+  time_t now;
+  now = time(0);
+  hora = localtime (&now);
+  ultimosegundo=hora->tm_sec;
+#endif // MSDOS
+
   segundo_invalido=1;
   FPS=0;
   }
@@ -5691,11 +5706,23 @@ void obtener_segundos()
 
 void ajuste_FPS()
   {
-//  gettime(&hora);
+#ifdef MSDOS
+  gettime(&hora);
+#else
+  time_t now;
+  now = time(0);
+  hora = localtime (&now);
+#endif // MSDOS
   FPS++;
- /* if(ultimosegundo != hora.ti_sec)
+#ifdef MSDOS
+  if(ultimosegundo != hora.ti_sec)
     {
     ultimosegundo=hora.ti_sec;
+#else
+  if(ultimosegundo != hora->tm_sec)
+    {
+    ultimosegundo=hora->tm_sec;
+#endif // MSDOS
     if(segundo_invalido==1)  //cuando se inicia el juego el primer segundo puede venir incompleto, por lo que se ignora el primer segundo
       {
       segundo_invalido=0;
@@ -5737,7 +5764,7 @@ void ajuste_FPS()
         }
       }
     FPS=0;
-    }*/
+    }
 render_opengl_windows();
   }
 

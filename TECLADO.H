@@ -1,18 +1,26 @@
 #ifndef __TECLADO_H
 #define __TECLADO_H
 
+#include "patito.h"
 #include <dos.h>
-#include "teclas.h"
 
-unsigned char tecla[256];  //Aqui esta el vector que contiene el estado de las teclas, 128 en MSDOS, 256 Windows
 char Tecladoinstalado=0;  //Para saber si esta instalada nuestra rutina
 
-//void interrupt(*Anterior9h)();	//Aqui se guardan los vectores antiguos
+#ifdef MSDOS
+unsigned char tecla[128];  //Aqui esta el vector que contiene el estado de las teclas.
+void interrupt(*Anterior9h)();	//Aqui se guardan los vectores antiguos
+#else
+#include "teclas.h"
+unsigned char tecla[256];  //128 for MSDOS and 256 for Windows
+#endif // MSDOS
+
 
 //Prototipos de funciones
 void InstalaTeclado(void);
 void DesinstalaTeclado(void);
-//void interrupt IntTeclado(void);
+#ifdef MSDOS
+void interrupt IntTeclado(void);
+#endif // MSDOS
 
 /*#ifdef MSDOS
 inline int keypressed(int k)
@@ -32,27 +40,31 @@ void InstalaTeclado(void)
 int i;
 
 //Borramos el buffer del teclado
-for(i=0; i<128; i++)
+for(i=0; i<128; i++)  ///DEBUG: this might need to be changed or Windows (to 256)
   {
   tecla[i]=0;
   }
-/*Anterior9h=getvect(0x09);  //Guardamos en Anterior9h los vectores
+#ifdef MSDOS
+Anterior9h=getvect(0x09);  //Guardamos en Anterior9h los vectores
 setvect(0x09, IntTeclado);  //y la sustituimos por la nueva
-Tecladoinstalado=1;*/
+Tecladoinstalado=1;
+#endif // MSDOS
 }
 
 //Desinstala nuestra rutina de la interrupcion 9h y restaura la original
 void DesinstalaTeclado(void)
 {
+#ifdef MSDOS
 /*if(Tecladoinstalado)  setvect(0x09, Anterior9h);
 Tecladoinstalado=0;*/
+#endif // MSDOS
 }
 
 //Rutina de interrupciones
+#ifndef MSDOS
 void IntTeclado(void)
 {
 int i;
-
 /*
 tecla[KEY_CONTROL]=(GetKeyState ( KEY_CONTROL ) & 0x80) ? 1 : 0;
 tecla[KEY_ESPACIO]=(GetKeyState ( KEY_ESPACIO ) & 0x80) ? 1 : 0;
@@ -69,16 +81,11 @@ tecla[KEY_CUR_ARRIBA]=(GetKeyState ( KEY_CUR_ARRIBA ) & 0x80) ? 1 : 0;
 tecla[KEY_CUR_ABAJO]=(GetKeyState ( KEY_CUR_ABAJO ) & 0x80) ? 1 : 0;
 tecla[KEY_ESC]=(GetKeyState ( KEY_ESC ) & 0x80) ? 1 : 0;
 */
-
 GetKeyboardState(tecla);
 for(i=0; i<256; i++)
   {
   tecla[i]= (tecla[i]& 0x80) ? 1 : 0;
   }
-
-
-
-
 /*int i;
 for(i=0; i<128; i++)
   {
@@ -86,7 +93,12 @@ for(i=0; i<128; i++)
 //tecla[i]=GetAsyncKeyState(i);
   }*/
 }
-/*void interrupt IntTeclado(void)
+
+
+#else
+
+
+void interrupt IntTeclado(void)
 {
 asm in al, 0x60  //Leemos un byte del puerto 60h
 asm mov bl, al  //bl=al
@@ -105,6 +117,8 @@ tecla[_BL]=0;  //Metemos el valor 0 en el lugar correspondiente
 FIN_RUTINA:
 asm mov al, 20h  //Enviamos el byte 20h al puerto 20h para
 asm out 20h, al  //que sepa que hemos terminado
-}*/
+}
+
+#endif // MSDOS
 
 #endif

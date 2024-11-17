@@ -305,7 +305,8 @@ while(ciclo<1)
     }
   if(tecla[KEY_F10])  ////////////////////////////test
     {
-      /*ciclo=1;
+#ifdef MSDOS
+      ciclo=1;
       x=16;
       y=32;
       vx=0;
@@ -316,7 +317,8 @@ while(ciclo<1)
       cargar_configuracion();
       escena_presentacion();// esto no va aqui, solo es temporal
       nivel=0;  //esto tampoco va
-      escena=0;*/
+      escena=0;
+#endif // MSDOS
     }
 
   if(tecla[KEY_F12])  //panel debug mundo
@@ -505,19 +507,23 @@ while(ciclo<1)
     }
   if(tecla[KEY_F1])  //F1 ayuda
     {
+#ifndef MSDOS
     while(tecla[KEY_F1])
     {
     delay(retraso);
     render_opengl_windows();
     }
+#endif // MSDOS
     ayuda_mundo();
     }
   if(tecla[KEY_F2])  //editor de nivel
     {
+#ifndef MSDOS
     while(tecla[KEY_F2])
     {
     render_opengl_windows();
     }
+#endif // MSDOS
     editornivel();
     abrir(0,-88);  //para recargar el mundo
     fondomundo();
@@ -674,7 +680,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   bloques_solidos();
 
 ////////interaccion de los bloques
-  //bloque_poder0(printf("J"););  //poder0
+  //bloque_poder0();  //poder0
   //bloque_nota0();  //nota0
   //bloque_saltar();  //bloque para saltar muy alto
   //cielo_abajo();  //flujo de aire hacia abajo

@@ -1,7 +1,12 @@
+#include "patito.h"
 #include<stdio.h>
 #include<dir.h>
 #include<time.h>
+#ifdef MSDOS
+#include<graphics.h>
+#else
 #include"graphics.h"
+#endif // MSDOS
 #include"teclas.h"
 
 extern int botonraton,ratonx,ratony;
@@ -292,7 +297,7 @@ for(n=0;n<numero_de_cambios;n++)
 
 int verificar_archivo(char *file_name)
   {
-#ifdef MSDOS  
+#ifdef MSDOS
   struct ffblk ffblk;
   int file_error;
   file_error = findfirst(file_name,&ffblk,0);

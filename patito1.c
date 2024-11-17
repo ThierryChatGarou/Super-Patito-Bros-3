@@ -1,3 +1,5 @@
+#include "patito.h"
+
 extern int sec;
 extern int paisaje[30][40],colorcielo[30][40];
 extern int moneda0[16][16],cieloduromoneda[16][16],cristal4champi4[16][16],cristal4monedas[16][16],cristal0champi0[16][16],cristal0monedas[16][16],hielo0vida[16][16],hielo0champi[16][16];

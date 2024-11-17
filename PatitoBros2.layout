@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="conio2.c" open="1" top="0" tabpos="2">
+	<File name="conio2.c" open="0" top="0" tabpos="2">
 		<Cursor position="3783" topLine="24" />
 	</File>
-	<File name="conio2.h" open="1" top="0" tabpos="6">
+	<File name="conio2.h" open="0" top="0" tabpos="6">
 		<Cursor position="1101" topLine="18" />
 	</File>
-	<File name="editor.c" open="1" top="0" tabpos="4">
+	<File name="editor.c" open="0" top="0" tabpos="4">
 		<Cursor position="27975" topLine="814" />
 	</File>
-	<File name="graphics.c" open="1" top="0" tabpos="3">
-		<Cursor position="4901" topLine="0" />
+	<File name="graphics.c" open="0" top="0" tabpos="3">
+		<Cursor position="28845" topLine="1054" />
 	</File>
-	<File name="graphics.h" open="1" top="0" tabpos="5">
-		<Cursor position="79" topLine="0" />
+	<File name="graphics.h" open="0" top="0" tabpos="5">
+		<Cursor position="2107" topLine="38" />
 	</File>
-	<File name="mundo0.c" open="1" top="1" tabpos="7">
-		<Cursor position="258897" topLine="7619" />
+	<File name="mundo0.c" open="0" top="0" tabpos="7">
+		<Cursor position="258809" topLine="0" />
 	</File>
-	<File name="patito.c" open="1" top="0" tabpos="8">
-		<Cursor position="121845" topLine="3977" />
+	<File name="patito.c" open="1" top="0" tabpos="1">
+		<Cursor position="54722" topLine="1207" />
 	</File>
-	<File name="patito1.c" open="1" top="0" tabpos="9">
-		<Cursor position="113337" topLine="2873" />
+	<File name="patito1.c" open="1" top="0" tabpos="3">
+		<Cursor position="68012" topLine="1503" />
 	</File>
-	<File name="patito2.c" open="1" top="0" tabpos="1">
-		<Cursor position="183532" topLine="5725" />
+	<File name="patito2.c" open="1" top="0" tabpos="2">
+		<Cursor position="178789" topLine="5519" />
 	</File>
-	<File name="patito3.c" open="0" top="0" tabpos="8">
-		<Cursor position="6168" topLine="213" />
+	<File name="patito3.c" open="1" top="1" tabpos="4">
+		<Cursor position="603" topLine="40" />
 	</File>
 	<File name="teclado.h" open="0" top="0" tabpos="7">
 		<Cursor position="1161" topLine="0" />

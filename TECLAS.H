@@ -1,7 +1,6 @@
-#include<windows.h>
 
-inline int keypressed(int k);
 
+#include "patito.h"
 #ifdef MSDOS
 
 // SCAN-CODES MSDOS
@@ -107,6 +106,10 @@ inline int keypressed(int k);
 
 
 #else  //Windows
+
+#include<windows.h>
+
+inline int keypressed(int k);
 
 
 #define KEY_ESC             VK_ESCAPE

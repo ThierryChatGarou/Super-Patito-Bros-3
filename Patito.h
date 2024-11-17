@@ -1,6 +1,15 @@
 #ifndef _PATITO_H
 #define _PATITO_H
 
+#ifndef __WIN32__
+#define MSDOS
+#endif
+
+#ifdef MSDOS
+void render_opengl_windows();
+void wait_foreground();
+#endif
+
 void Patito();
 void Thierry();
 void Inicio();

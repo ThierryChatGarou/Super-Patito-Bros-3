@@ -49,7 +49,7 @@
 
 1547324886 c:\programasc\patito\patitobros2\dos2.h
 
-1417478018 source:c:\programasc\patito\patitobros2\editor.c
+1614877828 source:c:\programasc\patito\patitobros2\editor.c
 	<stdio.h>
 	<dos.h>
 	"teclas.h"
@@ -57,7 +57,8 @@
 	"graphics.h"
 	"conio2.h"
 
-1417379396 c:\programasc\patito\patitobros2\teclas.h
+1614877582 c:\programasc\patito\patitobros2\teclas.h
+	"patito.h"
 	<windows.h>
 
 1577159342 source:c:\programasc\patito\patitobros2\graphics.c
@@ -80,33 +81,43 @@
 	"teclado.h"
 	"teclas.h"
 
-1417399080 c:\programasc\patito\patitobros2\teclado.h
+1614877582 c:\programasc\patito\patitobros2\teclado.h
+	"patito.h"
 	<dos.h>
 	"teclas.h"
 
-1577190083 source:c:\programasc\patito\patitobros2\mundo0.c
+1614849836 source:c:\programasc\patito\patitobros2\mundo0.c
 	<stdio.h>
 	"teclas.h"
 
-1577160473 source:c:\programasc\patito\patitobros2\patito1.c
+1614877582 source:c:\programasc\patito\patitobros2\patito1.c
+	"patito.h"
 
-1419121084 source:c:\programasc\patito\patitobros2\patito2.c
+1614877582 source:c:\programasc\patito\patitobros2\patito2.c
+	"patito.h"
 	<stdio.h>
 	<dos.h>
 	<math.h>
 	"teclas.h"
+	<time.h>
 
-1491971586 source:c:\programasc\patito\patitobros2\patito3.c
+1614877582 source:c:\programasc\patito\patitobros2\patito3.c
+	"patito.h"
 	<stdio.h>
 	<dir.h>
 	<time.h>
+	<graphics.h>
 	"graphics.h"
 	"teclas.h"
 
-1577160353 source:c:\programasc\patito\patitobros2\patito.c
+1615078697 source:c:\programasc\patito\patitobros2\patito.c
+	"patito.h"
 	<stdio.h>
-	"conio2.h"
 	<stdlib.h>
+	<conio.h>
+	<dos.h>
+	<graphics.h>
+	"conio2.h"
 	"dos2.h"
 	"graphics.h"
 	"teclado.h"
@@ -254,4 +265,125 @@
 	<stdio.h>
 	<ctype.h>
 	<conio.h>
+
+1489428196 source:c:\programsc\testing\patito\conio2.c
+	<windows.h>
+	<stdio.h>
+	"conio2.h"
+	<stdio.h>
+	"conio2.h"
+	<ncurses.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<stdio.h>
+	<stdio.h>
+	<conio.h>
+	<conio.h>
+	<stdio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<string.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<stdio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<stdio.h>
+	<ctype.h>
+	<conio.h>
+
+1576789623 c:\programsc\testing\patito\conio2.h
+
+1547324886 source:c:\programsc\testing\patito\dos2.c
+	"dos2.h"
+	<windows.h>
+	<dos.h>
+
+1547324886 c:\programsc\testing\patito\dos2.h
+
+1614877828 source:c:\programsc\testing\patito\editor.c
+	<stdio.h>
+	<dos.h>
+	"teclas.h"
+	"editor.h"
+	"graphics.h"
+	"conio2.h"
+
+1614877582 c:\programsc\testing\patito\teclas.h
+	"patito.h"
+	<windows.h>
+
+1417024132 c:\programsc\testing\patito\editor.h
+
+1417366780 c:\programsc\testing\patito\graphics.h
+	<gl/gl.h>
+	<windows.h>
+
+1577159342 source:c:\programsc\testing\patito\graphics.c
+	<stdio.h>
+	<math.h>
+	"graphics.h"
+	<windows.h>
+	<gl/gl.h>
+
+1614849836 source:c:\programsc\testing\patito\mundo0.c
+	<stdio.h>
+	"teclas.h"
+
+1614878664 source:c:\programsc\testing\patito\patito.c
+	"patito.h"
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<dos.h>
+	<graphics.h>
+	"conio2.h"
+	"dos2.h"
+	"graphics.h"
+	"teclado.h"
+	"teclas.h"
+
+1614877582 c:\programsc\testing\patito\teclado.h
+	"patito.h"
+	<dos.h>
+	"teclas.h"
+
+1614877582 source:c:\programsc\testing\patito\patito1.c
+	"patito.h"
+
+1614877582 source:c:\programsc\testing\patito\patito2.c
+	"patito.h"
+	<stdio.h>
+	<dos.h>
+	<math.h>
+	"teclas.h"
+	<time.h>
+
+1614877582 source:c:\programsc\testing\patito\patito3.c
+	"patito.h"
+	<stdio.h>
+	<dir.h>
+	<time.h>
+	<graphics.h>
+	"graphics.h"
+	"teclas.h"
+
+1614878594 c:\programsc\testing\patito\patito.h
+
+1614878594 c:\programasc\patito\patitobros2\patito.h
 

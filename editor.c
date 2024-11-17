@@ -1,18 +1,25 @@
 extern int paisaje[30][40],colorcielo[30][40];
 extern unsigned char tecla[128];
+#ifndef MSDOS
 extern int retraso;
+#endif // MSDOS
 
 #include<stdio.h>
 #include<dos.h>
 #include"teclas.h"
+#ifndef MSDOS
 #include"editor.h"
 #include"graphics.h"
 #include"conio2.h"
+#endif // MSDOS
 
 int botonraton=0,ratonx,ratony;
 char palabra[128];
+#ifdef MSDOS
+union REGS entrada,salida;
+#else
 char aux[128];
-//union REGS entrada,salida;
+#endif // MSDOS
 
 int flechaarriba [16][16]={
 {7 ,7 ,7 ,7 ,7 ,7 ,7 ,7 ,7 ,7 ,7 ,7 ,7 ,7 ,7 ,0 },
@@ -1079,12 +1086,15 @@ while(tecla[KEY_ENTER]==0)
   if(presionado)
     {
     palabra[n]=letra;
-    palabra[n+1]='\0';
+    //palabra[n+1]='\0';
     gotoxy(i+n,j);
     printf("%c",letra);
+    #ifndef MSDOS
     sprintf(aux,"%c",letra);
     texto(i+n*8,j*8,2,10,aux);
     texto(i,j*8+40,1,15,palabra);
+    #endif // MSDOS
+    ///DEBUG Warning: check for buffer overflow
     if(n<127)  //para no escribir en valores fuera de lo normal
       {
       n++;
@@ -1231,12 +1241,14 @@ while(tecla[KEY_ESC]!=1)  //ESC salir del editor
       {
       if(ratony>=416 && ratony<432)  //flecha arriba
         {
-while(botonraton==1 || botonraton==2)
-{
-estado_boton_posicion();
-render_opengl_windows();
-delay(retraso);
-}
+#ifndef MSDOS
+        while(botonraton==1 || botonraton==2)
+          {
+          estado_boton_posicion();
+          render_opengl_windows();
+          delay(retraso);
+          }
+#endif // MSDOS
         if(tipofondo==0)
           {
           if(pagina==-1)

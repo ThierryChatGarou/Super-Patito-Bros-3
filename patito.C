@@ -4,20 +4,28 @@
 //     Super Patito Bros en C            //
 ///////////////////////////////////////////
 
-#include<stdio.h>
-#include"conio2.h"
-#include<stdlib.h>
-#include"dos2.h"
-#include"graphics.h"  //libreria grafica
-#include"teclado.h"  //libreria para el teclado con interrupciones
-#include"teclas.h"  //Lista de teclas
+//Version 04/03/2021: Fixed compatibility of Windows and MSDOS
 
-//El juego se debe de compilar en modelo de memoria HUGE, se modifica en el menu->opciones->compiler->codegeneration.
+#include "patito.h"
+#include<stdio.h>
+#include<stdlib.h>
 #ifdef MSDOS
+#include<conio.h>
+#include<dos.h>
+#include<graphics.h>  //libreria grafica
+#include "svgautil.h"
+//El juego se debe de compilar en modelo de memoria HUGE, se modifica en el menu->opciones->compiler->codegeneration.
 #ifndef __HUGE__
 #error Patito debe compilarse en el modelo de memoria HUGE.
 #endif
-#endif
+#else
+#include"conio2.h"
+#include"dos2.h"
+#include"graphics.h"  //libreria grafica
+#endif // MSDOS
+#include"teclado.h"  //libreria para el teclado con interrupciones
+#include"teclas.h"  //Lista de teclas
+
 
 //extern int botonraton,ratonx,ratony;
 extern int segundo_invalido;
@@ -1170,6 +1178,183 @@ if (errorcode != grOk)  //Si ocurre un error
   exit(1);
   }
 }
+
+
+#ifdef MSDOS
+int huge DetectVGA256()
+{
+int vid;
+//0 = 320x200x256
+//1 = 640x400x256
+//2 = 640x480x256
+//3 = 800x600x256
+//4 = 1024x768x256
+//6 = 1280x1024x256
+vid=2;
+return vid;
+}
+#else
+int DetectVGA256(){}
+void installuserdriver(char *a ,int (*b)()){}
+#endif
+
+
+void iniciargraficos256()  //256 colores
+{
+int gdriver=DETECT, gmode, errorcode;
+
+installuserdriver("Svga256",DetectVGA256);
+initgraph(&gdriver, &gmode, "");
+errorcode = graphresult();  //comprobar si se inicio correctamente los graficos
+if (errorcode != grOk)  //Si ocurre un error
+  {
+  clrscr();
+  gotoxy(7,1);    printf("Error al cargar el driver de graficos: ");
+  gotoxy(7,2);    printf("%s", grapherrormsg(errorcode));
+  getch();
+  exit(1);
+  }
+}
+
+
+
+//Definiendo funciones para dibujar a color real
+// long RGB(char rVal, char gVal, char bVal);
+//
+// Purpose: Returns the color value for a R,G,B triple
+//        based on the current graphics mode.
+//
+// Input:
+//        char rVal - Red value   [0..255]
+//        char gVal - Green value [0..255]
+//        char bVal - Blue value  [0..255]
+//
+// Returns:
+//         long - Color value for this mode.
+
+#ifdef MSDOS
+long _RGB(char rVal, char gVal, char bVal)
+{
+__rColor xColor;
+xColor.c24.rVal = rVal;
+xColor.c24.gVal = gVal;
+xColor.c24.bVal = bVal;
+return (xColor.cval);
+}
+#else
+long _RGB(char rVal, char gVal, char bVal){}
+#endif
+
+
+// long RealDrawColor(long color);
+//
+// Purpose: Sets the current drawing color for HC/TC modes.
+//        Used for 'setcolor'
+//
+// Input:
+//        long color - Color value
+//
+// Returns:
+//        long - Color value
+
+long RealDrawColor(long color)
+{
+#ifdef MSDOS
+__rColor xColor;
+xColor.cval = color;
+setrgbpalette(1024,xColor.c24.rVal,xColor.c24.gVal,xColor.c24.bVal);
+#endif
+return color;
+}
+
+
+// long RealFillColor(long color);
+//
+// Purpose: Sets the current fill color for HC/TC modes.
+//        Used for 'setfillstyle' and 'setfillpattern'
+//
+// Input:
+//        long color - Color value
+//
+// Returns:
+//        long - Color value
+
+long RealFillColor(long color)
+{
+#ifdef MSDOS
+__rColor xColor;
+xColor.cval = color;
+setrgbpalette(1025,xColor.c24.rVal,xColor.c24.gVal,xColor.c24.bVal);
+#endif
+return color;
+}
+
+
+// long RealColor(long color);
+//
+// Purpose: Sets the current color for HC/TC modes.
+//        Used for 'putpixel' and 'floodfill'
+//
+// Input:
+//        long color - Color value
+//
+// Returns:
+//        long - Color value
+
+long RealColor(long color)
+{
+#ifdef MSDOS
+__rColor xColor;
+xColor.cval = color;
+setrgbpalette(1026,xColor.c24.rVal,xColor.c24.gVal,xColor.c24.bVal);  //color 24 bits
+#endif
+return color;
+}
+
+#ifdef MSDOS
+int huge DetectVGA24bit()  //funcion para elegir el modo grafico
+{
+int vid;
+//0 = 320x200x24-bit
+//1 = 640x350x24-bit
+//2 = 640x400x24-bit
+//3 = 640x480x24-bit
+//4 = 800x600x24-bit
+//5 = 1024x768x24-bit
+//6 = 1280x1024x24-bit
+vid=3;
+return vid;
+}
+#else
+int DetectVGA24bit() {}
+#endif
+
+void iniciargraficos_color_real()  //color real
+{
+int gdriver = DETECT, gmode, errorcode;
+
+installuserdriver("SvgaTC",DetectVGA24bit);
+initgraph(&gdriver,&gmode,"");
+errorcode = graphresult();  //comprobar si se inicio correctamente los graficos
+if (errorcode != grOk)  //Si ocurre un error
+  {
+  clrscr();
+  gotoxy(7,1);    printf("Error al cargar el driver de graficos: ");
+  gotoxy(7,2);    printf("%s", grapherrormsg(errorcode));
+  getch();
+  exit(1);
+  }
+}
+
+#ifdef MSDOS
+void render_opengl_windows(){}
+void wait_foreground(){}
+
+
+
+#endif // MSDOS
+
+
 
 
 void abrir(int nivel,int escena)
@@ -3954,7 +4139,6 @@ void panel()
 void panelnumerico()
 {
   int n;
-  static char aux[80];
 #ifdef MSDOS
   gotoxy(4,28);
   printf("Nivel %d-%d ",nivel,escena);
@@ -3976,6 +4160,7 @@ void panelnumerico()
   gotoxy(40,29);
   printf("Tiempo %d  ",tiempo);
 #else
+  static char aux[80];
   setfillstyle(1,0);
   bar(104,432,488,456); //borrar letras antiguas
   sprintf(aux,"Nivel %d-%d ",nivel,escena);
@@ -5433,8 +5618,9 @@ int n;
 
   if(tecla[KEY_ENTER])  //enter pausar el juego
     {
-#warning no comentar
-    //pausa();
+#ifdef MSDOS
+    pausa();
+#endif
     }
 
   if(tecla[KEY_DELETE])  //suprimir  truco: elimina enemigos
@@ -5547,8 +5733,9 @@ getpalette(&paleta);
 //iniciargraficos256();
 //iniciargraficos_color_real();
 InstalaTeclado();
-#warning no comentar
-//randomize();
+#ifdef MSDOS
+randomize();
+#endif
 test_velocidad_paleta();
 printf("        Cargando... ­OK!\r\n");
 
