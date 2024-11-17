@@ -9,7 +9,7 @@
 #include<time.h>
 #include<graphics.h>
 
-int geexbox,nivel=0,escena=0,mundo=0,menu=0,vidas=4,estado=1,tiempo=0,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,invensible=0,i,j,x,y,dir=1,paso=1,tecla,sec=0,t_huevo,t_moneda=-88,ciclo=0;
+int geexbox,nivel=0,escena=0,mundo=0,seguir=1,vidas=4,estado=1,tiempo=0,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,invensible=0,i,j,x,y,dir=1,paso=1,tecla,sec=0,t_huevo,t_moneda=-88,ciclo=0,jugar=0;
 float vx=0,vy=0;
 
 int niv0[30][40]={
@@ -2282,18 +2282,19 @@ switch (nivel)
     switch (escena)
       {
       case 0:
-        archivo = fopen("nivel0-0.txt","rb");
+        archivo = fopen("0-0.txt","rb");
       break;
       case 1:
-        archivo = fopen("nivel0-1.txt","rb");
+        archivo = fopen("0-1.txt","rb");
       break;
       case 2:
-        archivo = fopen("nivel0-2.txt","rb");
+        archivo = fopen("0-2.txt","rb");
       break;
       case 3:
+        archivo = fopen("0-3.txt","rb");
       break;
       default:
-        archivo = fopen("nivel0.txt","rb");
+        archivo = fopen("0.txt","rb");
       break;
       }
   break;
@@ -2311,53 +2312,257 @@ if (archivo==NULL)
   getch();
   exit( 1 );
   }
-y2=0;
-while(y2<30)
+
+switch (escena)
   {
-  x2=0;
-  while(x2<40)
-    {
-    if (feof(archivo)==0)
+  case 0:
+    y2=0;
+    while(y2<30)
       {
-      letra=getc(archivo);
-      if(letra==44)
+      x2=0;
+      while(x2<40)
         {
-        x2++;
-        num=0;
-        cif=100;
+        if (feof(archivo)==0)
+          {
+          letra=getc(archivo);
+          if(letra==44)
+            {
+            x2++;
+            num=0;
+            cif=100;
+            }
+          else if(letra=='\n')
+            {
+            num=0;
+            cif=100;
+            }
+          else if(letra==32)
+            {
+            num=num/10;
+            }
+          else
+            {
+            letra=letra-48;
+            letra=letra*cif;
+            num=num+letra;
+            }
+          if(cif==1)
+            {
+            //printf(" %i",num);
+            niv0[y2][x2]=num;
+            }
+          cif=cif/10;
+          }
+        else
+          {
+          x2=40;
+          y2=30;
+          gotoxy(1,1);
+          printf( "Error al cargar paisaje\n" );
+          }
         }
-      else if(letra=='\n')
-        {
-        num=0;
-        cif=100;
-        }
-      else if(letra==32)
-        {
-        num=num/10;
-        }
-      else
-        {
-        letra=letra-48;
-        letra=letra*cif;
-        num=num+letra;
-        }
-      if(cif==1)
-        {
-        //printf(" %i",num);
-        paisaje[y2][x2]=num;
-        }
-      cif=cif/10;
+        y2++;
       }
-    else
+  break;
+  case 1:
+    y2=0;
+    while(y2<30)
       {
-      x2=40;
-      y2=30;
-      gotoxy(1,1);
-      printf( "Error al cargar paisaje\n" );
+      x2=0;
+      while(x2<40)
+        {
+        if (feof(archivo)==0)
+          {
+          letra=getc(archivo);
+          if(letra==44)
+            {
+            x2++;
+            num=0;
+            cif=100;
+            }
+          else if(letra=='\n')
+            {
+            num=0;
+            cif=100;
+            }
+          else if(letra==32)
+            {
+            num=num/10;
+            }
+          else
+            {
+            letra=letra-48;
+            letra=letra*cif;
+            num=num+letra;
+            }
+          if(cif==1)
+            {
+            //printf(" %i",num);
+            niv1[y2][x2]=num;
+            }
+          cif=cif/10;
+          }
+        else
+          {
+          x2=40;
+          y2=30;
+          gotoxy(1,1);
+          printf( "Error al cargar paisaje\n" );
+          }
+        }
+        y2++;
       }
-    }
-    y2++;
+  break;
+  case 2:
+    y2=0;
+    while(y2<30)
+      {
+      x2=0;
+      while(x2<40)
+        {
+        if (feof(archivo)==0)
+          {
+          letra=getc(archivo);
+          if(letra==44)
+            {
+            x2++;
+            num=0;
+            cif=100;
+            }
+          else if(letra=='\n')
+            {
+            num=0;
+            cif=100;
+            }
+          else if(letra==32)
+            {
+            num=num/10;
+            }
+          else
+            {
+            letra=letra-48;
+            letra=letra*cif;
+            num=num+letra;
+            }
+          if(cif==1)
+            {
+            //printf(" %i",num);
+            niv2[y2][x2]=num;
+            }
+          cif=cif/10;
+          }
+        else
+          {
+          x2=40;
+          y2=30;
+          gotoxy(1,1);
+          printf( "Error al cargar paisaje\n" );
+          }
+        }
+        y2++;
+      }
+  break;
+  case 3:
+    y2=0;
+    while(y2<30)
+      {
+      x2=0;
+      while(x2<40)
+        {
+        if (feof(archivo)==0)
+          {
+          letra=getc(archivo);
+          if(letra==44)
+            {
+            x2++;
+            num=0;
+            cif=100;
+            }
+          else if(letra=='\n')
+            {
+            num=0;
+            cif=100;
+            }
+          else if(letra==32)
+            {
+            num=num/10;
+            }
+          else
+            {
+            letra=letra-48;
+            letra=letra*cif;
+            num=num+letra;
+            }
+          if(cif==1)
+            {
+            //printf(" %i",num);
+            niv3[y2][x2]=num;
+            }
+          cif=cif/10;
+          }
+        else
+          {
+          x2=40;
+          y2=30;
+          gotoxy(1,1);
+          printf( "Error al cargar paisaje\n" );
+          }
+        }
+        y2++;
+      }
+  break;
+  default:
+    y2=0;
+    while(y2<30)
+      {
+      x2=0;
+      while(x2<40)
+        {
+        if (feof(archivo)==0)
+          {
+          letra=getc(archivo);
+          if(letra==44)
+            {
+            x2++;
+            num=0;
+            cif=100;
+            }
+          else if(letra=='\n')
+            {
+            num=0;
+            cif=100;
+            }
+          else if(letra==32)
+            {
+            num=num/10;
+            }
+          else
+            {
+            letra=letra-48;
+            letra=letra*cif;
+            num=num+letra;
+            }
+          if(cif==1)
+            {
+            //printf(" %i",num);
+            paisaje[y2][x2]=num;
+            }
+          cif=cif/10;
+          }
+        else
+          {
+          x2=40;
+          y2=30;
+          gotoxy(1,1);
+          printf( "Error al cargar paisaje\n" );
+          }
+        }
+        y2++;
+      }
+  break;
   }
+
+
 if (fclose(archivo)!=0)
   {
   gotoxy(1,1);
@@ -2367,7 +2572,7 @@ return (0);
 }
 
 
-copiar(int n)
+/*copiar(int n)
 {
 FILE *arch0,*arch1,*arch2,*arch3,*arch4,*nivel0,*nivel1,*nivel2,*nivel3,*mundo;
 int letra,x2,y2;
@@ -2447,7 +2652,7 @@ fclose(nivel3);
 fclose(mundo);
 
 return (0);
-}
+}*/
 
 
 r_pato()  //resetear patos
@@ -3502,10 +3707,22 @@ switch (T)
       }
   break;
   case 34:
-
+    for(y2=0;y2<16;y2++)
+      {
+      for(x2=0;x2<16;x2++)
+	{
+	putpixel(x2+i,y2+j,g_niv3[y2][x2]);
+	}
+      }
   break;
   case 35:
-
+    for(y2=0;y2<16;y2++)
+      {
+      for(x2=0;x2<16;x2++)
+	{
+	putpixel(x2+i,y2+j,g_niv4[y2][x2]);
+	}
+      }
   break;
   case 36:
 
@@ -3803,6 +4020,96 @@ for(j=0;j<30;j++)
       bloque(i*16,j*16,14);
       }
     }
+  }
+}
+
+
+act_fondo(int T)
+{
+int x2,y2;
+switch (T)
+  {
+  case 0:
+    for(y2=0;y2<30;y2++)
+      {
+      for(x2=0;x2<40;x2++)
+        {
+        paisaje[y2][x2]=niv0[y2][x2];
+        }
+      }
+  break;
+  case 1:
+    for(y2=0;y2<30;y2++)
+      {
+      for(x2=0;x2<40;x2++)
+        {
+        paisaje[y2][x2]=niv1[y2][x2];
+        }
+      }
+  break;
+  case 2:
+    for(y2=0;y2<30;y2++)
+      {
+      for(x2=0;x2<40;x2++)
+        {
+        paisaje[y2][x2]=niv2[y2][x2];
+        }
+      }
+  break;
+  case 3:
+    for(y2=0;y2<30;y2++)
+      {
+      for(x2=0;x2<40;x2++)
+        {
+        paisaje[y2][x2]=niv3[y2][x2];
+        }
+      }
+  break;
+  }
+}
+
+
+guardar_fondo(int T)
+{
+int x2,y2;
+switch (T)
+  {
+  case 0:
+    for(y2=0;y2<30;y2++)
+      {
+      for(x2=0;x2<40;x2++)
+        {
+        niv0[y2][x2]=paisaje[y2][x2];
+        }
+      }
+  break;
+  case 1:
+    for(y2=0;y2<30;y2++)
+      {
+      for(x2=0;x2<40;x2++)
+        {
+        niv1[y2][x2]=paisaje[y2][x2];
+        }
+      }
+  break;
+  case 2:
+    for(y2=0;y2<30;y2++)
+      {
+      for(x2=0;x2<40;x2++)
+        {
+        niv2[y2][x2]=paisaje[y2][x2];
+        }
+      }
+  break;
+  case 3:
+    for(y2=0;y2<30;y2++)
+      {
+      for(x2=0;x2<40;x2++)
+        {
+        niv3[y2][x2]=paisaje[y2][x2];
+        }
+      }
+  break;
   }
 }
 
@@ -4782,7 +5089,6 @@ x=32;
 y=32;
 vx=0;
 vy=0;
-abrir(0,-88);
 fondomundo();
 panel();
 
@@ -4897,9 +5203,7 @@ while(ciclo<1)
     }
   if(tecla==283)  //esc 27
     {
-    ciclo=1;
-    menu=-1;  //de momento que no hay menu
-    //menu=1;  //menu
+    //menu();
     }
   if(vx>4)  //limite de velocidad
     {
@@ -4941,6 +5245,8 @@ while(ciclo<1)
 
   delay(16);
 }
+abrir(0,0);
+abrir(0,1);
 return(0);
 }
 
@@ -4954,7 +5260,7 @@ x=16;
 y=384;
 vx=0;
 vy=0;
-abrir(0,0);
+act_fondo(0);
 fondo();
 panel();
 r_champ();
@@ -5082,9 +5388,7 @@ while(ciclo<1)
     }
   if(tecla==283)  //esc 27
     {
-    ciclo=1;
-    menu=-1;  //de momento que no hay menu
-    //menu=1;  //menu
+    //menu();
     }
   if(vx>4)  //limite de velocidad
     {
@@ -5202,6 +5506,7 @@ while(ciclo<1)
   delay(16);
 
 }
+guardar_fondo(0);
 return(0);
 }
 
@@ -5216,7 +5521,7 @@ x=16;
 y=368;
 vx=0;
 vy=0;
-abrir(0,1);
+act_fondo(1);
 fondo();
 panel();
 r_champ();
@@ -5344,9 +5649,7 @@ while(ciclo<1)
     }
   if(tecla==283)  //esc 27
     {
-    ciclo=1;
-    menu=-1;  //de momento que no hay menu
-    //menu=1;  //menu
+    //menu();
     }
   if(vx>4)  //limite de velocidad
     {
@@ -5491,6 +5794,7 @@ while(ciclo<1)
   delay(16);
 
 }
+guardar_fondo(1);
 return(0);
 }
 
@@ -5512,41 +5816,41 @@ if(kbhit())  //si se presiono una tecla para omitir la presentacion, pedir que s
 getch();
 iniciargraficos();
 
-while(menu!=-1)
+while(seguir!=0)
   {
-  if(menu=1)
+    abrir(0,-88);
+    mundo0();
+    jugar=1;
+  while(jugar!=0)
     {
-    //menu();
-    }
-  switch (nivel)
-    {
-    case 0:
-      copiar(nivel);
-      mundo0();
-      switch (escena)
-        {
-        case 0:
-          escena0();
-        break;
-        case 1:
-          escena1();
-        break;
-        case 2:
-          //escena2();
-        break;
-        case 3:
-          //escena3();
-        break;
-        default:
-          menu=-1;
-        break;
-        }
-    break;
-    case 1:
-      //mundo1();
-    break;
-    default:
-    break;
+    switch (nivel)
+      {
+      case 0:
+        switch (escena)
+          {
+          case 0:
+            escena0();
+            break;
+          case 1:
+            escena1();
+          break;
+          case 2:
+            jugar=0;//temporal
+            //escena2();
+          break;
+          case 3:
+            //escena3();
+          break;
+          default:
+            jugar=0;
+          break;
+          }
+      break;
+      case 1:
+      break;
+      default:
+      break;
+      }
     }
   }
 
