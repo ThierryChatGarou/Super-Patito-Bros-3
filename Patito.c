@@ -1,3 +1,18 @@
+///////////////////////////////////////////////////////////////////////////////////////////
+//                            ADVERTENCIA:                                               //
+//                                                                                       //
+//  1.- No me hago responsable si te vuelves loco al tratarle de entender a mi programa  //
+//  2.- No soy responsable si no funciona en tu computadora o si se te jode un           //
+//discoduro, un procesador o se te quema tu computadora por mi programa                  //
+//  3.- No soy responsable si hay reclamaciones por los derechos de autor por el         //
+//ligero parecido a super mario bros                                                     //
+//  4.- Puedes hacer lo que se te pegue la gana con este programa pero bajo tu riesgo    //
+//  5.- Si encuentras un error en mi programa me puedes enviar un correo electronico con //
+//tus quejas a Thierry_2222@hotmail.com nota: puede que no responda en mucho tiempo      //
+//  6.- No soy responsable si te causa adiccion jugarlo o modificarlo                    //
+///////////////////////////////////////////////////////////////////////////////////////////
+
+
 #include<stdio.h>
 #include<conio.h>
 #include<stdlib.h>
@@ -3111,7 +3126,7 @@ switch (T)
 	}
       }
   break;
-  case 18:
+  case 18:  //con vida
     for(y2=0;y2<16;y2++)
       {
       for(x2=0;x2<16;x2++)
@@ -3120,7 +3135,7 @@ switch (T)
 	}
       }
   break;
-  case 19:
+  case 19:  //con vida
     for(y2=0;y2<16;y2++)
       {
       for(x2=0;x2<16;x2++)
@@ -5039,11 +5054,11 @@ patofuera()
 int n;
 for(n=0;n<8;n++)
   {
-  if(patox[n]>=640) //si llega a la orilla derecha eliminar pato
+  if(patox[n]>=624) //si llega a la orilla derecha eliminar pato
     {
     elipato(n);
     }
-  else if(patox[n]<=-4) //si llega a la orilla izquierda eliminar pato
+  else if(patox[n]<=0) //si llega a la orilla izquierda eliminar pato
     {
     elipato(n);
     }
@@ -5060,7 +5075,7 @@ champifuera()
 int n;
 for(n=0;n<8;n++)
   {
-  if(champx[n]>=640) //si llega a la orilla derecha eliminar champiñon
+  if(champx[n]>=624) //si llega a la orilla derecha eliminar champiñon
     {
     elichamp(n);
     }
@@ -5192,7 +5207,20 @@ while(ciclo<1)
     }
   if(tecla==7181)  //Enter
     {
-    ciclo=1;
+    if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==32)  //nivel 0
+      {
+      ciclo=1;
+      abrir(0,0);
+      abrir(0,1);
+      abrir(0,2);
+      abrir(0,3);
+      x=16;
+      y=384;
+      vx=0;
+      vy=0;
+      tiempo=400;
+      escena=0;
+      }
     }
   if(tecla==27392)  //Alt+F4 salir
     {
@@ -5231,7 +5259,7 @@ while(ciclo<1)
     ciclo=1;
     mundo++;
     }
-  else if(x<=-4) //si llega a la orilla izquierda pasar a la anterior escena
+  else if(x<=0) //si llega a la orilla izquierda pasar a la anterior escena
     {
     ciclo=1;
     mundo--;
@@ -5246,14 +5274,6 @@ while(ciclo<1)
 
   delay(16);
 }
-abrir(0,0);
-abrir(0,1);
-x=16;
-y=384;
-vx=0;
-vy=0;
-tiempo=400;
-escena=0;
 return(0);
 }
 
@@ -5420,6 +5440,14 @@ while(ciclo<1)
 
   //bloque_caja0_vida();  //caja0 con vida
 
+  //cristal0_moneda();  //cristal0 con moneda
+
+  //cristal4_moneda();  //cristal4 con moneda
+
+  //cristal0_vida();  //cristal0 con vida
+
+  //cristal4_vida();  //cristal4 con vida
+
   //bloque_cristal();  //cristal golpe por abajo
 
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
@@ -5440,14 +5468,6 @@ while(ciclo<1)
   //cielo_vida();  //cielo cyan con moneda
 
   //cielo_moneda();  //cielo cyan con vida
-
-  //cristal0_moneda();  //cristal0 con moneda
-
-  //cristal4_moneda();  //cristal4 con moneda
-
-  //cristal0_vida();  //cristal0 con vida
-
-  //cristal4_vida();  //cristal4 con vida
 
   bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
 
@@ -5473,9 +5493,9 @@ while(ciclo<1)
     {
     ciclo=1;
     escena++;
-    x=0;
+    x=2;
     }
-  else if(x<=-4) //si llega a la orilla izquierda pasar a la anterior escena
+  else if(x<=0) //si llega a la orilla izquierda pasar a la anterior escena
     {
     ciclo=1;
     escena--;
@@ -5704,14 +5724,13 @@ while(ciclo<1)
       }
     }
 
+  //cristal0_moneda();  //cristal0 con moneda
 
-  cristal0_moneda();  //cristal0 con moneda
+  //cristal4_moneda();  //cristal4 con moneda
 
-  cristal4_moneda();  //cristal4 con moneda
+  //cristal0_vida();  //cristal0 con vida
 
-  cristal0_vida();  //cristal0 con vida
-
-  cristal4_vida();  //cristal4 con vida
+  //cristal4_vida();  //cristal4 con vida
 
   bloque_cristal();  //cristal golpe por abajo
 
@@ -5758,9 +5777,9 @@ while(ciclo<1)
     {
     ciclo=1;
     escena++;
-    x=0;
+    x=2;
     }
-  else if(x<=-4) //si llega a la orilla izquierda pasar a la anterior escena
+  else if(x<=0) //si llega a la orilla izquierda pasar a la anterior escena
     {
     ciclo=1;
     escena--;
@@ -5801,6 +5820,521 @@ return(0);
 }
 
 
+escena2()
+{
+ciclo=0;
+invensible=0;
+act_fondo(2);
+fondo();
+panel();
+r_champ();
+rmonedas();
+r_pato();
+c_pato(30,24);
+
+while(ciclo<1)
+  {
+
+////////operaciones del los bloques
+
+  tinvensible();
+  refbloques();  //actualizar bloques
+  refchamp();
+  refpato();
+
+  if((x%16)!=0)
+    {
+    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
+      {
+      vy=vy+0.5;
+      }
+    else
+      {
+      vy=0;
+      y=y-(y%16);
+      }
+    }
+  else
+    {
+    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
+      {
+      vy=vy+0.5;
+      }
+    else
+      {
+      vy=0;
+      y=y-(y%16);
+      }
+    }
+
+  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque derecho   nota: (y%16)==0 es para que si se golpea un bloque por abajo no se cumpla
+    {
+    vx=0.0;
+    x=x-(x%16);
+    }
+  else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque izquierdo
+    {
+    vx=0.0;
+    x=x+16-(x%16);
+    }
+
+////////interaccion de los bloques
+
+  //bloque_poder0();  //poder0
+
+////////teclado
+
+  tecla=0;
+  if(bioskey(1))  //funciona igual que kbhit() con la diferecia que con bioskey que si no presionas una tecla despues de un tiempo se alenta el cheque del teclado
+    {
+    tecla = bioskey(0);  //capturar tecla presionada
+    }
+  if(tecla == 0);
+    {
+    if(vx<0)  //disminuir la velocidad
+      {
+      vx=vx+0.0625;
+      }
+    else if(vx>0)
+      {
+      vx=vx-0.0625;
+      }
+   /* if(vy<0)  //disminuir la velocidad (no se requiere)
+      {
+      vy=vy+0.125;
+      }
+    else if(vy>0)
+      {
+      vy=vy-0.125;
+      }*/
+    }
+  if(tecla==19200)  //izquierda 75
+    {
+    vx=vx-0.5;
+    dir=-1;
+    }
+  if(tecla==19712)  //derecha 77
+    {
+    dir=1;
+    if(vx<1 && vx>=0)  //esto no deberia existir pero hay problemas para avanzar a la derecha
+      {
+      vx=vx+1.0;
+      }
+    vx=vx+0.5;
+    }
+  if(tecla==14624)  //espacio volar 32
+    {
+    vy=-4.0;
+    }
+  if(tecla==18432)  //saltar 72
+    {
+    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]<32 || (paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]<32 && x%16!=0))  //bloques en general
+      {
+      vy=-8.0;
+      }
+    }
+  if(tecla==7181)  //enter pausar el juego
+    {
+    pausa();
+    }
+  if(tecla==21248)  //suprimir  truco: elimina patos
+    {
+    r_pato();
+    }
+  if(tecla==27392)  //Alt+F4 salir
+    {
+    exit (2);
+    }
+  if(tecla==15104)  //F1 ayuda 
+    {
+    ayuda();
+    }
+  if(tecla==283)  //esc 27
+    {
+    //menu();
+    }
+  if(vx>4)  //limite de velocidad
+    {
+    vx=4;
+    }
+  if(vy>8)  //limite de velocidad (gravedad)
+    {
+    vy=8;
+    }
+  if(vx<-4)  //limite de velocidad
+    {
+    vx=-4;
+    }
+  /*if(vy<-4)  //limite de velocidad (no requiere)
+    {
+    vy=-4;
+    }*/
+
+
+////////interaccion de los bloques
+
+  //bloque_caja0_moneda();  //caja0 con moneda
+
+  //bloque_caja0_10monedas();  //caja0 con 10 momedas
+
+  //bloque_caja0_champinon();  //caja0 con champiñon
+
+  //bloque_caja0_vida();  //caja0 con vida
+
+  //cristal0_moneda();  //cristal0 con moneda
+
+  //cristal4_moneda();  //cristal4 con moneda
+
+  cristal0_vida();  //cristal0 con vida
+
+  //cristal4_vida();  //cristal4 con vida
+
+  //bloque_cristal();  //cristal golpe por abajo
+
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
+    {
+    y=y+16-(y%16);
+    vy=-vy;
+    }
+  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32) && x%16!=0)
+    {
+    y=y+16-(y%16);
+    vy=-vy;
+    }
+
+  bloque_moneda();  //monedas
+
+  //bloque_nota0();  //nota0
+
+  //cielo_vida();  //cielo cyan con moneda
+
+  //cielo_moneda();  //cielo cyan con vida
+
+  //bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
+
+  //bloque_cuadrado1();  //pisarlos pero no golpearlos  (blanco 15)
+
+  tocar_champinon();  //tocar champiñon
+
+  pisar_pato();  //pisar pato
+
+  pato_mata();  //pato mata cuando los tocas
+
+  patofuera();  //verificar si un pato se salio de la pantalla
+
+  champifuera();  //verificar si un champiñon se salio de la pantalla
+
+  movchamp();  //mover champiñones
+
+  mdemone();
+
+  movpato();  //mover patos
+
+  if(x>=624) //si llega a la orilla derecha pasar a la siguiente escena
+    {
+    ciclo=1;
+    escena++;
+    x=2;
+    }
+  else if(x<=0) //si llega a la orilla izquierda pasar a la anterior escena
+    {
+    ciclo=1;
+    escena--;
+    x=608;
+    }
+  else if(y>=464) //caida
+    {
+    ciclo=1;
+    estado=1;
+    vidas--;
+    //t_huevo=tiempo-4;  //parece no ser necesario
+    jugar=0;
+    }
+  else if(tiempo==0) //tiempo terminado
+    {
+    estado=0;
+    t_huevo=tiempo-4;
+    }
+
+  x=x+vx;
+  y=y+vy;
+
+  dibchamp();  //dibujar champiñones
+
+  dibpatos();  //dibujar patos
+
+  segundos();  //realizar un conteo del tiempo del juego
+
+  verestado();  //verificar el estado de pato y dibujarlo segun el estado
+
+  panelnumerico();  //actualizar datos numericos del panel
+
+  delay(16);
+
+}
+guardar_fondo(2);
+return(0);
+}
+
+
+escena3()
+{
+ciclo=0;
+invensible=0;
+act_fondo(3);
+fondo();
+panel();
+r_champ();
+rmonedas();
+r_pato();
+c_pato(4,24);
+c_pato(22,24);
+
+while(ciclo<1)
+  {
+
+////////operaciones del los bloques
+
+  tinvensible();
+  refbloques();  //actualizar bloques
+  refchamp();
+  refpato();
+
+  if((x%16)!=0)
+    {
+    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
+      {
+      vy=vy+0.5;
+      }
+    else
+      {
+      vy=0;
+      y=y-(y%16);
+      }
+    }
+  else
+    {
+    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
+      {
+      vy=vy+0.5;
+      }
+    else
+      {
+      vy=0;
+      y=y-(y%16);
+      }
+    }
+
+  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque derecho   nota: (y%16)==0 es para que si se golpea un bloque por abajo no se cumpla
+    {
+    vx=0.0;
+    x=x-(x%16);
+    }
+  else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque izquierdo
+    {
+    vx=0.0;
+    x=x+16-(x%16);
+    }
+
+////////interaccion de los bloques
+
+  //bloque_poder0();  //poder0
+
+////////teclado
+
+  tecla=0;
+  if(bioskey(1))  //funciona igual que kbhit() con la diferecia que con bioskey que si no presionas una tecla despues de un tiempo se alenta el cheque del teclado
+    {
+    tecla = bioskey(0);  //capturar tecla presionada
+    }
+  if(tecla == 0);
+    {
+    if(vx<0)  //disminuir la velocidad
+      {
+      vx=vx+0.0625;
+      }
+    else if(vx>0)
+      {
+      vx=vx-0.0625;
+      }
+   /* if(vy<0)  //disminuir la velocidad (no se requiere)
+      {
+      vy=vy+0.125;
+      }
+    else if(vy>0)
+      {
+      vy=vy-0.125;
+      }*/
+    }
+  if(tecla==19200)  //izquierda 75
+    {
+    vx=vx-0.5;
+    dir=-1;
+    }
+  if(tecla==19712)  //derecha 77
+    {
+    dir=1;
+    if(vx<1 && vx>=0)  //esto no deberia existir pero hay problemas para avanzar a la derecha
+      {
+      vx=vx+1.0;
+      }
+    vx=vx+0.5;
+    }
+  if(tecla==14624)  //espacio volar 32
+    {
+    vy=-4.0;
+    }
+  if(tecla==18432)  //saltar 72
+    {
+    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]<32 || (paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]<32 && x%16!=0))  //bloques en general
+      {
+      vy=-8.0;
+      }
+    }
+  if(tecla==7181)  //enter pausar el juego
+    {
+    pausa();
+    }
+  if(tecla==21248)  //suprimir  truco: elimina patos
+    {
+    r_pato();
+    }
+  if(tecla==27392)  //Alt+F4 salir
+    {
+    exit (2);
+    }
+  if(tecla==15104)  //F1 ayuda 
+    {
+    ayuda();
+    }
+  if(tecla==283)  //esc 27
+    {
+    //menu();
+    }
+  if(vx>4)  //limite de velocidad
+    {
+    vx=4;
+    }
+  if(vy>8)  //limite de velocidad (gravedad)
+    {
+    vy=8;
+    }
+  if(vx<-4)  //limite de velocidad
+    {
+    vx=-4;
+    }
+  /*if(vy<-4)  //limite de velocidad (no requiere)
+    {
+    vy=-4;
+    }*/
+
+
+////////interaccion de los bloques
+
+  bloque_caja0_moneda();  //caja0 con moneda
+
+  //bloque_caja0_10monedas();  //caja0 con 10 momedas
+
+  bloque_caja0_champinon();  //caja0 con champiñon
+
+  //bloque_caja0_vida();  //caja0 con vida
+
+  //cristal0_moneda();  //cristal0 con moneda
+
+  //cristal4_moneda();  //cristal4 con moneda
+
+  //cristal0_vida();  //cristal0 con vida
+
+  //cristal4_vida();  //cristal4 con vida
+
+  //bloque_cristal();  //cristal golpe por abajo
+
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
+    {
+    y=y+16-(y%16);
+    vy=-vy;
+    }
+  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32) && x%16!=0)
+    {
+    y=y+16-(y%16);
+    vy=-vy;
+    }
+
+  //bloque_moneda();  //monedas
+
+  //bloque_nota0();  //nota0
+
+  //cielo_vida();  //cielo cyan con moneda
+
+  //cielo_moneda();  //cielo cyan con vida
+
+  bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
+
+  //bloque_cuadrado1();  //pisarlos pero no golpearlos  (blanco 15)
+
+  tocar_champinon();  //tocar champiñon
+
+  pisar_pato();  //pisar pato
+
+  pato_mata();  //pato mata cuando los tocas
+
+  patofuera();  //verificar si un pato se salio de la pantalla
+
+  champifuera();  //verificar si un champiñon se salio de la pantalla
+
+  movchamp();  //mover champiñones
+
+  mdemone();
+
+  movpato();  //mover patos
+
+  if(x>=624) //si llega a la orilla derecha pasar a la siguiente escena
+    {
+    ciclo=1;
+    escena++;
+    x=2;
+    }
+  else if(x<=0) //si llega a la orilla izquierda pasar a la anterior escena
+    {
+    ciclo=1;
+    escena--;
+    x=608;
+    }
+  else if(y>=464) //caida
+    {
+    ciclo=1;
+    estado=1;
+    vidas--;
+    //t_huevo=tiempo-4;  //parece no ser necesario
+    jugar=0;
+    }
+  else if(tiempo==0) //tiempo terminado
+    {
+    estado=0;
+    t_huevo=tiempo-4;
+    }
+
+  x=x+vx;
+  y=y+vy;
+
+  dibchamp();  //dibujar champiñones
+
+  dibpatos();  //dibujar patos
+
+  segundos();  //realizar un conteo del tiempo del juego
+
+  verestado();  //verificar el estado de pato y dibujarlo segun el estado
+
+  panelnumerico();  //actualizar datos numericos del panel
+
+  delay(16);
+
+}
+guardar_fondo(3);
+return(0);
+}
+
+
 main()
 {
 textmode(64);  //C4350
@@ -5837,11 +6371,10 @@ while(seguir!=0)
             escena1();
           break;
           case 2:
-            jugar=0;//temporal
-            //escena2();
+            escena2();
           break;
           case 3:
-            //escena3();
+            escena3();
           break;
           default:
             jugar=0;
