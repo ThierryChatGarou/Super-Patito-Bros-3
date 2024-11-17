@@ -1,0 +1,115 @@
+# depslib dependency file v1.0
+1365632632 source:c:\programasc\patito\patitobros2\conio2.c
+	<windows.h>
+	<stdio.h>
+	"conio2.h"
+	<stdio.h>
+	"conio2.h"
+	<ncurses.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<stdio.h>
+	<stdio.h>
+	<conio.h>
+	<conio.h>
+	<stdio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<string.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<stdio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<stdio.h>
+	<ctype.h>
+	<conio.h>
+
+1365616888 c:\programasc\patito\patitobros2\conio2.h
+
+1417196936 source:c:\programasc\patito\patitobros2\dos2.c
+	"dos2.h"
+	<windows.h>
+	<dos.h>
+
+1417196936 c:\programasc\patito\patitobros2\dos2.h
+
+1417367640 source:c:\programasc\patito\patitobros2\editor.c
+	<stdio.h>
+	<dos.h>
+	"teclas.h"
+	"editor.h"
+	"graphics.h"
+
+1417330630 c:\programasc\patito\patitobros2\teclas.h
+	<windows.h>
+
+1417367790 source:c:\programasc\patito\patitobros2\graphics.c
+	<stdio.h>
+	<math.h>
+	"graphics.h"
+	<windows.h>
+	<gl/gl.h>
+
+1417367790 c:\programasc\patito\patitobros2\graphics.h
+	<gl/gl.h>
+	<windows.h>
+
+1417321284 source:c:\programasc\patito\patitobros2\main.c
+	<stdio.h>
+	"conio2.h"
+	<stdlib.h>
+	"dos2.h"
+	"graphics.h"
+	"teclado.h"
+	"teclas.h"
+
+1417330324 c:\programasc\patito\patitobros2\teclado.h
+	<dos.h>
+	"teclas.h"
+
+1417321140 source:c:\programasc\patito\patitobros2\mundo0.c
+	<stdio.h>
+	"teclas.h"
+
+1417292230 source:c:\programasc\patito\patitobros2\patito1.c
+
+1417292644 source:c:\programasc\patito\patitobros2\patito2.c
+	<stdio.h>
+	<dos.h>
+	<math.h>
+	"teclas.h"
+
+1417245218 source:c:\programasc\patito\patitobros2\patito3.c
+	<stdio.h>
+	<dir.h>
+	<time.h>
+	"graphics.h"
+	"teclas.h"
+
+1417367754 source:c:\programasc\patito\patitobros2\patito.c
+	<stdio.h>
+	"conio2.h"
+	<stdlib.h>
+	"dos2.h"
+	"graphics.h"
+	"teclado.h"
+	"teclas.h"
+
+1417027732 c:\programasc\patito\patitobros2\editor.h
+

@@ -1,9 +1,17 @@
-extern int ciclo,tiempo,volar,t_volar,retraso,x,y,o,p,invensible,tiempo_invensible,dirx,nivel,escena,vidas,mundo,monedas,estado,nadando,jugar,t_huevo,npato[8],nsalta[4],sec,t_moneda,CPS,paisaje[30][40],niv1[30][40],blq[400],npc[10];
+extern int ciclo,tiempo,volar,t_volar,retraso,x,y,o,p,invensible,tiempo_invensible,dirx,nivel,escena,vidas,mundo,monedas,estado,nadando,jugar,t_huevo,cambios_por_segundo_paleta,npato[8],nsalta[4],sec,t_moneda,CPS,paisaje[30][40],niv1[30][40],blq[400],npc[10];
 extern float vx,vy;
+extern long puntos;
+extern int npato[8],patox[8],patoy[8],nsalta[4],saltax[4],saltay[4],nseguidor[8],seguidorx[8],seguidory[8],npeligro[4],peligrox[4],peligroy[4],nmina[8],minax[8],minay[8],ntortuga[8],tortugax[8],tortugay[8],nbala[8],balax[8],balay[8];
+extern float tortugavx[8];
 extern unsigned char tecla[128];
 
+int x_mundo=32,y_mundo=32;
 int avance_tutorial[6];
 
+//debug
+extern int patoo[8],patop[8];
+
+#include<stdio.h>
 #include"teclas.h"
 
 //=========================================================================================================
@@ -20,8 +28,8 @@ invensible=0;
 t_moneda=-88;
 volar=22;
 nadando=0;
-x=32;
-y=32;
+x=x_mundo;
+y=y_mundo;
 vx=0;
 vy=0;
 fondomundo();
@@ -32,7 +40,7 @@ texto(532,448,0,13,"F4 Salir");
 obtener_segundos();  //guardar el tiempo del segundo actual
 
 while(ciclo<1)
-  { 
+  {
 ////////operaciones del los bloques
   refbloquemundo();  //actualizar bloques
 
@@ -234,7 +242,6 @@ while(ciclo<1)
     }
 
 ////////teclado
-
   if(tecla[KEY_CUR_ATRAS])  //izquierda 75
     {
     vx=-4.0;
@@ -271,7 +278,7 @@ while(ciclo<1)
     vy=vy-1.0;
     }
 
-  if(tecla[KEY_F12])  ////////////////////////////test
+  if(tecla[KEY_F11])  ////////////////////////////test
     {
       ciclo=1;
       abrir(-2,0);
@@ -296,9 +303,33 @@ while(ciclo<1)
       avance_tutorial[4]=0;
       avance_tutorial[5]=0;
     }
+  if(tecla[KEY_F10])  ////////////////////////////test
+    {
+      ciclo=1;
+      x=16;
+      y=32;
+      vx=0;
+      vy=0;
+      tiempo=400;
+      nivel=-3;
+      escena=20;
+      cargar_configuracion();
+      escena_presentacion();// esto no va aqui, solo es temporal
+      nivel=0;  //esto tampoco va
+      escena=0;
+    }
+
+  if(tecla[KEY_F12])  //panel debug mundo
+    {
+    x_mundo=x;
+    y_mundo=y;
+    panel_debug_mundo();
+    }
 
   if(tecla[KEY_ENTER])  //Enter
     {
+    x_mundo=x;
+    y_mundo=y;
     if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==32 || paisaje[(y-(y%16))/16][(x+15-((x+15)%16))/16]==32 || paisaje[(y+15-((y+15)%16))/16][(x-(x%16))/16]==32 || paisaje[(y+15-((y+15)%16))/16][(x+15-((x+15)%16))/16]==32)  //nivel 0
       {
       ciclo=1;
@@ -472,7 +503,7 @@ while(ciclo<1)
     closegraph();
     exit (2);
     }
-  if(tecla[KEY_F1])  //F1 ayuda 
+  if(tecla[KEY_F1])  //F1 ayuda
     {
     ayuda_mundo();
     }
@@ -553,6 +584,7 @@ return(0);
 
 escena00()
 {
+
 ciclo=0;
 nadando=0;
 act_fondo(0);
@@ -633,7 +665,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   bloques_solidos();
 
 ////////interaccion de los bloques
-  //bloque_poder0();  //poder0
+  //bloque_poder0(printf("J"););  //poder0
   //bloque_nota0();  //nota0
   //bloque_saltar();  //bloque para saltar muy alto
   //cielo_abajo();  //flujo de aire hacia abajo
@@ -738,7 +770,7 @@ return(0);
 }
 
 
-escena01()  
+escena01()
 {
 ciclo=0;
 nadando=0;
@@ -4009,8 +4041,8 @@ void dibujar_objetos()
   if(npc[3]==1)  dibpeligro();  //dibujar peligroso
   if(npc[4]==1)  dibmina();  //dibujar minas
   dibdisparo();  //dibujar disparo
-  if(blq[248]==1 || npc[4]==1)  dibexplosion_chica();  //para dibujar explosiones chicas, activar junto con minas, TNTs y NITROS
   if(blq[214]==1 || blq[215]==1 || blq[234]==1 || blq[235]==1)  dibcristalroto();  //efectos al romper un cristal
+  if(blq[248]==1 || npc[4]==1)  dibexplosion_chica();  //para dibujar explosiones chicas, activar junto con minas, TNTs y NITROS
   dibgolpe();  //utilizado para los disparos, generalmente muy utilizado
   dibbala();  //dibujar balas de cañones
   if(npc[5]==1)  dibtortugas();  //dibujar tortugas
@@ -4591,7 +4623,36 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   funcion_bloques1();
 
 ////////funcion para deteccion de los bloques solidos
+
   bloques_solidos();
+
+//inicio debug balas
+if((tiempo+0)%8==0 && sec%CPS==0)
+  {
+    c_bala(10,60,2,0,1);
+  }
+if((tiempo+1)%8==0 && sec%CPS==0)
+  {
+    c_bala(10,60,2,0,2);
+  }
+if((tiempo+2)%8==0 && sec%CPS==0)
+  {
+    c_bala(10,60,2,0,3);
+  }
+if((tiempo+3)%8==0 && sec%CPS==0)
+  {
+    c_bala(620,80,-2,1,1);
+  }
+if((tiempo+4)%8==0 && sec%CPS==0)
+  {
+    c_bala(620,120,-2,1,2);
+  }
+if((tiempo+5)%8==0 && sec%CPS==0)
+  {
+    c_bala(620,200,-2,0,3);
+  }
+//fin debug balas
+
 
 ////////interaccion de los bloques
   funcion_bloques2();
@@ -6559,7 +6620,7 @@ tutorial0()
 {
 if(avance_tutorial[0]==0)  //solo ejecutar la primera vez
   {
-  oscurecer_paleta(4);
+  oscurecer_paleta(cambios_por_segundo_paleta*2);
   setfillstyle(1,0);
   bar(0,0,639,479);
   texto(120,8,0,15,"Bienvenido al tutorial de Super Patito Bros 3");
@@ -7468,5 +7529,269 @@ if(tiempo%8==0 && sec%CPS==0)
 
 }
 guardar_fondo(3);
+return(0);
+}
+
+
+escena_presentacion()
+{
+FILE *archivo;  //archivo de animacion
+int n,i,p_disparando,selector=0,selectory=320;
+char T;
+ciclo=0;
+nadando=0;
+paleta_negra();
+abrir(-3,20);
+abrircielo(-3,20);
+guardar_fondo(0);  //guardar una copia original antes de modificarla
+fondo();
+r_champ();
+rmonedas();
+r_pato();
+r_seguidor();
+r_salta();
+r_peligro();
+r_mina();
+r_disparo();
+r_explosionc();
+r_cristalroto();
+r_bala();
+r_tortuga();
+for(i=0;i<8;i++)  //debe tener una velocidad "virtual" para que se dibuje en el sentido correcto
+  {
+  tortugavx[i]=1.0;
+  }
+detectarblq();  //detectar los tipos de bloque que existen en el escenario
+obtener_segundos();  //guardar el tiempo del segundo actual
+x=-200;  //para que no borre el pedazo de pantalla al iniciar se pone negativo (fuera de la pantalla)
+y=-200;
+tiempo=400;
+bmp16(140,0,"patito16.bmp",0);
+
+//texto(240,20,0,15,"Super Patito Bros 3 en lenguaje C");
+//texto(220,48,2,10,"Thierry Joseph Valery Garcia Greiner");
+//texto(240,64,0,14,"Programado usando Turbo C 3.0");
+//texto(220,80,1,11,"Presiona Enter para empezar");
+paleta_predeterminada();
+
+archivo = fopen("anim.txt","rb");
+if(archivo==NULL)
+  {
+  gotoxy(1,1);
+  printf( "Error: No se puede abrir el archivo de animacion anim.txt");
+  tomarletra();
+  DesinstalaTeclado();
+  closegraph();
+  exit( 1 );
+  }
+while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los movimientos existentes, es decir un cambio de posicion de cada objeto
+  {
+////////Guardando las coordenadas anteriores
+  o=x;
+  p=y;
+  coordenadas_viejas();
+
+  tinvensible();  //tiempo de inmunidad
+
+////////interaccion de los bloques
+  funcion_bloques1();
+
+////////funcion para deteccion de los bloques solidos
+  bloques_solidos();
+
+////////interaccion de los bloques
+  funcion_bloques2();
+
+////////funciones para enemigos y peligros
+  funcion_objetos();  //funcion para tocar objetos, objetos fuera de la pantalla, y mover los objetos
+
+////////En este caso el teclado es para el control de los menus, no controla el personaje
+  //teclado();  // FALTA HACERLO
+  if(tecla[KEY_ENTER])  //enter salir presentacion
+    {
+    ciclo=1;
+    }
+  if(tecla[KEY_F4])  //Alt+F4 salir
+    {
+    DesinstalaTeclado();
+    closegraph();
+    exit (2);
+    }
+  if(tecla[KEY_CUR_ARRIBA])
+    {
+	bloque(208,selectory,paisaje[(selectory-(selectory%16))/16][(208-(208%16))/16]);
+    selector--;
+    }
+  if(tecla[KEY_CUR_ABAJO])
+    {
+	bloque(208,selectory,paisaje[(selectory-(selectory%16))/16][(208-(208%16))/16]);
+    selector++;
+    }
+
+  //controla conversion de bloques.
+  if(t_moneda==tiempo)
+    {
+    convertir();
+    t_moneda=-88;
+    }
+
+////////Aqui se controla el personaje y se sobreescribe todos los enemigos
+  if(feof(archivo)==0)
+    {
+    fscanf(archivo,"%d,%d,%f,%f,%d,%d,%d,",&x,&y,&vx,&vy,&dirx,&estado,&p_disparando);
+    if(p_disparando)
+      {
+      if(estado==4)
+        {
+        c_disparo();
+        }
+      }
+    while(getc(archivo)!='\r' && feof(archivo)==0)  //lee una 'C' o '\r'
+      {
+      T=getc(archivo);  //tipo de enemigo
+      if(T=='0')
+        {
+        npc[0]=1;
+        fscanf(archivo,",%d,",&n);  //numero de enemigo
+        fscanf(archivo,"%d,%d,%d,",&npato[n],&patox[n],&patoy[n]);  //estado y posicion
+        }
+      if(T=='1')
+        {
+        npc[1]=1;
+        fscanf(archivo,",%d,",&n);
+        fscanf(archivo,"%d,%d,%d,",&nseguidor[n],&seguidorx[n],&seguidory[n]);
+        }
+      if(T=='2')
+        {
+        npc[2]=1;
+        fscanf(archivo,",%d,",&n);
+        fscanf(archivo,"%d,%d,%d,",&nsalta[n],&saltax[n],&saltay[n]);
+        }
+      if(T=='3')
+        {
+        npc[3]=1;
+        fscanf(archivo,",%d,",&n);
+        fscanf(archivo,"%d,%d,%d,",&npeligro[n],&peligrox[n],&peligroy[n]);
+        }
+      if(T=='4')
+        {
+        npc[4]=1;
+        fscanf(archivo,",%d,",&n);
+        fscanf(archivo,"%d,%d,%d,",&nmina[n],&minax[n],&minay[n]);
+        }
+      if(T=='5')
+        {
+        npc[5]=1;
+        fscanf(archivo,",%d,",&n);
+        fscanf(archivo,"%d,%d,%d,",&ntortuga[n],&tortugax[n],&tortugay[n]);
+        }
+      if(T=='6')
+        {
+        fscanf(archivo,",%d,",&n);
+        fscanf(archivo,"%d,%d,%d,",&nbala[n],&balax[n],&balay[n]);
+        }
+      }
+    }
+  else
+    {
+    rewind(archivo);  //repetir animacion
+    if(t_moneda>0)
+      {
+      t_moneda=-88;
+      convertir();
+      }
+    tiempo=400;
+    act_fondo(0);  //restaurar el fondo original
+    fondo();
+    bmp16(140,0,"patito16.bmp",0);
+    }
+
+////////operaciones del los bloques, borrando dibujos viejos redibujando el fondo
+  refbloques();  //dibujar el fondo sobre el personaje principal
+  refrescar_bloques();  //dibujar el fondo para todos los objetos
+
+////////dibujando personajes, enemigos, paneles y marcadores
+  verestado();  //verificar el estado del pato y dibujarlo segun el estado, personaje principal
+  dibujar_objetos();  //dibujar todos los objetos del escenario
+  //texto(220,320,0,13,"Presiona Enter para empezar");
+  texto(220,320,0,13,"Comenzar juego");
+  texto(220,336,0,13,"Tutorial");
+  texto(220,352,0,13,"Editor de niveles");
+  texto(220,368,0,13,"Creditos");
+
+  if(selector==0)
+    {
+    selectory=320;
+    }
+  else if(selector==1)
+    {
+    selectory=336;
+    }
+  else if(selector==2)
+    {
+    selectory=352;
+    }
+  else if(selector==3)
+    {
+    selectory=368;
+    }
+
+  if(sec%CPS==0)
+    {
+    texto(208,selectory,0,1,"");
+    }
+  else if(sec%10==1)
+    {
+    texto(208,selectory,0,11,"");
+    }
+  else if(sec%10==2)
+    {
+    texto(208,selectory,0,2,"");
+    }
+  else if(sec%10==3)
+    {
+    texto(208,selectory,0,10,"");
+    }
+  else if(sec%10==4)
+    {
+    texto(208,selectory,0,3,"");
+    }
+  else if(sec%10==5)
+    {
+    texto(208,selectory,0,13,"");
+    }
+  else if(sec%10==6)
+    {
+    texto(208,selectory,0,4,"");
+    }
+  else if(sec%10==7)
+    {
+    texto(208,selectory,0,14,"");
+    }
+  else if(sec%10==8)
+    {
+    texto(208,selectory,0,15,"");
+    }
+  else if(sec%10==9)
+    {
+    texto(208,selectory,0,8,"");
+    }
+
+  segundos();  //realizar un conteo del tiempo del juego
+
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
+  delay(retraso);
+
+}
+if(fclose(archivo)!=0)
+  {
+  gotoxy(1,1);
+  printf( "Problemas al cerrar el archivo anim.txt\n" );
+  }
+puntos=0;
+vidas=4;
+monedas=0;
+estado=1;
+
 return(0);
 }

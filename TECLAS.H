@@ -1,5 +1,10 @@
-// SCAN-CODES 
+#include<windows.h>
 
+inline int keypressed(int k);
+
+#ifdef MSDOS
+
+// SCAN-CODES MSDOS
 #define KEY_ESC             0x01
 #define KEY_1               0x02
 #define KEY_2               0x03
@@ -98,3 +103,111 @@
 #define NUM       8192           // pulsada la tecla Bloq Num
 #define CAPS     16384           // pulsada la tecla Bloq May£s
 #define INSERT   32768           // pulsada la tecla INSERT
+
+
+
+#else
+
+
+#define KEY_ESC             VK_ESCAPE
+#define KEY_1               1
+#define KEY_2               2
+#define KEY_3               3
+#define KEY_4               4
+#define KEY_5               0x06
+#define KEY_6               0x07
+#define KEY_7               0x08
+#define KEY_8               0x09
+#define KEY_9               0x0A
+#define KEY_0               0x0B
+#define KEY_APOSTROFE       0x0C
+#define KEY_EXCLAMACION     0x0D
+#define KEY_BACKSPACE       VK_BACK
+#define KEY_TABULADOR       VK_TAB
+#define KEY_Q               0x10
+#define KEY_W               0x11
+#define KEY_E               0x12
+#define KEY_R               0x13
+#define KEY_T               0x14
+#define KEY_Y               0x15
+#define KEY_U               0x16
+#define KEY_I               0x17
+#define KEY_O               0x18
+#define KEY_P               0x19
+#define KEY_GORRO           0x1A
+#define KEY_PLUS            0x1B
+#define KEY_ENTER           VK_RETURN
+#define KEY_CONTROL         VK_CONTROL
+#define KEY_A               0x1E
+#define KEY_S               0x1F
+#define KEY_D               0x20
+#define KEY_F               0x21
+#define KEY_G               0x22
+#define KEY_H               0x23
+#define KEY_J               0x24
+#define KEY_K               0x25
+#define KEY_L               0x26
+#define KEY_ENIE            0x27
+#define KEY_ACENTO          0x28
+#define KEY_GRADOS          0x29
+#define KEY_SHIFT_LEFT      0x2A
+#define KEY_CEDILLA         0x2B
+#define KEY_Z               0x2C
+#define KEY_X               0x2D
+#define KEY_C               0x2E
+#define KEY_V               0x2F
+#define KEY_B               0x30
+#define KEY_N               0x31
+#define KEY_M               0x32
+#define KEY_COMA            0x33
+#define KEY_PUNTO           0x34
+#define KEY_GUION           0x35
+#define KEY_SHIFT_RIGHT     0x36
+#define KEY_PRINT_SCREEN    0x37
+#define KEY_ALT             0x38
+#define KEY_ESPACIO         VK_SPACE
+#define KEY_CAPS            0x3A
+#define KEY_F1              VK_F1
+#define KEY_F2              VK_F2
+#define KEY_F3              VK_F3
+#define KEY_F4              VK_F4
+#define KEY_F5              VK_F5
+#define KEY_F6              VK_F6
+#define KEY_F7              VK_F7
+#define KEY_F8              VK_F8
+#define KEY_F9              VK_F9
+#define KEY_F10             VK_F10
+#define KEY_NUM_LOCK        0x45
+#define KEY_SCROLL_LOCK     0x46
+#define KEY_CUR_HOME        VK_HOME
+#define KEY_CUR_ARRIBA      VK_UP
+#define KEY_CUR_PG_UP       VK_PRIOR
+#define KEY_NUM_MINUS       0x4A
+#define KEY_CUR_ATRAS       VK_LEFT
+#define KEY_NUM_5           0x4C
+#define KEY_CUR_ADELANTE    VK_RIGHT
+#define KEY_NUM_MAS         0x4E
+#define KEY_NUM_MENOS	    0x4A
+#define KEY_CUR_END         VK_END
+#define KEY_CUR_ABAJO       VK_DOWN
+#define KEY_CUR_PG_DOWN     VK_NEXT
+#define KEY_INSERT          VK_INSERT
+#define KEY_DELETE          VK_DELETE
+#define KEY_SYS_REQUEST     0x54
+#define KEY_F11             VK_F11
+#define KEY_F12             VK_F12
+
+#define RSHIFT       1           // pulsada la tecla derecha de SHIFT
+#define LSHIFT       2           // pulsada la tecla izquierda de SHIFT
+#define CTRL         VK_CONTROL           // pulsada la tecla CTRL
+#define ALT          8           // pulsada la tecla ALT
+#define SYSREQ    1024           // Tecla Pet Sis (s¢lo teclado AT)
+#define BREAK     4096           // pulsada la tecla Pausa
+#define NUM       8192           // pulsada la tecla Bloq Num
+#define CAPS     16384           // pulsada la tecla Bloq May£s
+#define INSERT   32768           // pulsada la tecla INSERT
+
+
+
+#endif
+

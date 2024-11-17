@@ -1,3 +1,17 @@
+[-3]
+x=200
+y=80
+vx=0.0
+vy=0.0
+tiempo=400
+
+[-3-20]
+0,20,2  //pato,x,y
+5,18,14,4  //tortuga,x,y,Tipo
+88      //fin
+
+
+
 [4]
 x=32
 y=32
@@ -30,7 +44,7 @@ tiempo=400
 
 [5-0]
 0,20,2  //pato,x,y
-5,20,20,1  //tortuga,x,y,Tipo
+5,18,14,4  //tortuga,x,y,Tipo
 88      //fin
 
 [5-1]
@@ -48,23 +62,26 @@ tiempo=400
 
 [6]
 x=32
-y=32
+y=280
 vx=0.0
 vy=0.0
 tiempo=400
 
 [6-0]
 0,20,2  //pato,x,y
+0,24,2  //pato,x,y
+0,20,20  //pato,x,y
+0,24,20  //pato,x,y
 5,20,20,1  //tortuga,x,y,Tipo
 5,18,18,2  //tortuga,x,y,Tipo
 5,16,16,3  //tortuga,x,y,Tipo
 5,14,14,4  //tortuga,x,y,Tipo
-5,12,14,5  //tortuga,x,y,Tipo
+5,12,14,4  //tortuga,x,y,Tipo
 5,10,20,6  //tortuga,x,y,Tipo
 88      //fin
 
 [6-1]
-2,20,4  //saltador,x,y
+5,20,1,4  //tortuga,x,y,Tipo
 88      //fin
 
 [6-2]
@@ -105,7 +122,7 @@ x=32
 y=32
 vx=0.0
 vy=0.0
-tiempo=400
+tiempo=12000
 
 [8-0]
 0,20,2  //pato,x,y
@@ -126,13 +143,16 @@ tiempo=400
 
 [9]
 x=32
-y=32
+y=384
 vx=0.0
 vy=0.0
 tiempo=400
 
 [9-0]
-0,20,2  //pato,x,y
+0,32,10  //pato,x,y
+0,28,10  //pato,x,y
+5,31,11,4  //tortuga,x,y,Tipo
+5,16,14,4  //tortuga,x,y,Tipo
 88      //fin
 
 [9-1]
@@ -154,4 +174,5 @@ tiempo=400
 3,20,5  //peligro,x,y
 4,20,6  //mina,x,y
 5,20,7,1  //tortuga,x,y,Tipo
+//por hacer: 6 sera bala
 88      //fin

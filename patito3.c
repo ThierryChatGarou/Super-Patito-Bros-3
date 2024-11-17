@@ -1,10 +1,25 @@
 #include<stdio.h>
 #include<dir.h>
-#include<graphics.h>
+#include<time.h>
+#include"graphics.h"
+#include"teclas.h"
+
+extern int botonraton,ratonx,ratony;
+extern int x,y,ciclo,nivel,escena,vidas,estado,jugar,debug,tiempo,mostrar_FPS,dirx;
+extern float vx,vy;
+extern unsigned char tecla[128];
+
+extern int npato[8],patox[8],patoy[8],nsalta[4],saltax[4],saltay[4],nseguidor[8],seguidorx[8],seguidory[8],npeligro[4],peligrox[4],peligroy[4],nmina[8],minax[8],minay[8],ntortuga[8],tortugax[8],tortugay[8],nbala[8],balax[8],balay[8];
 
 extern struct palettetype paleta;
 
-//esta funcion tiene un problema para corregir,aveces no carga bien las imagenes, porque el tamano tiene que ser multiplo de 4 en x
+clock_t start, end;
+
+int grabar_animacion=0;
+int cambios_por_segundo_paleta=4;  //se estima que la pc puede cambiar 2 veces la paleta por segundo, la funcion test_velocidad_paleta() determina el valor real
+FILE *pres;  //archivo para grabar animacion
+
+//esta funcion tiene un problema para corregir,aveces no carga bien las imagenes, parece que el tamano tiene que ser multiplo de 4 en x
 //pero aun asi la funcion es estable y segura de usar
 void bmp16(int i, int j, char *nombrearchivo, char cambiar_paleta)  //ejemplo: bmp16(0,0,"Dibujo.bmp",1);
 {
@@ -180,7 +195,7 @@ if (archivo!=NULL)
   if (fclose(archivo)!=0)
     {
     gotoxy(1,1);
-    printf( "Problemas al cerrar el archivo\n" );
+    printf( "Problemas al cerrar el archivo BMP\n" );
     }
   }
 }
@@ -241,7 +256,7 @@ for(n=0;n<numero_de_cambios;n++)
   setrgbpalette(paleta.colors[13],63*lum,20*lum,63*lum);
   setrgbpalette(paleta.colors[14],63*lum,63*lum,20*lum);
   setrgbpalette(paleta.colors[15],63*lum,63*lum,63*lum);
-  delay(80);  //para los emuladores como ntvdm y dosbox
+  //delay(80);  //para los emuladores como ntvdm y dosbox
   }
 }
 
@@ -270,21 +285,22 @@ for(n=0;n<numero_de_cambios;n++)
   setrgbpalette(paleta.colors[13],       63,20+43*lum,       63);
   setrgbpalette(paleta.colors[14],       63,       63,20+43*lum);
   setrgbpalette(paleta.colors[15],       63,       63,       63);
-  delay(80);  //para los emuladores como ntvdm y dosbox
+  //delay(80);  //para los emuladores como ntvdm y dosbox
   }
 }
 
 
 int verificar_archivo(char *file_name)
   {
-  struct ffblk ffblk;
+/*  struct ffblk ffblk;
   int file_error;
   file_error = findfirst(file_name,&ffblk,0);
   if(file_error != 0)
     {
     printf("No se encuentra el archivo: %s\n",file_name);
     }
-  return file_error;
+  return file_error;*/
+return 0;  //quitar
   }
 
 
@@ -415,6 +431,9 @@ file_error+=verificar_archivo("9-20.TIM");
 file_error+=verificar_archivo("9-20.TXT");
 file_error+=verificar_archivo("9-3.TIM");
 file_error+=verificar_archivo("9-3.TXT");
+file_error+=verificar_archivo("Present.TXT");
+file_error+=verificar_archivo("Present.TIM");
+file_error+=verificar_archivo("anim.txt");
 if(file_error!=0)
   {
   printf("Es necesario para cargar los mapas del juego.\n");
@@ -464,9 +483,9 @@ if(file_error!=0)
   file_error=0;
   advertir++;
   }
-file_error+=verificar_archivo("DIBUJAR.C");
-file_error+=verificar_archivo("DIBUJAR2.C");
-file_error+=verificar_archivo("DIBUJAR3.C");
+file_error+=verificar_archivo("Patito1.C");
+file_error+=verificar_archivo("Patito2.C");
+file_error+=verificar_archivo("Patito3.C");
 file_error+=verificar_archivo("editor.c");
 file_error+=verificar_archivo("MUNDO0.C");
 file_error+=verificar_archivo("patito.C");
@@ -508,3 +527,549 @@ if(advertir!=0)
     }
   }
 }
+
+
+void panel_debug_mundo()
+  {
+  int bucle=0;
+  char coord[80],txtnivel[7],txtescena[7],txtvidas[7],txtestado[7];  //7 es el m{aximo numero int con signo
+
+  int btn_debugx=328,btn_debugy=96;
+  int btn_FPSx=328,btn_FPSy=112;
+  int btn_nivelmasx=328,btn_nivelmasy=144;
+  int btn_nivelmenosx=296,btn_nivelmenosy=144;
+  int btn_escenamasx=328,btn_escenamasy=160;
+  int btn_escenamenosx=296,btn_escenamenosy=160;
+  int btn_irx=312,btn_iry=180;
+  int btn_vidasmasx=328,btn_vidasmasy=200;
+  int btn_vidasmenosx=296,btn_vidasmenosy=200;
+  int btn_estadomasx=328,btn_estadomasy=216;
+  int btn_estadomenosx=296,btn_estadomenosy=216;
+
+  mostrar_raton();
+  c_ventana(8,4,32,16);
+  texto(232,72,2,10,"Panel debug mundo");
+
+  texto(200,100,11,0,"Modo debug:");
+  if(debug==1)
+    {
+    botones_editor(btn_debugx,btn_debugy,2);
+    }
+  else
+    {
+    botones_editor(btn_debugx,btn_debugy,3);
+    }
+
+  texto(200,116,11,0,"Mostrar FPS:");
+  if(mostrar_FPS==1)
+    {
+    botones_editor(btn_FPSx,btn_FPSy,2);
+    }
+  else
+    {
+    botones_editor(btn_FPSx,btn_FPSy,3);
+    }
+
+  setcolor(1);
+  line(184,130,456,130);
+  line(184,130,184,198);
+  line(456,130,456,198);
+  line(184,198,456,198);
+  texto(232,132,11,0,"Teletransporte:");
+  texto(200,148,11,0,"Nivel:");
+  texto(200,164,11,0,"Escena:");
+  botones_editor(btn_nivelmasx,btn_nivelmasy,4);
+  botones_editor(btn_nivelmenosx,btn_nivelmenosy,5);
+  botones_editor(btn_escenamasx,btn_escenamasy,4);
+  botones_editor(btn_escenamenosx,btn_escenamenosy,5);
+  botones_editor(btn_irx,btn_iry,6);
+
+  texto(200,204,11,0,"Vidas:");
+  botones_editor(btn_vidasmasx,btn_vidasmasy,4);
+  botones_editor(btn_vidasmenosx,btn_vidasmenosy,5);
+
+  texto(200,220,11,0,"Estado:");
+  botones_editor(btn_estadomasx,btn_estadomasy,4);
+  botones_editor(btn_estadomenosx,btn_estadomenosy,5);
+
+  setfillstyle(1,0);
+  bar(0,0,88,8);
+  sprintf(coord,"x=%d",x);
+  texto(0,0,2,10,coord);
+  sprintf(coord,"y=%d",y);
+  texto(48,0,2,10,coord);
+
+  while(bucle==0)
+    {
+    estado_boton_posicion();
+    setfillstyle(1,0);
+    bar(0,8,168,16);
+    sprintf(coord,"ratonx=%d",ratonx);
+    texto(0,8,2,10,coord);
+    sprintf(coord,"ratony=%d",ratony);
+    texto(88,8,2,10,coord);
+
+    if(botonraton==1)
+      {
+      if(ratonx>=btn_debugx && ratonx<btn_debugx+15 && ratony>=btn_debugy && ratony<btn_debugy+15)  //checkbox debug
+        {
+        if(debug==1)
+          {
+          debug=0;
+          botones_editor(btn_debugx,btn_debugy,3);
+          }
+        else
+          {
+          debug=1;
+          botones_editor(btn_debugx,btn_debugy,2);
+          }
+        }
+      if(ratonx>=btn_FPSx && ratonx<btn_FPSx+15 && ratony>=btn_FPSy && ratony<btn_FPSy+15)  //checkbox mostrar FPS y delay
+        {
+        if(mostrar_FPS==1)
+          {
+          mostrar_FPS=0;
+          botones_editor(btn_FPSx,btn_FPSy,3);
+          }
+        else
+          {
+          mostrar_FPS=1;
+          botones_editor(btn_FPSx,btn_FPSy,2);
+          }
+        }
+      if(ratonx>=btn_nivelmasx && ratonx<btn_nivelmasx+15 && ratony>=btn_nivelmasy && ratony<btn_nivelmasy+15)  //boton aumentar nivel
+        {
+        if(nivel<10)
+          {
+          nivel++;
+          }
+        }
+      if(ratonx>=btn_nivelmenosx && ratonx<btn_nivelmenosx+15 && ratony>=btn_nivelmenosy && ratony<btn_nivelmenosy+15)  //boton disminuir nivel
+        {
+        if(nivel>-2)
+          {
+          nivel--;
+          }
+        }
+      if(ratonx>=btn_escenamasx && ratonx<btn_escenamasx+15 && ratony>=btn_escenamasy && ratony<btn_escenamasy+15)  //boton aumentar escena
+        {
+        if(escena<99)
+          {
+          escena++;
+          }
+        }
+      if(ratonx>=btn_escenamenosx && ratonx<btn_escenamenosx+15 && ratony>=btn_escenamenosy && ratony<btn_escenamenosy+15)  //boton disminuir escena
+        {
+        if(escena>-2)
+          {
+          escena--;
+          }
+        }
+      if(ratonx>=btn_irx && ratonx<btn_irx+15 && ratony>=btn_iry && ratony<btn_iry+15)  //boton ir
+        {
+        bucle=2;
+        ciclo=1;
+        tiempo=2000;
+        abrir(nivel,0);
+        abrir(nivel,1);
+        abrir(nivel,2);
+        abrir(nivel,3);
+        abrircielo(nivel,0);
+        abrircielo(nivel,1);
+        abrircielo(nivel,2);
+        abrircielo(nivel,3);
+        }
+      if(ratonx>=btn_vidasmasx && ratonx<btn_vidasmasx+15 && ratony>=btn_vidasmasy && ratony<btn_vidasmasy+15)
+        {
+        if(vidas<99)
+          {
+          vidas++;
+          }
+        }
+      if(ratonx>=btn_vidasmenosx && ratonx<btn_vidasmenosx+15 && ratony>=btn_vidasmenosy && ratony<btn_vidasmenosy+15)
+        {
+        if(vidas>0)
+          {
+          vidas--;
+          }
+        }
+      if(ratonx>=btn_estadomasx && ratonx<btn_estadomasx+15 && ratony>=btn_estadomasy && ratony<btn_estadomasy+15)
+        {
+        if(estado<9)
+          {
+          estado++;
+          }
+        }
+      if(ratonx>=btn_estadomenosx && ratonx<btn_estadomenosx+15 && ratony>=btn_estadomenosy && ratony<btn_estadomenosy+15)
+        {
+        if(estado>0)
+          {
+          estado--;
+          }
+        }
+
+      while(botonraton!=0)  //esperar a soltar el boton
+        {
+        estado_boton_posicion();
+        }
+      }
+
+    setfillstyle(1,15);
+    bar(272,148,288,156);
+    bar(272,164,288,172);
+    sprintf(txtnivel,"%d",nivel);
+    sprintf(txtescena,"%d",escena);
+    texto(272,148,11,0,txtnivel);
+    texto(272,164,11,0,txtescena);
+
+    bar(272,204,296,212);
+    sprintf(txtvidas,"%d",vidas);
+    texto(272,204,11,0,txtvidas);
+
+    bar(272,220,288,228);
+    sprintf(txtestado,"%d",estado);
+    texto(272,220,11,0,txtestado);
+
+    if(tecla[KEY_ESC])  //salir
+      {
+      bucle=1;
+      }
+    delay(20);
+    }
+  ocultar_raton();
+  if(bucle!=2)  //cuando bucle==2 no es necesario actualizar el fondo
+    {
+    fondomundo();
+    }
+  }
+
+
+void panel_debug_nivel()
+  {
+  int bucle=0;
+  char coord[80],txtnivel[7],txtescena[7],txtvidas[7],txtestado[7];
+
+  int btn_debugx=328,btn_debugy=96;
+  int btn_FPSx=328,btn_FPSy=112;
+  int btn_nivelmasx=328,btn_nivelmasy=144;
+  int btn_nivelmenosx=296,btn_nivelmenosy=144;
+  int btn_escenamasx=328,btn_escenamasy=160;
+  int btn_escenamenosx=296,btn_escenamenosy=160;
+  int btn_irx=312,btn_iry=180;
+  int btn_vidasmasx=328,btn_vidasmasy=200;
+  int btn_vidasmenosx=296,btn_vidasmenosy=200;
+  int btn_estadomasx=328,btn_estadomasy=216;
+  int btn_estadomenosx=296,btn_estadomenosy=216;
+  int btn_grabarx=312,btn_grabary=248;
+
+  mostrar_raton();
+  c_ventana(8,4,32,16);
+  texto(232,72,2,10,"Panel debug mundo");
+
+  texto(200,100,11,0,"Modo debug:");
+  if(debug==1)
+    {
+    botones_editor(btn_debugx,btn_debugy,2);
+    }
+  else
+    {
+    botones_editor(btn_debugx,btn_debugy,3);
+    }
+
+  texto(200,116,11,0,"Mostrar FPS:");
+  if(mostrar_FPS==1)
+    {
+    botones_editor(btn_FPSx,btn_FPSy,2);
+    }
+  else
+    {
+    botones_editor(btn_FPSx,btn_FPSy,3);
+    }
+
+  setcolor(1);
+  line(184,130,456,130);
+  line(184,130,184,198);
+  line(456,130,456,198);
+  line(184,198,456,198);
+  texto(232,132,11,0,"Teletransporte:");
+  texto(200,148,11,0,"Nivel:");
+  texto(200,164,11,0,"Escena:");
+  botones_editor(btn_nivelmasx,btn_nivelmasy,4);
+  botones_editor(btn_nivelmenosx,btn_nivelmenosy,5);
+  botones_editor(btn_escenamasx,btn_escenamasy,4);
+  botones_editor(btn_escenamenosx,btn_escenamenosy,5);
+  botones_editor(btn_irx,btn_iry,6);
+
+  texto(200,204,11,0,"Vidas:");
+  botones_editor(btn_vidasmasx,btn_vidasmasy,4);
+  botones_editor(btn_vidasmenosx,btn_vidasmenosy,5);
+
+  texto(200,220,11,0,"Estado:");
+  botones_editor(btn_estadomasx,btn_estadomasy,4);
+  botones_editor(btn_estadomenosx,btn_estadomenosy,5);
+
+  texto(200,252,11,0,"Grabar:");
+  botones_editor(btn_grabarx,btn_grabary,6);
+
+  setfillstyle(1,0);
+  bar(0,0,88,8);
+  sprintf(coord,"x=%d",x);
+  texto(0,0,2,10,coord);
+  sprintf(coord,"y=%d",y);
+  texto(48,0,2,10,coord);
+
+  while(bucle==0)
+    {
+    estado_boton_posicion();
+    setfillstyle(1,0);
+    bar(0,8,168,16);
+    sprintf(coord,"ratonx=%d",ratonx);
+    texto(0,8,2,10,coord);
+    sprintf(coord,"ratony=%d",ratony);
+    texto(88,8,2,10,coord);
+
+    if(botonraton==1)
+      {
+      if(ratonx>=btn_debugx && ratonx<btn_debugx+15 && ratony>=btn_debugy && ratony<btn_debugy+15)  //checkbox debug
+        {
+        if(debug==1)
+          {
+          debug=0;
+          botones_editor(btn_debugx,btn_debugy,3);
+          }
+        else
+          {
+          debug=1;
+          botones_editor(btn_debugx,btn_debugy,2);
+          }
+        }
+      if(ratonx>=btn_FPSx && ratonx<btn_FPSx+15 && ratony>=btn_FPSy && ratony<btn_FPSy+15)  //checkbox mostrar FPS y delay
+        {
+        if(mostrar_FPS==1)
+          {
+          mostrar_FPS=0;
+          botones_editor(btn_FPSx,btn_FPSy,3);
+          }
+        else
+          {
+          mostrar_FPS=1;
+          botones_editor(btn_FPSx,btn_FPSy,2);
+          }
+        }
+      if(ratonx>=btn_nivelmasx && ratonx<btn_nivelmasx+15 && ratony>=btn_nivelmasy && ratony<btn_nivelmasy+15)  //boton aumentar nivel
+        {
+        if(nivel<10)
+          {
+          nivel++;
+          }
+        }
+      if(ratonx>=btn_nivelmenosx && ratonx<btn_nivelmenosx+15 && ratony>=btn_nivelmenosy && ratony<btn_nivelmenosy+15)  //boton disminuir nivel
+        {
+        if(nivel>-2)
+          {
+          nivel--;
+          }
+        }
+      if(ratonx>=btn_escenamasx && ratonx<btn_escenamasx+15 && ratony>=btn_escenamasy && ratony<btn_escenamasy+15)  //boton aumentar escena
+        {
+        if(escena<99)
+          {
+          escena++;
+          }
+        }
+      if(ratonx>=btn_escenamenosx && ratonx<btn_escenamenosx+15 && ratony>=btn_escenamenosy && ratony<btn_escenamenosy+15)  //boton disminuir escena
+        {
+        if(escena>-2)
+          {
+          escena--;
+          }
+        }
+      if(ratonx>=btn_irx && ratonx<btn_irx+15 && ratony>=btn_iry && ratony<btn_iry+15)  //boton ir
+        {
+        bucle=2;
+        ciclo=1;
+        abrir(nivel,0);
+        abrir(nivel,1);
+        abrir(nivel,2);
+        abrir(nivel,3);
+        abrircielo(nivel,0);
+        abrircielo(nivel,1);
+        abrircielo(nivel,2);
+        abrircielo(nivel,3);
+        }
+      if(ratonx>=btn_vidasmasx && ratonx<btn_vidasmasx+15 && ratony>=btn_vidasmasy && ratony<btn_vidasmasy+15)
+        {
+        if(vidas<99)
+          {
+          vidas++;
+          }
+        }
+      if(ratonx>=btn_vidasmenosx && ratonx<btn_vidasmenosx+15 && ratony>=btn_vidasmenosy && ratony<btn_vidasmenosy+15)
+        {
+        if(vidas>0)
+          {
+          vidas--;
+          }
+        }
+      if(ratonx>=btn_estadomasx && ratonx<btn_estadomasx+15 && ratony>=btn_estadomasy && ratony<btn_estadomasy+15)
+        {
+        if(estado<9)
+          {
+          estado++;
+          }
+        }
+      if(ratonx>=btn_estadomenosx && ratonx<btn_estadomenosx+15 && ratony>=btn_estadomenosy && ratony<btn_estadomenosy+15)
+        {
+        if(estado>0)
+          {
+          estado--;
+          }
+        }
+      if(ratonx>=btn_grabarx && ratonx<btn_grabarx+15 && ratony>=btn_grabary && ratony<btn_grabary+15)
+        {
+        if(grabar_animacion==0)
+          {
+          pres = fopen("anim.txt","w+");
+          if(pres!=NULL)
+            {
+            texto(0,16,0,15,"Se ha iniciado la grabacion de la animacion");
+            grabar_animacion=1;
+            }
+          else
+            {
+            gotoxy(1,3);
+            printf("Problema al crear el archivo para animacion anim.txt\n");
+            }
+          }
+        else
+          {
+          grabar_animacion=0;
+          texto(0,16,0,15,"Se ha terminado la grabacion de la animacion");
+          if (fclose(pres)!=0)
+            {
+            gotoxy(1,3);
+            printf( "Problema al cerrar el archivo de animacion anim.txt\n" );
+            }
+          }
+        }
+
+      while(botonraton!=0)  //esperar a soltar el boton
+        {
+        estado_boton_posicion();
+        }
+      }
+
+    setfillstyle(1,15);
+    bar(272,148,288,156);
+    bar(272,164,288,172);
+    sprintf(txtnivel,"%d",nivel);
+    sprintf(txtescena,"%d",escena);
+    texto(272,148,11,0,txtnivel);
+    texto(272,164,11,0,txtescena);
+
+    bar(272,204,296,212);
+    sprintf(txtvidas,"%d",vidas);
+    texto(272,204,11,0,txtvidas);
+
+    bar(272,220,288,228);
+    sprintf(txtestado,"%d",estado);
+    texto(272,220,11,0,txtestado);
+
+    //setfillstyle(1,1);
+
+    if(tecla[KEY_ESC])  //salir
+      {
+      bucle=1;
+      }
+    delay(20);
+    }
+  ocultar_raton();
+  if(bucle!=2)  //cuando bucle==2 no es necesario actualizar el fondo
+    {
+    fondo();
+    }
+  }
+
+
+void capturar_animacion()
+{
+int n,t_ctrl;
+if(grabar_animacion==1)
+  {
+
+  //fprintf(pres,"%c,%c,%c,%c,",tecla[KEY_CUR_ATRAS],tecla[KEY_CUR_ADELANTE],tecla[KEY_CUR_ARRIBA],tecla[KEY_CUR_ABAJO]);
+  //fprintf(pres,"%c,%c,%c,",tecla[KEY_CONTROL],tecla[KEY_ESPACIO],tecla[KEY_DELETE]);
+
+  //fprintf(pres,"%d,%d,%1.1f,%1.1f,%d,%d,%d,",x,y,vx,vy,dirx,estado,t_ctrl);
+
+  if(tecla[KEY_CONTROL])
+    {
+    t_ctrl=1;
+    }
+  else
+    {
+    t_ctrl=0;
+    }
+  fprintf(pres,"%d,%d,%1.1f,%1.1f,%d,%d,%d,",x,y,vx,vy,dirx,estado,t_ctrl);
+  for(n=0;n<8;n++)
+    {
+    if(npato[n]!=0)
+      {
+      fprintf(pres,"C0,%d,%d,%d,%d,",n,npato[n],patox[n],patoy[n]);
+      }
+    if(nseguidor[n]!=0)
+      {
+      fprintf(pres,"C1,%d,%d,%d,%d,",n,nseguidor[n],seguidorx[n],seguidory[n]);
+      }
+    }
+  for(n=0;n<4;n++)
+    {
+    if(nsalta[n]!=0)
+      {
+      fprintf(pres,"C2,%d,%d,%d,%d,",n,nsalta[n],saltax[n],saltay[n]);
+      }
+    if(npeligro[n]!=0)
+      {
+      fprintf(pres,"C3,%d,%d,%d,%d,",n,npeligro[n],peligrox[n],peligroy[n]);
+      }
+    }
+  for(n=0;n<8;n++)
+    {
+    if(nmina[n]!=0)
+      {
+      fprintf(pres,"C4,%d,%d,%d,%d,",n,nmina[n],minax[n],minay[n]);
+      }
+    if(ntortuga[n]!=0)
+      {
+      fprintf(pres,"C5,%d,%d,%d,%d,",n,ntortuga[n],tortugax[n],tortugay[n]);
+      }
+    if(nbala[n]!=0)
+      {
+      fprintf(pres,"C6,%d,%d,%d,%d,",n,nbala[n],balax[n],balay[n]);
+      }
+    }
+  fprintf(pres,"\n");
+  }
+}
+
+
+void test_velocidad_paleta()  //es necesario el test si se quiere buenos efectos en cualquier PC y emulador
+{
+int n=0;
+start = clock();
+//gotoxy(1,1);
+//printf("Probando velocidad de cambio de paleta.\n");
+while((end-start)<=28)  //18.2 ticks por segundo, se hace una prueba de 1.5 segundos
+  {
+  paleta_predeterminada();
+  end = clock();
+  n++;
+  //printf("El tiempo fue: %lu\n",(end-start));
+  }
+cambios_por_segundo_paleta=n/1.5;  //1.5 es el numero de segundos de la prueba
+//printf("se lograron %d cambios en %lu ticks\n",n,(end - start));
+//printf("cambios por segundo de la paleta: %d\n",cambios_por_segundo_paleta);
+}
+
+
+
