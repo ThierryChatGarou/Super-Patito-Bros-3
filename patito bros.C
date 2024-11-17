@@ -16,8 +16,8 @@
 #include"teclas.h"
 #include"teclado.h"
 
-int patito,nivel=0,escena=0,mundo=0,seguir=1,vidas=4,estado=1,tiempo=0,volar=22,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nsalta[4],saltax[4],saltay[4],nseguidor[8],seguidorx[8],seguidory[8],npeligro[4],peligrox[4],peligroy[4],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,invensible=0,i,j,x,y,dir=1,paso=1,teclaso=0,sec=0,t_huevo,t_moneda=-88,ciclo=0,jugar=0;
-float vx=0,vy=0,saltavx[4],saltavy[4],peligrovx[4],peligrovy[4];
+int patito,nivel=0,escena=0,mundo=0,seguir=1,vidas=4,estado=1,tiempo=0,volar=22,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nsalta[4],saltax[4],saltay[4],nseguidor[8],seguidorx[8],seguidory[8],npeligro[4],peligrox[4],peligroy[4],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],ndisparo[4],disparox[4],disparoy[4],cajamone=0,invensible=0,i,j,x,y,dir=1,paso=1,teclaso=0,sec=0,t_huevo,t_moneda=-88,tdisparo=0,ciclo=0,jugar=0;
+float vx=0,vy=0,saltavx[4],saltavy[4],peligrovx[4],peligrovy[4],disparovx[4],disparovy[4];
 
 int niv0[30][40],niv1[30][40],niv2[30][40],niv3[30][40],paisaje[30][40];
 
@@ -82,7 +82,7 @@ int moneda0 [16][16]={
 };
 
 
-int disparo0[16][16]={
+int disparo[16][16]={
 22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
 22,22,22,13,22,22,22,22,13,22,22,22,22,22,22,22,
 22,22,22,22,22,22,22,13,13,13,22,22,22,22,22,22,
@@ -431,7 +431,7 @@ char *dname[] = {"Requiere deteccion",
 		 "IBM 3270 PC"         };
 
 
-Patito()
+void Patito()
 {
 textcolor(0x0B);
 textbackground(0x00);
@@ -488,11 +488,10 @@ for (patito=0;patito<30;patito++)
     patito=40;
     }
   }
-return(0);
 }
 
 
-Thierry()
+void Thierry()
 {
 textbackground(0x00);
 clrscr();
@@ -522,11 +521,10 @@ for (patito=0;patito<30;patito++)
     patito=40;
     }
   }
-return(0);
 }
 
 
-Inicio()
+void Inicio()
 {
 textcolor(0x01);
 textbackground(0x00);
@@ -534,50 +532,52 @@ clrscr();
 
 for (patito=0;patito<50;patito++)
   {
-  printf("    ฐฐฐฐฑฑฑฑฒฒฒฒÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛฒฒฒฒฑฑฑฑฐฐฐฐ");
+  printf("    ฐฐฐฐฑฑฑฑฒฒฒฒÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛฒฒฒฒฑฑฑฑฐฐฐฐ    ");
   }
 
 textcolor(0x0C);
 textbackground(0x00);
-gotoxy(7,2);    cprintf("ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป");
-gotoxy(7,3);    cprintf("บ     Patito bros en C por Thierry Joseph Valery Garcia Greiner        บ");
-gotoxy(7,4);    cprintf("บ                                                                      บ");
-gotoxy(7,5);    cprintf("ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ");
+gotoxy(7,2);    cprintf("ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป");
+gotoxy(7,3);    cprintf("บ    Patito bros en C por Thierry Joseph Valery Garcia Greiner     บ");
+gotoxy(7,4);    cprintf("บ                                                                  บ");
+gotoxy(7,5);    cprintf("ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ");
 
-gotoxy(7,8);    cprintf("ษอออออออออออออออออออออออออออออออออป");
-gotoxy(7,9);    cprintf("บ Modo de video       VGA         บ");
-gotoxy(7,10);   cprintf("บ Compatible                      บ");
-gotoxy(7,11);   cprintf("บ                                 บ");
-gotoxy(7,12);   cprintf("บ         Detectado               บ");
-gotoxy(7,13);   cprintf("บ                                 บ");
-gotoxy(7,14);   cprintf("บ                                 บ");
-gotoxy(7,15);   cprintf("บ                                 บ");
-gotoxy(7,16);   cprintf("บ                                 บ");
-gotoxy(7,17);   cprintf("บ                                 บ");
-gotoxy(7,18);   cprintf("บ                                 บ");
-gotoxy(7,19);   cprintf("บ                                 บ");
-gotoxy(7,20);   cprintf("บ                                 บ");
-gotoxy(7,21);   cprintf("ศอออออออออออออออออออออออออออออออออผ");
+gotoxy(7,8);    cprintf("ษอออออออออออออออออออออออออออออออป");
+gotoxy(7,9);    cprintf("บ Modo de video       VGA       บ");
+gotoxy(7,10);   cprintf("บ Compatible                    บ");
+gotoxy(7,11);   cprintf("บ                               บ");
+gotoxy(7,12);   cprintf("บ         Detectado             บ");
+gotoxy(7,13);   cprintf("บ                               บ");
+gotoxy(7,14);   cprintf("บ                               บ");
+gotoxy(7,15);   cprintf("บ                               บ");
+gotoxy(7,16);   cprintf("บ                               บ");
+gotoxy(7,17);   cprintf("บ                               บ");
+gotoxy(7,18);   cprintf("บ                               บ");
+gotoxy(7,19);   cprintf("บ                               บ");
+gotoxy(7,20);   cprintf("บ                               บ");
+gotoxy(7,21);   cprintf("ศอออออออออออออออออออออออออออออออผ");
 
-gotoxy(44,8);    cprintf("ษอออออออออออออออออออออออออออออออออป");
-gotoxy(44,9);    cprintf("บ Entradas                        บ");
-gotoxy(44,10);   cprintf("บ Detectadas                      บ");
-gotoxy(44,11);   cprintf("บ                                 บ");
-gotoxy(44,12);   cprintf("บ                                 บ");
-gotoxy(44,13);   cprintf("บ                                 บ");
-gotoxy(44,14);   cprintf("บ                                 บ");
-gotoxy(44,15);   cprintf("บ                                 บ");
-gotoxy(44,16);   cprintf("บ                                 บ");
-gotoxy(44,17);   cprintf("บ                                 บ");
-gotoxy(44,18);   cprintf("บ                                 บ");
-gotoxy(44,19);   cprintf("บ                                 บ");
-gotoxy(44,20);   cprintf("บ                                 บ");
-gotoxy(44,21);   cprintf("ศอออออออออออออออออออออออออออออออออผ");
-return(0);
+gotoxy(42,8);    cprintf("ษอออออออออออออออออออออออออออออออป");
+gotoxy(42,9);    cprintf("บ Entradas                      บ");
+gotoxy(42,10);   cprintf("บ Detectadas                    บ");
+gotoxy(42,11);   cprintf("บ                               บ");
+gotoxy(42,12);   cprintf("บ                               บ");
+gotoxy(42,13);   cprintf("บ                               บ");
+gotoxy(42,14);   cprintf("บ                               บ");
+gotoxy(42,15);   cprintf("บ                               บ");
+gotoxy(42,16);   cprintf("บ                               บ");
+gotoxy(42,17);   cprintf("บ                               บ");
+gotoxy(42,18);   cprintf("บ                               บ");
+gotoxy(42,19);   cprintf("บ                               บ");
+gotoxy(42,20);   cprintf("บ                               บ");
+gotoxy(42,21);   cprintf("ศอออออออออออออออออออออออออออออออผ");
+textcolor(0xFC);
+textbackground(0x01);
+gotoxy(24,49);   cprintf("Presiona una tecla para continuar");
 }
 
 
-errorgraficos()
+void errorgraficos()
 {
   gotoxy(7,4);    cprintf("ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป");
   gotoxy(7,5);    cprintf("บ                      Prueba lo siguiente:                            บ");
@@ -596,11 +596,10 @@ errorgraficos()
   gotoxy(7,18);   cprintf("ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ");
   gotoxy(7,20);   cprintf("Presiona un tecla para salir.");
   getch();
-  return(0);
 }
 
 
-detectargraficos()
+void detectargraficos()
 {
 //devuelve el valor de la informacion del hardware detectado
 int gdriver,gmode,errorcode;
@@ -620,11 +619,10 @@ if (errorcode != grOk)  //Si ocurre un error
   }
 textcolor(0x0F);
 gotoxy(9,12);   cprintf("%s",dname[gdriver]);
-return(0);
 }
 
 
-iniciargraficos()
+void iniciargraficos()
 {
 int gdriver = DETECT, gmode, errorcode;
 
@@ -638,11 +636,10 @@ if (errorcode != grOk)  //Si ocurre un error
   errorgraficos();
   exit(1);
   }
-return(0);
 }
 
 
-abrir(int nivel,int escena)
+void abrir(int nivel,int escena)
 {
 FILE *archivo;
 int letra,num=0,x2,y2,cif=10;
@@ -771,7 +768,7 @@ switch (escena)
             }
           else if(letra=='\n')
             {
-            num=0;
+	    num=0;
             cif=100;
             }
           else if(letra==32)
@@ -784,7 +781,7 @@ switch (escena)
             letra=letra*cif;
             num=num+letra;
             }
-          if(cif==1)
+	  if(cif==1)
             {
             //printf(" %i",num);
             niv0[y2][x2]=num;
@@ -797,7 +794,7 @@ switch (escena)
           y2=30;
           gotoxy(1,1);
           printf( "Error al cargar paisaje\n" );
-          }
+	  }
         }
         y2++;
       }
@@ -810,7 +807,7 @@ switch (escena)
       while(x2<40)
         {
         if (feof(archivo)==0)
-          {
+	  {
           letra=getc(archivo);
           if(letra==44)
             {
@@ -823,7 +820,7 @@ switch (escena)
             num=0;
             cif=100;
             }
-          else if(letra==32)
+	  else if(letra==32)
             {
             num=num/10;
             }
@@ -836,7 +833,7 @@ switch (escena)
           if(cif==1)
             {
             //printf(" %i",num);
-            niv1[y2][x2]=num;
+	    niv1[y2][x2]=num;
             }
           cif=cif/10;
           }
@@ -862,7 +859,7 @@ switch (escena)
           {
           letra=getc(archivo);
           if(letra==44)
-            {
+	    {
             x2++;
             num=0;
             cif=100;
@@ -875,7 +872,7 @@ switch (escena)
           else if(letra==32)
             {
             num=num/10;
-            }
+	    }
           else
             {
             letra=letra-48;
@@ -888,7 +885,7 @@ switch (escena)
             niv2[y2][x2]=num;
             }
           cif=cif/10;
-          }
+	  }
         else
           {
           x2=40;
@@ -914,7 +911,7 @@ switch (escena)
             {
             x2++;
             num=0;
-            cif=100;
+	    cif=100;
             }
           else if(letra=='\n')
             {
@@ -927,7 +924,7 @@ switch (escena)
             }
           else
             {
-            letra=letra-48;
+	    letra=letra-48;
             letra=letra*cif;
             num=num+letra;
             }
@@ -940,7 +937,7 @@ switch (escena)
           }
         else
           {
-          x2=40;
+	  x2=40;
           y2=30;
           gotoxy(1,1);
           printf( "Error al cargar paisaje\n" );
@@ -966,7 +963,7 @@ switch (escena)
             cif=100;
             }
           else if(letra=='\n')
-            {
+	    {
             num=0;
             cif=100;
             }
@@ -979,7 +976,7 @@ switch (escena)
             letra=letra-48;
             letra=letra*cif;
             num=num+letra;
-            }
+	    }
           if(cif==1)
             {
             //printf(" %i",num);
@@ -992,7 +989,7 @@ switch (escena)
           x2=40;
           y2=30;
           gotoxy(1,1);
-          printf( "Error al cargar paisaje\n" );
+	  printf( "Error al cargar paisaje\n" );
           }
         }
         y2++;
@@ -1006,11 +1003,10 @@ if (fclose(archivo)!=0)
   gotoxy(1,1);
   printf( "Problemas al cerrar el archivo\n" );
   }
-return (0);
 }
 
 
-r_pato()  //resetear patos
+void r_pato()  //resetear patos
 {
 int x2;
 for(x2=0;x2<8;x2++)
@@ -1028,7 +1024,7 @@ for(x2=0;x2<8;x2++)
 }
 
 
-r_seguidor()  //resetear seguidores
+void r_seguidor()  //resetear seguidores
 {
 int x2;
 for(x2=0;x2<8;x2++)
@@ -1046,7 +1042,7 @@ for(x2=0;x2<8;x2++)
 }
 
 
-r_salta()  //resetear saltadores
+void r_salta()  //resetear saltadores
 {
 int x2;
 for(x2=0;x2<4;x2++)
@@ -1072,7 +1068,7 @@ for(x2=0;x2<4;x2++)
 }
 
 
-r_peligro()  //resetear patos seguidores y saltadores
+void r_peligro()  //resetear patos seguidores y saltadores
 {
 int x2;
 for(x2=0;x2<4;x2++)
@@ -1098,7 +1094,7 @@ for(x2=0;x2<4;x2++)
 }
 
 
-r_champ()  //resetear champi๑ones
+void r_champ()  //resetear champi๑ones
 {
 int x2;
 for(x2=0;x2<4;x2++)
@@ -1116,7 +1112,7 @@ for(x2=0;x2<4;x2++)
 }
 
 
-rmonedas()  //resetear monedas
+void rmonedas()  //resetear monedas
 {
 int x2;
 for(x2=0;x2<4;x2++)
@@ -1134,7 +1130,7 @@ for(x2=0;x2<4;x2++)
 }
 
 
-c_pato(int x2, int y2)
+void c_pato(int x2, int y2)
 {
 int n,p=0;
 for(n=0;n<8;n++)
@@ -1153,7 +1149,7 @@ patoy[p]=y2;
 }
 
 
-c_seguidor(int x2, int y2)
+void c_seguidor(int x2, int y2)
 {
 int n,p=0;
 for(n=0;n<8;n++)
@@ -1172,7 +1168,7 @@ seguidory[p]=y2;
 }
 
 
-c_salta(int x2, int y2)
+void c_salta(int x2, int y2)
 {
 int n,p=0;
 for(n=0;n<4;n++)
@@ -1191,7 +1187,7 @@ saltay[p]=y2;
 }
 
 
-c_peligro(int x2, int y2)
+void c_peligro(int x2, int y2)
 {
 int n,p=0;
 for(n=0;n<4;n++)
@@ -1210,29 +1206,29 @@ peligroy[p]=y2;
 }
 
 
-c_champ(int x2, int y2, int T)
+void c_champ(int x2, int y2, int T)
 {
 int n,p=0;
 if(T<5)
-{
-for(n=0;n<4;n++)
   {
-  if(nchamp[n]==0)
+  for(n=0;n<4;n++)
     {
-    p=n;
-    nchamp[n]=T;
-    n=4;
+    if(nchamp[n]==0)
+      {
+      p=n;
+      nchamp[n]=T;
+      n=4;
+      }
     }
+  x2=x2*16;
+  y2=y2*16;
+  champx[p]=x2;
+  champy[p]=y2;
   }
-x2=x2*16;
-y2=y2*16;
-champx[p]=x2;
-champy[p]=y2;
-}
 }
 
 
-cmoneda(int x2, int y2)
+void cmoneda(int x2, int y2)
 {
 int n,p;
 for(n=0;n<4;n++)
@@ -1251,7 +1247,7 @@ moneday[p]=y2;
 }
 
 
-movpato()
+void movpato()
 {
 int n;
 for(n=0;n<8;n++)
@@ -1303,7 +1299,7 @@ for(n=0;n<8;n++)
 }
 
 
-movseguidor()
+void movseguidor()
 {
 int n;
 for(n=0;n<8;n++)
@@ -1344,7 +1340,7 @@ for(n=0;n<8;n++)
       {
       if(seguidorx[n]>x)  
         {
-        nseguidor[n]=-1;
+	nseguidor[n]=-1;
         }
       else if(seguidorx[n]<x)       
         {
@@ -1366,7 +1362,7 @@ for(n=0;n<8;n++)
 }
 
 
-movsalta()
+void movsalta()
 {
 int n;
 for(n=0;n<4;n++)
@@ -1396,7 +1392,7 @@ for(n=0;n<4;n++)
     else
       {
       if(paisaje[(saltay[n]+16-(saltay[n]%16))/16][(saltax[n]-(saltax[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
-        {
+	{
         saltavy[n]=saltavy[n]+0.5;
         }
       else
@@ -1422,7 +1418,7 @@ for(n=0;n<4;n++)
 }
 
 
-movpeligro()
+void movpeligro()
 {
 int n;
 for(n=0;n<4;n++)
@@ -1461,7 +1457,7 @@ for(n=0;n<4;n++)
         peligroy[n]=peligroy[n]-(peligroy[n]%16);
         }
       }
-    if(sec%80==0) //seguir a patito  
+    if(sec%80==0) //seguir a patito
       {
       if(peligrox[n]>x)  
         {
@@ -1489,7 +1485,7 @@ for(n=0;n<4;n++)
 }
 
 
-movchamp()
+void movchamp()
 {
 int n;
 for(n=0;n<4;n++)
@@ -1513,7 +1509,7 @@ for(n=0;n<4;n++)
         }
       else
         {
-        champy[n]=champy[n]-(champy[n]%16);
+	champy[n]=champy[n]-(champy[n]%16);
         }
       }
     else
@@ -1542,7 +1538,7 @@ for(n=0;n<4;n++)
 }
 
 
-dibpatos()
+void dibpatos()
 {
 int n;
 for(n=0;n<8;n++)
@@ -1552,7 +1548,7 @@ for(n=0;n<8;n++)
     for(j=0;j<16;j++)
       {
       for(i=0;i<16;i++)
-        {
+	{
         if(pato0[j][i]!=22)
           {
           putpixel(patox[n]+i,patoy[n]+j,pato0[j][i]);
@@ -1564,7 +1560,7 @@ for(n=0;n<8;n++)
 }
 
 
-dibseguidor()
+void dibseguidor()
 {
 int n;
 for(n=0;n<8;n++)
@@ -1578,7 +1574,7 @@ for(n=0;n<8;n++)
         if(pato0[j][i]!=22)
           {
           putpixel(seguidorx[n]+i,seguidory[n]+j,pato0[j][i]);
-          }
+	  }
         }
       }
     }
@@ -1586,7 +1582,7 @@ for(n=0;n<8;n++)
 }
 
 
-dibsalta()
+void dibsalta()
 {
 int n;
 for(n=0;n<4;n++)
@@ -1608,7 +1604,7 @@ for(n=0;n<4;n++)
 }
 
 
-dibpeligro()
+void dibpeligro()
 {
 int n;
 for(n=0;n<4;n++)
@@ -1630,7 +1626,7 @@ for(n=0;n<4;n++)
 }
 
 
-dibchamp()
+void dibchamp()
 {
 int n;
 for(n=0;n<4;n++)
@@ -1643,7 +1639,7 @@ for(n=0;n<4;n++)
         for(j=0;j<16;j++)
           {
           for(i=0;i<16;i++)
-            {
+	    {
             if(champi4[j][i]!=22)
               {
               putpixel(champx[n]+i,champy[n]+j,champi4[j][i]);
@@ -1656,7 +1652,7 @@ for(n=0;n<4;n++)
           {
           for(i=0;i<16;i++)
             {
-            if(champi0[j][i]!=22)
+	    if(champi0[j][i]!=22)
               {
               putpixel(champx[n]+i,champy[n]+j,champi0[j][i]);
               }
@@ -1669,7 +1665,7 @@ for(n=0;n<4;n++)
           for(i=0;i<16;i++)
             {
             if(champi4[j][i]!=22)
-              {
+	      {
               putpixel(champx[n]+i,champy[n]+j,champi0[j][i]);
               }
             }
@@ -1682,7 +1678,7 @@ for(n=0;n<4;n++)
             {
             if(champi4[j][i]!=22)
               {
-              putpixel(champx[n]+i,champy[n]+j,champi4[j][i]);
+	      putpixel(champx[n]+i,champy[n]+j,champi4[j][i]);
               }
             }
           }
@@ -1693,7 +1689,7 @@ for(n=0;n<4;n++)
 }
 
 
-elichamp(int x2)
+void elichamp(int x2)
 {
 nchamp[x2]=0;
 champx[x2]=0;
@@ -1701,7 +1697,7 @@ champy[x2]=0;
 }
 
 
-elipato(int x2)
+void elipato(int x2)
 {
 npato[x2]=0;
 patox[x2]=0;
@@ -1709,7 +1705,7 @@ patoy[x2]=0;
 }
 
 
-eliseguidor(int x2)
+void eliseguidor(int x2)
 {
 nseguidor[x2]=0;
 seguidorx[x2]=0;
@@ -1717,7 +1713,7 @@ seguidory[x2]=0;
 }
 
 
-elisalta(int x2)
+void elisalta(int x2)
 {
 nsalta[x2]=0;
 saltax[x2]=0;
@@ -1727,7 +1723,7 @@ saltavy[x2]=0.0;
 }
 
 
-elipeligro(int x2)
+void elipeligro(int x2)
 {
 npeligro[x2]=0;
 peligrox[x2]=0;
@@ -1737,7 +1733,7 @@ peligrovy[x2]=0.0;
 }
 
 
-refchamp()
+void refchamp()
 {
 int n;
 for(n=0;n<4;n++)
@@ -1751,7 +1747,7 @@ for(n=0;n<4;n++)
 }
 
 
-refpato()
+void refpato()
 {
 int n;
 for(n=0;n<8;n++)
@@ -1765,7 +1761,7 @@ for(n=0;n<8;n++)
 }
 
 
-refseguidor()
+void refseguidor()
 {
 int n;
 for(n=0;n<8;n++)
@@ -1779,7 +1775,7 @@ for(n=0;n<8;n++)
 }
 
 
-refsalta()
+void refsalta()
 {
 int n;
 for(n=0;n<4;n++)
@@ -1806,7 +1802,7 @@ for(n=0;n<4;n++)
 }
 
 
-refpeligro()
+void refpeligro()
 {
 int n;
 for(n=0;n<4;n++)
@@ -1833,7 +1829,7 @@ for(n=0;n<4;n++)
 }
 
 
-mdemone()  //mover dibujar eliminar moneda
+void mdemone()  //mover dibujar eliminar moneda
 {
 int n;
 for(n=0;n<4;n++)
@@ -1851,7 +1847,7 @@ for(n=0;n<4;n++)
         for(i=0;i<16;i++)
           {
 	  putpixel(monedax[n]+i,moneday[n]+j,moneda0[j][i]);
-          }
+	  }
         }
       }
     else if(monealt[n]>-64)
@@ -1864,7 +1860,7 @@ for(n=0;n<4;n++)
           {
 	  putpixel(monedax[n]+i,moneday[n]+j,moneda0[j][i]);
           }
-        }
+	}
       }
     else
       {
@@ -1878,7 +1874,7 @@ for(n=0;n<4;n++)
 }
 
 
-convert()  //convertir bloques y monedas
+void convert()  //convertir bloques y monedas
 {
 t_moneda=tiempo-44;
 for(j=0;j<30;j++)
@@ -1910,7 +1906,7 @@ for(j=0;j<30;j++)
 }
 
 
-act_fondo(int T)
+void act_fondo(int T)
 {
 int x2,y2;
 switch (T)
@@ -1929,7 +1925,7 @@ switch (T)
       {
       for(x2=0;x2<40;x2++)
         {
-        paisaje[y2][x2]=niv1[y2][x2];
+	paisaje[y2][x2]=niv1[y2][x2];
         }
       }
   break;
@@ -1955,7 +1951,7 @@ switch (T)
 }
 
 
-guardar_fondo(int T)
+void guardar_fondo(int T)
 {
 int x2,y2;
 switch (T)
@@ -2000,7 +1996,7 @@ switch (T)
 }
 
 
-fondo()
+void fondo()
 {
 int x2,y2;
 for(y2=0;y2<30;y2++)
@@ -2012,7 +2008,7 @@ for(y2=0;y2<30;y2++)
   }
 }
 
-fondomundo()  //aguas fondomundo() no es lo mismo que fondo() por bloque() y bloque0()
+void fondomundo()  //aguas fondomundo() no es lo mismo que fondo() por bloque() y bloque0()
 {
 int x2,y2;
 for(y2=0;y2<30;y2++)
@@ -2025,7 +2021,7 @@ for(y2=0;y2<30;y2++)
 }
 
 
-refbloques()  //actualizar bloques
+void refbloques()  //actualizar bloques
 {
                  //el modulo es para que aparesca el bloque alineado a los demas
   if((x%16)!=0)  // comprobar que bloques necesitan actualizarse
@@ -2046,7 +2042,7 @@ refbloques()  //actualizar bloques
 }
 
 
-refbloquemundo()  //actualizar bloques
+void refbloquemundo()  //actualizar bloques
 {
                  //el modulo es para que aparesca el bloque alineado a los demas
   if((x%16)!=0)  // comprobar que bloques necesitan actualizarse
@@ -2067,7 +2063,7 @@ refbloquemundo()  //actualizar bloques
 }
 
 
-tinvensible()
+void tinvensible()
 {
 if(invensible!=0)
   {
@@ -2076,7 +2072,7 @@ if(invensible!=0)
 }
 
 
-bloque_poder0()  //poder0
+void bloque_poder0()  //poder0
 {
 if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==36)  //poder0
   {
@@ -2136,7 +2132,7 @@ if(t_moneda==tiempo)
 }
 
 
-bloque_caja0_moneda()  //caja0 con moneda
+void bloque_caja0_moneda()  //caja0 con moneda
 {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==1) //caja0 con moneda
     {
@@ -2159,7 +2155,7 @@ bloque_caja0_moneda()  //caja0 con moneda
 }
 
 
-bloque_caja0_10monedas()  //caja0 con 10 momedas
+void bloque_caja0_10monedas()  //caja0 con 10 momedas
 {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==2) //caja0 con 10 monedas
     {
@@ -2194,7 +2190,7 @@ bloque_caja0_10monedas()  //caja0 con 10 momedas
 }
 
 
-bloque_caja0_champinon()  //caja0 con champi๑on
+void bloque_caja0_champinon()  //caja0 con champi๑on
 {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==3)  //caja0 con champi๑on
     {
@@ -2213,7 +2209,7 @@ bloque_caja0_champinon()  //caja0 con champi๑on
 }
 
 
-bloque_caja0_vida()  //caja0 con vida
+void bloque_caja0_vida()  //caja0 con vida
 {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==4)  //caja0 con vida
     {
@@ -2232,7 +2228,7 @@ bloque_caja0_vida()  //caja0 con vida
 }
 
 
-estrella_moneda()  //estrellas con moneda
+void estrella_moneda()  //estrellas con moneda
 {
 if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==51) //estrellas con moneda
   {
@@ -2261,7 +2257,7 @@ else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==51 && x%16!=0)
 }
 
 
-cielo_vida()  //cielo cyan con vida
+void cielo_vida()  //cielo cyan con vida
 {
 if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==32)  //cielo cyan con vida
   {
@@ -2286,7 +2282,7 @@ else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==32 && x%16!=0)
 }
 
 
-cielo_moneda()  //cielo cyan con moneda
+void cielo_moneda()  //cielo cyan con moneda
 {
 if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==33) //cielo cyan con moneda
   {
@@ -2315,7 +2311,7 @@ else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==33 && x%16!=0)
 }
 
 
-cristal0_moneda()  //cristal con moneda
+void cristal0_moneda()  //cristal con moneda
 {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==16) //cristal con moneda
     {
@@ -2338,7 +2334,7 @@ cristal0_moneda()  //cristal con moneda
 }
 
 
-cristal4_moneda()  //cristal con moneda
+void cristal4_moneda()  //cristal con moneda
 {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==17) //cristal con moneda
     {
@@ -2361,7 +2357,7 @@ cristal4_moneda()  //cristal con moneda
 }
 
 
-cristal0_vida()  //cristal0 con vida
+void cristal0_vida()  //cristal0 con vida
 {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==18)  //cristal0 con vida
     {
@@ -2380,7 +2376,7 @@ cristal0_vida()  //cristal0 con vida
 }
 
 
-cristal4_vida()  //cristal4 con vida
+void cristal4_vida()  //cristal4 con vida
 {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==19)  //cristal0 con vida
     {
@@ -2399,7 +2395,7 @@ cristal4_vida()  //cristal4 con vida
 }
 
 
-bloque_cristal()  //cristal golpe por abajo
+void bloque_cristal()  //cristal golpe por abajo
 {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==14 || paisaje[(y-(y%16))/16][(x-(x%16))/16]==15)  //cristal golpe por abajo
     {
@@ -2422,7 +2418,7 @@ bloque_cristal()  //cristal golpe por abajo
       vy=vy+4;
       paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=75;
       bloque(x+16-(x%16),y-(y%16),75);
-      }  
+      }
     else
       {
       y=y+16-(y%16);
@@ -2432,7 +2428,7 @@ bloque_cristal()  //cristal golpe por abajo
 }
 
 
-bloque_moneda0()  //monedas de oro
+void bloque_moneda0()  //monedas de oro
 {
   if(paisaje[(y-16-(y%16))/16][(x-16-(x%16))/16]==35)  //moneda arriba izquierda
     {
@@ -2493,7 +2489,7 @@ bloque_moneda0()  //monedas de oro
 }
 
 
-bloque_moneda4()  //monedas de platino
+void bloque_moneda4()  //monedas de platino
 {
   if(paisaje[(y-16-(y%16))/16][(x-16-(x%16))/16]==34)  //moneda arriba izquierda
     {
@@ -2554,9 +2550,9 @@ bloque_moneda4()  //monedas de platino
 }
 
 
-bloque_nota0()  //nota0
+void bloque_nota0()  //nota0
 {
-  if((x%16)!=0)  //nota0  (muy pesado)
+  if((x%16)!=0)
     {
     if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==40 || paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]==40)  //rebote por arriba
       {
@@ -2627,7 +2623,7 @@ bloque_nota0()  //nota0
 }
 
 
-bloque_saltar()  //bloque para saltar muy alto
+void bloque_saltar()  //bloque para saltar muy alto
 {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==68 || paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==68)  //saltar
     {
@@ -2636,7 +2632,7 @@ bloque_saltar()  //bloque para saltar muy alto
 }
 
 
-cielo_abajo()  //flujo de aire hacia abajo
+void cielo_abajo()  //flujo de aire hacia abajo
 {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==53 || paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==53)
     {
@@ -2645,16 +2641,24 @@ cielo_abajo()  //flujo de aire hacia abajo
 }
 
 
-cielo_arriba()  //flujo de aire hacia arriba
+void cielo_arriba()  //flujo de aire hacia arriba
 {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==54 || paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==54)
     {
     vy=vy-1.0;
+      if(tecla[KEY_CUR_ARRIBA])  //control de vuelo en el aire
+        {
+        vy=vy-0.25;
+        }
+      if(tecla[KEY_CUR_ABAJO])  //control de vuelo en el aire
+        {
+	vy=vy+0.25;
+	}
     }
 }
 
 
-cielo_izquierda()  //flujo de aire hacia la izquierda
+void cielo_izquierda()  //flujo de aire hacia la izquierda
 {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==55 || paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==55)
     {
@@ -2663,7 +2667,7 @@ cielo_izquierda()  //flujo de aire hacia la izquierda
 }
 
 
-cielo_derecha()  //flujo de aire hacia la derecha
+void cielo_derecha()  //flujo de aire hacia la derecha
 {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==56 || paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==56)
     {
@@ -2672,16 +2676,20 @@ cielo_derecha()  //flujo de aire hacia la derecha
 }
 
 
-agua_abajo()  //flujo de agua hacia abajo
+void agua_abajo()  //flujo de agua hacia abajo
 {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==57 || paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==57)
     {
     vy=vy+0.5;
+      if(tecla[KEY_CUR_ARRIBA])  //control de movimiento en el agua
+        {
+        vy=vy-0.875;
+        }
     }
 }
 
 
-agua_arriba()  //flujo de agua hacia arriba
+void agua_arriba()  //flujo de agua hacia arriba
 {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==58 || paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==58)
     {
@@ -2690,7 +2698,7 @@ agua_arriba()  //flujo de agua hacia arriba
 }
 
 
-agua_izquierda()  //flujo de agua hacia izquierda
+void agua_izquierda()  //flujo de agua hacia izquierda
 {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==59 || paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==59)
     {
@@ -2699,7 +2707,7 @@ agua_izquierda()  //flujo de agua hacia izquierda
 }
 
 
-agua_derecha()  //flujo de agua hacia derecha
+void agua_derecha()  //flujo de agua hacia derecha
 {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==60 || paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==60)
     {
@@ -2708,7 +2716,7 @@ agua_derecha()  //flujo de agua hacia derecha
 }
 
 
-bloque_agua()  
+void bloque_agua()  
 {
 if((x%16)!=0)
   {
@@ -2726,7 +2734,7 @@ else
   }
 if((x%16)!=0)
   {
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==49 && paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==49)
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==49 && paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==49)  //verificar que los bloques de arriba sean agua
     {
     if(tecla[KEY_CUR_ARRIBA])  //saltar 72
       {
@@ -2749,6 +2757,16 @@ if((x%16)!=0)
     else if(vx<-2.0)
       {
       vx=vx+0.25;
+      }
+    }
+  if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==49 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]==49)  //verificar que los bloques de abajo sean agua
+    {
+    if(tecla[KEY_CUR_ABAJO])  //undirse en el agua
+      {
+      if(estado>=3)
+        {
+        vy=2.0;
+	}
       }
     }
   }
@@ -2777,6 +2795,16 @@ else
     else if(vx<-2.0)
       {
       vx=vx+0.25;
+      }
+    }
+  if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==49)
+    {
+    if(tecla[KEY_CUR_ABAJO])  //undirse en el agua
+      {
+      if(estado>=3)
+        {
+        vy=2.0;
+        }
       }
     }
   }
@@ -2839,7 +2867,7 @@ else
 }
 
 
-NITRO_mata()  //no toques la nitroglicerina
+void NITRO_mata()  //no toques la nitroglicerina
 {
 if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==48)
   {
@@ -2866,7 +2894,7 @@ else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==48 && x%16!=0)
 }
 
 
-fuego4_mata()  //no toques el fuego
+void fuego4_mata()  //no toques el fuego
 {
 if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==52)
   {
@@ -2889,7 +2917,7 @@ else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==52 && x%16!=0)
 }
 
 
-tocar_champinon()  //tocar champi๑on
+void tocar_champinon()  //tocar champi๑on
 {
   for(i=0;i<4;i++)
     {
@@ -2897,8 +2925,8 @@ tocar_champinon()  //tocar champi๑on
       {
       if(((x-(x%16))/16)==((champx[i]-(champx[i]%16))/16))
         {
-        if(((y-(y%16))/16)==((champy[i]-(champy[i]%16))/16))
-          {
+	if(((y-(y%16))/16)==((champy[i]-(champy[i]%16))/16))
+	  {
           switch(nchamp[i])
             {
             case -4:
@@ -2907,11 +2935,11 @@ tocar_champinon()  //tocar champi๑on
               puntos=puntos+100;
             break;
             case -1:
-              elichamp(i);
+	      elichamp(i);
               estado++;
               puntos=puntos+100;
-            break;
-            case 1:
+	    break;
+	    case 1:
               elichamp(i);
               estado++;
               puntos=puntos+100;
@@ -2920,24 +2948,24 @@ tocar_champinon()  //tocar champi๑on
               elichamp(i);
               vidas++;
               puntos=puntos+100;
-            break;
+	    break;
             }
 
-          }
-        }
+	  }
+	}
       }
     }
 }
 
 
-pisar_pato()  //pisar pato
+void pisar_pato()  //pisar pato
 {
   for(i=0;i<8;i++)  //pisar pato
     {
     if(npato[i]!=0)
       {
       if(x-(x%16)==patox[i]-(patox[i]%16) || x-(x%16)==patox[i]+16-(patox[i]%16))
-        {
+	{
         if(y+16-(y%16)==patoy[i]-(patoy[i]%16))  //+16 para cuando este arriba del pato en -16 sea -16+16=0 y se cumpla
           {
           vy=-2;
@@ -2950,7 +2978,7 @@ pisar_pato()  //pisar pato
 }
 
 
-pisar_seguidor()  //pisar seguidor
+void pisar_seguidor()  //pisar seguidor
 {
   for(i=0;i<8;i++)  //pisar seguidor
     {
@@ -2959,18 +2987,18 @@ pisar_seguidor()  //pisar seguidor
       if(x-(x%16)==seguidorx[i]-(seguidorx[i]%16) || x-(x%16)==seguidorx[i]+16-(seguidorx[i]%16))
         {
         if(y+16-(y%16)==seguidory[i]-(seguidory[i]%16))  //+16 para cuando este arriba del seguidor en -16 sea -16+16=0 y se cumpla
-          {
+	  {
           vy=-2;
           eliseguidor(i);
-          puntos=puntos+100;
-          }
+	  puntos=puntos+100;
+	  }
         }
       }
     }
 }
 
 
-pisar_salta()  //pisar saltadores
+void pisar_salta()  //pisar saltadores
 {
   for(i=0;i<4;i++)  //pisar saltadores
     {
@@ -2990,7 +3018,7 @@ pisar_salta()  //pisar saltadores
 }
 
 
-pisar_peligro()  //pisar patos peligrosos
+void pisar_peligro()  //pisar patos peligrosos
 {
   for(i=0;i<4;i++)  //pisar patos peligrosos
     {
@@ -2998,11 +3026,11 @@ pisar_peligro()  //pisar patos peligrosos
       {
       if(x-(x%16)==peligrox[i]-(peligrox[i]%16) || x-(x%16)==peligrox[i]+16-(peligrox[i]%16))
         {
-        if(y+16-(y%16)==peligroy[i]-(peligroy[i]%16))  //+16 para cuando este arriba del peligroso en -16 sea -16+16=0 y se cumpla
+	if(y+16-(y%16)==peligroy[i]-(peligroy[i]%16))  //+16 para cuando este arriba del peligroso en -16 sea -16+16=0 y se cumpla
           {
           vy=-2;
-          elipeligro(i);
-          puntos=puntos+100;
+	  elipeligro(i);
+	  puntos=puntos+100;
           }
         }
       }
@@ -3010,7 +3038,7 @@ pisar_peligro()  //pisar patos peligrosos
 }
 
 
-pato_mata()  //pato mata cuando los tocas
+void pato_mata()  //pato mata cuando los tocas
 {
   for(i=0;i<8;i++)  //pato mata
     {
@@ -3024,24 +3052,24 @@ pato_mata()  //pato mata cuando los tocas
             {
             estado--;
             invensible=222;
-            t_huevo=tiempo-4;  //solo es necesario si su estado es 0
+	    t_huevo=tiempo-4;  //solo es necesario si su estado es 0
             }
           }
-        }
+	}
       }
     }
 }
 
 
-seguidor_mata()  //seguidor mata cuando los tocas
+void seguidor_mata()  //seguidor mata cuando los tocas
 {
   for(i=0;i<8;i++)  //seguidor mata
     {
     if(nseguidor[i]!=0)
       {
       if(x<=seguidorx[i]+16 && x>=seguidorx[i]-16)
-        {
-        if(y-(y%16)==seguidory[i]-(seguidory[i]%16))
+	{
+	if(y-(y%16)==seguidory[i]-(seguidory[i]%16))
           {
           if(invensible==0)
             {
@@ -3050,24 +3078,24 @@ seguidor_mata()  //seguidor mata cuando los tocas
             t_huevo=tiempo-4;  //solo es necesario si su estado es 0
             }
           }
-        }
+	}
       }
     }
 }
 
 
-salta_mata()  //saltador mata cuando los tocas
+void salta_mata()  //saltador mata cuando los tocas
 {
   for(i=0;i<4;i++)  //saltador mata
     {
     if(nsalta[i]!=0)
       {
       if(x<=saltax[i]+16 && x>=saltax[i]-16)
-        {
+	{
         if(y-(y%16)==saltay[i]-(saltay[i]%16))
           {
-          if(invensible==0)
-            {
+	  if(invensible==0)
+	    {
             estado--;
             invensible=222;
             t_huevo=tiempo-4;  //solo es necesario si su estado es 0
@@ -3079,7 +3107,7 @@ salta_mata()  //saltador mata cuando los tocas
 }
 
 
-peligro_mata()  //peligroso mata cuando los tocas
+void peligro_mata()  //peligroso mata cuando los tocas
 {
   for(i=0;i<4;i++)  //peligroso mata
     {
@@ -3089,11 +3117,11 @@ peligro_mata()  //peligroso mata cuando los tocas
         {
         if(y-(y%16)==peligroy[i]-(peligroy[i]%16))
           {
-          if(invensible==0)
+	  if(invensible==0)
             {
             estado--;
-            invensible=222;
-            t_huevo=tiempo-4;  //solo es necesario si su estado es 0
+	    invensible=222;
+	    t_huevo=tiempo-4;  //solo es necesario si su estado es 0
             }
           }
         }
@@ -3102,11 +3130,11 @@ peligro_mata()  //peligroso mata cuando los tocas
 }
 
 
-bloque_cuadrado0()  //puedes pararte sobre el bloque pero no golpearlo por abajo  (pesado)
+void bloque_cuadrado0()  //puedes pararte sobre el bloque pero no golpearlo por abajo  (pesado)
 {
   if((x%16)!=0)
     {
-    if((paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==41 || paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==42 || paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==43) && (paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]==41 || paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]==42 || paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]==43))  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es bloque cuadrado 
+    if((paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==41 || paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==42 || paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==43) && (paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]==41 || paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]==42 || paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]==43))  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es bloque cuadrado
       {
       if(vy>0)  //determinar si esta cayendo o saltando
         {
@@ -3136,7 +3164,7 @@ bloque_cuadrado0()  //puedes pararte sobre el bloque pero no golpearlo por abajo
 }
 
 
-bloque_cuadrado1()  //puedes pararte sobre el bloque pero no golpearlo por abajo  (pesado)
+void bloque_cuadrado1()  //puedes pararte sobre el bloque pero no golpearlo por abajo  (pesado)
 {
   if((x%16)!=0)
     {
@@ -3144,8 +3172,8 @@ bloque_cuadrado1()  //puedes pararte sobre el bloque pero no golpearlo por abajo
       {
       if(vy>0)  //determinar si esta cayendo o saltando
         {
-        vy=0;
-        y=y-(y%16);
+	vy=0;
+	y=y-(y%16);
         }
       }
     }
@@ -3154,10 +3182,10 @@ bloque_cuadrado1()  //puedes pararte sobre el bloque pero no golpearlo por abajo
     if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==44 || paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==45 || paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==46)  //gravedad verificando si el bloque de abajo a la izquierda es bloque cuadrado 
       {
       if(vy>0)  //determinar si esta cayendo o saltando
-        {
+	{
         vy=0;
         y=y-(y%16);
-        }
+	}
       }
     }
   if(tecla[KEY_CUR_ARRIBA])  //saltar
@@ -3170,7 +3198,7 @@ bloque_cuadrado1()  //puedes pararte sobre el bloque pero no golpearlo por abajo
 }
 
 
-panel()
+void panel()
 {
   line(0,416,639,416);
   line(0,416,0,479);
@@ -3179,7 +3207,7 @@ panel()
 }
 
 
-panelnumerico()
+void panelnumerico()
 {
   int n;
   gotoxy(4,28);
@@ -3204,13 +3232,13 @@ panelnumerico()
 }
 
 
-verestado()  //verificar el estado de pato y dibujarlo segun el estado
+void verestado()  //verificar el estado de pato y dibujarlo segun el estado
 {
   switch(estado)
     {
     case 0:  //perdiste una vida
       for(j=0;j<16;j++)
-        {
+	{
         for(i=0;i<16;i++)
           {
           if(huevo[j][i]!=22)
@@ -3222,8 +3250,8 @@ verestado()  //verificar el estado de pato y dibujarlo segun el estado
       if(t_huevo==tiempo)  //esperar 4 segundos antes de terminar el nivel
         {
         estado++;
-        vidas--;
-        ciclo=1;
+	vidas--;
+	ciclo=1;
         jugar=0;
         }
       //musiquita y pantalla de perder
@@ -3232,11 +3260,11 @@ verestado()  //verificar el estado de pato y dibujarlo segun el estado
       for(j=0;j<16;j++)
         {
         for(i=0;i<16;i++)
-          {
+	  {
           if(patito0[j][i]!=22)
             {
-            putpixel(x+i,y+j,patito0[j][i]);
-            }
+	    putpixel(x+i,y+j,patito0[j][i]);
+	    }
           }
         }
     break;
@@ -3245,11 +3273,11 @@ verestado()  //verificar el estado de pato y dibujarlo segun el estado
         {
         for(i=0;i<16;i++)
           {
-          if(pato0[j][i]!=22)
+	  if(pato0[j][i]!=22)
             {
             putpixel(x+i,y+j,pato0[j][i]);
-            }
-          }
+	    }
+	  }
         }
     break;
     case 3:
@@ -3258,11 +3286,11 @@ verestado()  //verificar el estado de pato y dibujarlo segun el estado
         paso=1;
         }
       else
-        {
+	{
         if((x%8)<=3)
           {
-        paso=1;
-          }
+	paso=1;
+	  }
         else if ((x%8)>=4)
           {
         paso=-1;
@@ -3271,11 +3299,11 @@ verestado()  //verificar el estado de pato y dibujarlo segun el estado
       if(dir>0)
         {
         if(paso==1)
-          {
+	  {
           for(j=0;j<16;j++)
             {
-            for(i=0;i<16;i++)
-              {
+	    for(i=0;i<16;i++)
+	      {
               if(pinguino0[j][i]!=22)
                 {
                 putpixel(x+i,y+j,pinguino0[j][i]);
@@ -3284,11 +3312,11 @@ verestado()  //verificar el estado de pato y dibujarlo segun el estado
             }
           }
         if(paso==-1)
-          {
+	  {
           for(j=0;j<16;j++)
             {
-            for(i=0;i<16;i++)
-              {
+	    for(i=0;i<16;i++)
+	      {
               if(pinguino1[j][i]!=22)
                 {
                 putpixel(x+i,y+j,pinguino1[j][i]);
@@ -3300,8 +3328,8 @@ verestado()  //verificar el estado de pato y dibujarlo segun el estado
       if(dir<0)
         {
         if(paso==1)
-          {
-          for(j=0;j<16;j++)
+	  {
+	  for(j=0;j<16;j++)
             {
             for(i=0;i<16;i++)
               {
@@ -3310,11 +3338,11 @@ verestado()  //verificar el estado de pato y dibujarlo segun el estado
                 putpixel(x+i,y+j,pinguino2[j][i]);
                 }
               }
-            }
+	    }
           }
         if(paso==-1)
-          {
-          for(j=0;j<16;j++)
+	  {
+	  for(j=0;j<16;j++)
             {
             for(i=0;i<16;i++)
               {
@@ -3323,7 +3351,7 @@ verestado()  //verificar el estado de pato y dibujarlo segun el estado
                 putpixel(x+i,y+j,pinguino3[j][i]);
                 }
               }
-            }
+	    }
           }
         }
     break;
@@ -3336,11 +3364,11 @@ verestado()  //verificar el estado de pato y dibujarlo segun el estado
         {
         if((x%8)<=3)
           {
-        paso=1;
+	paso=1;
           }
         else if ((x%8)>=4)
-          {
-        paso=-1;
+	  {
+	paso=-1;
           }
         }
       if(dir>0)
@@ -3349,11 +3377,11 @@ verestado()  //verificar el estado de pato y dibujarlo segun el estado
           {
           for(j=0;j<16;j++)
             {
-            for(i=0;i<16;i++)
+	    for(i=0;i<16;i++)
               {
               if(pinguinorojo0[j][i]!=22)
-                {
-                putpixel(x+i,y+j,pinguinorojo0[j][i]);
+		{
+		putpixel(x+i,y+j,pinguinorojo0[j][i]);
                 }
               }
             }
@@ -3362,11 +3390,11 @@ verestado()  //verificar el estado de pato y dibujarlo segun el estado
           {
           for(j=0;j<16;j++)
             {
-            for(i=0;i<16;i++)
+	    for(i=0;i<16;i++)
               {
               if(pinguinorojo1[j][i]!=22)
-                {
-                putpixel(x+i,y+j,pinguinorojo1[j][i]);
+		{
+		putpixel(x+i,y+j,pinguinorojo1[j][i]);
                 }
               }
             }
@@ -3375,11 +3403,11 @@ verestado()  //verificar el estado de pato y dibujarlo segun el estado
       if(dir<0)
         {
         if(paso==1)
-          {
+	  {
           for(j=0;j<16;j++)
             {
-            for(i=0;i<16;i++)
-              {
+	    for(i=0;i<16;i++)
+	      {
               if(pinguinorojo2[j][i]!=22)
                 {
                 putpixel(x+i,y+j,pinguinorojo2[j][i]);
@@ -3388,11 +3416,11 @@ verestado()  //verificar el estado de pato y dibujarlo segun el estado
             }
           }
         if(paso==-1)
-          {
+	  {
           for(j=0;j<16;j++)
             {
-            for(i=0;i<16;i++)
-              {
+	    for(i=0;i<16;i++)
+	      {
               if(pinguinorojo3[j][i]!=22)
                 {
                 putpixel(x+i,y+j,pinguinorojo3[j][i]);
@@ -3409,7 +3437,7 @@ verestado()  //verificar el estado de pato y dibujarlo segun el estado
     }
 }
 
-ayuda()
+void ayuda()
 {
 setfillstyle(1,0);  //azul claro
 bar(40,8,624,336);
@@ -3443,7 +3471,7 @@ panel();
 }
 
 
-pausa()
+void pausa()
 {
 int x2,y2;
 for(y2=0;y2<16;y2++)
@@ -3469,7 +3497,7 @@ panel();
 }
 
 
-segundos()
+void segundos()
 {
 sec++;
 if(sec%22==0)  //realizar un conteo del tiempo del juego
@@ -3492,7 +3520,7 @@ if(sec%22==0)  //realizar un conteo del tiempo del juego
 }
 
 
-patofuera()
+void patofuera()
 {
 int n;
 for(n=0;n<8;n++)
@@ -3513,7 +3541,7 @@ for(n=0;n<8;n++)
 }
 
 
-seguidorfuera()
+void seguidorfuera()
 {
 int n;
 for(n=0;n<8;n++)
@@ -3534,7 +3562,7 @@ for(n=0;n<8;n++)
 }
 
 
-saltafuera()
+void saltafuera()
 {
 int n;
 for(n=0;n<4;n++)
@@ -3555,7 +3583,7 @@ for(n=0;n<4;n++)
 }
 
 
-peligrofuera()
+void peligrofuera()
 {
 int n;
 for(n=0;n<4;n++)
@@ -3576,7 +3604,7 @@ for(n=0;n<4;n++)
 }
 
 
-champifuera()
+void champifuera()
 {
 int n;
 for(n=0;n<4;n++)
@@ -3597,7 +3625,270 @@ for(n=0;n<4;n++)
 }
 
 
-teclado()
+void r_disparo()  //resetear disparos
+{
+int x2;
+for(x2=0;x2<4;x2++)
+  {
+  ndisparo[x2]=0;
+  }
+for(x2=0;x2<4;x2++)
+  {
+  disparox[x2]=0;
+  }
+for(x2=0;x2<4;x2++)
+  {
+  disparoy[x2]=0;
+  }
+for(x2=0;x2<4;x2++)
+  {
+  disparovy[x2]=0.0;
+  }
+for(x2=0;x2<4;x2++)
+  {
+  disparovx[x2]=0.0;
+  }
+}
+
+
+void cdisparo()
+{
+int n;
+if(tdisparo==0)  //determina si el pinguino estแ listo para disparar (ver movdisparo())
+  {
+  tdisparo=1;
+  for(n=0;n<4;n++)
+    {
+    if(ndisparo[n]==0)
+      {
+      if(dir>0)
+        {
+	ndisparo[n]=1;
+        disparox[n]=x;
+        disparoy[n]=y;
+        }
+      if(dir<0)
+        {
+        ndisparo[n]=-1;
+        disparox[n]=x;
+        disparoy[n]=y;
+        }
+      if(vy<0)
+        {
+        disparovy[n]=-4.0;
+	}
+      else
+        {
+        disparovy[n]=+4.0;
+	}
+      n=4;
+      }
+    }
+  }
+}
+
+
+void movdisparo()
+{
+int n;
+if(sec%8==0)  // usado en cdisparo para permitir solo 4 disparos por segundo
+  {
+  tdisparo=0;
+  }
+for(n=0;n<4;n++)
+  {
+  if(ndisparo[n]!=0)
+    {
+    if(ndisparo[n]==1)  //determinar sentido
+      {
+      disparox[n]=disparox[n]+8;
+      }
+    if(ndisparo[n]==-1)  //determinar sentido
+      {
+      disparox[n]=disparox[n]-8;
+      }
+    if((disparox[n]%16)!=0)
+      {
+      if(paisaje[(disparoy[n]+16-(disparoy[n]%16))/16][(disparox[n]-(disparox[n]%16))/16]>=32 && paisaje[(disparoy[n]+16-(disparoy[n]%16))/16][(disparox[n]+16-(disparox[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
+        {
+        disparovy[n]=disparovy[n]+0.5;
+        }
+      else
+        {
+	disparovy[n]=-4.0;
+        disparoy[n]=disparoy[n]-(disparoy[n]%16);
+        }
+      }
+    else
+      {
+      if(paisaje[(disparoy[n]+16-(disparoy[n]%16))/16][(disparox[n]-(disparox[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
+        {
+        disparovy[n]=disparovy[n]+0.5;
+        }
+      else
+        {
+        disparovy[n]=-4.0;
+	disparoy[n]=disparoy[n]-(disparoy[n]%16);
+        }
+      }
+    if(paisaje[(disparoy[n]-(disparoy[n]%16))/16][(disparox[n]+16-(disparox[n]%16))/16]<32) //eliminar disparo al chocar con bloque derecho    
+      {
+      ndisparo[n]=0;
+      }
+    else if(paisaje[(disparoy[n]-(disparoy[n]%16))/16][(disparox[n]-(disparox[n]%16))/16]<32) //eliminar disparo al chocar con bloque izquierdo       
+      {
+      ndisparo[n]=0;
+      }
+    disparoy[n]=disparoy[n]+disparovy[n];
+    disparox[n]=disparox[n]+disparovx[n];
+    }
+  }
+}
+
+
+void dibdisparo()
+{
+int n;
+for(n=0;n<4;n++)
+  {
+  if(ndisparo[n]!=0)
+    {
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        if(disparo[j][i]!=22)
+	  {
+          putpixel(disparox[n]+i,disparoy[n]+j,disparo[j][i]);
+          }
+        }
+      }
+    }
+  }
+}
+
+
+void refdisparo()
+{
+int n;
+for(n=0;n<4;n++)
+  {
+  if(ndisparo[n]!=0)
+    {
+    if((disparox[n]%16)!=0)  // comprobar que bloques necesitan actualizarse
+      {
+      bloque(disparox[n]-(disparox[n]%16),disparoy[n]-(disparoy[n]%16),paisaje[(disparoy[n]-(disparoy[n]%16))/16][(disparox[n]-(disparox[n]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+      bloque(disparox[n]-(disparox[n]%16)+16,disparoy[n]-(disparoy[n]%16),paisaje[(disparoy[n]-(disparoy[n]%16))/16][(disparox[n]+16-(disparox[n]%16))/16]);  //actualizar bloque que esta arriba a la derecha
+      if((disparoy[n]%16)!=0)
+	{
+        bloque(disparox[n]-(disparox[n]%16),disparoy[n]-(disparoy[n]%16)+16,paisaje[(disparoy[n]+16-(disparoy[n]%16))/16][(disparox[n]-(disparox[n]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+        bloque(disparox[n]-(disparox[n]%16)+16,disparoy[n]-(disparoy[n]%16)+16,paisaje[(disparoy[n]+16-(disparoy[n]%16))/16][(disparox[n]+16-(disparox[n]%16))/16]);  //actualizar bloque que esta abajo a la derecha
+        }
+      }
+    else if((disparoy[n]%16)!=0)
+      {
+      bloque(disparox[n]-(disparox[n]%16),disparoy[n]-(disparoy[n]%16),paisaje[(disparoy[n]-(disparoy[n]%16))/16][(disparox[n]-(disparox[n]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+      bloque(disparox[n]-(disparox[n]%16),disparoy[n]-(disparoy[n]%16)+16,paisaje[(disparoy[n]+16-(disparoy[n]%16))/16][(disparox[n]-(disparox[n]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+      }
+    }
+  }
+}
+
+
+void disparofuera()
+{
+int n;
+for(n=0;n<4;n++)
+  {
+  if(disparox[n]>=624) //si llega a la orilla derecha eliminar disparo
+    {
+    ndisparo[n]=0;
+    }
+  else if(disparox[n]<=-4) //si llega a la orilla izquierda eliminar disparo
+    {
+    ndisparo[n]=0;
+    }
+  else if(disparoy[n]>=464) //caida
+    {
+    ndisparo[n]=0;
+    }
+  }
+}
+
+
+void disparo_mata()  //disparo que mata patos
+{
+int n,m;
+for(n=0;n<4;n++)  //buscar disparos activos
+  {
+  if(ndisparo[n]!=0)
+    {
+    for(m=0;m<8;m++)  //patos
+      {
+      if(npato[m]!=0)
+        {
+        if(disparox[n]-(disparox[n]%16)==patox[m]-(patox[m]%16) || disparox[n]-16-(disparox[n]%16)==patox[m]-(patox[m]%16))  //comprobar si coincide con la posicion en x
+          {
+          if(disparoy[n]+16-(disparoy[n]%16)==patoy[m]-(patoy[m]%16) || disparoy[n]-(disparoy[n]%16)==patoy[m]-(patoy[m]%16))  //comprobar que coincide con la posicion en y
+            {
+            ndisparo[n]=0;
+	    elipato(m);
+            puntos=puntos+100;
+            }
+          }
+	}
+      }
+    for(m=0;m<4;m++)  //patos saltadores
+      {
+      if(nsalta[m]!=0)
+        {
+        if(disparox[n]-(disparox[n]%16)==saltax[m]-(saltax[m]%16) || disparox[n]-16-(disparox[n]%16)==saltax[m]-(saltax[m]%16))  //comprobar si coincide con la posicion en x
+          {
+          if(disparoy[n]+16-(disparoy[n]%16)==saltay[m]-(saltay[m]%16) || disparoy[n]-(disparoy[n]%16)==saltay[m]-(saltay[m]%16))  //comprobar que coincide con la posicion en y
+	    {
+            ndisparo[n]=0;
+            elisalta(m);
+            puntos=puntos+100;
+	    }
+          }
+        }
+      }
+    for(m=0;m<8;m++)  //patos seguidores
+      {
+      if(nseguidor[m]!=0)
+        {
+        if(disparox[n]-(disparox[n]%16)==seguidorx[m]-(seguidorx[m]%16) || disparox[n]-16-(disparox[n]%16)==seguidorx[m]-(seguidorx[m]%16))  //comprobar si coincide con la posicion en x
+	  {
+          if(disparoy[n]+16-(disparoy[n]%16)==seguidory[m]-(seguidory[m]%16) || disparoy[n]-(disparoy[n]%16)==seguidory[m]-(seguidory[m]%16))  //comprobar que coincide con la posicion en y
+            {
+            ndisparo[n]=0;
+	    eliseguidor(m);
+            puntos=puntos+100;
+            }
+          }
+        }
+      }
+    for(m=0;m<4;m++)  //patos peligrosos
+      {
+      if(npeligro[m]!=0)
+	{
+        if(disparox[n]-(disparox[n]%16)==peligrox[m]-(peligrox[m]%16) || disparox[n]-16-(disparox[n]%16)==peligrox[m]-(peligrox[m]%16))  //comprobar si coincide con la posicion en x
+          {
+          if(disparoy[n]+16-(disparoy[n]%16)==peligroy[m]-(peligroy[m]%16) || disparoy[n]-(disparoy[n]%16)==peligroy[m]-(peligroy[m]%16))  //comprobar que coincide con la posicion en y
+	    {
+            ndisparo[n]=0;
+            elipeligro(m);
+            puntos=puntos+100;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+void teclado()
 {
 teclaso=0;
   if(teclaso == 0);
@@ -3672,6 +3963,13 @@ teclaso=0;
     {
     //menu();
     }
+  if(tecla[KEY_CONTROL])  //tecla control para crear disparo
+    {
+    if(estado==4)
+      {
+      cdisparo();
+      }
+    }
   if(vx>4)  //limite de velocidad
     {
     vx=4;
@@ -3729,11 +4027,11 @@ while(seguir!=0)
           case 1:
             escena01();
           break;
-          case 2:
+	  case 2:
             escena02();
           break;
           case 3:
-            escena03();
+	    escena03();
           break;
           case 20:
             escena0_20();
@@ -3746,7 +4044,7 @@ while(seguir!=0)
       case 1:
         switch (escena)
           {
-          case 0:
+	  case 0:
             escena10();
             break;
           case 1:
@@ -3755,11 +4053,11 @@ while(seguir!=0)
           case 2:
             escena12();
           break;
-          case 3:
+	  case 3:
             escena13();
           break;
           case 20:
-            escena1_20();
+	    escena1_20();
           break;
           default:
             jugar=0;
@@ -3768,11 +4066,11 @@ while(seguir!=0)
       break;
       case 2:
         switch (escena)
-          {
+	  {
           case 0:
             escena20();
             break;
-          case 1:
+	  case 1:
             escena21();
           break;
           case 2:
@@ -3781,11 +4079,11 @@ while(seguir!=0)
           case 3:
             escena23();
           break;
-          case 20:
+	  case 20:
             escena2_20();
           break;
           default:
-            jugar=0;
+	    jugar=0;
           break;
           }
       break;
@@ -3794,11 +4092,11 @@ while(seguir!=0)
           {
           case 0:
             escena30();
-            break;
+	    break;
           case 1:
             escena31();
           break;
-          case 2:
+	  case 2:
             escena32();
           break;
           case 3:
@@ -3807,7 +4105,7 @@ while(seguir!=0)
           case 20:
             escena3_20();
           break;
-          default:
+	  default:
             jugar=0;
           break;
           }
