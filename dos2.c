@@ -2,6 +2,7 @@
 Autores:
 Salvador Pozo Coronado <salvador@conclase.net>
 Arthur Christopher Watkins
+Thierry Garcia <Thierry_2222@hotmail.com>
 Hongli Lai <hongli@telekabel.nl>
 tkorrovi <tkorrovi@altavista.net> on 2002/02/26.
 Andrew Westcott <ajwestco@users.sourceforge.net>

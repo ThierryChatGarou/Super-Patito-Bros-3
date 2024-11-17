@@ -24,7 +24,9 @@ Michal Molhanec <michal@molhanec.net>
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
 
-
+#ifndef _CONIO2_C
+#define _CONIO2_C
+#endif
 
 #ifndef __CONIO2_H__
 #define __CONIO2_H__
@@ -1982,7 +1984,7 @@ int cscanf(const char *format, ...)
     int n;
 
     //buffer = new char[260];
-    buffer = malloc(sizeof(char)*260);
+    buffer = (char *) malloc(sizeof(char)*260);
     buffer[0] = 255;
     cgets(buffer);
     va_start(p, format);

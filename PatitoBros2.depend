@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1365632632 source:c:\programasc\patito\patitobros2\conio2.c
+1489428196 source:c:\programasc\patito\patitobros2\conio2.c
 	<windows.h>
 	<stdio.h>
 	"conio2.h"
@@ -40,33 +40,34 @@
 	<ctype.h>
 	<conio.h>
 
-1365616888 c:\programasc\patito\patitobros2\conio2.h
+1576789623 c:\programasc\patito\patitobros2\conio2.h
 
-1417196936 source:c:\programasc\patito\patitobros2\dos2.c
+1547324886 source:c:\programasc\patito\patitobros2\dos2.c
 	"dos2.h"
 	<windows.h>
 	<dos.h>
 
-1417196936 c:\programasc\patito\patitobros2\dos2.h
+1547324886 c:\programasc\patito\patitobros2\dos2.h
 
-1417367640 source:c:\programasc\patito\patitobros2\editor.c
+1417478018 source:c:\programasc\patito\patitobros2\editor.c
 	<stdio.h>
 	<dos.h>
 	"teclas.h"
 	"editor.h"
 	"graphics.h"
+	"conio2.h"
 
-1417330630 c:\programasc\patito\patitobros2\teclas.h
+1417379396 c:\programasc\patito\patitobros2\teclas.h
 	<windows.h>
 
-1417367790 source:c:\programasc\patito\patitobros2\graphics.c
+1577159342 source:c:\programasc\patito\patitobros2\graphics.c
 	<stdio.h>
 	<math.h>
 	"graphics.h"
 	<windows.h>
 	<gl/gl.h>
 
-1417367790 c:\programasc\patito\patitobros2\graphics.h
+1417366780 c:\programasc\patito\patitobros2\graphics.h
 	<gl/gl.h>
 	<windows.h>
 
@@ -79,30 +80,30 @@
 	"teclado.h"
 	"teclas.h"
 
-1417330324 c:\programasc\patito\patitobros2\teclado.h
+1417399080 c:\programasc\patito\patitobros2\teclado.h
 	<dos.h>
 	"teclas.h"
 
-1417321140 source:c:\programasc\patito\patitobros2\mundo0.c
+1577159068 source:c:\programasc\patito\patitobros2\mundo0.c
 	<stdio.h>
 	"teclas.h"
 
-1417292230 source:c:\programasc\patito\patitobros2\patito1.c
+1419110872 source:c:\programasc\patito\patitobros2\patito1.c
 
-1417292644 source:c:\programasc\patito\patitobros2\patito2.c
+1419121084 source:c:\programasc\patito\patitobros2\patito2.c
 	<stdio.h>
 	<dos.h>
 	<math.h>
 	"teclas.h"
 
-1417245218 source:c:\programasc\patito\patitobros2\patito3.c
+1491971586 source:c:\programasc\patito\patitobros2\patito3.c
 	<stdio.h>
 	<dir.h>
 	<time.h>
 	"graphics.h"
 	"teclas.h"
 
-1417367754 source:c:\programasc\patito\patitobros2\patito.c
+1577155027 source:c:\programasc\patito\patitobros2\patito.c
 	<stdio.h>
 	"conio2.h"
 	<stdlib.h>
@@ -111,5 +112,146 @@
 	"teclado.h"
 	"teclas.h"
 
-1417027732 c:\programasc\patito\patitobros2\editor.h
+1417024132 c:\programasc\patito\patitobros2\editor.h
+
+1417196936 source:c:\c asus\programasc\patito\patitobros2\dos2.c
+	"dos2.h"
+	<windows.h>
+	<dos.h>
+
+1417196936 c:\c asus\programasc\patito\patitobros2\dos2.h
+
+1417481618 source:c:\c asus\programasc\patito\patitobros2\editor.c
+	<stdio.h>
+	<dos.h>
+	"teclas.h"
+	"editor.h"
+	"graphics.h"
+	"conio2.h"
+
+1417382996 c:\c asus\programasc\patito\patitobros2\teclas.h
+	<windows.h>
+
+1417027732 c:\c asus\programasc\patito\patitobros2\editor.h
+
+1417370380 c:\c asus\programasc\patito\patitobros2\graphics.h
+	<gl/gl.h>
+	<windows.h>
+
+1489431760 c:\c asus\programasc\patito\patitobros2\conio2.h
+	"conio2.c"
+
+1489431796 c:\c asus\programasc\patito\patitobros2\conio2.c
+	<windows.h>
+	<stdio.h>
+	"conio2.h"
+	<stdio.h>
+	"conio2.h"
+	<ncurses.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<stdio.h>
+	<stdio.h>
+	<conio.h>
+	<conio.h>
+	<stdio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<string.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<stdio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<stdio.h>
+	<ctype.h>
+	<conio.h>
+
+1421604708 source:c:\c asus\programasc\patito\patitobros2\graphics.c
+	<stdio.h>
+	<math.h>
+	"graphics.h"
+	<windows.h>
+	<gl/gl.h>
+
+1417481266 source:c:\c asus\programasc\patito\patitobros2\mundo0.c
+	<stdio.h>
+	"teclas.h"
+
+1419151578 source:c:\c asus\programasc\patito\patitobros2\patito.c
+	<stdio.h>
+	"conio2.h"
+	<stdlib.h>
+	"dos2.h"
+	"graphics.h"
+	"teclado.h"
+	"teclas.h"
+
+1417402680 c:\c asus\programasc\patito\patitobros2\teclado.h
+	<dos.h>
+	"teclas.h"
+
+1419114472 source:c:\c asus\programasc\patito\patitobros2\patito1.c
+
+1419124684 source:c:\c asus\programasc\patito\patitobros2\patito2.c
+	<stdio.h>
+	<dos.h>
+	<math.h>
+	"teclas.h"
+
+1489428196 c:\programasc\patito\patitobros2\conio2.c
+	<windows.h>
+	<stdio.h>
+	"conio2.h"
+	<stdio.h>
+	"conio2.h"
+	<ncurses.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<stdio.h>
+	<stdio.h>
+	<conio.h>
+	<conio.h>
+	<stdio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<string.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<stdio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<conio.h>
+	<stdio.h>
+	<ctype.h>
+	<conio.h>
 

@@ -51,10 +51,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="graphics.h" />
-		<Unit filename="main.c">
+		<Unit filename="mundo0.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="mundo0.c">
+		<Unit filename="patito.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="patito1.c">

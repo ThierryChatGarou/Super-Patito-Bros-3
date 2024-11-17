@@ -31,7 +31,7 @@ void EnableOpenGL(HWND hwnd, HDC*, HGLRC*);
 void DisableOpenGL(HWND, HDC, HGLRC);
 void create_scene();
 void frameStarted(void);
-void mouse_getcoordinates(void);
+void mouse_getcoordinates(int *ratonx, int *ratony);
 
 int detectgraph(int *gdriver, int *gmode);
 int graphresult();
@@ -52,11 +52,12 @@ inline void GLrectangle(short x, short y, short x2, short y2, unsigned char r, u
 inline void GLline(short x, short y, short x2, short y2, unsigned char r, unsigned char g, unsigned char b);
 inline void putpixel(short x, short y, unsigned char color);
 inline void GLpixel(short x, short y, unsigned char r, unsigned char g, unsigned char b);
-
 void setcolor(int a);
+void line(int x1, int y1, int x2, int y2);
+
 getpalette(struct palettetype *p);
 setrgbpalette(int a, int b, int c, int d);
-void line(int a, int b, int x, int y);
+
 
 
 

@@ -5971,6 +5971,7 @@ while(bucle==1)
         retraso--;
         }
       }
+    render_opengl_windows();
     }
   }
 }

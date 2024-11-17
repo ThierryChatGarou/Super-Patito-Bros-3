@@ -1,14 +1,17 @@
 extern int paisaje[30][40],colorcielo[30][40];
 extern unsigned char tecla[128];
+extern int retraso;
 
 #include<stdio.h>
 #include<dos.h>
 #include"teclas.h"
 #include"editor.h"
 #include"graphics.h"
+#include"conio2.h"
 
 int botonraton=0,ratonx,ratony;
 char palabra[128];
+char aux[128];
 //union REGS entrada,salida;
 
 int flechaarriba [16][16]={
@@ -580,25 +583,47 @@ switch (T)
 
 void mostrar_raton()
 {
-/*entrada.x.ax=0x01;
-int86(0x33,&entrada,&salida);*/
+#ifdef MSDOS
+entrada.x.ax=0x01;
+int86(0x33,&entrada,&salida);
+#endif
 }
 
 
 void ocultar_raton()  //esta me la invente, pudiera no ser valida la funcion
 {
-/*entrada.x.ax=0x00;
-int86(0x33,&entrada,&salida);*/
+#ifdef MSDOS
+entrada.x.ax=0x00;
+int86(0x33,&entrada,&salida);
+#endif
 }
 
 
 void estado_boton_posicion()
 {
-/*entrada.x.ax=0x03;
+#ifdef MSDOS
+entrada.x.ax=0x03;
 int86(0x33,&entrada,&salida);
 botonraton=salida.x.bx;
 ratonx=salida.x.cx;
-ratony=salida.x.dx;*/
+ratony=salida.x.dx;
+#else
+mouse_getcoordinates(&ratonx, &ratony);
+
+botonraton=0;
+if(tecla[BOTON_L])
+{
+botonraton+=1;
+}
+if(tecla[BOTON_R])
+{
+botonraton+=2;
+}
+if(tecla[BOTON_M])
+{
+botonraton+=4;
+}
+#endif
 }
 
 
@@ -785,6 +810,8 @@ int tomarletra()  //igual que el getch()
 int n,ltr,bucle=1;
 while(bucle==1)
   {
+
+  render_opengl_windows();
   for(n=0;n<128;n++)
     {
     if(tecla[n]==1)
@@ -794,6 +821,7 @@ while(bucle==1)
       }
     while(tecla[n]==1)  //atorar aqui hasta que se suelte la tecla
       {
+      render_opengl_windows();
       }
     }
   }
@@ -808,193 +836,232 @@ char letra,presionado=0,n=0;
 palabra[0]='\0';
 while(tecla[KEY_ENTER]==0)
   {
+  render_opengl_windows();
   while(tecla[KEY_A])
     {
+    render_opengl_windows();
     letra='A';
     presionado=1;
     }
   while(tecla[KEY_B])
     {
+    render_opengl_windows();
     letra='B';
     presionado=1;
     }
   while(tecla[KEY_C])
     {
+    render_opengl_windows();
     letra='C';
     presionado=1;
     }
   while(tecla[KEY_D])
     {
+    render_opengl_windows();
     letra='D';
     presionado=1;
     }
   while(tecla[KEY_E])
     {
+    render_opengl_windows();
     letra='E';
     presionado=1;
     }
   while(tecla[KEY_F])
     {
+    render_opengl_windows();
     letra='F';
     presionado=1;
     }
   while(tecla[KEY_G])
     {
+    render_opengl_windows();
     letra='G';
     presionado=1;
     }
   while(tecla[KEY_H])
     {
+    render_opengl_windows();
     letra='H';
     presionado=1;
     }
   while(tecla[KEY_I])
     {
+    render_opengl_windows();
     letra='I';
     presionado=1;
     }
   while(tecla[KEY_J])
     {
+    render_opengl_windows();
     letra='J';
     presionado=1;
     }
   while(tecla[KEY_K])
     {
+    render_opengl_windows();
     letra='K';
     presionado=1;
     }
   while(tecla[KEY_L])
     {
+    render_opengl_windows();
     letra='L';
     presionado=1;
     }
   while(tecla[KEY_M])
     {
+    render_opengl_windows();
     letra='M';
     presionado=1;
     }
   while(tecla[KEY_N])
     {
+    render_opengl_windows();
     letra='N';
     presionado=1;
     }
   while(tecla[KEY_O])
     {
+    render_opengl_windows();
     letra='O';
     presionado=1;
     }
   while(tecla[KEY_P])
     {
+    render_opengl_windows();
     letra='P';
     presionado=1;
     }
   while(tecla[KEY_Q])
     {
+    render_opengl_windows();
     letra='Q';
     presionado=1;
     }
   while(tecla[KEY_R])
     {
+    render_opengl_windows();
     letra='R';
     presionado=1;
     }
   while(tecla[KEY_S])
     {
+    render_opengl_windows();
     letra='S';
     presionado=1;
     }
   while(tecla[KEY_T])
     {
+    render_opengl_windows();
     letra='T';
     presionado=1;
     }
   while(tecla[KEY_U])
     {
+    render_opengl_windows();
     letra='U';
     presionado=1;
     }
   while(tecla[KEY_V])
     {
+    render_opengl_windows();
     letra='V';
     presionado=1;
     }
   while(tecla[KEY_W])
     {
+    render_opengl_windows();
     letra='W';
     presionado=1;
     }
   while(tecla[KEY_X])
     {
+    render_opengl_windows();
     letra='X';
     presionado=1;
     }
   while(tecla[KEY_Y])
     {
+    render_opengl_windows();
     letra='Y';
     presionado=1;
     }
   while(tecla[KEY_Z])
     {
+    render_opengl_windows();
     letra='Z';
     presionado=1;
     }
   while(tecla[KEY_1])
     {
+    render_opengl_windows();
     letra='1';
     presionado=1;
     }
   while(tecla[KEY_2])
     {
+    render_opengl_windows();
     letra='2';
     presionado=1;
     }
   while(tecla[KEY_3])
     {
+    render_opengl_windows();
     letra='3';
     presionado=1;
     }
   while(tecla[KEY_4])
     {
+    render_opengl_windows();
     letra='4';
     presionado=1;
     }
   while(tecla[KEY_5])
     {
+    render_opengl_windows();
     letra='5';
     presionado=1;
     }
   while(tecla[KEY_6])
     {
+    render_opengl_windows();
     letra='6';
     presionado=1;
     }
   while(tecla[KEY_7])
     {
+    render_opengl_windows();
     letra='7';
     presionado=1;
     }
   while(tecla[KEY_8])
     {
+    render_opengl_windows();
     letra='8';
     presionado=1;
     }
   while(tecla[KEY_9])
     {
+    render_opengl_windows();
     letra='9';
     presionado=1;
     }
   while(tecla[KEY_0])
     {
+    render_opengl_windows();
     letra='0';
     presionado=1;
     }
   while(tecla[KEY_PUNTO])
     {
+    render_opengl_windows();
     letra='.';
     presionado=1;
     }
   while(tecla[KEY_GUION])
     {
+    render_opengl_windows();
     letra='-';
     presionado=1;
     }
@@ -1002,18 +1069,22 @@ while(tecla[KEY_ENTER]==0)
     {
     while(tecla[KEY_BACKSPACE])  //atorar aqui hasta que se suelte esa tecla
       {
+      render_opengl_windows();
       }
     if(n>0)  //para no escribir en valores fuera de lo normal
       {
       n--;
       }
     }
-
   if(presionado)
     {
     palabra[n]=letra;
+    palabra[n+1]='\0';
     gotoxy(i+n,j);
     printf("%c",letra);
+    sprintf(aux,"%c",letra);
+    texto(i+n*8,j*8,2,10,aux);
+    texto(i,j*8+40,1,15,palabra);
     if(n<127)  //para no escribir en valores fuera de lo normal
       {
       n++;
@@ -1074,7 +1145,6 @@ for(j=0;j<26;j++)  //poner en negro todo
 abrir_editor("editor0.txt");
 fondoeditor(0);
 ayuda_editor();
-
 mostrar_raton();
 while(tecla[KEY_ESC]!=1)  //ESC salir del editor
   {
@@ -1161,6 +1231,12 @@ while(tecla[KEY_ESC]!=1)  //ESC salir del editor
       {
       if(ratony>=416 && ratony<432)  //flecha arriba
         {
+while(botonraton==1 || botonraton==2)
+{
+estado_boton_posicion();
+render_opengl_windows();
+delay(retraso);
+}
         if(tipofondo==0)
           {
           if(pagina==-1)
@@ -1206,6 +1282,12 @@ while(tecla[KEY_ESC]!=1)  //ESC salir del editor
         }
       if(ratony>=464 && ratony<480)  //flecha abajo
         {
+while(botonraton==1 || botonraton==2)
+{
+estado_boton_posicion();
+render_opengl_windows();
+delay(retraso);
+}
         if(tipofondo==0)
           {
           if(pagina==-1)
@@ -1310,9 +1392,11 @@ while(tecla[KEY_ESC]!=1)  //ESC salir del editor
     abrir_editor("editor2.txt");
     fondoeditor(2);
     }
+  render_opengl_windows();
   }
 ocultar_raton();
 while(tecla[KEY_ESC]==1)
   {
+  render_opengl_windows();
   }
 }

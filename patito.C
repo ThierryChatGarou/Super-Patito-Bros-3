@@ -52,6 +52,7 @@ int CPS=30;  //cuadros por segundo. Es la velocidad a la que el juego funciona.
 int debug=1,control_usuario=1;  //modo debug y permitir que el usuario controle el personaje.
 int tiempo_invensible=120;  //120 cuadros (4 segundos si CPS=30) de tiempo que el personaje esta inmune despues de recibir daño.
 char c1,c2;  //sistema de colisiones  //c3,c4;
+int pantalla=0;  //indica que pantalla se debe de actualizar despues de que la ventana se ha minimizado
 
 //Variables de los personajes: contiene la informacion de su existencia, estado, posicion, velocidad, etc.
 //nvariable[] cuando es !=0 indica que existe el personaje, el signo o valor puede indicar un estado especifico.
@@ -938,7 +939,7 @@ char *dname[] = {"Requiere deteccion",
                  "MCGA",
                  "EGA",
                  "EGA 64K",
-		 "EGA mono",                      /* EGA monocromo */
+                 "EGA mono",                      /* EGA monocromo */
                  "IBM 8514",
                  "Hercules mono",                /* Hercules monocromo */
                  "AT&T 6300 PC",
@@ -1078,8 +1079,8 @@ gotoxy(42,10);   cprintf("º Compatibles:                  º");
 gotoxy(42,11);   cprintf("º                               º");
 gotoxy(42,12);   cprintf("º -MSDOS                        º");
 gotoxy(42,13);   cprintf("º -Freedos y similares          º");
-gotoxy(42,14);   cprintf("º -Windows 9x                   º");
-gotoxy(42,15);   cprintf("º -Windows ME                   º");
+gotoxy(42,14);   cprintf("º -Windows 95/98/ME             º");
+gotoxy(42,15);   cprintf("º -Windows NT/2000/XP           º");
 gotoxy(42,16);   cprintf("º                               º");
 gotoxy(42,17);   cprintf("º                               º");
 gotoxy(42,18);   cprintf("º                               º");
@@ -1148,8 +1149,7 @@ if (errorcode != grOk)  //Si ocurre un error
   }
 textcolor(0x0F);
 gotoxy(9,12);
-#warning comentado
-//cprintf("%s",dname[gdriver]);
+cprintf("%s",dname[gdriver]);
 }
 
 
@@ -3954,7 +3954,8 @@ void panel()
 void panelnumerico()
 {
   int n;
-#warning comentado
+  static char aux[80];
+#ifdef MSDOS
   gotoxy(4,28);
   printf("Nivel %d-%d ",nivel,escena);
   gotoxy(4,29);
@@ -3974,6 +3975,32 @@ void panelnumerico()
   printf("monedas %d   ",monedas);
   gotoxy(40,29);
   printf("Tiempo %d  ",tiempo);
+#else
+  setfillstyle(1,0);
+  bar(104,432,488,456); //borrar letras antiguas
+  sprintf(aux,"Nivel %d-%d ",nivel,escena);
+  texto(13*8,27*16,0,15,aux);
+  sprintf(aux,"Vidas %d   ",vidas);
+  texto(13*8,28*16,0,15,aux);
+  //sprintf(aux,"ß");
+  sprintf(aux,"­");
+  for(n=0;n<volar;n++)
+    {
+    texto((24+n)*8,27*16,2,10,aux);
+    }
+  //sprintf(aux," ");
+  sprintf(aux,"­");
+  for(n=volar;n<22;n++)
+    {
+    texto((24+n)*8,27*16,4,13,aux);
+    }
+  sprintf(aux,"Puntos %li  ",puntos);
+  texto(24*8,28*16,0,15,aux);
+  sprintf(aux,"monedas %d   ",monedas);
+  texto(49*8,27*16,0,15,aux);
+  sprintf(aux,"Tiempo %d  ",tiempo);
+  texto(49*8,28*16,0,15,aux);
+#endif
 }
 
 
@@ -5523,6 +5550,7 @@ InstalaTeclado();
 #warning no comentar
 //randomize();
 test_velocidad_paleta();
+printf("        Cargando... ­OK!\r\n");
 
 nivel=-3;
 escena=20;

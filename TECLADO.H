@@ -4,7 +4,7 @@
 #include <dos.h>
 #include "teclas.h"
 
-unsigned char tecla[128];  //Aqui esta el vector que contiene el estado de las teclas
+unsigned char tecla[256];  //Aqui esta el vector que contiene el estado de las teclas, 128 en MSDOS, 256 Windows
 char Tecladoinstalado=0;  //Para saber si esta instalada nuestra rutina
 
 //void interrupt(*Anterior9h)();	//Aqui se guardan los vectores antiguos
@@ -51,20 +51,32 @@ Tecladoinstalado=0;*/
 //Rutina de interrupciones
 void IntTeclado(void)
 {
+int i;
 
-tecla[KEY_CONTROL]=GetKeyState ( KEY_CONTROL ) & 0x80;
-tecla[KEY_ESPACIO]=GetKeyState ( KEY_ESPACIO ) & 0x80;
-tecla[KEY_F1]=GetKeyState ( KEY_F1 ) & 0x80;
-tecla[KEY_F2]=GetKeyState ( KEY_F2 ) & 0x80;
-tecla[KEY_F3]=GetKeyState ( KEY_F3 ) & 0x80;
-tecla[KEY_F4]=GetKeyState ( KEY_F4 ) & 0x80;
-tecla[KEY_F11]=GetKeyState ( KEY_F11 ) & 0x80;
-tecla[KEY_F12]=GetKeyState ( KEY_F12 ) & 0x80;
-tecla[KEY_ENTER]=GetKeyState ( KEY_ENTER ) & 0x80;
-tecla[KEY_CUR_ADELANTE]=GetKeyState ( KEY_CUR_ADELANTE ) & 0x80;
-tecla[KEY_CUR_ATRAS]=GetKeyState ( KEY_CUR_ATRAS ) & 0x80;
-tecla[KEY_CUR_ARRIBA]=GetKeyState ( KEY_CUR_ARRIBA ) & 0x80;
-tecla[KEY_CUR_ABAJO]=GetKeyState ( KEY_CUR_ABAJO ) & 0x80;
+/*
+tecla[KEY_CONTROL]=(GetKeyState ( KEY_CONTROL ) & 0x80) ? 1 : 0;
+tecla[KEY_ESPACIO]=(GetKeyState ( KEY_ESPACIO ) & 0x80) ? 1 : 0;
+tecla[KEY_F1]=(GetKeyState ( KEY_F1 ) & 0x80) ? 1 : 0;
+tecla[KEY_F2]=(GetKeyState ( KEY_F2 ) & 0x80) ? 1 : 0;
+tecla[KEY_F3]=(GetKeyState ( KEY_F3 ) & 0x80) ? 1 : 0;
+tecla[KEY_F4]=(GetKeyState ( KEY_F4 ) & 0x80) ? 1 : 0;
+tecla[KEY_F11]=(GetKeyState ( KEY_F11 ) & 0x80) ? 1 : 0;
+tecla[KEY_F12]=(GetKeyState ( KEY_F12 ) & 0x80) ? 1 : 0;
+tecla[KEY_ENTER]=(GetKeyState ( KEY_ENTER ) & 0x80) ? 1 : 0;
+tecla[KEY_CUR_ADELANTE]=(GetKeyState ( KEY_CUR_ADELANTE ) & 0x80) ? 1 : 0;
+tecla[KEY_CUR_ATRAS]=(GetKeyState ( KEY_CUR_ATRAS ) & 0x80) ? 1 : 0;
+tecla[KEY_CUR_ARRIBA]=(GetKeyState ( KEY_CUR_ARRIBA ) & 0x80) ? 1 : 0;
+tecla[KEY_CUR_ABAJO]=(GetKeyState ( KEY_CUR_ABAJO ) & 0x80) ? 1 : 0;
+tecla[KEY_ESC]=(GetKeyState ( KEY_ESC ) & 0x80) ? 1 : 0;
+*/
+
+GetKeyboardState(tecla);
+for(i=0; i<256; i++)
+  {
+  tecla[i]= (tecla[i]& 0x80) ? 1 : 0;
+  }
+
+
 
 
 /*int i;

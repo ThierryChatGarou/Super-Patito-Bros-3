@@ -15,10 +15,9 @@ MSG msg;
 BOOL bQuit = FALSE;
 HINSTANCE hInstance;
 
-int ratonx,ratony;
 int last_Lmouse=0,last_Rmouse=0;
 int sec1=0,conteo=0;
-
+int actual_color=15;
 
 #endif
 
@@ -31,7 +30,7 @@ void frameStarted(void)
         conteo++;
         }
 
-    mouse_getcoordinates();
+    //mouse_getcoordinates();
 
 
     }
@@ -42,16 +41,18 @@ void create_scene(void)
 #ifdef GRAPHICS
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+    //Nota: SwapBuffers no se use si SINGLE_GLBUFFER esta definido
     //fondo();
-    SwapBuffers(hDC);
-    //fondo();//dibujar lo mismo en abos lados del buffer
-    SwapBuffers(hDC);
+    //SwapBuffers(hDC);
+    //fondo();//dibujar lo mismo en ambos lados del buffer
+    //SwapBuffers(hDC);
 #endif
     }
 
 
 void render_opengl_windows(void)
     {
+#ifndef MSDOS
     static unsigned char hwnd_focus=0;
 #ifdef GRAPHICS
     /* check for messages */
@@ -72,16 +73,20 @@ void render_opengl_windows(void)
         {
 
         }
+
+//#define PAUSE_IF_NOT_FOCUSED
+#ifndef PAUSE_IF_NOT_FOCUSED
 //Detect loose of focus
     HWND hwnd_foreground = GetForegroundWindow();
     if(hwnd == hwnd_foreground)
         {
          //printf("Foreground True\r\n");
-          if(hwnd_focus==0)
+         IntTeclado();
+          if(hwnd_focus==0)  //si la ventana se ha activado entonces es necesario redibujar fondo
                {
                hwnd_focus=1;
-               //es necesario redibujar fondo
-               fondo();
+               SwapBuffers(hDC);
+               SwapBuffers(hDC);
                }
         }
     else
@@ -89,9 +94,50 @@ void render_opengl_windows(void)
          //printf("Foreground False\r\n");
          hwnd_focus=0;
         }
+#else
+//Detect loose of focus
+    HWND hwnd_foreground = GetForegroundWindow();
+    if(hwnd == hwnd_foreground)
+        {
+         //printf("Foreground True\r\n");
+         IntTeclado();
+         if(hwnd_focus==0)  //si la ventana se h activado entonces es necesario redibujar fondo
+               {
+               hwnd_focus=1;
+               SwapBuffers(hDC);
+               SwapBuffers(hDC);
+               }
+        }
+    else
+        {
+         //printf("Foreground False\r\n");
+         hwnd_focus=0;
+         while(hwnd != hwnd_foreground)
+            {
+            hwnd_foreground = GetForegroundWindow();
+            if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+                {
+                /* handle or dispatch messages */
+                if (msg.message == WM_QUIT)
+                    {
+                    bQuit = TRUE;
+                    }
+                else
+                    {
+                    TranslateMessage(&msg);
+                    DispatchMessage(&msg);
+                    }
+                }
+            else
+                {
+
+                }
+            }
+        }
+#endif  //ifndef PAUSE_IF_NOT_FOCUSED
+
 
 /* OpenGL animation code goes here */
-        IntTeclado();
         frameStarted();
         //fondo();
 #ifdef SINGLE_GLBUFFER
@@ -102,19 +148,76 @@ void render_opengl_windows(void)
 #endif
 
 #endif
+#endif
     }
 
+
+//GetConsoleWindow(); no es soportado en esta version de windows, se hace este workaround
+HWND GetConsoleHandle()
+    {
+	#define BUFFSIZE 768
+	HWND hwnd;
+	char pszWindowTitle[BUFFSIZE];
+
+	GetConsoleTitle(pszWindowTitle, BUFFSIZE);
+	int i = strlen(pszWindowTitle);
+	_itoa(GetTickCount(), &pszWindowTitle[i], 16);
+	_itoa(GetCurrentProcessId(), &pszWindowTitle[strlen(pszWindowTitle)], 16);
+	SetConsoleTitle(pszWindowTitle);
+	Sleep(50);
+	hwnd = FindWindow(NULL, pszWindowTitle);
+	pszWindowTitle[i] = 0;
+	SetConsoleTitle(pszWindowTitle);
+	return(hwnd);
+    }
+
+
+//Bloquea el programa y espera a que se selccione la ventana.
+void wait_foreground()
+    {
+#ifndef MSDOS
+    //HWND hwnd_console = GetConsoleHandle();
+    //ShowWindow(hwnd_console, 0);  //Hide console window and wait for the opengl window to show
+    HWND hwnd_foreground = GetForegroundWindow();
+    while(hwnd != hwnd_foreground)
+        {
+        hwnd_foreground = GetForegroundWindow();
+        if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+            {
+            /* handle or dispatch messages */
+            if (msg.message == WM_QUIT)
+                {
+                bQuit = TRUE;
+                }
+            else
+                {
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
+                }
+            }
+        else
+            {
+
+            }
+        }
+        //No se porque pero es necesario para evitar que se quede la pantalla negra si se selecciona la ventana muy rapidamente.
+        glDrawBuffer(GL_FRONT);
+        //glFlush();
+#endif
+    }
 
 /**
 Inicializa una ventana de Opengl de dimensiones especificadas
 por las constantes CLIENTWIDTH y CLIENTHEIGHT.
-@return Retorna 0 en 茅xito y 1 si falla la inicializaci贸n.
+@return Retorna 0 en 倄ito y 1 si falla la inicializaci.
 **/
 int init_opengl_windows()
     {
 #ifdef GRAPHICS
 #define CLIENTWIDTH 640
 #define CLIENTHEIGHT 480
+    SetConsoleTitle("Super Patito Bros 3 - Console");
+
     RECT Rect,RectAct;
     hInstance = GetModuleHandle(NULL);
 
@@ -130,7 +233,7 @@ int init_opengl_windows()
     wcex.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
     wcex.lpszMenuName = NULL;
     wcex.lpszClassName = "GLSample";
-    wcex.hIconSm = LoadIcon(NULL, IDI_APPLICATION);;
+    wcex.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
 
     if (!RegisterClassEx(&wcex))
         return 1;
@@ -203,8 +306,8 @@ void destroy_opengl_windows(void)
 #ifdef GRAPHICS
 /**
 Interpreta los comandos recibidos por la ventana de OpenGL y realiza acciones.
-Termina el programa el presionar el bot贸n de cerrar
-Esta funci贸n es un CALLBACK y es llamada por el sistema operativo.
+Termina el programa el presionar el bot de cerrar
+Esta funci es un CALLBACK y es llamada por el sistema operativo.
 @param hwnd: Handle a la ventana a la que se escucha los comandos.
 @param uMsg: Mensaje de windows
 @param wParam: WParam de MS Windows
@@ -232,10 +335,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 {
                 switch (wParam)
                     {
-                    case VK_ESCAPE:
+                    /*case VK_ESCAPE:
                         PostQuitMessage(0);
                         exit(0);
-                        break;
+                        break;*/
                     }
                 }
             break;
@@ -251,7 +354,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 /**
 Habilita OpenGl en la ventana, dispositivo y render seleccionado.
-@param hwnd: Ventana que contiene el 谩rea para dibujar en OpenGL
+@param hwnd: Ventana que contiene el 爎ea para dibujar en OpenGL
 @param hDC: contexto del dispositivo
 @param hRC: contexto del sistema de renderizado.
 **/
@@ -291,8 +394,8 @@ void EnableOpenGL(HWND hwnd, HDC* hDC, HGLRC* hRC)
 #ifdef GRAPHICS
 
 /**
-Deshabilita OpenGl y libera los recursos uti帽lizados.
-@param hwnd: Ventana que contiene el 谩rea de dibujo en OpenGL
+Deshabilita OpenGl y libera los recursos utiizados.
+@param hwnd: Ventana que contiene el 爎ea de dibujo en OpenGL
 @param hDC: contexto del dispositivo
 @param hRC: contexto del sistema de renderizado.
 **/
@@ -305,17 +408,54 @@ void DisableOpenGL (HWND hwnd, HDC hDC, HGLRC hRC)
 
 
 /**
-Obtiene las coordenadas del rat贸n en la ventana en el espacio cliente
+Obtiene las coordenadas del rat en la ventana en el espacio cliente
 (el espacio de trabajo) y almacena los valores obtenidos en
 las variables globales ratonx y raton y
 **/
-void mouse_getcoordinates(void)
+void mouse_getcoordinates(int *ratonx, int *ratony)
     {
+    static int lastx=0,lasty=0;
     POINT curpos;
     GetCursorPos(&curpos);
     ScreenToClient( hwnd, &curpos);
-    ratonx=curpos.x;
-    ratony=curpos.y;
+
+    if(curpos.x<0 || curpos.x>=640 || curpos.y<0 || curpos.y>=479)
+      {
+      *ratonx=lastx;
+      *ratony=lasty;
+      }
+    else
+      {
+      *ratonx = curpos.x;
+      *ratony = curpos.y;
+      lastx = curpos.x;
+      lasty = curpos.y;
+      }
+
+
+
+/*
+
+    *ratonx=curpos.x;
+    *ratony=curpos.y;
+
+if(ratonx<0)
+{
+ratonx=0;
+}
+if()
+{
+ratonx=639;
+}
+if(ratony<0)
+{
+ratony=0;
+}
+if(ratony>=479)
+{
+ratony=479;
+}*/
+
     }
 
 
@@ -323,6 +463,8 @@ void mouse_getcoordinates(void)
 /** Sobre escribiendo funciones Graficas MSDOS **/
 int detectgraph(int *gdriver, int *gmode)
 {
+*gdriver=9;
+*gmode=2;
 return 0;
 }
 
@@ -341,7 +483,9 @@ return aux;
 
 int initgraph(int *gdriver, int *gmode, char *a)
 {
-init_opengl_windows(__FILE__,__LINE__);
+*gdriver=9;
+*gmode=2;
+init_opengl_windows();
 return 0;
 }
 
@@ -360,15 +504,6 @@ int closegraph()
 return 0;
 }
 
-void setcolor(int a)
-{
-
-}
-
-void line(int a, int b, int x, int y)
-{
-
-}
 
 /**
 * Dibuja un pixel de un color en la pantalla en las coordenadas dadas.
@@ -396,7 +531,7 @@ inline void GLpixel(short x, short y, unsigned char r, unsigned char g, unsigned
 inline void putpixel(short x, short y, unsigned char color)
     {
     glBegin(GL_POINTS);
-    switch (color)
+    switch (color%16)
         {
         case 0:
             glColor3ub(0,0,0);
@@ -471,8 +606,27 @@ inline void GLline(short x, short y, short x2, short y2, unsigned char r, unsign
 
 
 /**
-* Dibuja un rect谩ngulo sin relleno
-* @param [in] x,y,x2,y2: Dibuja un rect谩ngulo desde x,y hasta x2,y2
+* Dibuja una linea del color actual en la pantalla en las coordenadas dadas emulando el sistema BGI
+* @param [in] x,y: Coordenadas iniciales.
+* @param [in] x2,y2: coordenadas finales en la pantalla.
+* @param [in] r,g,b: color en formato RGB
+* @return no retorna.
+* @remarks metodo ineficiente, ya que usa glBegin() y glEnd() por cada linea. los colores tienen un valor de 0 a 255
+**/
+inline void line(int x1, int y1, int x2, int y2)
+    {
+    glBegin(GL_LINES);
+    setcolor(actual_color);
+    glVertex2f(x1, y1);
+    glVertex2f(x2, y2);
+    glEnd();
+    }
+
+
+
+/**
+* Dibuja un rect爊gulo sin relleno
+* @param [in] x,y,x2,y2: Dibuja un rect爊gulo desde x,y hasta x2,y2
 * @param [in] r,g,b:  color en formato RGB
 * @return no retorna.
 * @remarks metodo ineficiente, ya que usa glBegin() y glEnd() por cada linea. los colores tienen un valor de 0 a 255
@@ -489,12 +643,12 @@ inline void GLrectangle(short x, short y, short x2, short y2, unsigned char r, u
     }
 
 /**
-* Dibuja un rect谩ngulo con relleno
-* @param [in] x,y,x2,y2: Dibuja un rect谩ngulo desde x,y hasta x2,y2
+* Dibuja un rect爊gulo con relleno
+* @param [in] x,y,x2,y2: Dibuja un rect爊gulo desde x,y hasta x2,y2
 * @param [in] r,g,b: color en formato RGB
 * @return no retorna.
 * @remarks metodo ineficiente, ya que usa glBegin() y glEnd() por cada linea. los colores tienen un valor de 0 a 255
-*          Dibuja incluyendo x2,y2 del mismo modo que la clasica librer铆a BGI
+*          Dibuja incluyendo x2,y2 del mismo modo que la clasica librer BGI
 **/
 inline void GLbar(short x, short y, short x2, short y2, unsigned char r, unsigned char g, unsigned char b)
     {
@@ -517,6 +671,70 @@ inline void GLbar(short x, short y, short x2, short y2, unsigned char r, unsigne
 **/
 inline void setfillstyle(unsigned char style, unsigned char color)
     {
+    actual_color=color;
+    switch (color)
+        {
+        case 0:
+            glColor3ub(0,0,0);
+            break;
+        case 1:
+            glColor3ub(0,0,168);
+            break;
+        case 2:
+            glColor3ub(0,168,0);
+            break;
+        case 3:
+            glColor3ub(0,168,168);
+            break;
+        case 4:
+            glColor3ub(168,0,0);
+            break;
+        case 5:
+            glColor3ub(168,0,160);
+            break;
+        case 6:
+            glColor3ub(168,80,0);
+            break;
+        case 7:
+            glColor3ub(168,168,168);
+            break;
+        case 8:
+            glColor3ub(84,84,84);
+            break;
+        case 9:
+            glColor3ub(84,84,255);
+            break;
+        case 10:
+            glColor3ub(80,255,80);
+            break;
+        case 11:
+            glColor3ub(80,255,255);
+            break;
+        case 12:
+            glColor3ub(255,80,80);
+            break;
+        case 13:
+            glColor3ub(255,80,255);
+            break;
+        case 14:
+            glColor3ub(255,255,80);
+            break;
+        case 15:
+            glColor3ub(255,255,255);
+            break;
+        }
+    }
+
+
+/**
+* emula la funcion setcolor de BGI
+* @param color: un color de 0 a 15 en formato BGI
+* @return no retorna.
+* @remarks metodo ineficiente. los colores tienen un valor de 0 a 15
+**/
+inline void setcolor(int color)
+    {
+    actual_color=color;
     switch (color)
         {
         case 0:
@@ -573,13 +791,14 @@ inline void setfillstyle(unsigned char style, unsigned char color)
 
 /**
 * emula la funcion bar de BGI
-* @param x,y,x2,y2: Dibuja un rect谩ngulo desde x,y hasta x2,y2
+* @param x,y,x2,y2: Dibuja un rect爊gulo desde x,y hasta x2,y2
 * @return no retorna.
 * @remarks metodo ineficiente.
 **/
 inline void bar(short x, short y, short x2, short y2)
     {
     glBegin(GL_QUADS);
+    setcolor(actual_color);
     glVertex2f(x, y);
     glVertex2f(x2+1, y);
     glVertex2f(x2+1, y2+1);
@@ -589,7 +808,7 @@ inline void bar(short x, short y, short x2, short y2)
 
 /**
 * Dibuja un circulo con lineas
-* @param x,y: posici贸n x,y del centro del circulo
+* @param x,y: posici x,y del centro del circulo
 * @param radius: radio del circulo
 * @param r,g,b: color en formato RGB
 * @return no retorna.
@@ -634,7 +853,7 @@ inline void GLcircle(short x, short y, unsigned short radius, unsigned char r, u
 
 /**
 * Dibuja un circulo relleno con triangulos
-* @param x,y: posici贸n x,y del centro del circulo
+* @param x,y: posici x,y del centro del circulo
 * @param radius: radio del circulo
 * @param r,g,b: color en formato RGB
 * @return no retorna.
@@ -680,7 +899,7 @@ inline void GLpoint(short x, short y, unsigned short radius, unsigned char r, un
 
 /**
 * Dibuja una imagen BMP16
-* @param [in] i,j: posici贸n x,y de la imagen
+* @param [in] i,j: posici x,y de la imagen
 * @param [in] nombrearchivo: nombre del archivo BMP
 * @return no retorna.
 * @remarks nececita eficientar, la imagenes deben ser multiplo de 4 en X debido a problemas con el formato BMP
@@ -839,7 +1058,7 @@ inline void GLpoint(short x, short y, unsigned short radius, unsigned char r, un
 
 /**
 * Dibuja una imagen BMP de 24 bits 8B 8G 8R
-* @param i,j: posici贸n x,y de la imagen
+* @param i,j: posici x,y de la imagen
 * @param nombrearchivo: nombre del archivo BMP
 * @return no retorna.
 * @remarks la imagenes deben ser multiplo de 4 en X debido a problemas con el formato BMP

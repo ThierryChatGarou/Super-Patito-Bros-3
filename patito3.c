@@ -292,15 +292,24 @@ for(n=0;n<numero_de_cambios;n++)
 
 int verificar_archivo(char *file_name)
   {
-/*  struct ffblk ffblk;
+#ifdef MSDOS  
+  struct ffblk ffblk;
   int file_error;
   file_error = findfirst(file_name,&ffblk,0);
   if(file_error != 0)
     {
     printf("No se encuentra el archivo: %s\n",file_name);
     }
-  return file_error;*/
-return 0;  //quitar
+  return file_error;
+#else
+    FILE *file;
+    if ((file = fopen(file_name, "r")))
+    {
+        fclose(file);
+        return 0;
+    }
+    return 1;
+#endif
   }
 
 
@@ -598,6 +607,7 @@ void panel_debug_mundo()
   texto(0,0,2,10,coord);
   sprintf(coord,"y=%d",y);
   texto(48,0,2,10,coord);
+  render_opengl_windows();
 
   while(bucle==0)
     {
@@ -711,6 +721,7 @@ void panel_debug_mundo()
       while(botonraton!=0)  //esperar a soltar el boton
         {
         estado_boton_posicion();
+        render_opengl_windows();
         }
       }
 
@@ -734,6 +745,7 @@ void panel_debug_mundo()
       {
       bucle=1;
       }
+    render_opengl_windows();
     delay(20);
     }
   ocultar_raton();
@@ -817,6 +829,7 @@ void panel_debug_nivel()
   texto(0,0,2,10,coord);
   sprintf(coord,"y=%d",y);
   texto(48,0,2,10,coord);
+  render_opengl_windows();
 
   while(bucle==0)
     {
@@ -956,6 +969,7 @@ void panel_debug_nivel()
       while(botonraton!=0)  //esperar a soltar el boton
         {
         estado_boton_posicion();
+        render_opengl_windows();
         }
       }
 
@@ -981,6 +995,7 @@ void panel_debug_nivel()
       {
       bucle=1;
       }
+    render_opengl_windows();
     delay(20);
     }
   ocultar_raton();

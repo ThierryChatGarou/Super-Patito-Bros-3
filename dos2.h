@@ -9,13 +9,14 @@
 #else    //windows
 
 void sound(int f);
-#define nosound() //nada
+#define nosound() //Todo
 
 #endif
 
 
 void delayms(int ms);
 void delays(int _s);
+void delay(int ms);
 
 
 

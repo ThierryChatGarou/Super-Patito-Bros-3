@@ -305,7 +305,7 @@ while(ciclo<1)
     }
   if(tecla[KEY_F10])  ////////////////////////////test
     {
-      ciclo=1;
+      /*ciclo=1;
       x=16;
       y=32;
       vx=0;
@@ -316,7 +316,7 @@ while(ciclo<1)
       cargar_configuracion();
       escena_presentacion();// esto no va aqui, solo es temporal
       nivel=0;  //esto tampoco va
-      escena=0;
+      escena=0;*/
     }
 
   if(tecla[KEY_F12])  //panel debug mundo
@@ -505,10 +505,19 @@ while(ciclo<1)
     }
   if(tecla[KEY_F1])  //F1 ayuda
     {
+    while(tecla[KEY_F1])
+    {
+    delay(retraso);
+    render_opengl_windows();
+    }
     ayuda_mundo();
     }
   if(tecla[KEY_F2])  //editor de nivel
     {
+    while(tecla[KEY_F2])
+    {
+    render_opengl_windows();
+    }
     editornivel();
     abrir(0,-88);  //para recargar el mundo
     fondomundo();
@@ -7540,6 +7549,7 @@ int n,i,p_disparando,selector=0,selectory=320;
 char T;
 ciclo=0;
 nadando=0;
+wait_foreground();  //Esperar a que se active la ventana antes de empezar el juego para evitar errores gr ficos
 paleta_negra();
 abrir(-3,20);
 abrircielo(-3,20);
