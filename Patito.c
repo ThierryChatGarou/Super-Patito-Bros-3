@@ -5532,6 +5532,96 @@ for(n=0;n<8;n++)
 }
 
 
+teclado()
+{
+  tecla=0;
+  if(bioskey(1))  //funciona igual que kbhit() con la diferecia que con bioskey que si no presionas una tecla despues de un tiempo se alenta el cheque del teclado
+    {
+    tecla = bioskey(0);  //capturar tecla presionada
+    }
+  if(tecla == 0);
+    {
+    if(vx<0)  //disminuir la velocidad
+      {
+      vx=vx+0.0625;
+      }
+    else if(vx>0)
+      {
+      vx=vx-0.0625;
+      }
+   /* if(vy<0)  //disminuir la velocidad (no se requiere)
+      {
+      vy=vy+0.125;
+      }
+    else if(vy>0)
+      {
+      vy=vy-0.125;
+      }*/
+    }
+  if(tecla==19200)  //izquierda 75
+    {
+    vx=vx-0.5;
+    dir=-1;
+    }
+  if(tecla==19712)  //derecha 77
+    {
+    dir=1;
+    if(vx<1 && vx>=0)  //esto no deberia existir pero hay problemas para avanzar a la derecha
+      {
+      vx=vx+1.0;
+      }
+    vx=vx+0.5;
+    }
+  if(tecla==14624)  //espacio volar 32
+    {
+    vy=-4.0;
+    }
+  if(tecla==18432)  //saltar 72
+    {
+    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]<32 || (paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]<32 && x%16!=0))  //bloques en general
+      {
+      vy=-8.0;
+      }
+    }
+  if(tecla==7181)  //enter pausar el juego
+    {
+    pausa();
+    }
+  if(tecla==21248)  //suprimir  truco: elimina patos
+    {
+    r_pato();
+    }
+  if(tecla==27392)  //Alt+F4 salir
+    {
+    exit (2);
+    }
+  if(tecla==15104)  //F1 ayuda 
+    {
+    ayuda();
+    }
+  if(tecla==283)  //esc 27
+    {
+    //menu();
+    }
+  if(vx>4)  //limite de velocidad
+    {
+    vx=4;
+    }
+  if(vy>8)  //limite de velocidad (gravedad)
+    {
+    vy=8;
+    }
+  if(vx<-4)  //limite de velocidad
+    {
+    vx=-4;
+    }
+  /*if(vy<-4)  //limite de velocidad (no requiere)
+    {
+    vy=-4;
+    }*/
+}
+
+
 
 
 //=========================================================================================================
@@ -5813,92 +5903,7 @@ while(ciclo<1)
 
 ////////teclado
 
-  tecla=0;
-  if(bioskey(1))  //funciona igual que kbhit() con la diferecia que con bioskey que si no presionas una tecla despues de un tiempo se alenta el cheque del teclado
-    {
-    tecla = bioskey(0);  //capturar tecla presionada
-    }
-  if(tecla == 0);
-    {
-    if(vx<0)  //disminuir la velocidad
-      {
-      vx=vx+0.0625;
-      }
-    else if(vx>0)
-      {
-      vx=vx-0.0625;
-      }
-   /* if(vy<0)  //disminuir la velocidad (no se requiere)
-      {
-      vy=vy+0.125;
-      }
-    else if(vy>0)
-      {
-      vy=vy-0.125;
-      }*/
-    }
-  if(tecla==19200)  //izquierda 75
-    {
-    vx=vx-0.5;
-    dir=-1;
-    }
-  if(tecla==19712)  //derecha 77
-    {
-    dir=1;
-    if(vx<1 && vx>=0)  //esto no deberia existir pero hay problemas para avanzar a la derecha
-      {
-      vx=vx+1.0;
-      }
-    vx=vx+0.5;
-    }
-  if(tecla==14624)  //espacio volar 32
-    {
-    vy=-4.0;
-    }
-  if(tecla==18432)  //saltar 72
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]<32 || (paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]<32 && x%16!=0))  //bloques en general
-      {
-      vy=-8.0;
-      }
-    }
-  if(tecla==7181)  //enter pausar el juego
-    {
-    pausa();
-    }
-  if(tecla==21248)  //suprimir  truco: elimina patos
-    {
-    r_pato();
-    }
-  if(tecla==27392)  //Alt+F4 salir
-    {
-    exit (2);
-    }
-  if(tecla==15104)  //F1 ayuda 
-    {
-    ayuda();
-    }
-  if(tecla==283)  //esc 27
-    {
-    //menu();
-    }
-  if(vx>4)  //limite de velocidad
-    {
-    vx=4;
-    }
-  if(vy>8)  //limite de velocidad (gravedad)
-    {
-    vy=8;
-    }
-  if(vx<-4)  //limite de velocidad
-    {
-    vx=-4;
-    }
-  /*if(vy<-4)  //limite de velocidad (no requiere)
-    {
-    vy=-4;
-    }*/
-
+  teclado();
 
 ////////interaccion de los bloques
 
@@ -6086,92 +6091,7 @@ while(ciclo<1)
 
 ////////teclado
 
-  tecla=0;
-  if(bioskey(1))  //funciona igual que kbhit() con la diferecia que con bioskey que si no presionas una tecla despues de un tiempo se alenta el cheque del teclado
-    {
-    tecla = bioskey(0);  //capturar tecla presionada
-    }
-  if(tecla == 0);
-    {
-    if(vx<0)  //disminuir la velocidad
-      {
-      vx=vx+0.0625;
-      }
-    else if(vx>0)
-      {
-      vx=vx-0.0625;
-      }
-   /* if(vy<0)  //disminuir la velocidad (no se requiere)
-      {
-      vy=vy+0.125;
-      }
-    else if(vy>0)
-      {
-      vy=vy-0.125;
-      }*/
-    }
-  if(tecla==19200)  //izquierda 75
-    {
-    vx=vx-0.5;
-    dir=-1;
-    }
-  if(tecla==19712)  //derecha 77
-    {
-    dir=1;
-    if(vx<1 && vx>=0)  //esto no deberia existir pero hay problemas para avanzar a la derecha
-      {
-      vx=vx+1.0;
-      }
-    vx=vx+0.5;
-    }
-  if(tecla==14624)  //espacio volar 32
-    {
-    vy=-4.0;
-    }
-  if(tecla==18432)  //saltar 72
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]<32 || (paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]<32 && x%16!=0))  //bloques en general
-      {
-      vy=-8.0;
-      }
-    }
-  if(tecla==7181)  //enter pausar el juego
-    {
-    pausa();
-    }
-  if(tecla==21248)  //suprimir  truco: elimina patos
-    {
-    r_pato();
-    }
-  if(tecla==27392)  //Alt+F4 salir
-    {
-    exit (2);
-    }
-  if(tecla==15104)  //F1 ayuda 
-    {
-    ayuda();
-    }
-  if(tecla==283)  //esc 27
-    {
-    //menu();
-    }
-  if(vx>4)  //limite de velocidad
-    {
-    vx=4;
-    }
-  if(vy>8)  //limite de velocidad (gravedad)
-    {
-    vy=8;
-    }
-  if(vx<-4)  //limite de velocidad
-    {
-    vx=-4;
-    }
-  /*if(vy<-4)  //limite de velocidad (no requiere)
-    {
-    vy=-4;
-    }*/
-
+  teclado();
 
 ////////interaccion de los bloques
 
@@ -6384,91 +6304,7 @@ while(ciclo<1)
 
 ////////teclado
 
-  tecla=0;
-  if(bioskey(1))  //funciona igual que kbhit() con la diferecia que con bioskey que si no presionas una tecla despues de un tiempo se alenta el cheque del teclado
-    {
-    tecla = bioskey(0);  //capturar tecla presionada
-    }
-  if(tecla == 0);
-    {
-    if(vx<0)  //disminuir la velocidad
-      {
-      vx=vx+0.0625;
-      }
-    else if(vx>0)
-      {
-      vx=vx-0.0625;
-      }
-   /* if(vy<0)  //disminuir la velocidad (no se requiere)
-      {
-      vy=vy+0.125;
-      }
-    else if(vy>0)
-      {
-      vy=vy-0.125;
-      }*/
-    }
-  if(tecla==19200)  //izquierda 75
-    {
-    vx=vx-0.5;
-    dir=-1;
-    }
-  if(tecla==19712)  //derecha 77
-    {
-    dir=1;
-    if(vx<1 && vx>=0)  //esto no deberia existir pero hay problemas para avanzar a la derecha
-      {
-      vx=vx+1.0;
-      }
-    vx=vx+0.5;
-    }
-  if(tecla==14624)  //espacio volar 32
-    {
-    vy=-4.0;
-    }
-  if(tecla==18432)  //saltar 72
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]<32 || (paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]<32 && x%16!=0))  //bloques en general
-      {
-      vy=-8.0;
-      }
-    }
-  if(tecla==7181)  //enter pausar el juego
-    {
-    pausa();
-    }
-  if(tecla==21248)  //suprimir  truco: elimina patos
-    {
-    r_pato();
-    }
-  if(tecla==27392)  //Alt+F4 salir
-    {
-    exit (2);
-    }
-  if(tecla==15104)  //F1 ayuda 
-    {
-    ayuda();
-    }
-  if(tecla==283)  //esc 27
-    {
-    //menu();
-    }
-  if(vx>4)  //limite de velocidad
-    {
-    vx=4;
-    }
-  if(vy>8)  //limite de velocidad (gravedad)
-    {
-    vy=8;
-    }
-  if(vx<-4)  //limite de velocidad
-    {
-    vx=-4;
-    }
-  /*if(vy<-4)  //limite de velocidad (no requiere)
-    {
-    vy=-4;
-    }*/
+  teclado();
 
 ////////Especial  crear patos saliendo de la tuberia
 
@@ -6667,92 +6503,7 @@ while(ciclo<1)
 
 ////////teclado
 
-  tecla=0;
-  if(bioskey(1))  //funciona igual que kbhit() con la diferecia que con bioskey que si no presionas una tecla despues de un tiempo se alenta el cheque del teclado
-    {
-    tecla = bioskey(0);  //capturar tecla presionada
-    }
-  if(tecla == 0);
-    {
-    if(vx<0)  //disminuir la velocidad
-      {
-      vx=vx+0.0625;
-      }
-    else if(vx>0)
-      {
-      vx=vx-0.0625;
-      }
-   /* if(vy<0)  //disminuir la velocidad (no se requiere)
-      {
-      vy=vy+0.125;
-      }
-    else if(vy>0)
-      {
-      vy=vy-0.125;
-      }*/
-    }
-  if(tecla==19200)  //izquierda 75
-    {
-    vx=vx-0.5;
-    dir=-1;
-    }
-  if(tecla==19712)  //derecha 77
-    {
-    dir=1;
-    if(vx<1 && vx>=0)  //esto no deberia existir pero hay problemas para avanzar a la derecha
-      {
-      vx=vx+1.0;
-      }
-    vx=vx+0.5;
-    }
-  if(tecla==14624)  //espacio volar 32
-    {
-    vy=-4.0;
-    }
-  if(tecla==18432)  //saltar 72
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]<32 || (paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]<32 && x%16!=0))  //bloques en general
-      {
-      vy=-8.0;
-      }
-    }
-  if(tecla==7181)  //enter pausar el juego
-    {
-    pausa();
-    }
-  if(tecla==21248)  //suprimir  truco: elimina patos
-    {
-    r_pato();
-    }
-  if(tecla==27392)  //Alt+F4 salir
-    {
-    exit (2);
-    }
-  if(tecla==15104)  //F1 ayuda 
-    {
-    ayuda();
-    }
-  if(tecla==283)  //esc 27
-    {
-    //menu();
-    }
-  if(vx>4)  //limite de velocidad
-    {
-    vx=4;
-    }
-  if(vy>8)  //limite de velocidad (gravedad)
-    {
-    vy=8;
-    }
-  if(vx<-4)  //limite de velocidad
-    {
-    vx=-4;
-    }
-  /*if(vy<-4)  //limite de velocidad (no requiere)
-    {
-    vy=-4;
-    }*/
-
+  teclado();
 
 ////////Especial  crear patos saliendo de la tuberia
 
@@ -6951,92 +6702,7 @@ while(ciclo<1)
 
 ////////teclado
 
-  tecla=0;
-  if(bioskey(1))  //funciona igual que kbhit() con la diferecia que con bioskey que si no presionas una tecla despues de un tiempo se alenta el cheque del teclado
-    {
-    tecla = bioskey(0);  //capturar tecla presionada
-    }
-  if(tecla == 0);
-    {
-    if(vx<0)  //disminuir la velocidad
-      {
-      vx=vx+0.0625;
-      }
-    else if(vx>0)
-      {
-      vx=vx-0.0625;
-      }
-   /* if(vy<0)  //disminuir la velocidad (no se requiere)
-      {
-      vy=vy+0.125;
-      }
-    else if(vy>0)
-      {
-      vy=vy-0.125;
-      }*/
-    }
-  if(tecla==19200)  //izquierda 75
-    {
-    vx=vx-0.5;
-    dir=-1;
-    }
-  if(tecla==19712)  //derecha 77
-    {
-    dir=1;
-    if(vx<1 && vx>=0)  //esto no deberia existir pero hay problemas para avanzar a la derecha
-      {
-      vx=vx+1.0;
-      }
-    vx=vx+0.5;
-    }
-  if(tecla==14624)  //espacio volar 32
-    {
-    vy=-4.0;
-    }
-  if(tecla==18432)  //saltar 72
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]<32 || (paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]<32 && x%16!=0))  //bloques en general
-      {
-      vy=-8.0;
-      }
-    }
-  if(tecla==7181)  //enter pausar el juego
-    {
-    pausa();
-    }
-  if(tecla==21248)  //suprimir  truco: elimina patos
-    {
-    r_pato();
-    }
-  if(tecla==27392)  //Alt+F4 salir
-    {
-    exit (2);
-    }
-  if(tecla==15104)  //F1 ayuda 
-    {
-    ayuda();
-    }
-  if(tecla==283)  //esc 27
-    {
-    //menu();
-    }
-  if(vx>4)  //limite de velocidad
-    {
-    vx=4;
-    }
-  if(vy>8)  //limite de velocidad (gravedad)
-    {
-    vy=8;
-    }
-  if(vx<-4)  //limite de velocidad
-    {
-    vx=-4;
-    }
-  /*if(vy<-4)  //limite de velocidad (no requiere)
-    {
-    vy=-4;
-    }*/
-
+  teclado();
 
 ////////interaccion de los bloques
 
@@ -7224,92 +6890,7 @@ while(ciclo<1)
 
 ////////teclado
 
-  tecla=0;
-  if(bioskey(1))  //funciona igual que kbhit() con la diferecia que con bioskey que si no presionas una tecla despues de un tiempo se alenta el cheque del teclado
-    {
-    tecla = bioskey(0);  //capturar tecla presionada
-    }
-  if(tecla == 0);
-    {
-    if(vx<0)  //disminuir la velocidad
-      {
-      vx=vx+0.0625;
-      }
-    else if(vx>0)
-      {
-      vx=vx-0.0625;
-      }
-   /* if(vy<0)  //disminuir la velocidad (no se requiere)
-      {
-      vy=vy+0.125;
-      }
-    else if(vy>0)
-      {
-      vy=vy-0.125;
-      }*/
-    }
-  if(tecla==19200)  //izquierda 75
-    {
-    vx=vx-0.5;
-    dir=-1;
-    }
-  if(tecla==19712)  //derecha 77
-    {
-    dir=1;
-    if(vx<1 && vx>=0)  //esto no deberia existir pero hay problemas para avanzar a la derecha
-      {
-      vx=vx+1.0;
-      }
-    vx=vx+0.5;
-    }
-  if(tecla==14624)  //espacio volar 32
-    {
-    vy=-4.0;
-    }
-  if(tecla==18432)  //saltar 72
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]<32 || (paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]<32 && x%16!=0))  //bloques en general
-      {
-      vy=-8.0;
-      }
-    }
-  if(tecla==7181)  //enter pausar el juego
-    {
-    pausa();
-    }
-  if(tecla==21248)  //suprimir  truco: elimina patos
-    {
-    r_pato();
-    }
-  if(tecla==27392)  //Alt+F4 salir
-    {
-    exit (2);
-    }
-  if(tecla==15104)  //F1 ayuda 
-    {
-    ayuda();
-    }
-  if(tecla==283)  //esc 27
-    {
-    //menu();
-    }
-  if(vx>4)  //limite de velocidad
-    {
-    vx=4;
-    }
-  if(vy>8)  //limite de velocidad (gravedad)
-    {
-    vy=8;
-    }
-  if(vx<-4)  //limite de velocidad
-    {
-    vx=-4;
-    }
-  /*if(vy<-4)  //limite de velocidad (no requiere)
-    {
-    vy=-4;
-    }*/
-
+  teclado();
 
 ////////interaccion de los bloques
 
@@ -7522,91 +7103,7 @@ while(ciclo<1)
 
 ////////teclado
 
-  tecla=0;
-  if(bioskey(1))  //funciona igual que kbhit() con la diferecia que con bioskey que si no presionas una tecla despues de un tiempo se alenta el cheque del teclado
-    {
-    tecla = bioskey(0);  //capturar tecla presionada
-    }
-  if(tecla == 0);
-    {
-    if(vx<0)  //disminuir la velocidad
-      {
-      vx=vx+0.0625;
-      }
-    else if(vx>0)
-      {
-      vx=vx-0.0625;
-      }
-   /* if(vy<0)  //disminuir la velocidad (no se requiere)
-      {
-      vy=vy+0.125;
-      }
-    else if(vy>0)
-      {
-      vy=vy-0.125;
-      }*/
-    }
-  if(tecla==19200)  //izquierda 75
-    {
-    vx=vx-0.5;
-    dir=-1;
-    }
-  if(tecla==19712)  //derecha 77
-    {
-    dir=1;
-    if(vx<1 && vx>=0)  //esto no deberia existir pero hay problemas para avanzar a la derecha
-      {
-      vx=vx+1.0;
-      }
-    vx=vx+0.5;
-    }
-  if(tecla==14624)  //espacio volar 32
-    {
-    vy=-4.0;
-    }
-  if(tecla==18432)  //saltar 72
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]<32 || (paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]<32 && x%16!=0))  //bloques en general
-      {
-      vy=-8.0;
-      }
-    }
-  if(tecla==7181)  //enter pausar el juego
-    {
-    pausa();
-    }
-  if(tecla==21248)  //suprimir  truco: elimina patos
-    {
-    r_pato();
-    }
-  if(tecla==27392)  //Alt+F4 salir
-    {
-    exit (2);
-    }
-  if(tecla==15104)  //F1 ayuda 
-    {
-    ayuda();
-    }
-  if(tecla==283)  //esc 27
-    {
-    //menu();
-    }
-  if(vx>4)  //limite de velocidad
-    {
-    vx=4;
-    }
-  if(vy>8)  //limite de velocidad (gravedad)
-    {
-    vy=8;
-    }
-  if(vx<-4)  //limite de velocidad
-    {
-    vx=-4;
-    }
-  /*if(vy<-4)  //limite de velocidad (no requiere)
-    {
-    vy=-4;
-    }*/
+  teclado();
 
 ////////Especial  crear patos saliendo de la tuberia
 
@@ -7805,92 +7302,7 @@ while(ciclo<1)
 
 ////////teclado
 
-  tecla=0;
-  if(bioskey(1))  //funciona igual que kbhit() con la diferecia que con bioskey que si no presionas una tecla despues de un tiempo se alenta el cheque del teclado
-    {
-    tecla = bioskey(0);  //capturar tecla presionada
-    }
-  if(tecla == 0);
-    {
-    if(vx<0)  //disminuir la velocidad
-      {
-      vx=vx+0.0625;
-      }
-    else if(vx>0)
-      {
-      vx=vx-0.0625;
-      }
-   /* if(vy<0)  //disminuir la velocidad (no se requiere)
-      {
-      vy=vy+0.125;
-      }
-    else if(vy>0)
-      {
-      vy=vy-0.125;
-      }*/
-    }
-  if(tecla==19200)  //izquierda 75
-    {
-    vx=vx-0.5;
-    dir=-1;
-    }
-  if(tecla==19712)  //derecha 77
-    {
-    dir=1;
-    if(vx<1 && vx>=0)  //esto no deberia existir pero hay problemas para avanzar a la derecha
-      {
-      vx=vx+1.0;
-      }
-    vx=vx+0.5;
-    }
-  if(tecla==14624)  //espacio volar 32
-    {
-    vy=-4.0;
-    }
-  if(tecla==18432)  //saltar 72
-    {
-    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]<32 || (paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]<32 && x%16!=0))  //bloques en general
-      {
-      vy=-8.0;
-      }
-    }
-  if(tecla==7181)  //enter pausar el juego
-    {
-    pausa();
-    }
-  if(tecla==21248)  //suprimir  truco: elimina patos
-    {
-    r_pato();
-    }
-  if(tecla==27392)  //Alt+F4 salir
-    {
-    exit (2);
-    }
-  if(tecla==15104)  //F1 ayuda 
-    {
-    ayuda();
-    }
-  if(tecla==283)  //esc 27
-    {
-    //menu();
-    }
-  if(vx>4)  //limite de velocidad
-    {
-    vx=4;
-    }
-  if(vy>8)  //limite de velocidad (gravedad)
-    {
-    vy=8;
-    }
-  if(vx<-4)  //limite de velocidad
-    {
-    vx=-4;
-    }
-  /*if(vy<-4)  //limite de velocidad (no requiere)
-    {
-    vy=-4;
-    }*/
-
+  teclado();
 
 ////////Especial  crear patos saliendo de la tuberia
 
