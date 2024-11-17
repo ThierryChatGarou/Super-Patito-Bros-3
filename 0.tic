@@ -1,0 +1,150 @@
+[4]
+x=32
+y=32
+vx=0.0
+vy=0.0
+tiempo=400
+
+[4-0]
+0,20,2  //pato,x,y
+88      //fin
+
+[4-1]
+2,20,4  //saltador,x,y
+88      //fin
+
+[4-2]
+0,20,20  //pato,x,y
+88      //fin
+
+[4-3]
+3,20,20  //peligro,x,y
+88      //fin
+
+[5]
+x=32
+y=32
+vx=0.0
+vy=0.0
+tiempo=400
+
+[5-0]
+0,20,2  //pato,x,y
+88      //fin
+
+[5-1]
+2,20,4  //saltador,x,y
+88      //fin
+
+[5-2]
+0,20,20  //pato,x,y
+88      //fin
+
+[5-3]
+3,20,20  //peligro,x,y
+88      //fin
+
+
+[6]
+x=32
+y=32
+vx=0.0
+vy=0.0
+tiempo=400
+
+[6-0]
+0,20,2  //pato,x,y
+88      //fin
+
+[6-1]
+2,20,4  //saltador,x,y
+88      //fin
+
+[6-2]
+0,20,20  //pato,x,y
+88      //fin
+
+[6-3]
+3,20,20  //peligro,x,y
+88      //fin
+
+
+[7]
+x=32
+y=32
+vx=0.0
+vy=0.0
+tiempo=400
+
+[7-0]
+0,20,2  //pato,x,y
+88      //fin
+
+[7-1]
+2,20,4  //saltador,x,y
+88      //fin
+
+[7-2]
+0,20,20  //pato,x,y
+88      //fin
+
+[7-3]
+3,20,20  //peligro,x,y
+88      //fin
+
+
+[8]
+x=32
+y=32
+vx=0.0
+vy=0.0
+tiempo=400
+
+[8-0]
+0,20,2  //pato,x,y
+88      //fin
+
+[8-1]
+2,20,4  //saltador,x,y
+88      //fin
+
+[8-2]
+0,20,20  //pato,x,y
+88      //fin
+
+[8-3]
+3,20,20  //peligro,x,y
+88      //fin
+
+
+[9]
+x=32
+y=32
+vx=0.0
+vy=0.0
+tiempo=400
+
+[9-0]
+0,20,2  //pato,x,y
+88      //fin
+
+[9-1]
+2,20,4  //saltador,x,y
+88      //fin
+
+[9-2]
+0,20,20  //pato,x,y
+88      //fin
+
+[9-3]
+3,20,20  //peligro,x,y
+88      //fin
+
+
+0,20,2  //pato,x,y
+1,20,3  //seguidor,x,y
+2,20,4  //saltador,x,y
+3,20,5  //peligro,x,y
+4,20,6  //mina,x,y
+5,20,7  //tortuga,x,y
+88      //fin

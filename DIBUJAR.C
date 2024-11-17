@@ -5729,11 +5729,11 @@ for(n=0;n<64;n++)
     {
     m=n;
     n=64;
+    nexplosionc[m]=1;
+    explosioncx[m]=i;
+    explosioncy[m]=j;
     }
   }
-nexplosionc[m]=1;
-explosioncx[m]=i;
-explosioncy[m]=j;
 }
 
 

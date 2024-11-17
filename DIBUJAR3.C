@@ -1,4 +1,7 @@
 #include<stdio.h>
+#include<graphics.h>
+
+extern struct palettetype paleta;
 
 //esta funcion tiene muchos problemas para corregir,aveces no carga bien las imagenes, porque el tamano tiene que ser multiplo de 4 en x
 //pero aun asi la funcion es estable y segura de usar
@@ -148,4 +151,60 @@ if (archivo!=NULL)
     printf( "Problemas al cerrar el archivo\n" );
     }
   }
+}
+
+
+void bmp24(int i, int j, char *nombrearchivo)
+{
+FILE *archivo;
+int n,m,bmp_largo,bmp_ancho;
+unsigned char a,b,c;
+archivo = fopen(nombrearchivo,"rb");
+if (archivo!=NULL)
+  {
+  for(n=0;n<54;n++)  //omitir 54 bytes
+    {
+    (void) getc(archivo);
+    }
+  for(m=479;m>=0;m--)
+    {
+    for(n=0;n<640;n++)
+      {
+      if(feof(archivo)==0)
+        {
+        a=getc(archivo);
+        b=getc(archivo);
+        c=getc(archivo);
+        putpixel(n+i,m+j,RealColor(a+b*0x100+c*0x10000));
+        }
+      }
+    }
+
+  if (fclose(archivo)!=0)
+    {
+    gotoxy(1,1);
+    printf( "Problemas al cerrar el archivo\n" );
+    }
+  }
+}
+
+
+void paleta_predeterminada()
+{
+setrgbpalette(paleta.colors[0], 0, 0 ,0);
+setrgbpalette(paleta.colors[1], 0, 0 ,42);
+setrgbpalette(paleta.colors[2], 0, 42,0);
+setrgbpalette(paleta.colors[3], 0, 42,42);
+setrgbpalette(paleta.colors[4],42, 0,0);
+setrgbpalette(paleta.colors[5],42, 0,40);
+setrgbpalette(paleta.colors[6],44,20, 0);
+setrgbpalette(paleta.colors[7],42,42,42);
+setrgbpalette(paleta.colors[8],21,21,21);
+setrgbpalette(paleta.colors[9],20,20, 63);
+setrgbpalette(paleta.colors[10],20,63,20);
+setrgbpalette(paleta.colors[11],20,63,63);
+setrgbpalette(paleta.colors[12],63,20,20);
+setrgbpalette(paleta.colors[13],63,20,63);
+setrgbpalette(paleta.colors[14],63,63,20);
+setrgbpalette(paleta.colors[15],63,63,63);
 }

@@ -122,6 +122,8 @@ else if(n==1)
       bloque0(i*16,j*16,paisaje[j][i]);
       }
     }
+  botones_editor(464,416,0);  //flecha arriba
+  botones_editor(464,464,1);  //flecha abajo
   }
 else if(n==2)
   {
@@ -570,7 +572,7 @@ fondoeditor(0);
 ayuda_editor();
 
 mostrar_raton();
-while(tecla[KEY_ESC]!=1)
+while(tecla[KEY_ESC]!=1)  //ESC salir del editor
   {
   estado_boton_posicion();
   if(botonraton==1)  //boton izquierdo
@@ -655,44 +657,92 @@ while(tecla[KEY_ESC]!=1)
       {
       if(ratony>=416 && ratony<432)  //flecha arriba
         {
-        if(pagina==-1)
+        if(tipofondo==0)
           {
-          abrir_editor("editor01.txt");
-          fondoeditor(0);
-          pagina=1;
+          if(pagina==-1)
+            {
+            abrir_editor("editor01.txt");  //1
+            fondoeditor(0);
+            pagina=1;
+            }
+          else if(pagina==0)
+            {
+            abrir_editor("editor00.txt");  //-1
+            fondoeditor(0);
+            pagina=-1;
+            }
+          else if(pagina==1)
+            {
+            abrir_editor("editor0.txt");  //0
+            fondoeditor(0);
+            pagina=0;
+            }
           }
-        else if(pagina==0)
+        if(tipofondo==1)
           {
-          abrir_editor("editor00.txt");
-          fondoeditor(0);
-          pagina=-1;
-          }
-        else if(pagina==1)
-          {
-          abrir_editor("editor0.txt");
-          fondoeditor(0);
-          pagina=0;
+          if(pagina==-1)
+            {
+            abrir_editor("editor11.txt");  //1
+            fondoeditor(1);
+            pagina=1;
+            }
+          else if(pagina==0)
+            {
+            abrir_editor("editor10.txt");  //-1
+            fondoeditor(1);
+            pagina=-1;
+            }
+          else if(pagina==1)
+            {
+            abrir_editor("editor1.txt");  //0
+            fondoeditor(1);
+            pagina=0;
+            }
           }
         }
       if(ratony>=464 && ratony<480)  //flecha abajo
         {
-        if(pagina==-1)
+        if(tipofondo==0)
           {
-          abrir_editor("editor0.txt");
-          fondoeditor(0);
-          pagina=0;
+          if(pagina==-1)
+            {
+            abrir_editor("editor0.txt");  //0
+            fondoeditor(0);
+            pagina=0;
+            }
+          else if(pagina==0)
+            {
+            abrir_editor("editor01.txt");  //1
+            fondoeditor(0);
+            pagina=1;
+            }
+          else if(pagina==1)
+            {
+            abrir_editor("editor00.txt");  //-1
+            fondoeditor(0);
+            pagina=-1;
+            }
           }
-        else if(pagina==0)
+        if(tipofondo==1)
           {
-          abrir_editor("editor01.txt");
-          fondoeditor(0);
-          pagina=1;
-          }
-        else if(pagina==1)
-          {
-          abrir_editor("editor00.txt");
-          fondoeditor(0);
-          pagina=-1;
+          if(pagina==-1)
+            {
+            abrir_editor("editor1.txt");  //0
+            fondoeditor(1);
+            pagina=0;
+            }
+          else if(pagina==0)
+            {
+            abrir_editor("editor11.txt");  //1
+            fondoeditor(1);
+            pagina=1;
+            }
+          else if(pagina==1)
+            {
+            abrir_editor("editor10.txt");  //-1
+            fondoeditor(1);
+            pagina=-1;
+            }
           }
         }
       }
