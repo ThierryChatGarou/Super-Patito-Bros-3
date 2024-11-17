@@ -25,7 +25,7 @@
 #include<graphics.h>
 
 int geexbox,nivel=0,escena=0,mundo=0,seguir=1,vidas=4,estado=1,tiempo=0,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nsalta[8],saltax[8],saltay[8],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,invensible=0,i,j,x,y,dir=1,paso=1,tecla,sec=0,t_huevo,t_moneda=-88,ciclo=0,jugar=0;
-float vx=0,vy=0;
+float vx=0,vy=0,saltavx[8],saltavy[8];
 
 int niv0[30][40],niv1[30][40],niv2[30][40],niv3[30][40],paisaje[30][40];
 
@@ -2967,7 +2967,6 @@ for(n=0;n<8;n++)
   {
   if(nsalta[n]!=0)
     {
-
     if(nsalta[n]==1)  //determinar sentido
       {
       saltax[n]++;
@@ -2980,10 +2979,11 @@ for(n=0;n<8;n++)
       {
       if(paisaje[(saltay[n]+16-(saltay[n]%16))/16][(saltax[n]-(saltax[n]%16))/16]>=32 && paisaje[(saltay[n]+16-(saltay[n]%16))/16][(saltax[n]+16-(saltax[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
         {
-        saltay[n]=saltay[n]+4;
+        saltavy[n]=saltavy[n]+0.5;
         }
       else
         {
+        saltavy[n]=-4.0;
         saltay[n]=saltay[n]-(saltay[n]%16);
         }
       }
@@ -2991,10 +2991,11 @@ for(n=0;n<8;n++)
       {
       if(paisaje[(saltay[n]+16-(saltay[n]%16))/16][(saltax[n]-(saltax[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
         {
-        saltay[n]=saltay[n]+4;
+        saltavy[n]=saltavy[n]+0.5;
         }
       else
         {
+        saltavy[n]=-4.0;
         saltay[n]=saltay[n]-(saltay[n]%16);
         }
       }
@@ -3009,6 +3010,8 @@ for(n=0;n<8;n++)
     nsalta[n]=1;
     saltax[n]=saltax[n]+16-(saltax[n]%16);
     }
+saltay[n]=saltay[n]+saltavy[n];
+saltax[n]=saltax[n]+saltavx[n];
   }
 }
 
@@ -4270,6 +4273,8 @@ for(n=0;n<8;n++)
     {
     bloque(saltax[n]-(saltax[n]%16),saltay[n]-(saltay[n]%16),paisaje[(saltay[n]-(saltay[n]%16))/16][(saltax[n]-(saltax[n]%16))/16]);  //actualizar arriba a la izquierda
     bloque(saltax[n]-(saltax[n]%16)+16,saltay[n]-(saltay[n]%16),paisaje[(saltay[n]-(saltay[n]%16))/16][(saltax[n]+16-(saltax[n]%16))/16]);  //actualizar arriba a la derecha
+    bloque(saltax[n]-(saltax[n]%16),saltay[n]+16-(saltay[n]%16),paisaje[(saltay[n]+16-(saltay[n]%16))/16][(saltax[n]-(saltax[n]%16))/16]);  //actualizar abajo a la izquierda
+    bloque(saltax[n]-(saltax[n]%16)+16,saltay[n]+16-(saltay[n]%16),paisaje[(saltay[n]+16-(saltay[n]%16))/16][(saltax[n]+16-(saltax[n]%16))/16]);  //actualizar abajo a la derecha
     }
   }
 }
@@ -6077,7 +6082,6 @@ r_champ();
 rmonedas();
 r_pato();
 r_salta();
-c_salta(8,24);
 c_pato(4,24);
 c_pato(22,24);
 
@@ -6090,7 +6094,7 @@ while(ciclo<1)
   refbloques();  //actualizar bloques
   refchamp();
   refpato();
-  refsalta();
+  //refsalta();
 
   if((x%16)!=0)
     {
@@ -6191,7 +6195,7 @@ while(ciclo<1)
 
   pisar_pato();  //pisar pato
 
-  pisar_salta();  //pisar saltador
+  //pisar_salta();  //pisar saltador
 
   //NITRO_mata();  //no toques la nitroglicerina
 
@@ -6199,11 +6203,11 @@ while(ciclo<1)
 
   pato_mata();  //pato mata cuando los tocas
 
-  salta_mata();  //saltador mata cuando los tocas
+  //salta_mata();  //saltador mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
 
-  saltafuera();  //verificar si un saltador se salio de la pantalla
+  //saltafuera();  //verificar si un saltador se salio de la pantalla
 
   champifuera();  //verificar si un champiñon se salio de la pantalla
 
@@ -6213,7 +6217,7 @@ while(ciclo<1)
 
   movpato();  //mover patos
 
-  movsalta();  //mover saltador
+  //movsalta();  //mover saltador
 
   if(monedas>=100) //por cada 100 monedas aumentar una vida
     {
@@ -6253,7 +6257,7 @@ while(ciclo<1)
 
   dibpatos();  //dibujar patos
 
-  dibsalta();  //dibujar saltador
+  //dibsalta();  //dibujar saltador
 
   segundos();  //realizar un conteo del tiempo del juego
 
@@ -6279,6 +6283,7 @@ panel();
 r_champ();
 rmonedas();
 r_pato();
+r_salta();
 c_pato(16,23);
 npato[0]=-1;
 
@@ -6291,6 +6296,7 @@ while(ciclo<1)
   refbloques();  //actualizar bloques
   refchamp();
   refpato();
+  //refsalta();
 
   if((x%16)!=0)
     {
@@ -6417,13 +6423,19 @@ while(ciclo<1)
 
   pisar_pato();  //pisar pato
 
+  //pisar_salta();  //pisar saltador
+
   //NITRO_mata();  //no toques la nitroglicerina
 
   //fuego4_mata();  //no teques el fuego
 
   pato_mata();  //pato mata cuando los tocas
 
+  //salta_mata();  //saltador mata cuando los tocas
+
   patofuera();  //verificar si un pato se salio de la pantalla
+
+  //saltafuera();  //verificar si un saltador se salio de la pantalla
 
   champifuera();  //verificar si un champiñon se salio de la pantalla
 
@@ -6432,6 +6444,8 @@ while(ciclo<1)
   mdemone();
 
   movpato();  //mover patos
+
+  //movsalta();  //mover saltador
 
   if(monedas>=100) //por cada 100 monedas aumentar una vida
     {
@@ -6471,6 +6485,8 @@ while(ciclo<1)
 
   dibpatos();  //dibujar patos
 
+  //dibsalta();  //dibujar saltador
+
   segundos();  //realizar un conteo del tiempo del juego
 
   verestado();  //verificar el estado de pato y dibujarlo segun el estado
@@ -6495,6 +6511,7 @@ panel();
 r_champ();
 rmonedas();
 r_pato();
+r_salta();
 c_pato(13,24);
 
 while(ciclo<1)
@@ -6506,6 +6523,7 @@ while(ciclo<1)
   refbloques();  //actualizar bloques
   refchamp();
   refpato();
+  //refsalta();
 
   if((x%16)!=0)
     {
@@ -6632,13 +6650,19 @@ if(tiempo%28==0 && sec%22==0)
 
   pisar_pato();  //pisar pato
 
+  //pisar_salta();  //pisar saltador
+
   //NITRO_mata();  //no toques la nitroglicerina
 
   //fuego4_mata();  //no teques el fuego
 
   pato_mata();  //pato mata cuando los tocas
 
+  //salta_mata();  //saltador mata cuando los tocas
+
   patofuera();  //verificar si un pato se salio de la pantalla
+
+  //saltafuera();  //verificar si un saltador se salio de la pantalla
 
   champifuera();  //verificar si un champiñon se salio de la pantalla
 
@@ -6647,6 +6671,8 @@ if(tiempo%28==0 && sec%22==0)
   mdemone();
 
   movpato();  //mover patos
+
+  //movsalta();  //mover saltador
 
   if(monedas>=100) //por cada 100 monedas aumentar una vida
     {
@@ -6686,6 +6712,8 @@ if(tiempo%28==0 && sec%22==0)
 
   dibpatos();  //dibujar patos
 
+  //dibsalta();  //dibujar saltador
+
   segundos();  //realizar un conteo del tiempo del juego
 
   verestado();  //verificar el estado de pato y dibujarlo segun el estado
@@ -6710,8 +6738,10 @@ panel();
 r_champ();
 rmonedas();
 r_pato();
+r_salta();
 c_pato(4,24);
-c_pato(22,24);
+c_salta(15,24);
+c_pato(18,24);
 
 while(ciclo<1)
   {
@@ -6720,8 +6750,9 @@ while(ciclo<1)
 
   tinvensible();
   refbloques();  //actualizar bloques
-  refchamp();
+  //refchamp();
   refpato();
+  refsalta();
 
   if((x%16)!=0)
     {
@@ -6778,11 +6809,11 @@ if(tiempo%8==0 && sec%22==0)
 
   bloque_saltar();  //bloque para saltar muy alto
 
-  bloque_caja0_moneda();  //caja0 con moneda
+  //bloque_caja0_moneda();  //caja0 con moneda
 
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
 
-  bloque_caja0_champinon();  //caja0 con champiñon
+  //bloque_caja0_champinon();  //caja0 con champiñon
 
   //bloque_caja0_vida();  //caja0 con vida
 
@@ -6829,13 +6860,19 @@ if(tiempo%8==0 && sec%22==0)
 
   pisar_pato();  //pisar pato
 
+  pisar_salta();  //pisar saltador
+
   //NITRO_mata();  //no toques la nitroglicerina
 
   //fuego4_mata();  //no teques el fuego
 
   pato_mata();  //pato mata cuando los tocas
 
+  salta_mata();  //saltador mata cuando los tocas
+
   patofuera();  //verificar si un pato se salio de la pantalla
+
+  saltafuera();  //verificar si un saltador se salio de la pantalla
 
   //champifuera();  //verificar si un champiñon se salio de la pantalla
 
@@ -6844,6 +6881,8 @@ if(tiempo%8==0 && sec%22==0)
   mdemone();
 
   movpato();  //mover patos
+
+  movsalta();  //mover saltador
 
   if(monedas>=100) //por cada 100 monedas aumentar una vida
     {
@@ -6883,6 +6922,8 @@ if(tiempo%8==0 && sec%22==0)
 
   dibpatos();  //dibujar patos
 
+  dibsalta();  //dibujar saltador
+
   segundos();  //realizar un conteo del tiempo del juego
 
   verestado();  //verificar el estado de pato y dibujarlo segun el estado
@@ -6913,6 +6954,7 @@ panel();
 r_champ();
 rmonedas();
 r_pato();
+r_salta();
 
 while(ciclo<1)
   {
@@ -6923,6 +6965,7 @@ while(ciclo<1)
   refbloques();  //actualizar bloques
   refchamp();
   refpato();
+  //refsalta();
 
   if((x%16)!=0)
     {
@@ -7040,13 +7083,19 @@ else
 
   pisar_pato();  //pisar pato
 
+  //pisar_salta();  //pisar saltador
+
   //NITRO_mata();  //no toques la nitroglicerina
 
   //fuego4_mata();  //no teques el fuego
 
   pato_mata();  //pato mata cuando los tocas
 
+  //salta_mata();  //saltador mata cuando los tocas
+
   patofuera();  //verificar si un pato se salio de la pantalla
+
+  //saltafuera();  //verificar si un saltador se salio de la pantalla
 
   champifuera();  //verificar si un champiñon se salio de la pantalla
 
@@ -7055,6 +7104,8 @@ else
   mdemone();
 
   movpato();  //mover patos
+
+  //movsalta();  //mover saltador
 
   if(monedas>=100) //por cada 100 monedas aumentar una vida
     {
@@ -7094,6 +7145,8 @@ else
 
   dibpatos();  //dibujar patos
 
+  //dibsalta();  //dibujar saltador
+
   segundos();  //realizar un conteo del tiempo del juego
 
   verestado();  //verificar el estado de pato y dibujarlo segun el estado
@@ -7118,6 +7171,7 @@ panel();
 r_champ();
 rmonedas();
 r_pato();
+r_salta();
 c_pato(24,23);
 npato[0]=-1;
 
@@ -7130,6 +7184,7 @@ while(ciclo<1)
   refbloques();  //actualizar bloques
   refchamp();
   refpato();
+  //refsalta();
 
   if((x%16)!=0)
     {
@@ -7271,13 +7326,19 @@ while(ciclo<1)
 
   pisar_pato();  //pisar pato
 
+  //pisar_salta();  //pisar saltador
+
   //NITRO_mata();  //no toques la nitroglicerina
 
   //fuego4_mata();  //no teques el fuego
 
   pato_mata();  //pato mata cuando los tocas
 
+  //salta_mata();  //saltador mata cuando los tocas
+
   patofuera();  //verificar si un pato se salio de la pantalla
+
+  //saltafuera();  //verificar si un saltador se salio de la pantalla
 
   champifuera();  //verificar si un champiñon se salio de la pantalla
 
@@ -7286,6 +7347,8 @@ while(ciclo<1)
   mdemone();
 
   movpato();  //mover patos
+
+  //movsalta();  //mover saltador
 
   if(monedas>=100) //por cada 100 monedas aumentar una vida
     {
@@ -7325,6 +7388,8 @@ while(ciclo<1)
 
   dibpatos();  //dibujar patos
 
+  //dibsalta();  //dibujar saltador
+
   segundos();  //realizar un conteo del tiempo del juego
 
   verestado();  //verificar el estado de pato y dibujarlo segun el estado
@@ -7349,6 +7414,7 @@ panel();
 r_champ();
 rmonedas();
 r_pato();
+r_salta();
 c_pato(22,24);
 
 while(ciclo<1)
@@ -7360,6 +7426,7 @@ while(ciclo<1)
   refbloques();  //actualizar bloques
   refchamp();
   refpato();
+  //refsalta();
 
   if((x%16)!=0)
     {
@@ -7471,13 +7538,19 @@ if(tiempo%28==0 && sec%22==0)
 
   pisar_pato();  //pisar pato
 
+  //pisar_salta();  //pisar saltador
+
   //NITRO_mata();  //no toques la nitroglicerina
 
   //fuego4_mata();  //no teques el fuego
 
   pato_mata();  //pato mata cuando los tocas
 
+  //salta_mata();  //saltador mata cuando los tocas
+
   patofuera();  //verificar si un pato se salio de la pantalla
+
+  //saltafuera();  //verificar si un saltador se salio de la pantalla
 
   champifuera();  //verificar si un champiñon se salio de la pantalla
 
@@ -7486,6 +7559,8 @@ if(tiempo%28==0 && sec%22==0)
   mdemone();
 
   movpato();  //mover patos
+
+  //movsalta();  //mover saltador
 
   if(monedas>=100) //por cada 100 monedas aumentar una vida
     {
@@ -7525,6 +7600,8 @@ if(tiempo%28==0 && sec%22==0)
 
   dibpatos();  //dibujar patos
 
+  //dibsalta();  //dibujar saltador
+
   segundos();  //realizar un conteo del tiempo del juego
 
   verestado();  //verificar el estado de pato y dibujarlo segun el estado
@@ -7549,6 +7626,7 @@ panel();
 r_champ();
 rmonedas();
 r_pato();
+r_salta();
 
 while(ciclo<1)
   {
@@ -7559,6 +7637,7 @@ while(ciclo<1)
   refbloques();  //actualizar bloques
   refchamp();
   refpato();
+  //refsalta();
 
   if((x%16)!=0)
     {
@@ -7666,13 +7745,19 @@ if(tiempo%8==0 && sec%22==0)
 
   pisar_pato();  //pisar pato
 
+  //pisar_salta();  //pisar saltador
+
   //NITRO_mata();  //no toques la nitroglicerina
 
   //fuego4_mata();  //no teques el fuego
 
   pato_mata();  //pato mata cuando los tocas
 
+  //salta_mata();  //saltador mata cuando los tocas
+
   patofuera();  //verificar si un pato se salio de la pantalla
+
+  //saltafuera();  //verificar si un saltador se salio de la pantalla
 
   //champifuera();  //verificar si un champiñon se salio de la pantalla
 
@@ -7681,6 +7766,8 @@ if(tiempo%8==0 && sec%22==0)
   mdemone();
 
   movpato();  //mover patos
+
+  //movsalta();  //mover saltador
 
   if(monedas>=100) //por cada 100 monedas aumentar una vida
     {
@@ -7720,6 +7807,8 @@ if(tiempo%8==0 && sec%22==0)
 
   dibpatos();  //dibujar patos
 
+  //dibsalta();  //dibujar saltador
+
   segundos();  //realizar un conteo del tiempo del juego
 
   verestado();  //verificar el estado de pato y dibujarlo segun el estado
@@ -7749,6 +7838,7 @@ t_moneda=-88;  //para resetear la conversion de bloques y monedas
 r_champ();
 rmonedas();
 r_pato();
+r_salta();
 vx=0.0;
 vy=0.0;
 x=80;
@@ -7763,6 +7853,7 @@ while(ciclo<1)
   refbloques();  //actualizar bloques
   //refchamp();
   //refpato();
+  //refsalta();
 
   if((x%16)!=0)
     {
@@ -7878,13 +7969,19 @@ while(ciclo<1)
 
   //pisar_pato();  //pisar pato
 
+  //pisar_salta();  //pisar saltador
+
   //NITRO_mata();  //no toques la nitroglicerina
 
   //fuego4_mata();  //no teques el fuego
 
   //pato_mata();  //pato mata cuando los tocas
 
+  //salta_mata();  //saltador mata cuando los tocas
+
   //patofuera();  //verificar si un pato se salio de la pantalla
+
+  //saltafuera();  //verificar si un saltador se salio de la pantalla
 
   //champifuera();  //verificar si un champiñon se salio de la pantalla
 
@@ -7893,6 +7990,8 @@ while(ciclo<1)
   //mdemone();
 
   //movpato();  //mover patos
+
+  //movsalta();  //mover saltador
 
   if(monedas>=100) //por cada 100 monedas aumentar una vida
     {
@@ -7928,6 +8027,8 @@ while(ciclo<1)
 
   //dibpatos();  //dibujar patos
 
+  //dibsalta();  //dibujar saltador
+
   segundos();  //realizar un conteo del tiempo del juego
 
   verestado();  //verificar el estado de pato y dibujarlo segun el estado
@@ -7957,6 +8058,7 @@ t_moneda=-88;  //para resetear la conversion de bloques y monedas
 r_champ();
 rmonedas();
 r_pato();
+r_salta();
 vx=0.0;
 vy=0.0;
 x=320;
@@ -7971,6 +8073,7 @@ while(ciclo<1)
   refbloques();  //actualizar bloques
   //refchamp();
   //refpato();
+  //refsalta();
 
   if((x%16)!=0)
     {
@@ -8103,13 +8206,19 @@ while(ciclo<1)
 
   //pisar_pato();  //pisar pato
 
+  //pisar_salta();  //pisar saltador
+
   //NITRO_mata();  //no toques la nitroglicerina
 
   //fuego4_mata();  //no teques el fuego
 
   //pato_mata();  //pato mata cuando los tocas
 
+  //salta_mata();  //saltador mata cuando los tocas
+
   //patofuera();  //verificar si un pato se salio de la pantalla
+
+  //saltafuera();  //verificar si un saltador se salio de la pantalla
 
   //champifuera();  //verificar si un champiñon se salio de la pantalla
 
@@ -8118,6 +8227,8 @@ while(ciclo<1)
   //mdemone();
 
   //movpato();  //mover patos
+
+  //movsalta();  //mover saltador
 
   if(monedas>=100) //por cada 100 monedas aumentar una vida
     {
@@ -8152,6 +8263,8 @@ while(ciclo<1)
   //dibchamp();  //dibujar champiñones
 
   //dibpatos();  //dibujar patos
+
+  //dibsalta();  //dibujar saltador
 
   segundos();  //realizar un conteo del tiempo del juego
 
