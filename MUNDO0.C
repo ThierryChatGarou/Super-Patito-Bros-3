@@ -1,4 +1,4 @@
-extern int ciclo,tiempo,t_volar,retraso,x,y,o,p,invensible,tiempo_invensible,dirx,nivel,escena,vidas,mundo,monedas,estado,nadando,jugar,t_huevo,npato[8],nsalta[4],sec,t_moneda,CPS,paisaje[30][40],niv1[30][40],blq[400],npc[10];
+extern int ciclo,tiempo,volar,t_volar,retraso,x,y,o,p,invensible,tiempo_invensible,dirx,nivel,escena,vidas,mundo,monedas,estado,nadando,jugar,t_huevo,npato[8],nsalta[4],sec,t_moneda,CPS,paisaje[30][40],niv1[30][40],blq[400],npc[10];
 extern float vx,vy;
 extern unsigned char tecla[128];
 
@@ -17,6 +17,8 @@ char e1,e2,e3,e4;
 ciclo=0;
 tiempo=0;
 invensible=0;
+t_moneda=-88;
+volar=22;
 nadando=0;
 x=32;
 y=32;
@@ -479,6 +481,7 @@ while(ciclo<1)
     editornivel();
     abrir(0,-88);  //para recargar el mundo
     fondomundo();
+    obtener_segundos();
     }
   if(tecla[KEY_F3])
     {
@@ -589,6 +592,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
+  sistema_colisiones();  //agilizar deteccion de coliciones en algunos bloques
 
 ////////interaccion de los bloques
   bloque_caja0_moneda();  //caja0 con moneda
@@ -775,6 +779,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
+  sistema_colisiones();
 
 ////////interaccion de los bloques
   //bloque_caja0_moneda();  //caja0 con moneda
@@ -987,6 +992,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
+  sistema_colisiones();
 
 ////////interaccion de los bloques
   //bloque_caja0_moneda();  //caja0 con moneda
@@ -1199,6 +1205,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
+  sistema_colisiones();
 
 ////////interaccion de los bloques
   //bloque_caja0_moneda();  //caja0 con moneda
@@ -1395,6 +1402,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
+  sistema_colisiones();
 
 ////////interaccion de los bloques
   //bloque_caja0_moneda();  //caja0 con moneda
@@ -1597,6 +1605,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
+  sistema_colisiones();
 
 ////////interaccion de los bloques
   //bloque_caja0_moneda();  //caja0 con moneda
@@ -1824,6 +1833,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
+  sistema_colisiones();
 
 ////////interaccion de los bloques
   bloque_caja0_moneda();  //caja0 con moneda
@@ -2014,6 +2024,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
+  sistema_colisiones();
 
 ////////interaccion de los bloques
   //bloque_caja0_moneda();  //caja0 con moneda
@@ -2245,6 +2256,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
+  sistema_colisiones();
 
 ////////interaccion de los bloques
   //bloque_caja0_moneda();  //caja0 con moneda
@@ -2437,6 +2449,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
+  sistema_colisiones();
 
 ////////interaccion de los bloques
   bloque_caja0_moneda();  //caja0 con moneda
@@ -2642,6 +2655,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
+  sistema_colisiones();
 
 ////////interaccion de los bloques
   bloque_caja0_moneda();  //caja0 con moneda
@@ -2834,6 +2848,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
+  sistema_colisiones();
 
 ////////interaccion de los bloques
   //bloque_caja0_moneda();  //caja0 con moneda
@@ -3053,6 +3068,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
+  sistema_colisiones();
 
 ////////interaccion de los bloques
   //bloque_caja0_moneda();  //caja0 con moneda
@@ -3247,6 +3263,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
+  sistema_colisiones();
 
 ////////interaccion de los bloques
   //bloque_caja0_moneda();  //caja0 con moneda
@@ -3462,6 +3479,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
+  sistema_colisiones();
 
 ////////interaccion de los bloques
   //bloque_caja0_moneda();  //caja0 con moneda
@@ -3677,6 +3695,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
+  sistema_colisiones();
 
 ////////interaccion de los bloques
   bloque_caja0_moneda();  //caja0 con moneda
@@ -3867,6 +3886,7 @@ void coordenadas_viejas()
 
 void funcion_bloques1()  //normalmente estos bloques solo alteran posicion, no velocidad
   {
+  sistema_colisiones();
   if(blq[201]==1)  bloque_caja0_moneda();  //caja0 con moneda
   if(blq[202]==1)  bloque_caja0_10monedas();  //caja0 con 10 momedas
   if(blq[203]==1)  bloque_caja0_champinon();  //caja0 con champiñon
@@ -5507,6 +5527,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
+  sistema_colisiones();
 
 ////////interaccion de los bloques
   //bloque_caja0_moneda();  //caja0 con moneda
@@ -5751,6 +5772,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
+  sistema_colisiones();
 
 ////////interaccion de los bloques
   //bloque_caja0_moneda();  //caja0 con moneda
@@ -5964,6 +5986,11 @@ vy=0.0;
 escena=1;
 
 //Especial regenerar monedas y poder
+if(t_moneda>0)
+ {
+ convertir();
+ }
+t_moneda=-88;
 
 niv1[16][8]=35;
 niv1[16][9]=35;
@@ -5977,7 +6004,6 @@ niv1[18][6]=35;
 niv1[22][11]=14;
 niv1[22][12]=14;
 niv1[21][12]=75;
-t_moneda=-88;
 
 return(0);
 }
@@ -6029,6 +6055,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
+  sistema_colisiones();
 
 ////////interaccion de los bloques
   //bloque_caja0_moneda();  //caja0 con moneda
@@ -6269,6 +6296,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
+  sistema_colisiones();
 
 ////////interaccion de los bloques
   //bloque_caja0_moneda();  //caja0 con moneda
@@ -6587,6 +6615,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
+  sistema_colisiones();
 
 ////////interaccion de los bloques
   bloque_caja0_moneda();  //caja0 con moneda
@@ -6840,6 +6869,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
+  sistema_colisiones();
 
 ////////interaccion de los bloques
   //bloque_caja0_moneda();  //caja0 con moneda
@@ -7077,6 +7107,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
+  sistema_colisiones();
 
 ////////interaccion de los bloques
   //bloque_caja0_moneda();  //caja0 con moneda
@@ -7289,6 +7320,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //posicion_tortuga();  //guardar las coordenadas anteriores de las tortugas
 
   tinvensible();  //tiempo de inmunidad
+  sistema_colisiones();
 
 ////////interaccion de los bloques
   //bloque_caja0_moneda();  //caja0 con moneda

@@ -1,6 +1,7 @@
-extern int x,y,puntos,invensible,estado,t_huevo,retraso,tiempo,sec,nivel,escena,monedas,cajamone,CPS,debug,tiempo_invensible;
+extern int x,y,puntos,invensible,estado,t_huevo,retraso,tiempo,sec,nivel,escena,monedas,cajamone,CPS,debug,tiempo_invensible,dirx;
 extern float vx,vy;
 extern int paisaje[30][40],colorcielo[30][40],disparo0[16][16],disparo1[16][16],disparo2[16][16],disparo3[16][16];
+extern char c1,c2;
 extern unsigned char tecla[128];
 
 #include<stdio.h>
@@ -18,7 +19,7 @@ int nsalta[4],saltax[4],saltay[4],saltao[4],saltap[4];  //patos que saltan y reb
 int nseguidor[8],seguidorx[8],seguidory[8],seguidoro[8],seguidorp[8];  //patos que siguen
 int npeligro[4],peligrox[4],peligroy[4],peligroo[4],peligrop[4];  //patos que siguen y saltan
 int nbala[8],balax[8],balay[8],balao[8],balap[8];  //balas y disparos.
-int ntortuga[8],tortugax[8],tortugay[8],tortugao[8],tortugap[8],tortuga_ax[8],tortuga_ay[8];  //tortugas verdes y rojas
+int ntortuga[8],tortugax[8],tortugay[8],tortugao[8],tortugap[8],tortuga_ax[8],tortuga_ay[8],tortuga_tiempo[8];  //tortugas verdes y rojas.   ax,ay es el centro en donde gira. tortuga_tiempo es el tiempo que esta escondida
 int ncristalroto[8],cristalrotox[8][4],cristalrotoy[8][4];  //efectos de bloques rotos. [4] por ser 4 pedazos
 int blq[400];  //mapa de bloques existentes en el escenario
 int npc[10];  //mapa de enemigos existentes en el escenario
@@ -2580,8 +2581,25 @@ npato[i]=0;
 patox[i]=0;
 patoy[i]=0;
 //borrando rastro del dibujo, redibujando fondo
-bloque(patoo[i]-(patoo[i]%16),patop[i]-(patop[i]%16),paisaje[(patop[i]-(patop[i]%16))/16][(patoo[i]-(patoo[i]%16))/16]);  //actualizar arriba a la izquierda
-bloque(patoo[i]-(patoo[i]%16)+16,patop[i]-(patop[i]%16),paisaje[(patop[i]-(patop[i]%16))/16][(patoo[i]+16-(patoo[i]%16))/16]);  //actualizar arriba a la derecha
+if((patoo[i]%16)!=0)  // comprobar que bloques necesitan actualizarse
+  {
+  bloque(patoo[i]-(patoo[i]%16),patop[i]-(patop[i]%16),paisaje[(patop[i]-(patop[i]%16))/16][(patoo[i]-(patoo[i]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+  bloque(patoo[i]-(patoo[i]%16)+16,patop[i]-(patop[i]%16),paisaje[(patop[i]-(patop[i]%16))/16][(patoo[i]+16-(patoo[i]%16))/16]);  //actualizar bloque que esta arriba a la derecha
+  if((patop[i]%16)!=0)
+    {
+    bloque(patoo[i]-(patoo[i]%16),patop[i]-(patop[i]%16)+16,paisaje[(patop[i]+16-(patop[i]%16))/16][(patoo[i]-(patoo[i]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+    bloque(patoo[i]-(patoo[i]%16)+16,patop[i]-(patop[i]%16)+16,paisaje[(patop[i]+16-(patop[i]%16))/16][(patoo[i]+16-(patoo[i]%16))/16]);  //actualizar bloque que esta abajo a la derecha
+    }
+  }
+else if((patop[i]%16)!=0)
+  {
+  bloque(patoo[i]-(patoo[i]%16),patop[i]-(patop[i]%16),paisaje[(patop[i]-(patop[i]%16))/16][(patoo[i]-(patoo[i]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+  bloque(patoo[i]-(patoo[i]%16),patop[i]-(patop[i]%16)+16,paisaje[(patop[i]+16-(patop[i]%16))/16][(patoo[i]-(patoo[i]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+  }
+else
+  {
+  bloque(patoo[i],patop[i],paisaje[patop[i]/16][patoo[i]/16]);  //actualizar bloque que esta en su posicion
+  }
 }
 
 
@@ -3106,8 +3124,25 @@ nseguidor[i]=0;
 seguidorx[i]=0;
 seguidory[i]=0;
 //borrando rastro del dibujo, redibujando fondo
-bloque(seguidoro[i]-(seguidoro[i]%16),seguidorp[i]-(seguidorp[i]%16),paisaje[(seguidorp[i]-(seguidorp[i]%16))/16][(seguidoro[i]-(seguidoro[i]%16))/16]);  //actualizar arriba a la izquierda
-bloque(seguidoro[i]-(seguidoro[i]%16)+16,seguidorp[i]-(seguidorp[i]%16),paisaje[(seguidorp[i]-(seguidorp[i]%16))/16][(seguidoro[i]+16-(seguidoro[i]%16))/16]);  //actualizar arriba a la derecha
+if((seguidoro[i]%16)!=0)  // comprobar que bloques necesitan actualizarse
+  {
+  bloque(seguidoro[i]-(seguidoro[i]%16),seguidorp[i]-(seguidorp[i]%16),paisaje[(seguidorp[i]-(seguidorp[i]%16))/16][(seguidoro[i]-(seguidoro[i]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+  bloque(seguidoro[i]-(seguidoro[i]%16)+16,seguidorp[i]-(seguidorp[i]%16),paisaje[(seguidorp[i]-(seguidorp[i]%16))/16][(seguidoro[i]+16-(seguidoro[i]%16))/16]);  //actualizar bloque que esta arriba a la derecha
+  if((seguidorp[i]%16)!=0)
+    {
+    bloque(seguidoro[i]-(seguidoro[i]%16),seguidorp[i]-(seguidorp[i]%16)+16,paisaje[(seguidorp[i]+16-(seguidorp[i]%16))/16][(seguidoro[i]-(seguidoro[i]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+    bloque(seguidoro[i]-(seguidoro[i]%16)+16,seguidorp[i]-(seguidorp[i]%16)+16,paisaje[(seguidorp[i]+16-(seguidorp[i]%16))/16][(seguidoro[i]+16-(seguidoro[i]%16))/16]);  //actualizar bloque que esta abajo a la derecha
+    }
+  }
+else if((seguidorp[i]%16)!=0)
+  {
+  bloque(seguidoro[i]-(seguidoro[i]%16),seguidorp[i]-(seguidorp[i]%16),paisaje[(seguidorp[i]-(seguidorp[i]%16))/16][(seguidoro[i]-(seguidoro[i]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+  bloque(seguidoro[i]-(seguidoro[i]%16),seguidorp[i]-(seguidorp[i]%16)+16,paisaje[(seguidorp[i]+16-(seguidorp[i]%16))/16][(seguidoro[i]-(seguidoro[i]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+  }
+else
+  {
+  bloque(seguidoro[i],seguidorp[i],paisaje[seguidorp[i]/16][seguidoro[i]/16]);  //actualizar bloque que esta en su posicion
+  }
 }
 
 
@@ -3905,7 +3940,7 @@ for(i=0;i<8;i++)
 }
 
 
-void c_tortuga(int i, int j)
+void c_tortuga(int i, int j, int T)
 {
 int n,p=0;
 for(n=0;n<8;n++)
@@ -3913,7 +3948,7 @@ for(n=0;n<8;n++)
   if(ntortuga[n]==0)
     {
     p=n;
-    ntortuga[n]=1;
+    ntortuga[n]=T;
     n=8;
     }
   }
@@ -3937,59 +3972,245 @@ for(n=0;n<8;n++)
     {
     tortugax[n]=tortugax[n]+tortugavx[n];
     tortugay[n]=tortugay[n]+tortugavy[n];
-    if((tortugax[n]%16)!=0)
+    if(ntortuga[n]==1)  //tortuga giratoria
       {
-//tortuga giratoria
-//tortugaangulo[n]=((CPS-sec+(tiempo%10)*CPS)*2*3.1415925437)/300;
-//tortugax[n]=tortuga_ax[n]+cos(tortugaangulo[n])*100;
-//tortugay[n]=tortuga_ay[n]+sin(tortugaangulo[n])*100;
-//gotoxy(1,1); printf("angulo=%f      ",tortugaangulo[n]);
-      if(paisaje[(tortugay[n]+16-(tortugay[n]%16))/16][(tortugax[n]-(tortugax[n]%16))/16]>=32 && paisaje[(tortugay[n]+16-(tortugay[n]%16))/16][(tortugax[n]+16-(tortugax[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
+      tortugaangulo[n]=6.2832-((CPS-sec+(tiempo%10)*CPS)*6.2832)/300;  //6.28318530717958647692528676655901
+      tortugax[n]=tortuga_ax[n]+cos(tortugaangulo[n])*100;
+      tortugay[n]=tortuga_ay[n]+sin(tortugaangulo[n])*100;
+      tortugavx[n]=-sin(tortugaangulo[n]);  //modificar este valor aqui no afecta su movimiento, solo es para dibujarla en el sentido correcto
+      }
+    if(ntortuga[n]==2)  //tortuga voladora
+      {
+      tortugaangulo[n]=6.2832-((CPS-sec+(tiempo%10)*CPS)*6.2832)/300;  //6.28318530717958647692528676655901
+      tortugax[n]=tortuga_ax[n]+cos(tortugaangulo[n])*100;
+      tortugavx[n]=-sin(tortugaangulo[n]);  //modificar este valor aqui no afecta su movimiento, solo es para dibujarla en el sentido correcto
+      }
+    if(ntortuga[n]==3)  //tortuga saltando
+      {
+      if((tortugax[n]%16)!=0)  //gravedad
         {
-        tortugay[n]=tortugay[n]+4;
+        if(paisaje[(tortugay[n]+16-(tortugay[n]%16))/16][(tortugax[n]-(tortugax[n]%16))/16]>=32 && paisaje[(tortugay[n]+16-(tortugay[n]%16))/16][(tortugax[n]+16-(tortugax[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
+          {
+          tortugavy[n]=tortugavy[n]+0.5;
+          }
+        else
+          {
+          tortugavy[n]=-4.0;
+          tortugay[n]=tortugay[n]-(tortugay[n]%16);
+          }
         }
       else
         {
-        tortugay[n]=tortugay[n]-(tortugay[n]%16);
+        if(paisaje[(tortugay[n]+16-(tortugay[n]%16))/16][(tortugax[n]-(tortugax[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
+          {
+          tortugavy[n]=tortugavy[n]+0.5;
+          }
+        else
+          {
+          tortugavy[n]=-4.0;
+          tortugay[n]=tortugay[n]-(tortugay[n]%16);
+          }
+        }
+      if(paisaje[(tortugay[n]-(tortugay[n]%16))/16][(tortugax[n]+16-(tortugax[n]%16))/16]<32) //limite de bloque derecho
+        {
+        tortugavx[n]=-tortugavx[n];
+        tortugax[n]=tortugax[n]-(tortugax[n]%16);
+        }
+      else if(paisaje[(tortugay[n]-(tortugay[n]%16))/16][(tortugax[n]-(tortugax[n]%16))/16]<32) //limite de bloque izquierdo
+        {
+        tortugavx[n]=-tortugavx[n];
+        tortugax[n]=tortugax[n]+16-(tortugax[n]%16);
         }
       }
-    else
+    if(ntortuga[n]==4)  //tortuga caminando
       {
-      if(paisaje[(tortugay[n]+16-(tortugay[n]%16))/16][(tortugax[n]-(tortugax[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
+      if((tortugax[n]%16)!=0)  //gravedad
         {
-        tortugay[n]=tortugay[n]+4;
+        if(paisaje[(tortugay[n]+16-(tortugay[n]%16))/16][(tortugax[n]-(tortugax[n]%16))/16]>=32 && paisaje[(tortugay[n]+16-(tortugay[n]%16))/16][(tortugax[n]+16-(tortugax[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
+          {
+          tortugay[n]=tortugay[n]+4;
+          }
+        else
+          {
+          tortugay[n]=tortugay[n]-(tortugay[n]%16);
+          }
         }
       else
         {
-        tortugay[n]=tortugay[n]-(tortugay[n]%16);
+        if(paisaje[(tortugay[n]+16-(tortugay[n]%16))/16][(tortugax[n]-(tortugax[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
+          {
+          tortugay[n]=tortugay[n]+4;
+          }
+        else
+          {
+          tortugay[n]=tortugay[n]-(tortugay[n]%16);
+          }
+        }
+      if(paisaje[(tortugay[n]-(tortugay[n]%16))/16][(tortugax[n]+16-(tortugax[n]%16))/16]<32) //limite de bloque derecho
+        {
+        tortugavx[n]=-tortugavx[n];
+        tortugax[n]=tortugax[n]-(tortugax[n]%16);
+        }
+      else if(paisaje[(tortugay[n]-(tortugay[n]%16))/16][(tortugax[n]-(tortugax[n]%16))/16]<32) //limite de bloque izquierdo
+        {
+        tortugavx[n]=-tortugavx[n];
+        tortugax[n]=tortugax[n]+16-(tortugax[n]%16);
         }
       }
-    if(paisaje[(tortugay[n]-(tortugay[n]%16))/16][(tortugax[n]+16-(tortugax[n]%16))/16]<32) //limite de bloque derecho
+    if(ntortuga[n]==5)  //escondida
       {
-      if(paisaje[(tortugay[n]-(tortugay[n]%16))/16][(tortugax[n]+16-(tortugax[n]%16))/16]==14 || paisaje[(tortugay[n]-(tortugay[n]%16))/16][(tortugax[n]+16-(tortugax[n]%16))/16]==14) //romper bloques derechos
+      if((tortugax[n]%16)!=0)  //gravedad
         {
-        if(ntortuga[n]==3)
+        if(paisaje[(tortugay[n]+16-(tortugay[n]%16))/16][(tortugax[n]-(tortugax[n]%16))/16]>=32 && paisaje[(tortugay[n]+16-(tortugay[n]%16))/16][(tortugax[n]+16-(tortugax[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
+          {
+          tortugay[n]=tortugay[n]+4;
+          }
+        else
+          {
+          tortugay[n]=tortugay[n]-(tortugay[n]%16);
+          }
+        }
+      else
+        {
+        if(paisaje[(tortugay[n]+16-(tortugay[n]%16))/16][(tortugax[n]-(tortugax[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
+          {
+          tortugay[n]=tortugay[n]+4;
+          }
+        else
+          {
+          tortugay[n]=tortugay[n]-(tortugay[n]%16);
+          }
+        }
+      if(tortuga_tiempo[n]==2 || tortuga_tiempo[n]==1)  //cuando queden 2 segundos avisar que la tortuga va a cambiar de forma haciendo que tiemble
+        {
+        if(sec%2==0)
+          {
+          tortugax[n]++;
+          }
+        if(sec%2==1)
+          {
+          tortugax[n]--;
+          }
+        }
+      if(tortuga_tiempo[n]==0)  //cuando se acabe el tiempo hacer que camine
+        {
+        ntortuga[n]=4;
+        tortugavx[n]=1.0;
+        }
+      if(sec==0)  //reducir cada segundo
+        {
+        tortuga_tiempo[n]--;
+        }
+      if(tecla[KEY_CONTROL])
+        {
+        if(x<=tortugax[n]+16 && x>=tortugax[n]-16)
+          {
+          if(y-(y%16)==tortugay[n]-(tortugay[n]%16))
+            {
+            ntortuga[n]=7;
+            tortuga_tiempo[n]=16;
+            }
+          }
+        }
+      }
+    if(ntortuga[n]==6)  //corriendo escondida
+      {
+      if((tortugax[n]%16)!=0)  //gravedad
+        {
+        if(paisaje[(tortugay[n]+16-(tortugay[n]%16))/16][(tortugax[n]-(tortugax[n]%16))/16]>=32 && paisaje[(tortugay[n]+16-(tortugay[n]%16))/16][(tortugax[n]+16-(tortugax[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
+          {
+          tortugay[n]=tortugay[n]+4;
+          }
+        else
+          {
+          tortugay[n]=tortugay[n]-(tortugay[n]%16);
+          }
+        }
+      else
+        {
+        if(paisaje[(tortugay[n]+16-(tortugay[n]%16))/16][(tortugax[n]-(tortugax[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
+          {
+          tortugay[n]=tortugay[n]+4;
+          }
+        else
+          {
+          tortugay[n]=tortugay[n]-(tortugay[n]%16);
+          }
+        }
+      if(paisaje[(tortugay[n]-(tortugay[n]%16))/16][(tortugax[n]+16-(tortugax[n]%16))/16]<32) //limite de bloque derecho
+        {
+        if(paisaje[(tortugay[n]-(tortugay[n]%16))/16][(tortugax[n]+16-(tortugax[n]%16))/16]==14 || paisaje[(tortugay[n]-(tortugay[n]%16))/16][(tortugax[n]+16-(tortugax[n]%16))/16]==14) //romper bloques derechos
           {
           paisaje[(tortugay[n]-(tortugay[n]%16))/16][(tortugax[n]+16-(tortugax[n]%16))/16]=colorcielo[(tortugay[n]-(tortugay[n]%16))/16][(tortugax[n]+16-(tortugax[n]%16))/16]+64;
           c_cristalroto(tortugax[n]+16-(tortugax[n]%16),tortugay[n]-(tortugay[n]%16));
           }
+        tortugavx[n]=-tortugavx[n];
+        tortugax[n]=tortugax[n]-(tortugax[n]%16);
         }
-      tortugavx[n]=-tortugavx[n];
-      tortugax[n]=tortugax[n]-(tortugax[n]%16);
-      }
-    else if(paisaje[(tortugay[n]-(tortugay[n]%16))/16][(tortugax[n]-(tortugax[n]%16))/16]<32) //limite de bloque izquierdo
-      {
-      if(paisaje[(tortugay[n]-(tortugay[n]%16))/16][(tortugax[n]-(tortugax[n]%16))/16]==14 || paisaje[(tortugay[n]-(tortugay[n]%16))/16][(tortugax[n]-(tortugax[n]%16))/16]==15) //romper bloque izquierdo
+      else if(paisaje[(tortugay[n]-(tortugay[n]%16))/16][(tortugax[n]-(tortugax[n]%16))/16]<32) //limite de bloque izquierdo
         {
-        if(ntortuga[n]==3)
+        if(paisaje[(tortugay[n]-(tortugay[n]%16))/16][(tortugax[n]-(tortugax[n]%16))/16]==14 || paisaje[(tortugay[n]-(tortugay[n]%16))/16][(tortugax[n]-(tortugax[n]%16))/16]==15) //romper bloque izquierdo
           {
           paisaje[(tortugay[n]-(tortugay[n]%16))/16][(tortugax[n]-(tortugax[n]%16))/16]=colorcielo[(tortugay[n]-(tortugay[n]%16))/16][(tortugax[n]-(tortugax[n]%16))/16]+64;
           c_cristalroto(tortugax[n]-(tortugax[n]%16),tortugay[n]-(tortugay[n]%16));
           }
+        tortugavx[n]=-tortugavx[n];
+        tortugax[n]=tortugax[n]+16-(tortugax[n]%16);
         }
-      tortugavx[n]=-tortugavx[n];
-      tortugax[n]=tortugax[n]+16-(tortugax[n]%16);
       }
+    if(ntortuga[n]==7)  //cargando tortuga
+      {
+      if(dirx>0)
+        {
+        tortugax[n]=x+16;
+        }
+      else if(dirx<0)
+        {
+        tortugax[n]=x-16;
+        }
+      tortugay[n]=y;
+      if(tecla[KEY_CONTROL]==0)
+        {
+        ntortuga[n]=6;
+        if(dirx>0)
+          {
+          tortugax[n]=x+20;
+          tortugavx[n]=8.0;
+          }
+        else if(dirx<0)
+          {
+          tortugax[n]=x-20;
+          tortugavx[n]=-8.0;
+          }
+        }
+      if(tortuga_tiempo[n]==2 || tortuga_tiempo[n]==1)  //cuando queden 2 segundos avisar que la tortuga va a cambiar de forma haciendo que tiemble
+        {
+        if(sec%2==0)
+          {
+          tortugax[n]++;
+          }
+        if(sec%2==1)
+          {
+          tortugax[n]--;
+          }
+        }
+      if(tortuga_tiempo[n]==0)  //cuando se acabe el tiempo hacer que camine
+        {
+        ntortuga[n]=4;
+        tortugavx[n]=1.0;
+        }
+      if(sec==0)  //reducir cada segundo
+        {
+        tortuga_tiempo[n]--;
+        }
+      }
+    if(ntortuga[n]==8)  //muriendo (algo la mato y esta cayendo)
+      {
+      tortugavy[n]=tortugavy[n]+0.5;
+      }
+
+
+
     }
   }
 }
@@ -4002,7 +4223,7 @@ for(n=0;n<8;n++)
   {
   if(ntortuga[n]!=0)
     {
-    if(ntortuga[n]==1)
+    if(ntortuga[n]<=3)  //volando libre, volando x, saltando 
       {
       if(sec%4==0 || sec%4==1)  //animacion
         {
@@ -4115,7 +4336,120 @@ for(n=0;n<8;n++)
           }
         }
       }
-    if(ntortuga[n]==2)
+    if(ntortuga[n]==4)  //caminando
+      {
+      if(sec%4==0 || sec%4==1)  //animacion
+        {
+        if(tortugavx[n]>=0)  //para dibujarla en el sentido correcto, cuerpo
+          {
+          for(j=0;j<16;j++)
+            {
+            for(i=0;i<16;i++)
+              {
+              if(tortuga0[j][i]!=22)
+                {
+                putpixel(tortugax[n]+i,tortugay[n]+j,tortuga0[j][i]);
+                }
+              }
+            }
+          }
+        if(tortugavx[n]<0)
+          {
+          for(j=0;j<16;j++)
+            {
+            for(i=0;i<16;i++)
+              {
+              if(tortuga0[j][15-i]!=22)  //espejo en x
+                {
+                putpixel(tortugax[n]+i,tortugay[n]+j,tortuga0[j][15-i]);  //espejo en x
+                }
+              }
+            }
+          }
+        if(tortugavx[n]>=0)  //para dibujarla en el sentido correcto, cabeza
+          {
+          for(j=0;j<16;j++)
+            {
+            for(i=0;i<16;i++)
+              {
+              if(tortuga2[j][i]!=22)
+                {
+                putpixel(tortugax[n]+i,tortugay[n]+j-16,tortuga2[j][i]);
+                }
+              }
+            }
+          }
+        if(tortugavx[n]<0)
+          {
+          for(j=0;j<16;j++)
+            {
+            for(i=0;i<16;i++)
+              {
+              if(tortuga2[j][15-i]!=22)  //espejo en x
+                {
+                putpixel(tortugax[n]+i,tortugay[n]+j-16,tortuga2[j][15-i]);  //espejo en x
+                }
+              }
+            }
+          }
+        }
+      if(sec%4==2 || sec%4==3)
+        {
+        if(tortugavx[n]>=0)  //para dibujarla en el sentido correcto, cuerpo
+          {
+          for(j=0;j<16;j++)
+            {
+            for(i=0;i<16;i++)
+              {
+              if(tortuga1[j][i]!=22)
+                {
+                putpixel(tortugax[n]+i,tortugay[n]+j,tortuga1[j][i]);
+                }
+              }
+            }
+          }
+        if(tortugavx[n]<0)
+          {
+          for(j=0;j<16;j++)
+            {
+            for(i=0;i<16;i++)
+              {
+              if(tortuga1[j][15-i]!=22)  //espejo en x
+                {
+                putpixel(tortugax[n]+i,tortugay[n]+j,tortuga1[j][15-i]);  //espejo en x
+                }
+              }
+            }
+          }
+        if(tortugavx[n]>=0)  //para dibujarla en el sentido correcto, cabeza
+          {
+          for(j=0;j<16;j++)
+            {
+            for(i=0;i<16;i++)
+              {
+              if(tortuga3[j][i]!=22)
+                {
+                putpixel(tortugax[n]+i,tortugay[n]+j-16,tortuga3[j][i]);
+                }
+              }
+            }
+          }
+        if(tortugavx[n]<0)
+          {
+          for(j=0;j<16;j++)
+            {
+            for(i=0;i<16;i++)
+              {
+              if(tortuga3[j][15-i]!=22)  //espejo en x
+                {
+                putpixel(tortugax[n]+i,tortugay[n]+j-16,tortuga3[j][15-i]);  //espejo en x
+                }
+              }
+            }
+          }
+        }
+      }
+    if(ntortuga[n]==5 || ntortuga[n]>=7)  //escondida
       {
       for(j=0;j<16;j++)
         {
@@ -4128,7 +4462,7 @@ for(n=0;n<8;n++)
           }
         }
       }
-    if(ntortuga[n]==3)  //falta animacion
+    if(ntortuga[n]==6)  //corriendo escondida (falta animacion)
       {
       for(j=0;j<16;j++)
         {
@@ -4152,9 +4486,55 @@ void elitortuga(int i)
 ntortuga[i]=0;
 tortugax[i]=0;
 tortugay[i]=0;
-//borrando rastro del dibujo, redibujando fondo
-bloque(tortugao[i]-(tortugao[i]%16),tortugap[i]-(tortugap[i]%16),paisaje[(tortugap[i]-(tortugap[i]%16))/16][(tortugao[i]-(tortugao[i]%16))/16]);  //actualizar arriba a la izquierda
-bloque(tortugao[i]-(tortugao[i]%16)+16,tortugap[i]-(tortugap[i]%16),paisaje[(tortugap[i]-(tortugap[i]%16))/16][(tortugao[i]+16-(tortugao[i]%16))/16]);  //actualizar arriba a la derecha
+//borrando rastro del dibujo, redibujando fondo, cuerpo
+if(ntortuga[i]<=4)
+  {
+  if((tortugao[i]%16)!=0)  // comprobar que bloques necesitan actualizarse
+    {
+    bloque(tortugao[i]-(tortugao[i]%16),tortugap[i]-(tortugap[i]%16),paisaje[(tortugap[i]-(tortugap[i]%16))/16][(tortugao[i]-(tortugao[i]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+    bloque(tortugao[i]-(tortugao[i]%16)+16,tortugap[i]-(tortugap[i]%16),paisaje[(tortugap[i]-(tortugap[i]%16))/16][(tortugao[i]+16-(tortugao[i]%16))/16]);  //actualizar bloque que esta arriba a la derecha
+    bloque(tortugao[i]-(tortugao[i]%16),tortugap[i]-(tortugap[i]%16)-16,paisaje[(tortugap[i]-16-(tortugap[i]%16))/16][(tortugao[i]-(tortugao[i]%16))/16]);  //actualizar bloque que esta arriba a la izquierda, cabeza
+    bloque(tortugao[i]-(tortugao[i]%16)+16,tortugap[i]-(tortugap[i]%16)-16,paisaje[(tortugap[i]-16-(tortugap[i]%16))/16][(tortugao[i]+16-(tortugao[i]%16))/16]);  //actualizar bloque que esta arriba a la derecha, cabeza
+    if((tortugap[i]%16)!=0)
+      {
+      bloque(tortugao[i]-(tortugao[i]%16),tortugap[i]-(tortugap[i]%16)+16,paisaje[(tortugap[i]+16-(tortugap[i]%16))/16][(tortugao[i]-(tortugao[i]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+      bloque(tortugao[i]-(tortugao[i]%16)+16,tortugap[i]-(tortugap[i]%16)+16,paisaje[(tortugap[i]+16-(tortugap[i]%16))/16][(tortugao[i]+16-(tortugao[i]%16))/16]);  //actualizar bloque que esta abajo a la derecha
+      }
+    }
+  else if((tortugap[i]%16)!=0)
+    {
+    bloque(tortugao[i]-(tortugao[i]%16),tortugap[i]-(tortugap[i]%16),paisaje[(tortugap[i]-(tortugap[i]%16))/16][(tortugao[i]-(tortugao[i]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+    bloque(tortugao[i]-(tortugao[i]%16),tortugap[i]-(tortugap[i]%16)+16,paisaje[(tortugap[i]+16-(tortugap[i]%16))/16][(tortugao[i]-(tortugao[i]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+    bloque(tortugao[i]-(tortugao[i]%16),tortugap[i]-(tortugap[i]%16)-16,paisaje[(tortugap[i]-16-(tortugap[i]%16))/16][(tortugao[i]-(tortugao[i]%16))/16]);  //actualizar bloque que esta mas arriba a la izquierda, cabeza
+    }
+  else
+    {
+    bloque(tortugao[i],tortugap[i],paisaje[tortugap[i]/16][tortugao[i]/16]);  //actualizar bloque que esta en su posicion
+    bloque(tortugao[i],tortugap[i]-16,paisaje[(tortugap[i]-16)/16][tortugao[i]/16]);  //actualizar bloque que esta arriba de su posicion, cabeza
+    }
+  }
+else
+  {
+  if((tortugao[i]%16)!=0)
+    {
+    bloque(tortugao[i]-(tortugao[i]%16),tortugap[i]-(tortugap[i]%16),paisaje[(tortugap[i]-(tortugap[i]%16))/16][(tortugao[i]-(tortugao[i]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+    bloque(tortugao[i]-(tortugao[i]%16)+16,tortugap[i]-(tortugap[i]%16),paisaje[(tortugap[i]-(tortugap[i]%16))/16][(tortugao[i]+16-(tortugao[i]%16))/16]);  //actualizar bloque que esta arriba a la derecha
+    if((tortugap[i]%16)!=0)
+      {
+      bloque(tortugao[i]-(tortugao[i]%16),tortugap[i]-(tortugap[i]%16)+16,paisaje[(tortugap[i]+16-(tortugap[i]%16))/16][(tortugao[i]-(tortugao[i]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+      bloque(tortugao[i]-(tortugao[i]%16)+16,tortugap[i]-(tortugap[i]%16)+16,paisaje[(tortugap[i]+16-(tortugap[i]%16))/16][(tortugao[i]+16-(tortugao[i]%16))/16]);  //actualizar bloque que esta abajo a la derecha
+      }
+    }
+  else if((tortugap[i]%16)!=0)
+    {
+    bloque(tortugao[i]-(tortugao[i]%16),tortugap[i]-(tortugap[i]%16),paisaje[(tortugap[i]-(tortugap[i]%16))/16][(tortugao[i]-(tortugao[i]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+    bloque(tortugao[i]-(tortugao[i]%16),tortugap[i]-(tortugap[i]%16)+16,paisaje[(tortugap[i]+16-(tortugap[i]%16))/16][(tortugao[i]-(tortugao[i]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+    }
+  else
+    {
+    bloque(tortugao[i],tortugap[i],paisaje[tortugap[i]/16][tortugao[i]/16]);  //actualizar bloque que esta en su posicion
+    }
+  }
 }
 
 
@@ -4179,7 +4559,7 @@ for(n=0;n<8;n++)
   {
   if(ntortuga[n]!=0)
     {
-    if(ntortuga[n]==1)  //para la cabeza
+    if(ntortuga[n]<=4)  //para la cabeza
       {
       bloque(tortugao[n]-(tortugao[n]%16),tortugap[n]-16-(tortugap[n]%16),paisaje[(tortugap[n]-16-(tortugap[n]%16))/16][(tortugao[n]-(tortugao[n]%16))/16]);  //actualizar mas arriba (cabeza) a la izquierda
       bloque(tortugao[n]-(tortugao[n]%16)+16,tortugap[n]-16-(tortugap[n]%16),paisaje[(tortugap[n]-16-(tortugap[n]%16))/16][(tortugao[n]+16-(tortugao[n]%16))/16]);  //actualizar mas arriba (cabeza) a la derecha
@@ -4208,7 +4588,7 @@ for(n=0;n<8;n++)
 }
 
 
-void pisar_tortuga()  //pisar tortuga
+void pisar_tortuga()  //pisar tortuga y cargar tortuga
 {
 int i;
   for(i=0;i<8;i++)  //pisar tortuga
@@ -4225,29 +4605,57 @@ int i;
           {
           if(vy>0.0)
             {
-            if(ntortuga[i]==1)  //si la pisas se mete en su caparazon
+            if(ntortuga[i]==1)  //si la pisas dejara de volar
               {
-              ntortuga[i]=2;
-              tortugavx[i]=0;
+              ntortuga[i]=4;
+              tortugavx[i]=1.0;
               }
-            else if(ntortuga[i]==2)  //pateala y ira lejos
+            else if(ntortuga[i]==2)  //si la pisas dejara de volar
               {
-              ntortuga[i]=3;
-              tortugavx[i]=8.0;
+              ntortuga[i]=4;
+              tortugavx[i]=1.0;
               }
-            else if(ntortuga[i]==3)  
+            else if(ntortuga[i]==3)  //si la pisas dejara de volar
               {
-              ntortuga[i]=2;
-              tortugavx[i]=0;
+              ntortuga[i]=4;
+              tortugavx[i]=1.0;
+              tortugavy[i]=0.0;
               }
-            puntos=puntos+100;
-            if(tecla[KEY_CUR_ARRIBA])  //saltar 72
+            else if(ntortuga[i]==4)  //si la pisas se escondera
               {
-              vy=-8;
+              ntortuga[i]=5;
+              tortugavx[i]=0.0;
+              tortuga_tiempo[i]=8;  //tiempo escondida
               }
-            else
+            else if(ntortuga[i]==5)  //si la pisas correra escondida
               {
-              vy=-4;
+              ntortuga[i]=6;
+              if(x<=tortugax[i])
+                {
+                tortugavx[i]=8.0;
+                }
+              else
+                {
+                tortugavx[i]=-8.0;
+                }
+              }
+            else if(ntortuga[i]==6)  //si la pisas corriendo se detiene
+              {
+              ntortuga[i]=5;
+              tortugavx[i]=0.0;
+              tortuga_tiempo[i]=8;  //tiempo escondida
+              }
+            if(ntortuga[i]<=6)
+              {
+              puntos=puntos+100;
+              if(tecla[KEY_CUR_ARRIBA])  //saltar 72
+                {
+                vy=-8;
+                }
+              else
+                {
+                vy=-4;
+                }
               }
             }
           }
@@ -4264,7 +4672,7 @@ int i;
     {
     if(ntortuga[i]!=0)
       {
-      if(ntortuga[i]==1 || ntortuga[i]==3)
+      if(ntortuga[i]<=4 || ntortuga[i]==6)
         {
         if(x<=tortugax[i]+16 && x>=tortugax[i]-16)
           {
@@ -4294,11 +4702,11 @@ for(n=0;n<8;n++)
     {
     if(tortugax[n]>=624) //si llega a la orilla derecha
       {
-      tortugavx[n]=-tortugavx[n];
+      elitortuga(n);
       }
     else if(tortugax[n]<=0) //si llega a la orilla izquierda
       {
-      tortugavx[n]=-tortugavx[n];
+      elitortuga(n);
       }
     else if(tortugay[n]>=464) //caida
       {
@@ -4311,16 +4719,14 @@ for(n=0;n<8;n++)
 
 void bloque_caja0_calavera()  //caja0 con calavera
 {
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-9)  //caja0 con champiñon
+  if(c1==-9)  //caja0 con calavera
     {
-    //vy=-vy;
     paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja5
     bloque(x-(x%16),y-(y%16),5);
     c_champ((x-(x%16))/16,(y-16-(y%16))/16,5);
     }
-  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-9 && x%16!=0)
+  else if(c2==-9)
     {
-    //vy=-vy;
     paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
     bloque(x+16-(x%16),y-(y%16),5);
     c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,5);
@@ -4330,7 +4736,7 @@ void bloque_caja0_calavera()  //caja0 con calavera
 
 void bloque_caja4_moneda()  //caja4 con moneda
 {
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-10) //caja4 con moneda
+  if(c1==-10) //caja4 con moneda
     {
     puntos=puntos+40;
     monedas++;
@@ -4338,7 +4744,7 @@ void bloque_caja4_moneda()  //caja4 con moneda
     bloque(x-(x%16),y-(y%16),12);
     cmoneda((x-(x%16))/16,(y-16-(y%16))/16);
     }
-  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-10 && x%16!=0)
+  else if(c2==-10)
     {
     puntos=puntos+40;
     monedas++;
@@ -4351,7 +4757,7 @@ void bloque_caja4_moneda()  //caja4 con moneda
 
 void bloque_caja4_10monedas()  //caja4 con 10 momedas
 {
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-11) //caja0 con 10 monedas
+  if(c1==-11) //caja0 con 10 monedas
     {
     cajamone++;
     monedas++;
@@ -4364,7 +4770,7 @@ void bloque_caja4_10monedas()  //caja4 con 10 momedas
       cajamone=0;
       }
     }
-  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-11 && x%16!=0)
+  else if(c2==-11)
     {
     cajamone++;
     monedas++;
@@ -4382,16 +4788,14 @@ void bloque_caja4_10monedas()  //caja4 con 10 momedas
 
 void bloque_caja4_champinon()  //caja4 con champiñon
 {
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-12)  //caja4 con champiñon
+  if(c1==-12)  //caja4 con champiñon
     {
-    //vy=-vy;
     paisaje[(y-(y%16))/16][(x-(x%16))/16]=12;  //caja5
     bloque(x-(x%16),y-(y%16),12);
     c_champ((x-(x%16))/16,(y-16-(y%16))/16,1);
     }
-  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-12 && x%16!=0)
+  else if(c2==-12)
     {
-    //vy=-vy;
     paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=12;
     bloque(x+16-(x%16),y-(y%16),12);
     c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,1);
@@ -4401,16 +4805,14 @@ void bloque_caja4_champinon()  //caja4 con champiñon
 
 void bloque_caja4_vida()  //caja4 con vida
 {
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-13)  //caja4 con vida
+  if(c1==-13)  //caja4 con vida
     {
-    //vy=-vy;
     paisaje[(y-(y%16))/16][(x-(x%16))/16]=12;  //caja5
     bloque(x-(x%16),y-(y%16),12);
     c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
     }
-  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-13 && x%16!=0)
+  else if(c2==-13)
     {
-    //vy=-vy;
     paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=12;
     bloque(x+16-(x%16),y-(y%16),12);
     c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,4);
@@ -4420,16 +4822,14 @@ void bloque_caja4_vida()  //caja4 con vida
 
 void bloque_caja4_calavera()  //caja4 con calavera
 {
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-15)  //caja0 con champiñon
+  if(c1==-15)  //caja0 con calavera
     {
-    //vy=-vy;
     paisaje[(y-(y%16))/16][(x-(x%16))/16]=12;  //caja5
     bloque(x-(x%16),y-(y%16),12);
     c_champ((x-(x%16))/16,(y-16-(y%16))/16,5);
     }
-  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-15 && x%16!=0)
+  else if(c2==-15)
     {
-    //vy=-vy;
     paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=12;
     bloque(x+16-(x%16),y-(y%16),2);
     c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,5);
@@ -4439,7 +4839,7 @@ void bloque_caja4_calavera()  //caja4 con calavera
 
 void bloque_madera_moneda()  //madera con moneda
 {
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-20) //madera con moneda
+  if(c1==-20) //madera con moneda
     {
     puntos=puntos+40;
     monedas++;
@@ -4447,7 +4847,7 @@ void bloque_madera_moneda()  //madera con moneda
     bloque(x-(x%16),y-(y%16),7);
     cmoneda((x-(x%16))/16,(y-16-(y%16))/16);
     }
-  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-20 && x%16!=0)
+  else if(c2==-20)
     {
     puntos=puntos+40;
     monedas++;
@@ -4460,16 +4860,14 @@ void bloque_madera_moneda()  //madera con moneda
 
 void bloque_madera_champinon()  //madera con champiñon
 {
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-21)  //madera con champiñon
+  if(c1==-21)  //madera con champiñon
     {
-    //vy=-vy;
     paisaje[(y-(y%16))/16][(x-(x%16))/16]=7;  //madera
     bloque(x-(x%16),y-(y%16),7);
     c_champ((x-(x%16))/16,(y-16-(y%16))/16,1);
     }
-  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-21 && x%16!=0)
+  else if(c2==-21)
     {
-    //vy=-vy;
     paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=7;
     bloque(x+16-(x%16),y-(y%16),7);
     c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,1);
@@ -4479,16 +4877,14 @@ void bloque_madera_champinon()  //madera con champiñon
 
 void bloque_madera_vida()  //madera con vida
 {
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-22)  //madera con vida
+  if(c1==-22)  //madera con vida
     {
-    //vy=-vy;
     paisaje[(y-(y%16))/16][(x-(x%16))/16]=7;  //madera
     bloque(x-(x%16),y-(y%16),7);
     c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
     }
-  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-22 && x%16!=0)
+  else if(c2==-22)
     {
-    //vy=-vy;
     paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=7;
     bloque(x+16-(x%16),y-(y%16),7);
     c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,4);
@@ -4499,16 +4895,14 @@ void bloque_madera_vida()  //madera con vida
 
 void bloque_hielo_champinon()  //hielo con champiñon
 {
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-25)  //hielo con champiñon
+  if(c1==-25)  //hielo con champiñon
     {
-    //vy=-vy;
     paisaje[(y-(y%16))/16][(x-(x%16))/16]=11;  //hielo
     bloque(x-(x%16),y-(y%16),11);
     c_champ((x-(x%16))/16,(y-16-(y%16))/16,1);
     }
-  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-25 && x%16!=0)
+  else if(c2==-25)
     {
-    //vy=-vy;
     paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=11;
     bloque(x+16-(x%16),y-(y%16),11);
     c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,1);
@@ -4518,16 +4912,14 @@ void bloque_hielo_champinon()  //hielo con champiñon
 
 void bloque_hielo_vida()  //hielo con vida
 {
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-26)  //hielo con vida
+  if(c1==-26)  //hielo con vida
     {
-    //vy=-vy;
     paisaje[(y-(y%16))/16][(x-(x%16))/16]=11;  //hielo
     bloque(x-(x%16),y-(y%16),11);
     c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
     }
-  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-26 && x%16!=0)
+  else if(c2==-26)
     {
-    //vy=-vy;
     paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=11;
     bloque(x+16-(x%16),y-(y%16),11);
     c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,4);
@@ -4537,7 +4929,7 @@ void bloque_hielo_vida()  //hielo con vida
 
 void cristal0_10monedas()  //cristal amarillo con 10 monedas
 {
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-30) //cristal0 con 10 monedas
+  if(c1==-30) //cristal0 con 10 monedas
     {
     cajamone++;
     monedas++;
@@ -4550,7 +4942,7 @@ void cristal0_10monedas()  //cristal amarillo con 10 monedas
       cajamone=0;
       }
     }
-  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-30 && x%16!=0)
+  else if(c2==-30)
     {
     cajamone++;
     monedas++;
@@ -4568,16 +4960,14 @@ void cristal0_10monedas()  //cristal amarillo con 10 monedas
 
 void cristal0_champinon()  //cristal amarillo con champiñon
 {
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-31)  //cristal0 con champiñon
+  if(c1==-31)  //cristal0 con champiñon
     {
-    //vy=-vy;
     paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja0
     bloque(x-(x%16),y-(y%16),5);
     c_champ((x-(x%16))/16,(y-16-(y%16))/16,1);
     }
-  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-31 && x%16!=0)
+  else if(c2==-31)
     {
-    //vy=-vy;
     paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
     bloque(x+16-(x%16),y-(y%16),5);
     c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,1);
@@ -4587,7 +4977,7 @@ void cristal0_champinon()  //cristal amarillo con champiñon
 
 void cristal4_10monedas()  //cristal verde con 10 monedas
 {
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-37) //cristal4 con 10 monedas
+  if(c1==-37) //cristal4 con 10 monedas
     {
     cajamone++;
     monedas++;
@@ -4600,7 +4990,7 @@ void cristal4_10monedas()  //cristal verde con 10 monedas
       cajamone=0;
       }
     }
-  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-37 && x%16!=0)
+  else if(c2==-37)
     {
     cajamone++;
     monedas++;
@@ -4618,16 +5008,14 @@ void cristal4_10monedas()  //cristal verde con 10 monedas
 
 void cristal4_champinon()  //cristal verde con champiñon
 {
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-38)  //cristal4 con champiñon
+  if(c1==-38)  //cristal4 con champiñon
     {
-    //vy=-vy;
     paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja0
     bloque(x-(x%16),y-(y%16),5);
     c_champ((x-(x%16))/16,(y-16-(y%16))/16,1);
     }
-  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-38 && x%16!=0)
+  else if(c2==-38)
     {
-    //vy=-vy;
     paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
     bloque(x+16-(x%16),y-(y%16),5);
     c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,1);
@@ -4637,7 +5025,7 @@ void cristal4_champinon()  //cristal verde con champiñon
 
 void cielo_duro_moneda()  //cielo duro con moneda
 {
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-44) //cielo duro con moneda
+  if(c1==-44) //cielo duro con moneda
     {
     puntos=puntos+40;
     monedas++;
@@ -4645,7 +5033,7 @@ void cielo_duro_moneda()  //cielo duro con moneda
     bloque(x-(x%16),y-(y%16),12);
     cmoneda((x-(x%16))/16,(y-16-(y%16))/16);
     }
-  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-44 && x%16!=0)
+  else if(c2==-44)
     {
     puntos=puntos+40;
     monedas++;
@@ -4658,16 +5046,14 @@ void cielo_duro_moneda()  //cielo duro con moneda
 
 void cielo_champinon()  //cielo con champiñon
 {
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==61)  //cielo con champiñon
+  if(c1==61)  //cielo con champiñon
     {
-    //vy=-vy;
     paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja0
     bloque(x-(x%16),y-(y%16),5);
     c_champ((x-(x%16))/16,(y-16-(y%16))/16,1);
     }
-  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==61 && x%16!=0)
+  else if(c2==61)
     {
-    //vy=-vy;
     paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
     bloque(x+16-(x%16),y-(y%16),5);
     c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,1);
@@ -4677,16 +5063,14 @@ void cielo_champinon()  //cielo con champiñon
 
 void estrellas_champinon()  //estrellas con champiñon
 {
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==62)  //estrellas con champiñon
+  if(c1==62)  //estrellas con champiñon
     {
-    //vy=-vy;
     paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja0
     bloque(x-(x%16),y-(y%16),5);
     c_champ((x-(x%16))/16,(y-16-(y%16))/16,1);
     }
-  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==62 && x%16!=0)
+  else if(c2==62)
     {
-    //vy=-vy;
     paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
     bloque(x+16-(x%16),y-(y%16),5);
     c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,1);
@@ -4696,16 +5080,14 @@ void estrellas_champinon()  //estrellas con champiñon
 
 void estrellas_vida()  //estrellas con vida
 {
-  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==63)  //estrellas con vida
+  if(c1==63)  //estrellas con vida
     {
-    //vy=-vy;
     paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja0
     bloque(x-(x%16),y-(y%16),5);
     c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
     }
-  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==63 && x%16!=0)
+  else if(c2==63)
     {
-    //vy=-vy;
     paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
     bloque(x+16-(x%16),y-(y%16),5);
     c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,4);
@@ -4765,7 +5147,8 @@ void ajuste_FPS()
         }
       if(debug)
         {
-        gotoxy(4,30), printf("FPS=%d ",FPS);
+        gotoxy(4,30); printf("FPS=%d ",FPS);
+        gotoxy(12,30);  printf("rts=%d ",retraso);
         }
       }
     FPS=0;
@@ -4858,7 +5241,7 @@ else
 void cargar_enemigos()
 {
 FILE *archivo;
-int n=0,i=-1,j=-1;
+int n=0,i=-1,j=-1,T;
 for(n=0;n<10;n++)
   {
   npc[n]=0;
@@ -4920,9 +5303,9 @@ else
       }
     if(n==5)  //tortuga
       {
-      fscanf(archivo,"%d,%d",&i,&j);
+      fscanf(archivo,"%d,%d,%d",&i,&j,&T);
       npc[n]=1;
-      c_tortuga(i,j);
+      c_tortuga(i,j,T);
       }
     while(getc(archivo)!='\n' && feof(archivo)==0)
       {

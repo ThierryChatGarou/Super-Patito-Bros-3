@@ -1,4 +1,9 @@
-extern int paisaje[30][40],colorcielo[30][40],moneda0[16][16],sec;
+extern int sec;
+extern int paisaje[30][40],colorcielo[30][40];
+extern int moneda0[16][16],cieloduromoneda[16][16],cristal4champi4[16][16],cristal4monedas[16][16],cristal0champi0[16][16],cristal0monedas[16][16],hielo0vida[16][16],hielo0champi[16][16];
+extern int maderavida[16][16],maderachampi[16][16],maderamoneda[16][16],caja4calavera[16][16],caja4vida[16][16],caja4champi[16][16],caja4monedas[16][16],caja4moneda[16][16],caja0calavera[16][16];
+extern int estrellasvida[16][16],estrellaschampi[16][16],cielochampi[16][16];
+
 
 int nexplosionc[64],explosioncx[64],explosioncy[64];  //explosiones chicas. 
 int ngolpe[4],golpex[4],golpey[4];  //efecto de choque del disparo que lanza el pinguino
@@ -1555,40 +1560,40 @@ int agua1 [16][16]={
 
 int cajamoneda [16][16]={
 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
-0 ,14,14,14,14,15,15,15,15,15,15,14,14,14,14,0 ,
-0 ,14,0 ,15,15,15,15,15,15,15,15,15,15,0 ,14,0 ,
-0 ,14,15,15,15,15,7 ,7 ,7 ,0 ,15,15,15,15,14,0 ,
-0 ,14,15,15,15,15,7 ,15,15,0 ,15,15,15,15,14,0 ,
-0 ,15,15,15,15,15,7 ,15,15,0 ,15,15,15,15,15,0 ,
-0 ,15,15,15,15,15,7 ,15,15,0 ,15,15,15,15,15,0 ,
-0 ,15,15,15,15,15,7 ,15,15,0 ,15,15,15,15,15,0 ,
-0 ,15,15,15,15,15,7 ,15,15,0 ,15,15,15,15,15,0 ,
-0 ,15,15,15,15,15,7 ,15,15,0 ,15,15,15,15,15,0 ,
-0 ,15,15,15,15,15,7 ,15,15,0 ,15,15,15,15,15,0 ,
-0 ,14,15,15,15,15,7 ,15,15,0 ,15,15,15,15,14,0 ,
-0 ,14,15,15,15,15,7 ,0 ,0 ,0 ,15,15,15,15,14,0 ,
-0 ,14,0 ,15,15,15,15,15,15,15,15,15,15,0 ,14,0 ,
-0 ,14,14,14,14,15,15,15,15,15,15,14,14,14,14,0 ,
-0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 
+0 ,14,14,14,14,14,14,14,14,14,14,14,14,14,14,0 ,
+0 ,14,0 ,14,14,14,14,14,14,14,14,14,14,0 ,14,0 ,
+0 ,14,14,14,14,14,14,14,14,14,14,14,14,14,14,0 ,
+0 ,14,14,14,14,14,14,14,14,14,14,14,14,14,14,0 ,
+0 ,14,14,14,14,14,14,14,14,14,14,14,14,14,14,0 ,
+0 ,14,14,15,15,14,14,14,14,14,14,14,0 ,14,14,0 ,
+0 ,14,15,15,15,15,14,0 ,14,0 ,14,14,0 ,14,14,0 ,
+0 ,14,15,15,15,15,14,14,0 ,14,14,14,0 ,14,14,0 ,
+0 ,14,14,15,15,14,14,0 ,14,0 ,14,14,0 ,14,14,0 ,
+0 ,14,14,14,14,14,14,14,14,14,14,14,14,14,14,0 ,
+0 ,14,14,14,14,14,14,14,14,14,14,14,14,14,14,0 ,
+0 ,14,14,14,14,14,14,14,14,14,14,14,14,14,14,0 ,
+0 ,14,0 ,14,14,14,14,14,14,14,14,14,14,0 ,14,0 ,
+0 ,14,14,14,14,14,14,14,14,14,14,14,14,14,14,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
 };
 
-int cajamonedas [16][16]={
+int cajamonedas[16][16]={
 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
-0 ,15,15,15,15,15,15,15,15,15,15,15,15,15,15,0 ,
-0 ,15,0 ,15,14,14,15,15,15,15,15,15,15,0 ,15,0 ,
-0 ,15,15,14,14,14,14,15,15,15,15,15,15,15,15,0 ,
-0 ,15,15,14,14,14,14,15,15,15,15,14,14,15,15,0 ,
-0 ,15,15,15,14,14,15,15,15,15,14,14,14,14,15,0 ,
-0 ,15,15,15,15,15,15,15,15,15,14,14,14,14,15,0 ,
-0 ,15,15,14,14,15,15,15,15,15,15,14,14,15,15,0 ,
-0 ,15,14,14,14,14,15,15,14,14,15,15,15,15,15,0 ,
-0 ,15,14,14,14,14,15,14,14,14,14,15,15,15,15,0 ,
-0 ,15,15,14,14,15,15,14,14,14,14,15,15,15,15,0 ,
-0 ,15,15,15,15,15,15,15,14,14,15,15,15,15,15,0 ,
-0 ,15,15,15,15,15,15,15,15,15,15,15,15,15,15,0 ,
-0 ,15,0 ,15,15,15,15,15,15,15,15,15,15,0 ,15,0 ,
-0 ,15,15,15,15,15,15,15,15,15,15,15,15,15,15,0 ,
-0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 
+0 ,14,14,14,14,14,14,14,14,14,14,14,14,14,14,0 ,
+0 ,14,0 ,14,14,14,14,14,14,14,14,14,14,0 ,14,0 ,
+0 ,14,14,14,14,15,15,14,14,14,14,14,14,14,14,0 ,
+0 ,14,14,14,15,15,15,15,14,0 ,14,0 ,14,14,14,0 ,
+0 ,14,14,14,15,15,15,15,14,14,0 ,14,14,14,14,0 ,
+0 ,14,14,14,14,15,15,14,14,0 ,14,0 ,14,14,14,0 ,
+0 ,14,14,14,14,14,14,14,14,14,14,14,14,14,14,0 ,
+0 ,14,14,14,14,14,14,14,14,14,14,14,14,14,14,0 ,
+0 ,14,14,14,14,0 ,14,0 ,0 ,0 ,14,14,14,14,14,0 ,
+0 ,14,14,14,14,0 ,14,0 ,14,0 ,14,14,14,14,14,0 ,
+0 ,14,14,14,14,0 ,14,0 ,14,0 ,14,14,14,14,14,0 ,
+0 ,14,14,14,14,0 ,14,0 ,0 ,0 ,14,14,14,14,14,0 ,
+0 ,14,0 ,14,14,14,14,14,14,14,14,14,14,0 ,14,0 ,
+0 ,14,14,14,14,14,14,14,14,14,14,14,14,14,14,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
 };
 
 int cajachampi0 [16][16]={
@@ -4105,15 +4110,20 @@ int i,j;
 switch (T)
   {
   case -44:  //cielo duro con moneda
-    setfillstyle(1,11); 
-    bar(i2,j2,i2+15,j2+15);
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,cieloduromoneda[j][i]);
+        }
+      }
   break;
   case -38:  //cristal4 con champiñon rojo
     for(j=0;j<16;j++)
       {
       for(i=0;i<16;i++)
         {
-        putpixel(i+i2,j+j2,cristal4[j][i]);
+        putpixel(i+i2,j+j2,cristal4champi4[j][i]);
         }
       }
   break;
@@ -4122,7 +4132,7 @@ switch (T)
       {
       for(i=0;i<16;i++)
         {
-        putpixel(i+i2,j+j2,cristal4[j][i]);
+        putpixel(i+i2,j+j2,cristal4monedas[j][i]);
         }
       }
   break;
@@ -4131,7 +4141,7 @@ switch (T)
       {
       for(i=0;i<16;i++)
         {
-        putpixel(i+i2,j+j2,cristal0[j][i]);
+        putpixel(i+i2,j+j2,cristal0champi0[j][i]);
         }
       }
   break;
@@ -4140,7 +4150,7 @@ switch (T)
       {
       for(i=0;i<16;i++)
         {
-        putpixel(i+i2,j+j2,cristal0[j][i]);
+        putpixel(i+i2,j+j2,cristal0monedas[j][i]);
         }
       }
   break;
@@ -4149,7 +4159,7 @@ switch (T)
       {
       for(i=0;i<16;i++)
         {
-        putpixel(i+i2,j+j2,hielo0[j][i]);
+        putpixel(i+i2,j+j2,hielo0vida[j][i]);
         }
       }
   break;
@@ -4158,7 +4168,7 @@ switch (T)
       {
       for(i=0;i<16;i++)
         {
-        putpixel(i+i2,j+j2,hielo0[j][i]);
+        putpixel(i+i2,j+j2,hielo0champi[j][i]);
         }
       }
   break;
@@ -4167,7 +4177,7 @@ switch (T)
       {
       for(i=0;i<16;i++)
         {
-        putpixel(i+i2,j+j2,madera[j][i]);
+        putpixel(i+i2,j+j2,maderavida[j][i]);
         }
       }
   break;
@@ -4176,7 +4186,7 @@ switch (T)
       {
       for(i=0;i<16;i++)
         {
-        putpixel(i+i2,j+j2,madera[j][i]);
+        putpixel(i+i2,j+j2,maderachampi[j][i]);
         }
       }
   break;
@@ -4185,61 +4195,61 @@ switch (T)
       {
       for(i=0;i<16;i++)
         {
-        putpixel(i+i2,j+j2,madera[j][i]);
+        putpixel(i+i2,j+j2,maderamoneda[j][i]);
         }
       }
   break;
-  case -15:
+  case -15:  //caja4 con calavera
     for(j=0;j<16;j++)
       {
       for(i=0;i<16;i++)
         {
-        putpixel(i+i2,j+j2,caja20[j][i]);
+        putpixel(i+i2,j+j2,caja4calavera[j][i]);
         }
       }
   break;
-  case -13:
+  case -13:  //caja4 con vida
     for(j=0;j<16;j++)
       {
       for(i=0;i<16;i++)
         {
-        putpixel(i+i2,j+j2,caja20[j][i]);
+        putpixel(i+i2,j+j2,caja4vida[j][i]);
         }
       }
   break;
-  case -12:
+  case -12:  //caja4 con champiñon
     for(j=0;j<16;j++)
       {
       for(i=0;i<16;i++)
         {
-        putpixel(i+i2,j+j2,caja20[j][i]);
+        putpixel(i+i2,j+j2,caja4champi[j][i]);
         }
       }
   break;
-  case -11:
+  case -11:  //caja4 con 10 momedas
     for(j=0;j<16;j++)
       {
       for(i=0;i<16;i++)
         {
-        putpixel(i+i2,j+j2,caja20[j][i]);
+        putpixel(i+i2,j+j2,caja4monedas[j][i]);
         }
       }
   break;
-  case -10:
+  case -10:  //caja4 con moneda
     for(j=0;j<16;j++)
       {
       for(i=0;i<16;i++)
         {
-        putpixel(i+i2,j+j2,caja20[j][i]);
+        putpixel(i+i2,j+j2,caja4moneda[j][i]);
         }
       }
   break;
-  case -9:
+  case -9:  //caja0 con calavera
     for(j=0;j<16;j++)
       {
       for(i=0;i<16;i++)
         {
-        putpixel(i+i2,j+j2,caja0[j][i]);
+        putpixel(i+i2,j+j2,caja0calavera[j][i]);
         }
       }
   break;
@@ -4813,7 +4823,7 @@ switch (T)
       {
       for(i=0;i<16;i++)
         {
-        putpixel(i+i2,j+j2,estre1[j][i]);
+        putpixel(i+i2,j+j2,estrellasvida[j][i]);
         }
       }
   break;
@@ -4822,13 +4832,18 @@ switch (T)
       {
       for(i=0;i<16;i++)
         {
-        putpixel(i+i2,j+j2,estre1[j][i]);
+        putpixel(i+i2,j+j2,estrellaschampi[j][i]);
         }
       }
   break;
   case 63:  //cielo champiñon
-    setfillstyle(1,11); 
-    bar(i2,j2,i2+15,j2+15);
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,cielochampi[j][i]);
+        }
+      }
   break;
   case 64:  //apartir de aqui comienzan los bloques tipo aire o fondo
     setfillstyle(1,0); //negro

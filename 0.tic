@@ -30,7 +30,7 @@ tiempo=400
 
 [5-0]
 0,20,2  //pato,x,y
-5,20,20  //tortuga,x,y
+5,20,20,1  //tortuga,x,y,Tipo
 88      //fin
 
 [5-1]
@@ -55,6 +55,12 @@ tiempo=400
 
 [6-0]
 0,20,2  //pato,x,y
+5,20,20,1  //tortuga,x,y,Tipo
+5,18,18,2  //tortuga,x,y,Tipo
+5,16,16,3  //tortuga,x,y,Tipo
+5,14,14,4  //tortuga,x,y,Tipo
+5,12,14,5  //tortuga,x,y,Tipo
+5,10,20,6  //tortuga,x,y,Tipo
 88      //fin
 
 [6-1]
@@ -147,5 +153,5 @@ tiempo=400
 2,20,4  //saltador,x,y
 3,20,5  //peligro,x,y
 4,20,6  //mina,x,y
-5,20,7  //tortuga,x,y
+5,20,7,1  //tortuga,x,y,Tipo
 88      //fin
