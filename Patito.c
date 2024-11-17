@@ -2812,7 +2812,7 @@ for(x2=0;x2<4;x2++)
 
 c_pato(int x2, int y2)
 {
-int n,p;
+int n,p=0;
 for(n=0;n<8;n++)
   {
   if(npato[n]==0)
@@ -2831,7 +2831,7 @@ patoy[p]=y2;
 
 c_champ(int x2, int y2, int T)
 {
-int n,p;
+int n,p=0;
 if(T<5)
 {
 for(n=0;n<4;n++)
