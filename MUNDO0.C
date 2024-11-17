@@ -1,4 +1,4 @@
-extern int ciclo,tiempo,t_volar,retraso,x,y,o,p,invensible,dir,nivel,escena,vidas,mundo,monedas,estado,nadando,jugar,t_huevo,npato[8],sec,t_moneda,paisaje[30][40],niv1[30][40],blq[400],npc[10];
+extern int ciclo,tiempo,t_volar,retraso,x,y,o,p,invensible,tiempo_invensible,dirx,nivel,escena,vidas,mundo,monedas,estado,nadando,jugar,t_huevo,npato[8],nsalta[4],sec,t_moneda,CPS,paisaje[30][40],niv1[30][40],blq[400],npc[10];
 extern float vx,vy;
 extern unsigned char tecla[128];
 
@@ -236,11 +236,11 @@ while(ciclo<1)
   if(tecla[KEY_CUR_ATRAS])  //izquierda 75
     {
     vx=-4.0;
-    dir=-1;
+    dirx=-1;
     }
   if(tecla[KEY_CUR_ADELANTE])  //derecha 77
     {
-    dir=1;
+    dirx=1;
     vx=4.0;
     }
   if(tecla[KEY_CUR_ARRIBA])  //arriba
@@ -535,7 +535,7 @@ while(ciclo<1)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 }
 return(0);
@@ -595,6 +595,25 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
   bloque_caja0_champinon();  //caja0 con champiñon
   //bloque_caja0_vida();  //caja0 con vida
+  //bloque_caja0_calavera();  //caja0 con calavera
+  //bloque_caja4_moneda();  //caja4 con moneda
+  //bloque_caja4_10monedas();  //caja4 con 10 momedas
+  //bloque_caja4_champinon();  //caja4 con champiñon
+  //bloque_caja4_vida();  //caja4 con vida
+  //bloque_caja4_calavera();  //caja4 con calavera
+  //bloque_madera_moneda();  //madera con moneda
+  //bloque_madera_champinon();  //madera con champiñon
+  //bloque_madera_vida();  //madera con vida
+  //bloque_hielo_champinon();  //hielo con champiñon
+  //bloque_hielo_vida();  //hielo con vida
+  //cristal0_10monedas();  //cristal amarillo con 10 monedas
+  //cristal0_champinon();  //cristal amarillo con champiñon
+  //cristal4_10monedas();  //cristal verde con 10 monedas
+  //cristal4_champinon();  //cristal verde con champiñon
+  //cielo_duro_moneda();  //cielo duro con moneda
+  //cielo_champinon();  //cielo con champiñon
+  //estrellas_champinon();  //estrellas con champiñon
+  //estrellas_vida();  //estrellas con vida
   //cristal0_moneda();  //cristal0 con moneda
   //cristal4_moneda();  //cristal4 con moneda
   //cristal0_vida();  //cristal0 con vida
@@ -706,7 +725,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -762,6 +781,25 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
   bloque_caja0_champinon();  //caja0 con champiñon
   //bloque_caja0_vida();  //caja0 con vida
+  //bloque_caja0_calavera();  //caja0 con calavera
+  //bloque_caja4_moneda();  //caja4 con moneda
+  //bloque_caja4_10monedas();  //caja4 con 10 momedas
+  //bloque_caja4_champinon();  //caja4 con champiñon
+  //bloque_caja4_vida();  //caja4 con vida
+  //bloque_caja4_calavera();  //caja4 con calavera
+  //bloque_madera_moneda();  //madera con moneda
+  //bloque_madera_champinon();  //madera con champiñon
+  //bloque_madera_vida();  //madera con vida
+  //bloque_hielo_champinon();  //hielo con champiñon
+  //bloque_hielo_vida();  //hielo con vida
+  //cristal0_10monedas();  //cristal amarillo con 10 monedas
+  //cristal0_champinon();  //cristal amarillo con champiñon
+  //cristal4_10monedas();  //cristal verde con 10 monedas
+  //cristal4_champinon();  //cristal verde con champiñon
+  //cielo_duro_moneda();  //cielo duro con moneda
+  //cielo_champinon();  //cielo con champiñon
+  //estrellas_champinon();  //estrellas con champiñon
+  //estrellas_vida();  //estrellas con vida
 
  ////////especial si golpea 18,21 (cristal0) que aparesca un poder0 en 18,20
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==14)  //golpe por abajo
@@ -900,7 +938,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -955,6 +993,25 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
   //bloque_caja0_champinon();  //caja0 con champiñon
   //bloque_caja0_vida();  //caja0 con vida
+  //bloque_caja0_calavera();  //caja0 con calavera
+  //bloque_caja4_moneda();  //caja4 con moneda
+  //bloque_caja4_10monedas();  //caja4 con 10 momedas
+  //bloque_caja4_champinon();  //caja4 con champiñon
+  //bloque_caja4_vida();  //caja4 con vida
+  //bloque_caja4_calavera();  //caja4 con calavera
+  //bloque_madera_moneda();  //madera con moneda
+  //bloque_madera_champinon();  //madera con champiñon
+  //bloque_madera_vida();  //madera con vida
+  //bloque_hielo_champinon();  //hielo con champiñon
+  //bloque_hielo_vida();  //hielo con vida
+  //cristal0_10monedas();  //cristal amarillo con 10 monedas
+  //cristal0_champinon();  //cristal amarillo con champiñon
+  //cristal4_10monedas();  //cristal verde con 10 monedas
+  //cristal4_champinon();  //cristal verde con champiñon
+  //cielo_duro_moneda();  //cielo duro con moneda
+  //cielo_champinon();  //cielo con champiñon
+  //estrellas_champinon();  //estrellas con champiñon
+  //estrellas_vida();  //estrellas con vida
   //cristal0_moneda();  //cristal0 con moneda
   //cristal4_moneda();  //cristal4 con moneda
   cristal0_vida();  //cristal0 con vida
@@ -967,11 +1024,11 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   cielo_moneda();  //cielo cyan con vida
 
 ////////Especial  crear patos saliendo de la tuberia
-if(tiempo%22==0 && sec%24==0)
+if(tiempo%22==0 && sec%CPS==0)
   {
   c_pato(18,22);
   }
-if(tiempo%28==0 && sec%24==0)
+if(tiempo%28==0 && sec%CPS==0)
   {
   c_pato(25,17);
   }
@@ -1091,7 +1148,7 @@ if(tiempo%28==0 && sec%24==0)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -1148,6 +1205,25 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
   //bloque_caja0_champinon();  //caja0 con champiñon
   //bloque_caja0_vida();  //caja0 con vida
+  //bloque_caja0_calavera();  //caja0 con calavera
+  //bloque_caja4_moneda();  //caja4 con moneda
+  //bloque_caja4_10monedas();  //caja4 con 10 momedas
+  //bloque_caja4_champinon();  //caja4 con champiñon
+  //bloque_caja4_vida();  //caja4 con vida
+  //bloque_caja4_calavera();  //caja4 con calavera
+  //bloque_madera_moneda();  //madera con moneda
+  //bloque_madera_champinon();  //madera con champiñon
+  //bloque_madera_vida();  //madera con vida
+  //bloque_hielo_champinon();  //hielo con champiñon
+  //bloque_hielo_vida();  //hielo con vida
+  //cristal0_10monedas();  //cristal amarillo con 10 monedas
+  //cristal0_champinon();  //cristal amarillo con champiñon
+  //cristal4_10monedas();  //cristal verde con 10 monedas
+  //cristal4_champinon();  //cristal verde con champiñon
+  //cielo_duro_moneda();  //cielo duro con moneda
+  //cielo_champinon();  //cielo con champiñon
+  //estrellas_champinon();  //estrellas con champiñon
+  //estrellas_vida();  //estrellas con vida
   //cristal0_moneda();  //cristal0 con moneda
   //cristal4_moneda();  //cristal4 con moneda
   //cristal0_vida();  //cristal0 con vida
@@ -1160,7 +1236,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //cielo_moneda();  //cielo cyan con vida
 
 ////////Especial  crear patos saliendo de la tuberia
-if(tiempo%8==0 && sec%24==0)
+if(tiempo%8==0 && sec%CPS==0)
   {
   c_pato(18,22);
   }
@@ -1265,7 +1341,7 @@ if(tiempo%8==0 && sec%24==0)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -1325,6 +1401,25 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
   bloque_caja0_champinon();  //caja0 con champiñon
   //bloque_caja0_vida();  //caja0 con vida
+  //bloque_caja0_calavera();  //caja0 con calavera
+  //bloque_caja4_moneda();  //caja4 con moneda
+  //bloque_caja4_10monedas();  //caja4 con 10 momedas
+  //bloque_caja4_champinon();  //caja4 con champiñon
+  //bloque_caja4_vida();  //caja4 con vida
+  //bloque_caja4_calavera();  //caja4 con calavera
+  //bloque_madera_moneda();  //madera con moneda
+  //bloque_madera_champinon();  //madera con champiñon
+  //bloque_madera_vida();  //madera con vida
+  //bloque_hielo_champinon();  //hielo con champiñon
+  //bloque_hielo_vida();  //hielo con vida
+  //cristal0_10monedas();  //cristal amarillo con 10 monedas
+  //cristal0_champinon();  //cristal amarillo con champiñon
+  //cristal4_10monedas();  //cristal verde con 10 monedas
+  //cristal4_champinon();  //cristal verde con champiñon
+  //cielo_duro_moneda();  //cielo duro con moneda
+  //cielo_champinon();  //cielo con champiñon
+  //estrellas_champinon();  //estrellas con champiñon
+  //estrellas_vida();  //estrellas con vida
   //cristal0_moneda();  //cristal0 con moneda
   //cristal4_moneda();  //cristal4 con moneda
   //cristal0_vida();  //cristal0 con vida
@@ -1339,14 +1434,14 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 ////////Especial  crear patos saliendo de la tuberia
 if((x-(x%16))/16 < 27)  //aparecer patos segun la posicion del patito
   {
-  if(tiempo%8==0 && sec%24==0)
+  if(tiempo%8==0 && sec%CPS==0)
     {
     c_pato(15,19);
     }
   }
 else
 {
-  if(tiempo%14==0 && sec%24==0)
+  if(tiempo%14==0 && sec%CPS==0)
     {
     c_pato(29,19);
     }
@@ -1452,7 +1547,7 @@ else
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -1508,6 +1603,25 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   bloque_caja0_10monedas();  //caja0 con 10 momedas
   //bloque_caja0_champinon();  //caja0 con champiñon
   //bloque_caja0_vida();  //caja0 con vida
+  //bloque_caja0_calavera();  //caja0 con calavera
+  //bloque_caja4_moneda();  //caja4 con moneda
+  //bloque_caja4_10monedas();  //caja4 con 10 momedas
+  //bloque_caja4_champinon();  //caja4 con champiñon
+  //bloque_caja4_vida();  //caja4 con vida
+  //bloque_caja4_calavera();  //caja4 con calavera
+  //bloque_madera_moneda();  //madera con moneda
+  //bloque_madera_champinon();  //madera con champiñon
+  //bloque_madera_vida();  //madera con vida
+  //bloque_hielo_champinon();  //hielo con champiñon
+  //bloque_hielo_vida();  //hielo con vida
+  //cristal0_10monedas();  //cristal amarillo con 10 monedas
+  //cristal0_champinon();  //cristal amarillo con champiñon
+  //cristal4_10monedas();  //cristal verde con 10 monedas
+  //cristal4_champinon();  //cristal verde con champiñon
+  //cielo_duro_moneda();  //cielo duro con moneda
+  //cielo_champinon();  //cielo con champiñon
+  //estrellas_champinon();  //estrellas con champiñon
+  //estrellas_vida();  //estrellas con vida
 
  ////////especial si golpea 12,22 (cristal0) que aparesca un poder0 en 12,21
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==14)  //golpe por abajo
@@ -1661,7 +1775,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -1716,6 +1830,25 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
   bloque_caja0_champinon();  //caja0 con champiñon
   //bloque_caja0_vida();  //caja0 con vida
+  //bloque_caja0_calavera();  //caja0 con calavera
+  //bloque_caja4_moneda();  //caja4 con moneda
+  //bloque_caja4_10monedas();  //caja4 con 10 momedas
+  //bloque_caja4_champinon();  //caja4 con champiñon
+  //bloque_caja4_vida();  //caja4 con vida
+  //bloque_caja4_calavera();  //caja4 con calavera
+  //bloque_madera_moneda();  //madera con moneda
+  //bloque_madera_champinon();  //madera con champiñon
+  //bloque_madera_vida();  //madera con vida
+  //bloque_hielo_champinon();  //hielo con champiñon
+  //bloque_hielo_vida();  //hielo con vida
+  //cristal0_10monedas();  //cristal amarillo con 10 monedas
+  //cristal0_champinon();  //cristal amarillo con champiñon
+  //cristal4_10monedas();  //cristal verde con 10 monedas
+  //cristal4_champinon();  //cristal verde con champiñon
+  //cielo_duro_moneda();  //cielo duro con moneda
+  //cielo_champinon();  //cielo con champiñon
+  //estrellas_champinon();  //estrellas con champiñon
+  //estrellas_vida();  //estrellas con vida
   //cristal0_moneda();  //cristal0 con moneda
   //cristal4_moneda();  //cristal4 con moneda
   //cristal0_vida();  //cristal0 con vida
@@ -1728,7 +1861,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //cielo_moneda();  //cielo cyan con vida
 
 ////////Especial  crear patos saliendo de la tuberia
-if(tiempo%28==0 && sec%24==0)
+if(tiempo%28==0 && sec%CPS==0)
   {
   c_pato(8,14);
   }
@@ -1833,7 +1966,7 @@ if(tiempo%28==0 && sec%24==0)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -1887,6 +2020,25 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
   bloque_caja0_champinon();  //caja0 con champiñon
   bloque_caja0_vida();  //caja0 con vida
+  //bloque_caja0_calavera();  //caja0 con calavera
+  //bloque_caja4_moneda();  //caja4 con moneda
+  //bloque_caja4_10monedas();  //caja4 con 10 momedas
+  //bloque_caja4_champinon();  //caja4 con champiñon
+  //bloque_caja4_vida();  //caja4 con vida
+  //bloque_caja4_calavera();  //caja4 con calavera
+  //bloque_madera_moneda();  //madera con moneda
+  //bloque_madera_champinon();  //madera con champiñon
+  //bloque_madera_vida();  //madera con vida
+  //bloque_hielo_champinon();  //hielo con champiñon
+  //bloque_hielo_vida();  //hielo con vida
+  //cristal0_10monedas();  //cristal amarillo con 10 monedas
+  //cristal0_champinon();  //cristal amarillo con champiñon
+  //cristal4_10monedas();  //cristal verde con 10 monedas
+  //cristal4_champinon();  //cristal verde con champiñon
+  //cielo_duro_moneda();  //cielo duro con moneda
+  //cielo_champinon();  //cielo con champiñon
+  //estrellas_champinon();  //estrellas con champiñon
+  //estrellas_vida();  //estrellas con vida
 
  ////////especial si golpea 27,20 (cristal0) que aparesca un poder0 en 27,19
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==14)  //golpe por abajo
@@ -1926,11 +2078,11 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   cielo_moneda();  //cielo cyan con vida
 
 ////////Especial  crear patos saliendo de la tuberia
-if(tiempo%14==0 && sec%24==0)
+if(tiempo%14==0 && sec%CPS==0)
   {
   c_pato(21,8);
   }
-if(tiempo%12==0 && sec%24==0)
+if(tiempo%12==0 && sec%CPS==0)
   {
   c_salta(21,8);
   }
@@ -2035,7 +2187,7 @@ if(tiempo%12==0 && sec%24==0)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -2099,6 +2251,25 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
   bloque_caja0_champinon();  //caja0 con champiñon
   //bloque_caja0_vida();  //caja0 con vida
+  //bloque_caja0_calavera();  //caja0 con calavera
+  //bloque_caja4_moneda();  //caja4 con moneda
+  //bloque_caja4_10monedas();  //caja4 con 10 momedas
+  //bloque_caja4_champinon();  //caja4 con champiñon
+  //bloque_caja4_vida();  //caja4 con vida
+  //bloque_caja4_calavera();  //caja4 con calavera
+  //bloque_madera_moneda();  //madera con moneda
+  //bloque_madera_champinon();  //madera con champiñon
+  //bloque_madera_vida();  //madera con vida
+  //bloque_hielo_champinon();  //hielo con champiñon
+  //bloque_hielo_vida();  //hielo con vida
+  //cristal0_10monedas();  //cristal amarillo con 10 monedas
+  //cristal0_champinon();  //cristal amarillo con champiñon
+  //cristal4_10monedas();  //cristal verde con 10 monedas
+  //cristal4_champinon();  //cristal verde con champiñon
+  //cielo_duro_moneda();  //cielo duro con moneda
+  //cielo_champinon();  //cielo con champiñon
+  //estrellas_champinon();  //estrellas con champiñon
+  //estrellas_vida();  //estrellas con vida
   //cristal0_moneda();  //cristal0 con moneda
   //cristal4_moneda();  //cristal4 con moneda
   //cristal0_vida();  //cristal0 con vida
@@ -2111,7 +2282,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //cielo_moneda();  //cielo cyan con vida
 
 ////////Especial  crear patos saliendo de la tuberia
-if(tiempo%8==0 && sec%24==0)
+if(tiempo%8==0 && sec%CPS==0)
   {
   c_pato(5,22);
   }
@@ -2216,7 +2387,7 @@ if(tiempo%8==0 && sec%24==0)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -2272,21 +2443,40 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
   bloque_caja0_champinon();  //caja0 con champiñon
   bloque_caja0_vida();  //caja0 con vida
+  //bloque_caja0_calavera();  //caja0 con calavera
+  //bloque_caja4_moneda();  //caja4 con moneda
+  //bloque_caja4_10monedas();  //caja4 con 10 momedas
+  //bloque_caja4_champinon();  //caja4 con champiñon
+  //bloque_caja4_vida();  //caja4 con vida
+  //bloque_caja4_calavera();  //caja4 con calavera
+  //bloque_madera_moneda();  //madera con moneda
+  //bloque_madera_champinon();  //madera con champiñon
+  //bloque_madera_vida();  //madera con vida
+  //bloque_hielo_champinon();  //hielo con champiñon
+  //bloque_hielo_vida();  //hielo con vida
+  //cristal0_10monedas();  //cristal amarillo con 10 monedas
+  //cristal0_champinon();  //cristal amarillo con champiñon
+  //cristal4_10monedas();  //cristal verde con 10 monedas
+  //cristal4_champinon();  //cristal verde con champiñon
+  //cielo_duro_moneda();  //cielo duro con moneda
+  //cielo_champinon();  //cielo con champiñon
+  //estrellas_champinon();  //estrellas con champiñon
+  //estrellas_vida();  //estrellas con vida
 
 ////////Especial crear patos saliendo de la tuberia
-if(tiempo%8==0 && sec%24==0)
+if(tiempo%8==0 && sec%CPS==0)
   {
   c_pato(11,2);
   }
-if(tiempo%12==0 && sec%24==0)
+if(tiempo%12==0 && sec%CPS==0)
   {
   c_pato(29,2);
   }
-  if(tiempo%10==0 && sec%24==0)
+  if(tiempo%10==0 && sec%CPS==0)
   {
   c_pato(33,9);
   }
-if(tiempo%10==0 && sec%24==0)
+if(tiempo%10==0 && sec%CPS==0)
   {
   c_pato(15,13);
   }
@@ -2402,7 +2592,7 @@ if(tiempo%10==0 && sec%24==0)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 }
 guardar_fondo(1);
@@ -2458,6 +2648,25 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
   bloque_caja0_champinon();  //caja0 con champiñon
   //bloque_caja0_vida();  //caja0 con vida
+  //bloque_caja0_calavera();  //caja0 con calavera
+  //bloque_caja4_moneda();  //caja4 con moneda
+  //bloque_caja4_10monedas();  //caja4 con 10 momedas
+  //bloque_caja4_champinon();  //caja4 con champiñon
+  //bloque_caja4_vida();  //caja4 con vida
+  //bloque_caja4_calavera();  //caja4 con calavera
+  //bloque_madera_moneda();  //madera con moneda
+  //bloque_madera_champinon();  //madera con champiñon
+  //bloque_madera_vida();  //madera con vida
+  //bloque_hielo_champinon();  //hielo con champiñon
+  //bloque_hielo_vida();  //hielo con vida
+  //cristal0_10monedas();  //cristal amarillo con 10 monedas
+  //cristal0_champinon();  //cristal amarillo con champiñon
+  //cristal4_10monedas();  //cristal verde con 10 monedas
+  //cristal4_champinon();  //cristal verde con champiñon
+  //cielo_duro_moneda();  //cielo duro con moneda
+  //cielo_champinon();  //cielo con champiñon
+  //estrellas_champinon();  //estrellas con champiñon
+  //estrellas_vida();  //estrellas con vida
   //cristal0_moneda();  //cristal0 con moneda
   //cristal4_moneda();  //cristal4 con moneda
   //cristal0_vida();  //cristal0 con vida
@@ -2576,7 +2785,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -2631,6 +2840,25 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
   //bloque_caja0_champinon();  //caja0 con champiñon
   //bloque_caja0_vida();  //caja0 con vida
+  //bloque_caja0_calavera();  //caja0 con calavera
+  //bloque_caja4_moneda();  //caja4 con moneda
+  //bloque_caja4_10monedas();  //caja4 con 10 momedas
+  //bloque_caja4_champinon();  //caja4 con champiñon
+  //bloque_caja4_vida();  //caja4 con vida
+  //bloque_caja4_calavera();  //caja4 con calavera
+  //bloque_madera_moneda();  //madera con moneda
+  //bloque_madera_champinon();  //madera con champiñon
+  //bloque_madera_vida();  //madera con vida
+  //bloque_hielo_champinon();  //hielo con champiñon
+  //bloque_hielo_vida();  //hielo con vida
+  //cristal0_10monedas();  //cristal amarillo con 10 monedas
+  //cristal0_champinon();  //cristal amarillo con champiñon
+  //cristal4_10monedas();  //cristal verde con 10 monedas
+  //cristal4_champinon();  //cristal verde con champiñon
+  //cielo_duro_moneda();  //cielo duro con moneda
+  //cielo_champinon();  //cielo con champiñon
+  //estrellas_champinon();  //estrellas con champiñon
+  //estrellas_vida();  //estrellas con vida
 
  ////////especial si golpea 17,4 (cristal0) que aparesca un poder0 en 17,3
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==14)  //golpe por abajo
@@ -2769,7 +2997,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 }
 
@@ -2831,6 +3059,25 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
   bloque_caja0_champinon();  //caja0 con champiñon
   //bloque_caja0_vida();  //caja0 con vida
+  //bloque_caja0_calavera();  //caja0 con calavera
+  //bloque_caja4_moneda();  //caja4 con moneda
+  //bloque_caja4_10monedas();  //caja4 con 10 momedas
+  //bloque_caja4_champinon();  //caja4 con champiñon
+  //bloque_caja4_vida();  //caja4 con vida
+  //bloque_caja4_calavera();  //caja4 con calavera
+  //bloque_madera_moneda();  //madera con moneda
+  //bloque_madera_champinon();  //madera con champiñon
+  //bloque_madera_vida();  //madera con vida
+  //bloque_hielo_champinon();  //hielo con champiñon
+  //bloque_hielo_vida();  //hielo con vida
+  //cristal0_10monedas();  //cristal amarillo con 10 monedas
+  //cristal0_champinon();  //cristal amarillo con champiñon
+  //cristal4_10monedas();  //cristal verde con 10 monedas
+  //cristal4_champinon();  //cristal verde con champiñon
+  //cielo_duro_moneda();  //cielo duro con moneda
+  //cielo_champinon();  //cielo con champiñon
+  //estrellas_champinon();  //estrellas con champiñon
+  //estrellas_vida();  //estrellas con vida
   //cristal0_moneda();  //cristal0 con moneda
   //cristal4_moneda();  //cristal4 con moneda
   //cristal0_vida();  //cristal0 con vida
@@ -2942,7 +3189,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 }
 
@@ -2974,6 +3221,8 @@ r_tortuga();
 obtener_segundos();  //guardar el tiempo del segundo actual
 c_pato(26,14);
 c_salta(37,24);
+npato[0]=-1;
+nsalta[0]=-1;
 
 ////////especial  bloques falsos
 bloque(24*16,7*16,11);
@@ -3004,6 +3253,25 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
   bloque_caja0_champinon();  //caja0 con champiñon
   //bloque_caja0_vida();  //caja0 con vida
+  //bloque_caja0_calavera();  //caja0 con calavera
+  //bloque_caja4_moneda();  //caja4 con moneda
+  //bloque_caja4_10monedas();  //caja4 con 10 momedas
+  //bloque_caja4_champinon();  //caja4 con champiñon
+  //bloque_caja4_vida();  //caja4 con vida
+  //bloque_caja4_calavera();  //caja4 con calavera
+  //bloque_madera_moneda();  //madera con moneda
+  //bloque_madera_champinon();  //madera con champiñon
+  //bloque_madera_vida();  //madera con vida
+  //bloque_hielo_champinon();  //hielo con champiñon
+  //bloque_hielo_vida();  //hielo con vida
+  //cristal0_10monedas();  //cristal amarillo con 10 monedas
+  //cristal0_champinon();  //cristal amarillo con champiñon
+  //cristal4_10monedas();  //cristal verde con 10 monedas
+  //cristal4_champinon();  //cristal verde con champiñon
+  //cielo_duro_moneda();  //cielo duro con moneda
+  //cielo_champinon();  //cielo con champiñon
+  //estrellas_champinon();  //estrellas con champiñon
+  //estrellas_vida();  //estrellas con vida
   cristal0_moneda();  //cristal0 con moneda
   //cristal4_moneda();  //cristal4 con moneda
   cristal0_vida();  //cristal0 con vida
@@ -3016,7 +3284,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //cielo_moneda();  //cielo cyan con vida
 
 ////////Especial  crear patos saliendo de la tuberia
-if(tiempo%22==0 && sec%24==0)
+if(tiempo%22==0 && sec%CPS==0)
   {
   c_peligro(8,20);
   }
@@ -3028,11 +3296,19 @@ if(tiempo%22==0 && sec%24==0)
       {
       ciclo=1;
       escena=20;
+      vx=0.0;
+      vy=0.0;
+      x=90;
+      y=302;
       }
     else if(((y-(y%16))/16 == 14) && ((x-(x%16))/16 == 29))
       {
       ciclo=1;
       escena=20;
+      vx=0.0;
+      vy=0.0;
+      x=90;
+      y=302;
       }
     }
 
@@ -3136,7 +3412,7 @@ if(tiempo%22==0 && sec%24==0)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -3175,7 +3451,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   o=x;
   p=y;
 
-  //posicion_champ();  //guardar las coordenadas anteriores de los champiñones
+  posicion_champ();  //guardar las coordenadas anteriores de los champiñones
   //posicion_pato();  //guardar las coordenadas anteriores de los patos
   //posicion_seguidor();  //guardar las coordenadas anteriores de los patos seguidores
   //posicion_salta();  //guardar las coordenadas anteriores de los patos saltadores
@@ -3190,8 +3466,27 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 ////////interaccion de los bloques
   //bloque_caja0_moneda();  //caja0 con moneda
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
-  //bloque_caja0_champinon();  //caja0 con champiñon
+  bloque_caja0_champinon();  //caja0 con champiñon
   //bloque_caja0_vida();  //caja0 con vida
+  //bloque_caja0_calavera();  //caja0 con calavera
+  //bloque_caja4_moneda();  //caja4 con moneda
+  //bloque_caja4_10monedas();  //caja4 con 10 momedas
+  //bloque_caja4_champinon();  //caja4 con champiñon
+  //bloque_caja4_vida();  //caja4 con vida
+  //bloque_caja4_calavera();  //caja4 con calavera
+  //bloque_madera_moneda();  //madera con moneda
+  //bloque_madera_champinon();  //madera con champiñon
+  //bloque_madera_vida();  //madera con vida
+  //bloque_hielo_champinon();  //hielo con champiñon
+  //bloque_hielo_vida();  //hielo con vida
+  //cristal0_10monedas();  //cristal amarillo con 10 monedas
+  //cristal0_champinon();  //cristal amarillo con champiñon
+  //cristal4_10monedas();  //cristal verde con 10 monedas
+  //cristal4_champinon();  //cristal verde con champiñon
+  //cielo_duro_moneda();  //cielo duro con moneda
+  //cielo_champinon();  //cielo con champiñon
+  //estrellas_champinon();  //estrellas con champiñon
+  //estrellas_vida();  //estrellas con vida
   //cristal0_moneda();  //cristal0 con moneda
   //cristal4_moneda();  //cristal4 con moneda
   //cristal0_vida();  //cristal0 con vida
@@ -3204,10 +3499,33 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //cielo_moneda();  //cielo cyan con vida
 
 ////////Especial  crear patos saliendo de la tuberia
-if(tiempo%22==0 && sec%24==0)
+if(tiempo%22==0 && sec%CPS==0)
   {
-  c_peligro(33,4);
+  c_peligro(25,4);
   }
+
+////////especial para entrar a tuberia en 23,21 y 24,21
+  if(tecla[KEY_CUR_ABAJO])  //abajo
+    {
+    if(((y-(y%16))/16 == 21) && ((x-(x%16))/16 == 23))
+      {
+      ciclo=1;
+      escena=20;
+      vx=0.0;
+      vy=0.0;
+      x=568;
+      y=304;
+      }
+    else if(((y-(y%16))/16 == 21) && ((x-(x%16))/16 == 24))
+      {
+      ciclo=1;
+      escena=20;
+      vx=0.0;
+      vy=0.0;
+      x=568;
+      y=304;
+      }
+    }
 
 ////////funcion para deteccion de los bloques solidos
   bloques_solidos();
@@ -3230,7 +3548,7 @@ if(tiempo%22==0 && sec%24==0)
   bloque_cuadrado1();  //pisarlos pero no golpearlos  (blanco 15)
 
 ////////funciones para enemigos y peligros
-  //tocar_champinon();  //tocar champiñon
+  tocar_champinon();  //tocar champiñon
   //pisar_pato();  //pisar pato
   //pisar_seguidor();  //pisar seguidor
   //pisar_salta();  //pisar saltador
@@ -3239,7 +3557,7 @@ if(tiempo%22==0 && sec%24==0)
   //pisar_tortuga();  //pisar tortuga
 
   disparo_mata();  //Disparos que matan patos
-  //NITRO_mata();  //no toques la nitroglicerina
+  NITRO_mata();  //no toques la nitroglicerina
   fuego4_mata();  //no toques el fuego
   //pato_mata();  //pato mata cuando los tocas
   //seguidor_mata();  //seguidor mata cuando los tocas
@@ -3253,12 +3571,12 @@ if(tiempo%22==0 && sec%24==0)
   //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
   //saltafuera();  //verificar si un saltador se salio de la pantalla
   peligrofuera();  //verificar si un peligroso se salio de la pantalla
-  //champifuera();  //verificar si un champiñon se salio de la pantalla
+  champifuera();  //verificar si un champiñon se salio de la pantalla
   disparofuera();  //verificar si un disparo se salio de la pantalla
   //balafuera();  //verificar si una bala se salio de la pantalla
   //tortugafuera();  //verificar si una tortuga se salio de la pantalla
 
-  //movchamp();  //mover champiñones
+  movchamp();  //mover champiñones
   //mdemone();  //saltar monedas, generalmente es utilizado
   //movpato();  //mover patos
   //movseguidor();  //mover seguidor
@@ -3280,7 +3598,7 @@ if(tiempo%22==0 && sec%24==0)
 
 ////////operaciones del los bloques, borrando dibujos viejos redibujando el fondo
   refbloques();  //dibujar el fondo sobre el personaje principal
-  //refchamp();
+  refchamp();
   //refpato();
   //refseguidor();
   //refsalta();
@@ -3292,14 +3610,14 @@ if(tiempo%22==0 && sec%24==0)
 
 ////////dibujando personajes, enemigos, paneles y marcadores
   verestado();  //verificar el estado del pato y dibujarlo segun el estado, personaje principal
-  //dibchamp();  //dibujar champiñones
+  dibchamp();  //dibujar champiñones
   //dibpatos();  //dibujar patos
   //dibseguidor();  //dibujar seguidor
   //dibsalta();  //dibujar saltador
   dibpeligro();  //dibujar peligroso
   //dibmina();  //dibujar minas
   dibdisparo();  //dibujar disparo
-  //dibexplosion_chica();  //para dibujar explosiones chicas, activar junto con minas, TNTs y NITROS
+  dibexplosion_chica();  //para dibujar explosiones chicas, activar junto con minas, TNTs y NITROS
   dibcristalroto();  //efectos al romper un cristal
   dibgolpe();  //utilizado para los disparos, generalmente muy utilizado
   //dibbala();  //dibujar balas de cañones
@@ -3309,7 +3627,7 @@ if(tiempo%22==0 && sec%24==0)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -3365,6 +3683,25 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
   bloque_caja0_champinon();  //caja0 con champiñon
   //bloque_caja0_vida();  //caja0 con vida
+  //bloque_caja0_calavera();  //caja0 con calavera
+  //bloque_caja4_moneda();  //caja4 con moneda
+  //bloque_caja4_10monedas();  //caja4 con 10 momedas
+  //bloque_caja4_champinon();  //caja4 con champiñon
+  //bloque_caja4_vida();  //caja4 con vida
+  //bloque_caja4_calavera();  //caja4 con calavera
+  //bloque_madera_moneda();  //madera con moneda
+  //bloque_madera_champinon();  //madera con champiñon
+  //bloque_madera_vida();  //madera con vida
+  //bloque_hielo_champinon();  //hielo con champiñon
+  //bloque_hielo_vida();  //hielo con vida
+  //cristal0_10monedas();  //cristal amarillo con 10 monedas
+  //cristal0_champinon();  //cristal amarillo con champiñon
+  //cristal4_10monedas();  //cristal verde con 10 monedas
+  //cristal4_champinon();  //cristal verde con champiñon
+  //cielo_duro_moneda();  //cielo duro con moneda
+  //cielo_champinon();  //cielo con champiñon
+  //estrellas_champinon();  //estrellas con champiñon
+  //estrellas_vida();  //estrellas con vida
   //cristal0_moneda();  //cristal0 con moneda
   //cristal4_moneda();  //cristal4 con moneda
   //cristal0_vida();  //cristal0 con vida
@@ -3476,7 +3813,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -3534,6 +3871,25 @@ void funcion_bloques1()  //normalmente estos bloques solo alteran posicion, no v
   if(blq[202]==1)  bloque_caja0_10monedas();  //caja0 con 10 momedas
   if(blq[203]==1)  bloque_caja0_champinon();  //caja0 con champiñon
   if(blq[204]==1)  bloque_caja0_vida();  //caja0 con vida
+  if(blq[191]==1)  bloque_caja0_calavera();  //caja0 con calavera
+  if(blq[190]==1)  bloque_caja4_moneda();  //caja4 con moneda
+  if(blq[189]==1)  bloque_caja4_10monedas();  //caja4 con 10 momedas
+  if(blq[188]==1)  bloque_caja4_champinon();  //caja4 con champiñon
+  if(blq[187]==1)  bloque_caja4_vida();  //caja4 con vida
+  if(blq[185]==1)  bloque_caja4_calavera();  //caja4 con calavera
+  if(blq[180]==1)  bloque_madera_moneda();  //madera con moneda
+  if(blq[179]==1)  bloque_madera_champinon();  //madera con champiñon
+  if(blq[178]==1)  bloque_madera_vida();  //madera con vida
+  if(blq[175]==1)  bloque_hielo_champinon();  //hielo con champiñon
+  if(blq[174]==1)  bloque_hielo_vida();  //hielo con vida
+  if(blq[170]==1)  cristal0_10monedas();  //cristal amarillo con 10 monedas
+  if(blq[169]==1)  cristal0_champinon();  //cristal amarillo con champiñon
+  if(blq[163]==1)  cristal4_10monedas();  //cristal verde con 10 monedas
+  if(blq[162]==1)  cristal4_champinon();  //cristal verde con champiñon
+  if(blq[156]==1)  cielo_duro_moneda();  //cielo duro con moneda
+  if(blq[261]==1)  cielo_champinon();  //cielo con champiñon
+  if(blq[262]==1)  estrellas_champinon();  //estrellas con champiñon
+  if(blq[263]==1)  estrellas_vida();  //estrellas con vida
   if(blq[216]==1)  cristal0_moneda();  //cristal0 con moneda
   if(blq[217]==1)  cristal4_moneda();  //cristal4 con moneda
   if(blq[218]==1)  cristal0_vida();  //cristal0 con vida
@@ -3697,7 +4053,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -3756,7 +4112,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -3815,7 +4171,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -3874,7 +4230,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -3941,7 +4297,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -4000,7 +4356,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -4059,7 +4415,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -4118,7 +4474,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -4185,7 +4541,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -4244,7 +4600,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -4303,7 +4659,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -4362,7 +4718,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -4428,7 +4784,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -4487,7 +4843,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -4546,7 +4902,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -4605,7 +4961,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -4670,7 +5026,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -4729,7 +5085,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -4788,7 +5144,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -4847,7 +5203,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -4913,7 +5269,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -4972,7 +5328,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -5031,7 +5387,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -5090,7 +5446,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -5157,6 +5513,25 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
   //bloque_caja0_champinon();  //caja0 con champiñon
   //bloque_caja0_vida();  //caja0 con vida
+  //bloque_caja0_calavera();  //caja0 con calavera
+  //bloque_caja4_moneda();  //caja4 con moneda
+  //bloque_caja4_10monedas();  //caja4 con 10 momedas
+  //bloque_caja4_champinon();  //caja4 con champiñon
+  //bloque_caja4_vida();  //caja4 con vida
+  //bloque_caja4_calavera();  //caja4 con calavera
+  //bloque_madera_moneda();  //madera con moneda
+  //bloque_madera_champinon();  //madera con champiñon
+  //bloque_madera_vida();  //madera con vida
+  //bloque_hielo_champinon();  //hielo con champiñon
+  //bloque_hielo_vida();  //hielo con vida
+  //cristal0_10monedas();  //cristal amarillo con 10 monedas
+  //cristal0_champinon();  //cristal amarillo con champiñon
+  //cristal4_10monedas();  //cristal verde con 10 monedas
+  //cristal4_champinon();  //cristal verde con champiñon
+  //cielo_duro_moneda();  //cielo duro con moneda
+  //cielo_champinon();  //cielo con champiñon
+  //estrellas_champinon();  //estrellas con champiñon
+  //estrellas_vida();  //estrellas con vida
   //cristal0_moneda();  //cristal0 con moneda
   //cristal4_moneda();  //cristal4 con moneda
   //cristal0_vida();  //cristal0 con vida
@@ -5318,7 +5693,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -5382,6 +5757,25 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
   //bloque_caja0_champinon();  //caja0 con champiñon
   //bloque_caja0_vida();  //caja0 con vida
+  //bloque_caja0_calavera();  //caja0 con calavera
+  //bloque_caja4_moneda();  //caja4 con moneda
+  //bloque_caja4_10monedas();  //caja4 con 10 momedas
+  //bloque_caja4_champinon();  //caja4 con champiñon
+  //bloque_caja4_vida();  //caja4 con vida
+  //bloque_caja4_calavera();  //caja4 con calavera
+  //bloque_madera_moneda();  //madera con moneda
+  //bloque_madera_champinon();  //madera con champiñon
+  //bloque_madera_vida();  //madera con vida
+  //bloque_hielo_champinon();  //hielo con champiñon
+  //bloque_hielo_vida();  //hielo con vida
+  //cristal0_10monedas();  //cristal amarillo con 10 monedas
+  //cristal0_champinon();  //cristal amarillo con champiñon
+  //cristal4_10monedas();  //cristal verde con 10 monedas
+  //cristal4_champinon();  //cristal verde con champiñon
+  //cielo_duro_moneda();  //cielo duro con moneda
+  //cielo_champinon();  //cielo con champiñon
+  //estrellas_champinon();  //estrellas con champiñon
+  //estrellas_vida();  //estrellas con vida
   //cristal0_moneda();  //cristal0 con moneda
   //cristal4_moneda();  //cristal4 con moneda
   //cristal0_vida();  //cristal0 con vida
@@ -5559,7 +5953,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -5641,6 +6035,25 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
   //bloque_caja0_champinon();  //caja0 con champiñon
   //bloque_caja0_vida();  //caja0 con vida
+  //bloque_caja0_calavera();  //caja0 con calavera
+  //bloque_caja4_moneda();  //caja4 con moneda
+  //bloque_caja4_10monedas();  //caja4 con 10 momedas
+  //bloque_caja4_champinon();  //caja4 con champiñon
+  //bloque_caja4_vida();  //caja4 con vida
+  //bloque_caja4_calavera();  //caja4 con calavera
+  //bloque_madera_moneda();  //madera con moneda
+  //bloque_madera_champinon();  //madera con champiñon
+  //bloque_madera_vida();  //madera con vida
+  //bloque_hielo_champinon();  //hielo con champiñon
+  //bloque_hielo_vida();  //hielo con vida
+  //cristal0_10monedas();  //cristal amarillo con 10 monedas
+  //cristal0_champinon();  //cristal amarillo con champiñon
+  //cristal4_10monedas();  //cristal verde con 10 monedas
+  //cristal4_champinon();  //cristal verde con champiñon
+  //cielo_duro_moneda();  //cielo duro con moneda
+  //cielo_champinon();  //cielo con champiñon
+  //estrellas_champinon();  //estrellas con champiñon
+  //estrellas_vida();  //estrellas con vida
   //cristal0_moneda();  //cristal0 con moneda
   //cristal4_moneda();  //cristal4 con moneda
   //cristal0_vida();  //cristal0 con vida
@@ -5802,7 +6215,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -5838,10 +6251,6 @@ r_cristalroto();
 r_bala();
 r_tortuga();
 obtener_segundos();  //guardar el tiempo del segundo actual
-vx=0.0;
-vy=0.0;
-x=90;
-y=302;
 
 while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los movimientos existentes, es decir un cambio de posicion de cada objeto
   {
@@ -5866,6 +6275,25 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
   //bloque_caja0_champinon();  //caja0 con champiñon
   //bloque_caja0_vida();  //caja0 con vida
+  //bloque_caja0_calavera();  //caja0 con calavera
+  //bloque_caja4_moneda();  //caja4 con moneda
+  //bloque_caja4_10monedas();  //caja4 con 10 momedas
+  //bloque_caja4_champinon();  //caja4 con champiñon
+  //bloque_caja4_vida();  //caja4 con vida
+  //bloque_caja4_calavera();  //caja4 con calavera
+  //bloque_madera_moneda();  //madera con moneda
+  //bloque_madera_champinon();  //madera con champiñon
+  //bloque_madera_vida();  //madera con vida
+  //bloque_hielo_champinon();  //hielo con champiñon
+  //bloque_hielo_vida();  //hielo con vida
+  //cristal0_10monedas();  //cristal amarillo con 10 monedas
+  //cristal0_champinon();  //cristal amarillo con champiñon
+  //cristal4_10monedas();  //cristal verde con 10 monedas
+  //cristal4_champinon();  //cristal verde con champiñon
+  //cielo_duro_moneda();  //cielo duro con moneda
+  //cielo_champinon();  //cielo con champiñon
+  //estrellas_champinon();  //estrellas con champiñon
+  //estrellas_vida();  //estrellas con vida
 
  ////////especial si golpea 17,9 (cristal0) que aparesca un poder0 en 17,8
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==14)  //golpe por abajo
@@ -5904,18 +6332,49 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //cielo_vida();  //cielo cyan con moneda
   //cielo_moneda();  //cielo cyan con vida
 
-////////especial para entrar a tuberia en 35,19 y 36,19
+////////especial para entrar a tuberia en 35,18 y 36,18
   if(tecla[KEY_CUR_ARRIBA])  //arriba
     {
-    if(((y-(y%16))/16 == 19) && ((x-(x%16))/16 == 35))
+    if(((y-(y%16))/16 == 18) && ((x-(x%16))/16 == 35))
       {
       ciclo=1;
       escena=2;
+      vx=0.0;
+      vy=0.0;
+      x=376;
+      y=336;
       }
-    else if(((y-(y%16))/16 == 19) && ((x-(x%16))/16 == 36))
+    else if(((y-(y%16))/16 == 18) && ((x-(x%16))/16 == 36))
       {
       ciclo=1;
       escena=2;
+      vx=0.0;
+      vy=0.0;
+      x=376;
+      y=336;
+      }
+    }
+
+////////especial para entrar a tuberia en 5,18 y 6,18
+  if(tecla[KEY_CUR_ARRIBA])  //arriba
+    {
+    if(((y-(y%16))/16 == 18) && ((x-(x%16))/16 == 5))
+      {
+      ciclo=1;
+      escena=1;
+      vx=0.0;
+      vy=0.0;
+      x=464;
+      y=224;
+      }
+    else if(((y-(y%16))/16 == 18) && ((x-(x%16))/16 == 6))
+      {
+      ciclo=1;
+      escena=1;
+      vx=0.0;
+      vy=0.0;
+      x=464;
+      y=224;
       }
     }
 
@@ -6054,15 +6513,11 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
 
-vx=0.0;
-vy=0.0;
-x=504;
-y=336;
 return(0);
 }
 
@@ -6138,6 +6593,25 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
   bloque_caja0_champinon();  //caja0 con champiñon
   //bloque_caja0_vida();  //caja0 con vida
+  //bloque_caja0_calavera();  //caja0 con calavera
+  //bloque_caja4_moneda();  //caja4 con moneda
+  //bloque_caja4_10monedas();  //caja4 con 10 momedas
+  //bloque_caja4_champinon();  //caja4 con champiñon
+  //bloque_caja4_vida();  //caja4 con vida
+  //bloque_caja4_calavera();  //caja4 con calavera
+  //bloque_madera_moneda();  //madera con moneda
+  //bloque_madera_champinon();  //madera con champiñon
+  //bloque_madera_vida();  //madera con vida
+  //bloque_hielo_champinon();  //hielo con champiñon
+  //bloque_hielo_vida();  //hielo con vida
+  //cristal0_10monedas();  //cristal amarillo con 10 monedas
+  //cristal0_champinon();  //cristal amarillo con champiñon
+  //cristal4_10monedas();  //cristal verde con 10 monedas
+  //cristal4_champinon();  //cristal verde con champiñon
+  //cielo_duro_moneda();  //cielo duro con moneda
+  //cielo_champinon();  //cielo con champiñon
+  //estrellas_champinon();  //estrellas con champiñon
+  //estrellas_vida();  //estrellas con vida
   //cristal0_moneda();  //cristal0 con moneda
   //cristal4_moneda();  //cristal4 con moneda
   //cristal0_vida();  //cristal0 con vida
@@ -6304,7 +6778,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -6372,6 +6846,25 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
   bloque_caja0_champinon();  //caja0 con champiñon
   //bloque_caja0_vida();  //caja0 con vida
+  //bloque_caja0_calavera();  //caja0 con calavera
+  //bloque_caja4_moneda();  //caja4 con moneda
+  //bloque_caja4_10monedas();  //caja4 con 10 momedas
+  //bloque_caja4_champinon();  //caja4 con champiñon
+  //bloque_caja4_vida();  //caja4 con vida
+  //bloque_caja4_calavera();  //caja4 con calavera
+  //bloque_madera_moneda();  //madera con moneda
+  //bloque_madera_champinon();  //madera con champiñon
+  //bloque_madera_vida();  //madera con vida
+  //bloque_hielo_champinon();  //hielo con champiñon
+  //bloque_hielo_vida();  //hielo con vida
+  //cristal0_10monedas();  //cristal amarillo con 10 monedas
+  //cristal0_champinon();  //cristal amarillo con champiñon
+  //cristal4_10monedas();  //cristal verde con 10 monedas
+  //cristal4_champinon();  //cristal verde con champiñon
+  //cielo_duro_moneda();  //cielo duro con moneda
+  //cielo_champinon();  //cielo con champiñon
+  //estrellas_champinon();  //estrellas con champiñon
+  //estrellas_vida();  //estrellas con vida
 
  ////////especial si golpea 18,21 (cristal0) que aparesca un poder0 en 18,20
   if(avance_tutorial[1]==0)
@@ -6535,7 +7028,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -6590,6 +7083,25 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
   //bloque_caja0_champinon();  //caja0 con champiñon
   //bloque_caja0_vida();  //caja0 con vida
+  //bloque_caja0_calavera();  //caja0 con calavera
+  //bloque_caja4_moneda();  //caja4 con moneda
+  //bloque_caja4_10monedas();  //caja4 con 10 momedas
+  //bloque_caja4_champinon();  //caja4 con champiñon
+  //bloque_caja4_vida();  //caja4 con vida
+  //bloque_caja4_calavera();  //caja4 con calavera
+  //bloque_madera_moneda();  //madera con moneda
+  //bloque_madera_champinon();  //madera con champiñon
+  //bloque_madera_vida();  //madera con vida
+  //bloque_hielo_champinon();  //hielo con champiñon
+  //bloque_hielo_vida();  //hielo con vida
+  //cristal0_10monedas();  //cristal amarillo con 10 monedas
+  //cristal0_champinon();  //cristal amarillo con champiñon
+  //cristal4_10monedas();  //cristal verde con 10 monedas
+  //cristal4_champinon();  //cristal verde con champiñon
+  //cielo_duro_moneda();  //cielo duro con moneda
+  //cielo_champinon();  //cielo con champiñon
+  //estrellas_champinon();  //estrellas con champiñon
+  //estrellas_vida();  //estrellas con vida
   //cristal0_moneda();  //cristal0 con moneda
   //cristal4_moneda();  //cristal4 con moneda
   cristal0_vida();  //cristal0 con vida
@@ -6602,11 +7114,11 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   cielo_moneda();  //cielo cyan con vida
 
 ////////Especial  crear patos saliendo de la tuberia
-if(tiempo%22==0 && sec%24==0)
+if(tiempo%22==0 && sec%CPS==0)
   {
   c_pato(18,22);
   }
-if(tiempo%28==0 && sec%24==0)
+if(tiempo%28==0 && sec%CPS==0)
   {
   c_pato(25,17);
   }
@@ -6726,7 +7238,7 @@ if(tiempo%28==0 && sec%24==0)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }
@@ -6783,6 +7295,25 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
   //bloque_caja0_champinon();  //caja0 con champiñon
   //bloque_caja0_vida();  //caja0 con vida
+  //bloque_caja0_calavera();  //caja0 con calavera
+  //bloque_caja4_moneda();  //caja4 con moneda
+  //bloque_caja4_10monedas();  //caja4 con 10 momedas
+  //bloque_caja4_champinon();  //caja4 con champiñon
+  //bloque_caja4_vida();  //caja4 con vida
+  //bloque_caja4_calavera();  //caja4 con calavera
+  //bloque_madera_moneda();  //madera con moneda
+  //bloque_madera_champinon();  //madera con champiñon
+  //bloque_madera_vida();  //madera con vida
+  //bloque_hielo_champinon();  //hielo con champiñon
+  //bloque_hielo_vida();  //hielo con vida
+  //cristal0_10monedas();  //cristal amarillo con 10 monedas
+  //cristal0_champinon();  //cristal amarillo con champiñon
+  //cristal4_10monedas();  //cristal verde con 10 monedas
+  //cristal4_champinon();  //cristal verde con champiñon
+  //cielo_duro_moneda();  //cielo duro con moneda
+  //cielo_champinon();  //cielo con champiñon
+  //estrellas_champinon();  //estrellas con champiñon
+  //estrellas_vida();  //estrellas con vida
   //cristal0_moneda();  //cristal0 con moneda
   //cristal4_moneda();  //cristal4 con moneda
   //cristal0_vida();  //cristal0 con vida
@@ -6795,7 +7326,7 @@ while(ciclo<1)  //ciclo del juego, cada ciclo sera un cuadro diferente de los mo
   //cielo_moneda();  //cielo cyan con vida
 
 ////////Especial  crear patos saliendo de la tuberia
-if(tiempo%8==0 && sec%24==0)
+if(tiempo%8==0 && sec%CPS==0)
   {
   c_pato(18,22);
   }
@@ -6900,7 +7431,7 @@ if(tiempo%8==0 && sec%24==0)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  ajuste_FPS();  //ajustar el retraso para que la imagen sea 24 cuadros por segundo
+  ajuste_FPS();  //ajustar el retraso para que la imagen sea CPS cuadros por segundo
   delay(retraso);
 
 }

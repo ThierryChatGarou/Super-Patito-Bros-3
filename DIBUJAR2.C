@@ -1,18 +1,31 @@
-extern int x,y,puntos,invensible,estado,t_huevo,retraso,tiempo,sec,nivel,escena;
+extern int x,y,puntos,invensible,estado,t_huevo,retraso,tiempo,sec,nivel,escena,monedas,cajamone,CPS,debug,tiempo_invensible;
 extern float vx,vy;
 extern int paisaje[30][40],colorcielo[30][40],disparo0[16][16],disparo1[16][16],disparo2[16][16],disparo3[16][16];
 extern unsigned char tecla[128];
 
 #include<stdio.h>
 #include<dos.h>
+#include<math.h>
 #include"teclas.h"
 
-int ultimosegundo,FPS,segundo_invalido,nbala[8],balax[8],balay[8],balao[8],balap[8],ntortuga[8],tortugax[8],tortugay[8],tortugao[8],tortugap[8],ncristalroto[8],cristalrotox[8][4],cristalrotoy[8][4];
-int blq[400],npc[10];
-float balavx[8],balavy[8],tortugavx[8],tortugavy[8],cristalrotovx[8],cristalrotovy[8];
+int FPS;  //cuenta los cuadros que transcurren en un segundo
+int ultimosegundo;  //ultimo segundo desde que se reseteo FPS
+int segundo_invalido;  //Se pone la variable en 1 para que el medidor de cuadros por segundo ignore el ultimo segundo, es util cuando se pauso el juego
+
+//variables de personajes:
+int npato[8],patox[8],patoy[8],patoo[8],patop[8];  //patos normales (caminan y rebotan en las paredes)
+int nsalta[4],saltax[4],saltay[4],saltao[4],saltap[4];  //patos que saltan y rebotan en las paredes
+int nseguidor[8],seguidorx[8],seguidory[8],seguidoro[8],seguidorp[8];  //patos que siguen
+int npeligro[4],peligrox[4],peligroy[4],peligroo[4],peligrop[4];  //patos que siguen y saltan
+int nbala[8],balax[8],balay[8],balao[8],balap[8];  //balas y disparos.
+int ntortuga[8],tortugax[8],tortugay[8],tortugao[8],tortugap[8],tortuga_ax[8],tortuga_ay[8];  //tortugas verdes y rojas
+int ncristalroto[8],cristalrotox[8][4],cristalrotoy[8][4];  //efectos de bloques rotos. [4] por ser 4 pedazos
+int blq[400];  //mapa de bloques existentes en el escenario
+int npc[10];  //mapa de enemigos existentes en el escenario
+
+float saltavx[4],saltavy[4],peligrovx[4],peligrovy[4],balavx[8],balavy[8],tortugavx[8],tortugavy[8],tortugaangulo[8],cristalrotovx[8],cristalrotovy[8];
 
 struct time hora;
-
 
 int arboles0 [16][16]={
 10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,
@@ -1325,6 +1338,83 @@ int nievemundo16 [16][16]={
 15,10,10,2 ,10,10,10,10,10,10,10,10,2 ,10,10,10,
 };
 
+int pato0 [16][16]={
+22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
+22,22,22,22,22,22,0 ,0 ,0 ,0 ,22,22,22,22,22,22,
+22,22,22,22,0 ,0 ,14,14,14,14,0 ,0 ,22,22,22,22,
+22,22,22,0 ,0 ,0 ,14,14,14,14,0 ,0 ,0 ,22,22,22,
+22,22,22,22,0 ,14,0 ,14,14,0 ,14,0 ,22,22,22,22,
+22,22,22,0 ,14,15,15,0 ,0 ,15,15,14,0 ,22,22,22,
+22,0 ,0 ,14,15,15,15,14,14,15,15,15,14,0 ,0 ,22,
+0 ,14,14,14,14,14,0 ,14,14,0 ,14,14,14,14,14,0 ,
+0 ,14,14,14,14,14,14,14,14,14,14,14,14,14,14,0 ,
+0 ,14,14,14,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,14,14,14,0 ,
+22,0 ,0 ,14,14,14,14,14,14,14,14,14,14,0 ,0 ,22,
+22,22,22,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,22,22,22,
+22,22,22,22,0 ,0 ,15,15,15,15,0 ,0 ,22,22,22,22,
+22,22,0 ,0 ,0 ,15,15,15,15,15,15,0 ,0 ,0 ,22,22,
+22,0 ,0 ,0 ,0 ,0 ,15,15,15,15,0 ,0 ,0 ,0 ,0 ,22,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,15,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+};
+
+
+int pato1 [16][16]={
+22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
+22,22,22,22,22,22,0 ,0 ,0 ,0 ,22,22,22,22,22,22,
+22,22,22,22,0 ,0 ,14,14,14,14,0 ,0 ,22,22,22,22,
+22,22,22,0 ,0 ,0 ,14,14,14,14,0 ,0 ,0 ,22,22,22,
+22,22,22,22,0 ,14,0 ,14,14,0 ,14,0 ,22,22,22,22,
+22,22,22,0 ,14,15,15,0 ,0 ,15,15,14,0 ,22,22,22,
+22,0 ,0 ,14,15,15,15,14,14,15,15,15,14,0 ,0 ,22,
+0 ,14,14,14,14,14,0 ,14,14,0 ,14,14,14,14,14,0 ,
+0 ,14,14,14,14,14,14,14,14,14,14,14,14,14,14,0 ,
+0 ,14,14,14,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,14,14,14,0 ,
+22,0 ,0 ,14,14,14,14,14,14,14,14,14,14,0 ,0 ,22,
+22,22,22,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,22,22,22,
+22,22,22,22,0 ,0 ,15,15,15,15,0 ,0 ,22,22,22,22,
+22,22,0 ,0 ,0 ,15,15,15,15,15,15,15,0 ,22,22,22,
+22,0 ,0 ,0 ,0 ,0 ,15,15,15,15,15,0 ,0 ,0 ,22,22,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,15,15,0 ,0 ,0 ,0 ,0 ,22,
+};
+
+int pato2 [16][16]={
+22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
+22,22,22,22,22,22,0 ,0 ,0 ,0 ,22,22,22,22,22,22,
+22,22,22,22,0 ,0 ,14,14,14,14,0 ,0 ,22,22,22,22,
+22,22,22,0 ,0 ,0 ,14,14,14,14,0 ,0 ,0 ,22,22,22,
+22,22,22,22,0 ,14,0 ,14,14,0 ,14,0 ,22,22,22,22,
+22,22,22,0 ,14,15,15,0 ,0 ,15,15,14,0 ,22,22,22,
+22,0 ,0 ,14,15,15,15,14,14,15,15,15,14,0 ,0 ,22,
+0 ,14,14,14,14,14,0 ,14,14,0 ,14,14,14,14,14,0 ,
+0 ,14,14,14,14,14,14,14,14,14,14,14,14,14,14,0 ,
+0 ,14,14,14,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,14,14,14,0 ,
+22,0 ,0 ,14,14,14,14,14,14,14,14,14,14,0 ,0 ,22,
+22,22,22,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,22,22,22,
+22,22,22,22,0 ,0 ,15,15,15,15,0 ,0 ,22,22,22,22,
+22,22,0 ,0 ,0 ,15,15,15,15,15,15,0 ,0 ,0 ,22,22,
+22,0 ,0 ,0 ,0 ,0 ,15,15,15,15,0 ,0 ,0 ,0 ,0 ,22,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,15,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+};
+
+int pato3 [16][16]={
+22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
+22,22,22,22,22,22,0 ,0 ,0 ,0 ,22,22,22,22,22,22,
+22,22,22,22,0 ,0 ,14,14,14,14,0 ,0 ,22,22,22,22,
+22,22,22,0 ,0 ,0 ,14,14,14,14,0 ,0 ,0 ,22,22,22,
+22,22,22,22,0 ,14,0 ,14,14,0 ,14,0 ,22,22,22,22,
+22,22,22,0 ,14,15,15,0 ,0 ,15,15,14,0 ,22,22,22,
+22,0 ,0 ,14,15,15,15,14,14,15,15,15,14,0 ,0 ,22,
+0 ,14,14,14,14,14,0 ,14,14,0 ,14,14,14,14,14,0 ,
+0 ,14,14,14,14,14,14,14,14,14,14,14,14,14,14,0 ,
+0 ,14,14,14,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,14,14,14,0 ,
+22,0 ,0 ,14,14,14,14,14,14,14,14,14,14,0 ,0 ,22,
+22,22,22,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,22,22,22,
+22,22,22,22,0 ,0 ,15,15,15,15,0 ,0 ,22,22,22,22,
+22,22,22,0 ,15,15,15,15,15,15,15,0 ,0 ,0 ,22,22,
+22,22,0 ,0 ,0 ,15,15,15,15,15,0 ,0 ,0 ,0 ,0 ,22,
+22,0 ,0 ,0 ,0 ,0 ,15,15,15,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+};
+
 int bala0 [16][16]={
 22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
 22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
@@ -2378,6 +2468,1058 @@ for(n=0;n<8;n++)
 }
 
 
+void r_pato()  //resetear patos
+{
+int i;
+for(i=0;i<8;i++)
+  {
+  npato[i]=0;
+  patox[i]=0;
+  patoy[i]=0;
+  }
+}
+
+
+void c_pato(int i, int j)
+{
+int n,p=0;
+for(n=0;n<8;n++)
+  {
+  if(npato[n]==0)
+    {
+    p=n;
+    npato[n]=1;
+    n=8;
+    }
+  }
+i=i*16;
+j=j*16;
+patox[p]=i;
+patoy[p]=j;
+}
+
+
+void movpato()
+{
+int n;
+for(n=0;n<8;n++)
+  {
+  if(npato[n]!=0)
+    {
+    if(npato[n]==1)  //determinar sentido
+      {
+      patox[n]++;
+      }
+    if(npato[n]==-1)  //determinar sentido
+      {
+      patox[n]--;
+      }
+    if((patox[n]%16)!=0)
+      {
+      if(paisaje[(patoy[n]+16-(patoy[n]%16))/16][(patox[n]-(patox[n]%16))/16]>=32 && paisaje[(patoy[n]+16-(patoy[n]%16))/16][(patox[n]+16-(patox[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
+        {
+        patoy[n]=patoy[n]+4;
+        }
+      else
+        {
+        patoy[n]=patoy[n]-(patoy[n]%16);
+        }
+      }
+    else
+      {
+      if(paisaje[(patoy[n]+16-(patoy[n]%16))/16][(patox[n]-(patox[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
+        {
+        patoy[n]=patoy[n]+4;
+        }
+      else
+        {
+        patoy[n]=patoy[n]-(patoy[n]%16);
+        }
+      }
+    if(paisaje[(patoy[n]-(patoy[n]%16))/16][(patox[n]+16-(patox[n]%16))/16]<32) //limite de bloque derecho
+      {
+      npato[n]=-1;
+      patox[n]=patox[n]-(patox[n]%16);
+      }
+    else if(paisaje[(patoy[n]-(patoy[n]%16))/16][(patox[n]-(patox[n]%16))/16]<32) //limite de bloque izquierdo
+      {
+      npato[n]=1;
+      patox[n]=patox[n]+16-(patox[n]%16);
+      }
+    }
+  }
+}
+
+
+void dibpatos()
+{
+int n,i,j;
+for(n=0;n<8;n++)
+  {
+  if(npato[n]!=0)
+    {
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        if(pato0[j][i]!=22)
+          {
+          putpixel(patox[n]+i,patoy[n]+j,pato0[j][i]);
+          }
+        }
+      }
+    }
+  }
+}
+
+
+void elipato(int i)
+{
+//borrando variables
+npato[i]=0;
+patox[i]=0;
+patoy[i]=0;
+//borrando rastro del dibujo, redibujando fondo
+bloque(patoo[i]-(patoo[i]%16),patop[i]-(patop[i]%16),paisaje[(patop[i]-(patop[i]%16))/16][(patoo[i]-(patoo[i]%16))/16]);  //actualizar arriba a la izquierda
+bloque(patoo[i]-(patoo[i]%16)+16,patop[i]-(patop[i]%16),paisaje[(patop[i]-(patop[i]%16))/16][(patoo[i]+16-(patoo[i]%16))/16]);  //actualizar arriba a la derecha
+}
+
+
+void posicion_pato()
+{
+int n;
+for(n=0;n<8;n++)
+  {
+  if(npato[n]!=0)
+    {
+    patoo[n]=patox[n];
+    patop[n]=patoy[n];
+    }
+  }
+}
+
+
+void refpato()
+{
+int n;
+for(n=0;n<8;n++)
+  {
+  if(npato[n]!=0)
+    {
+    if((patoo[n]%16)!=0)  // comprobar que bloques necesitan actualizarse
+      {
+      bloque(patoo[n]-(patoo[n]%16),patop[n]-(patop[n]%16),paisaje[(patop[n]-(patop[n]%16))/16][(patoo[n]-(patoo[n]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+      bloque(patoo[n]-(patoo[n]%16)+16,patop[n]-(patop[n]%16),paisaje[(patop[n]-(patop[n]%16))/16][(patoo[n]+16-(patoo[n]%16))/16]);  //actualizar bloque que esta arriba a la derecha
+      if((patop[n]%16)!=0)
+        {
+        bloque(patoo[n]-(patoo[n]%16),patop[n]-(patop[n]%16)+16,paisaje[(patop[n]+16-(patop[n]%16))/16][(patoo[n]-(patoo[n]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+        bloque(patoo[n]-(patoo[n]%16)+16,patop[n]-(patop[n]%16)+16,paisaje[(patop[n]+16-(patop[n]%16))/16][(patoo[n]+16-(patoo[n]%16))/16]);  //actualizar bloque que esta abajo a la derecha
+        }
+      }
+    else if((patop[n]%16)!=0)
+      {
+      bloque(patoo[n]-(patoo[n]%16),patop[n]-(patop[n]%16),paisaje[(patop[n]-(patop[n]%16))/16][(patoo[n]-(patoo[n]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+      bloque(patoo[n]-(patoo[n]%16),patop[n]-(patop[n]%16)+16,paisaje[(patop[n]+16-(patop[n]%16))/16][(patoo[n]-(patoo[n]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+      }
+    else
+      {
+      bloque(patoo[n],patop[n],paisaje[patop[n]/16][patoo[n]/16]);  //actualizar bloque que esta en su posicion
+      }
+    }
+  }
+}
+
+
+void pisar_pato()  //pisar pato
+{
+int i;
+  for(i=0;i<8;i++)  //pisar pato
+    {
+    if(npato[i]!=0)
+      {
+/*      if(x-(x%16)==patox[i]-(patox[i]%16) || x-(x%16)==patox[i]+16-(patox[i]%16))
+        {
+        if(y+16-(y%16)==patoy[i]-(patoy[i]%16))  //+16 para cuando este arriba del pato en -16 sea -16+16=0 y se cumpla
+          {*/
+      if(x<=patox[i]+16 && x>=patox[i]-16)
+        {
+        if(y<=patoy[i] && y>=patoy[i]-16)
+          {
+          if(vy>0.0)
+            {
+            elipato(i);
+            puntos=puntos+100;
+            if(tecla[KEY_CUR_ARRIBA])  //saltar 72
+              {
+              vy=-8;
+              }
+            else
+              {
+              vy=-2;
+              }
+            }
+          }
+        }
+      }
+    }
+}
+
+
+void pato_mata()  //pato mata cuando los tocas
+{
+int i;
+  for(i=0;i<8;i++)  //pato mata
+    {
+    if(npato[i]!=0)
+      {
+      if(x<=patox[i]+16 && x>=patox[i]-16)
+        {
+        if(y-(y%16)==patoy[i]-(patoy[i]%16))  //igual funciona con y<=patoy[i]+16 && y>=patoy[i]-16 , pero el pato mata con tocarlo un pixel
+          {
+          if(invensible==0)
+            {
+            estado--;
+            invensible=tiempo_invensible;
+            t_huevo=tiempo-4;  //solo es necesario si su estado es 0
+            }
+          }
+        }
+      }
+    }
+}
+
+
+void patofuera()
+{
+int n;
+for(n=0;n<8;n++)
+  {
+  if(npato[n]!=0)
+    {
+    if(patox[n]>=624) //si llega a la orilla derecha eliminar pato
+      {
+      elipato(n);
+      }
+    else if(patox[n]<=0) //si llega a la orilla izquierda eliminar pato
+      {
+      elipato(n);
+      }
+    else if(patoy[n]>=464) //caida
+      {
+      elipato(n);
+      }
+    }
+  }
+}
+
+
+void r_salta()  //resetear saltadores
+{
+int i;
+for(i=0;i<4;i++)
+  {
+  nsalta[i]=0;
+  saltax[i]=0;
+  saltay[i]=0;
+  saltavy[i]=0.0;
+  saltavx[i]=0.0;
+  }
+}
+
+
+void c_salta(int i, int j)
+{
+int n,p=0;
+for(n=0;n<4;n++)
+  {
+  if(nsalta[n]==0)
+    {
+    p=n;
+    nsalta[n]=1;
+    n=4;
+    }
+  }
+i=i*16;
+j=j*16;
+saltax[p]=i;
+saltay[p]=j;
+}
+
+
+void movsalta()
+{
+int n;
+for(n=0;n<4;n++)
+  {
+  if(nsalta[n]!=0)
+    {
+    if(nsalta[n]==1)  //determinar sentido
+      {
+      saltax[n]++;
+      }
+    if(nsalta[n]==-1)  //determinar sentido
+      {
+      saltax[n]--;
+      }
+    if((saltax[n]%16)!=0)
+      {
+      if(paisaje[(saltay[n]+16-(saltay[n]%16))/16][(saltax[n]-(saltax[n]%16))/16]>=32 && paisaje[(saltay[n]+16-(saltay[n]%16))/16][(saltax[n]+16-(saltax[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
+        {
+        saltavy[n]=saltavy[n]+0.5;
+        }
+      else
+        {
+        saltavy[n]=-4.0;
+        saltay[n]=saltay[n]-(saltay[n]%16);
+        }
+      }
+    else
+      {
+      if(paisaje[(saltay[n]+16-(saltay[n]%16))/16][(saltax[n]-(saltax[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
+        {
+        saltavy[n]=saltavy[n]+0.5;
+        }
+      else
+        {
+        saltavy[n]=-4.0;
+        saltay[n]=saltay[n]-(saltay[n]%16);
+        }
+      }
+    if(paisaje[(saltay[n]-(saltay[n]%16))/16][(saltax[n]+16-(saltax[n]%16))/16]<32) //limite de bloque derecho
+      {
+      nsalta[n]=-1;
+      saltax[n]=saltax[n]-(saltax[n]%16);
+      }
+    else if(paisaje[(saltay[n]-(saltay[n]%16))/16][(saltax[n]-(saltax[n]%16))/16]<32) //limite de bloque izquierdo
+      {
+      nsalta[n]=1;
+      saltax[n]=saltax[n]+16-(saltax[n]%16);
+      }
+    saltay[n]=saltay[n]+saltavy[n];
+    saltax[n]=saltax[n]+saltavx[n];
+    }
+  }
+}
+
+
+void dibsalta()
+{
+int n,i,j;
+for(n=0;n<4;n++)
+  {
+  if(nsalta[n]!=0)
+    {
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        if(pato0[j][i]!=22)
+          {
+          putpixel(saltax[n]+i,saltay[n]+j,pato0[j][i]);
+          }
+        }
+      }
+    }
+  }
+}
+
+
+void elisalta(int i)
+{
+//borrando variables
+nsalta[i]=0;
+saltax[i]=0;
+saltay[i]=0;
+saltavx[i]=0.0;
+saltavy[i]=0.0;
+//borrando rastro del dibujo, redibujando fondo
+if((saltao[i]%16)!=0)  // comprobar que bloques necesitan actualizarse
+  {
+  bloque(saltao[i]-(saltao[i]%16),saltap[i]-(saltap[i]%16),paisaje[(saltap[i]-(saltap[i]%16))/16][(saltao[i]-(saltao[i]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+  bloque(saltao[i]-(saltao[i]%16)+16,saltap[i]-(saltap[i]%16),paisaje[(saltap[i]-(saltap[i]%16))/16][(saltao[i]+16-(saltao[i]%16))/16]);  //actualizar bloque que esta arriba a la derecha
+  if((saltap[i]%16)!=0)
+    {
+    bloque(saltao[i]-(saltao[i]%16),saltap[i]-(saltap[i]%16)+16,paisaje[(saltap[i]+16-(saltap[i]%16))/16][(saltao[i]-(saltao[i]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+    bloque(saltao[i]-(saltao[i]%16)+16,saltap[i]-(saltap[i]%16)+16,paisaje[(saltap[i]+16-(saltap[i]%16))/16][(saltao[i]+16-(saltao[i]%16))/16]);  //actualizar bloque que esta abajo a la derecha
+    }
+  }
+else if((saltap[i]%16)!=0)
+  {
+  bloque(saltao[i]-(saltao[i]%16),saltap[i]-(saltap[i]%16),paisaje[(saltap[i]-(saltap[i]%16))/16][(saltao[i]-(saltao[i]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+  bloque(saltao[i]-(saltao[i]%16),saltap[i]-(saltap[i]%16)+16,paisaje[(saltap[i]+16-(saltap[i]%16))/16][(saltao[i]-(saltao[i]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+  }
+else
+  {
+  bloque(saltao[i],saltap[i],paisaje[saltap[i]/16][saltao[i]/16]);  //actualizar bloque que esta en su posicion
+  }
+}
+
+
+void posicion_salta()
+{
+int n;
+for(n=0;n<4;n++)
+  {
+  if(nsalta[n]!=0)
+    {
+    saltao[n]=saltax[n];
+    saltap[n]=saltay[n];
+    }
+  }
+}
+
+
+void refsalta()
+{
+int n;
+for(n=0;n<4;n++)
+  {
+  if(nsalta[n]!=0)
+    {
+    if((saltao[n]%16)!=0)  // comprobar que bloques necesitan actualizarse
+      {
+      bloque(saltao[n]-(saltao[n]%16),saltap[n]-(saltap[n]%16),paisaje[(saltap[n]-(saltap[n]%16))/16][(saltao[n]-(saltao[n]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+      bloque(saltao[n]-(saltao[n]%16)+16,saltap[n]-(saltap[n]%16),paisaje[(saltap[n]-(saltap[n]%16))/16][(saltao[n]+16-(saltao[n]%16))/16]);  //actualizar bloque que esta arriba a la derecha
+      if((saltap[n]%16)!=0)
+        {
+        bloque(saltao[n]-(saltao[n]%16),saltap[n]-(saltap[n]%16)+16,paisaje[(saltap[n]+16-(saltap[n]%16))/16][(saltao[n]-(saltao[n]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+        bloque(saltao[n]-(saltao[n]%16)+16,saltap[n]-(saltap[n]%16)+16,paisaje[(saltap[n]+16-(saltap[n]%16))/16][(saltao[n]+16-(saltao[n]%16))/16]);  //actualizar bloque que esta abajo a la derecha
+        }
+      }
+    else if((saltap[n]%16)!=0)
+      {
+      bloque(saltao[n]-(saltao[n]%16),saltap[n]-(saltap[n]%16),paisaje[(saltap[n]-(saltap[n]%16))/16][(saltao[n]-(saltao[n]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+      bloque(saltao[n]-(saltao[n]%16),saltap[n]-(saltap[n]%16)+16,paisaje[(saltap[n]+16-(saltap[n]%16))/16][(saltao[n]-(saltao[n]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+      }
+    else
+      {
+      bloque(saltao[n],saltap[n],paisaje[saltap[n]/16][saltao[n]/16]);  //actualizar bloque que esta en su posicion
+      }
+    }
+  }
+}
+
+
+void pisar_salta()  //pisar saltadores
+{
+int i;
+  for(i=0;i<4;i++)  //pisar saltadores
+    {
+    if(nsalta[i]!=0)
+      {
+      /*if(x-(x%16)==saltax[i]-(saltax[i]%16) || x-(x%16)==saltax[i]+16-(saltax[i]%16))
+        {
+        if(y+16-(y%16)==saltay[i]-(saltay[i]%16))  //+16 para cuando este arriba del saltador en -16 sea -16+16=0 y se cumpla
+          {*/
+      if(x<=saltax[i]+16 && x>=saltax[i]-16)
+        {
+        if(y<=saltay[i] && y>=saltay[i]-16)
+          {
+          if(vy>0.0)
+            {
+            elisalta(i);
+            puntos=puntos+100;
+            if(tecla[KEY_CUR_ARRIBA])  //saltar 72
+              {
+              vy=-8;
+              }
+            else
+              {
+              vy=-2;
+              }
+            }
+          }
+        }
+      }
+    }
+}
+
+
+void salta_mata()  //saltador mata cuando los tocas
+{
+int i;
+  for(i=0;i<4;i++)  //saltador mata
+    {
+    if(nsalta[i]!=0)
+      {
+      if(x<=saltax[i]+16 && x>=saltax[i]-16)
+        {
+        if(y-(y%16)==saltay[i]-(saltay[i]%16))
+          {
+          if(invensible==0)
+            {
+            estado--;
+            invensible=tiempo_invensible;
+            t_huevo=tiempo-4;  //solo es necesario si su estado es 0
+            }
+          }
+        }
+      }
+    }
+}
+
+
+void saltafuera()
+{
+int n;
+for(n=0;n<4;n++)
+  {
+  if(nsalta[n]!=0)
+    {
+    if(saltax[n]>=624) //si llega a la orilla derecha eliminar saltador
+      {
+      elisalta(n);
+      }
+    else if(saltax[n]<=0) //si llega a la orilla izquierda eliminar saltador
+      {
+      elisalta(n);
+      }
+    else if(saltay[n]>=464) //caida
+      {
+      elisalta(n);
+      }
+    }
+  }
+}
+
+
+void r_seguidor()  //resetear seguidores
+{
+int i;
+for(i=0;i<8;i++)
+  {
+  nseguidor[i]=0;
+  seguidorx[i]=0;
+  seguidory[i]=0;
+  }
+}
+
+
+void c_seguidor(int i, int j)
+{
+int n,p=0;
+for(n=0;n<8;n++)
+  {
+  if(nseguidor[n]==0)
+    {
+    p=n;
+    nseguidor[n]=1;
+    n=8;
+    }
+  }
+i=i*16;
+j=j*16;
+seguidorx[p]=i;
+seguidory[p]=j;
+}
+
+
+void movseguidor()
+{
+int n;
+for(n=0;n<8;n++)
+  {
+  if(nseguidor[n]!=0)
+    {
+    if(nseguidor[n]==1)  //determinar sentido
+      {
+      seguidorx[n]++;
+      }
+    if(nseguidor[n]==-1)  //determinar sentido
+      {
+      seguidorx[n]--;
+      }
+    if((seguidorx[n]%16)!=0)
+      {
+      if(paisaje[(seguidory[n]+16-(seguidory[n]%16))/16][(seguidorx[n]-(seguidorx[n]%16))/16]>=32 && paisaje[(seguidory[n]+16-(seguidory[n]%16))/16][(seguidorx[n]+16-(seguidorx[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
+        {
+        seguidory[n]=seguidory[n]+4;
+        }
+      else
+        {
+        seguidory[n]=seguidory[n]-(seguidory[n]%16);
+        }
+      }
+    else
+      {
+      if(paisaje[(seguidory[n]+16-(seguidory[n]%16))/16][(seguidorx[n]-(seguidorx[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
+        {
+        seguidory[n]=seguidory[n]+4;
+        }
+      else
+        {
+        seguidory[n]=seguidory[n]-(seguidory[n]%16);
+        }
+      }
+    if(sec%80==0) //seguir a patito  
+      {
+      if(seguidorx[n]>x)  
+        {
+        nseguidor[n]=-1;
+        }
+      else if(seguidorx[n]<x)       
+        {
+        nseguidor[n]=1;
+        }
+      }
+    if(paisaje[(seguidory[n]-(seguidory[n]%16))/16][(seguidorx[n]+16-(seguidorx[n]%16))/16]<32) //limite de bloque derecho
+      {
+      nseguidor[n]=-1;
+      seguidorx[n]=seguidorx[n]-(seguidorx[n]%16);
+      }
+    else if(paisaje[(seguidory[n]-(seguidory[n]%16))/16][(seguidorx[n]-(seguidorx[n]%16))/16]<32) //limite de bloque izquierdo
+      {
+      nseguidor[n]=1;
+      seguidorx[n]=seguidorx[n]+16-(seguidorx[n]%16);
+      }
+    }
+  }
+}
+
+
+void dibseguidor()
+{
+int n,i,j;
+for(n=0;n<8;n++)
+  {
+  if(nseguidor[n]!=0)
+    {
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        if(pato0[j][i]!=22)
+          {
+          putpixel(seguidorx[n]+i,seguidory[n]+j,pato0[j][i]);
+          }
+        }
+      }
+    }
+  }
+}
+
+
+void eliseguidor(int i)
+{
+//borrando variables
+nseguidor[i]=0;
+seguidorx[i]=0;
+seguidory[i]=0;
+//borrando rastro del dibujo, redibujando fondo
+bloque(seguidoro[i]-(seguidoro[i]%16),seguidorp[i]-(seguidorp[i]%16),paisaje[(seguidorp[i]-(seguidorp[i]%16))/16][(seguidoro[i]-(seguidoro[i]%16))/16]);  //actualizar arriba a la izquierda
+bloque(seguidoro[i]-(seguidoro[i]%16)+16,seguidorp[i]-(seguidorp[i]%16),paisaje[(seguidorp[i]-(seguidorp[i]%16))/16][(seguidoro[i]+16-(seguidoro[i]%16))/16]);  //actualizar arriba a la derecha
+}
+
+
+void posicion_seguidor()
+{
+int n;
+for(n=0;n<8;n++)
+  {
+  if(nseguidor[n]!=0)
+    {
+    seguidoro[n]=seguidorx[n];
+    seguidorp[n]=seguidory[n];
+    }
+  }
+}
+
+
+void refseguidor()
+{
+int n;
+for(n=0;n<8;n++)
+  {
+  if(nseguidor[n]!=0)
+    {
+    if((seguidoro[n]%16)!=0)  // comprobar que bloques necesitan actualizarse
+      {
+      bloque(seguidoro[n]-(seguidoro[n]%16),seguidorp[n]-(seguidorp[n]%16),paisaje[(seguidorp[n]-(seguidorp[n]%16))/16][(seguidoro[n]-(seguidoro[n]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+      bloque(seguidoro[n]-(seguidoro[n]%16)+16,seguidorp[n]-(seguidorp[n]%16),paisaje[(seguidorp[n]-(seguidorp[n]%16))/16][(seguidoro[n]+16-(seguidoro[n]%16))/16]);  //actualizar bloque que esta arriba a la derecha
+      if((seguidorp[n]%16)!=0)
+        {
+        bloque(seguidoro[n]-(seguidoro[n]%16),seguidorp[n]-(seguidorp[n]%16)+16,paisaje[(seguidorp[n]+16-(seguidorp[n]%16))/16][(seguidoro[n]-(seguidoro[n]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+        bloque(seguidoro[n]-(seguidoro[n]%16)+16,seguidorp[n]-(seguidorp[n]%16)+16,paisaje[(seguidorp[n]+16-(seguidorp[n]%16))/16][(seguidoro[n]+16-(seguidoro[n]%16))/16]);  //actualizar bloque que esta abajo a la derecha
+        }
+      }
+    else if((seguidorp[n]%16)!=0)
+      {
+      bloque(seguidoro[n]-(seguidoro[n]%16),seguidorp[n]-(seguidorp[n]%16),paisaje[(seguidorp[n]-(seguidorp[n]%16))/16][(seguidoro[n]-(seguidoro[n]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+      bloque(seguidoro[n]-(seguidoro[n]%16),seguidorp[n]-(seguidorp[n]%16)+16,paisaje[(seguidorp[n]+16-(seguidorp[n]%16))/16][(seguidoro[n]-(seguidoro[n]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+      }
+    else
+      {
+      bloque(seguidoro[n],seguidorp[n],paisaje[seguidorp[n]/16][seguidoro[n]/16]);  //actualizar bloque que esta en su posicion
+      }
+    }
+  }
+}
+
+
+void pisar_seguidor()  //pisar seguidor
+{
+int i;
+  for(i=0;i<8;i++)  //pisar seguidor
+    {
+    if(nseguidor[i]!=0)
+      {
+      /*if(x-(x%16)==seguidorx[i]-(seguidorx[i]%16) || x-(x%16)==seguidorx[i]+16-(seguidorx[i]%16))
+        {
+        if(y+16-(y%16)==seguidory[i]-(seguidory[i]%16))  //+16 para cuando este arriba del seguidor en -16 sea -16+16=0 y se cumpla
+          {*/
+      if(x<=seguidorx[i]+16 && x>=seguidorx[i]-16)
+        {
+        if(y<=seguidory[i] && y>=seguidory[i]-16)
+          {
+          if(vy>0.0)
+            {
+            eliseguidor(i);
+            puntos=puntos+100;
+            if(tecla[KEY_CUR_ARRIBA])  //saltar 72
+              {
+              vy=-8;
+              }
+            else
+              {
+              vy=-2;
+              }
+            }
+          }
+        }
+      }
+    }
+}
+
+
+void seguidor_mata()  //seguidor mata cuando los tocas
+{
+int i;
+  for(i=0;i<8;i++)  //seguidor mata
+    {
+    if(nseguidor[i]!=0)
+      {
+      if(x<=seguidorx[i]+16 && x>=seguidorx[i]-16)
+        {
+        if(y-(y%16)==seguidory[i]-(seguidory[i]%16))
+          {
+          if(invensible==0)
+            {
+            estado--;
+            invensible=tiempo_invensible;
+            t_huevo=tiempo-4;  //solo es necesario si su estado es 0
+            }
+          }
+        }
+      }
+    }
+}
+
+
+void seguidorfuera()
+{
+int n;
+for(n=0;n<8;n++)
+  {
+  if(nseguidor[n]!=0)
+    {
+    if(seguidorx[n]>=624) //si llega a la orilla derecha eliminar seguidor
+      {
+      eliseguidor(n);
+      }
+    else if(seguidorx[n]<=0) //si llega a la orilla izquierda eliminar seguidor
+      {
+      eliseguidor(n);
+      }
+    else if(seguidory[n]>=464) //caida
+      {
+      eliseguidor(n);
+      }
+    }
+  }
+}
+
+
+void r_peligro()  //resetear patos peligrosos
+{
+int i;
+for(i=0;i<4;i++)
+  {
+  npeligro[i]=0;
+  peligrox[i]=0;
+  peligroy[i]=0;
+  peligrovy[i]=0.0;
+  peligrovx[i]=0.0;
+  }
+}
+
+
+void c_peligro(int i, int j)
+{
+int n,p=0;
+for(n=0;n<4;n++)
+  {
+  if(npeligro[n]==0)
+    {
+    p=n;
+    npeligro[n]=1;
+    n=4;
+    }
+  }
+i=i*16;
+j=j*16;
+peligrox[p]=i;
+peligroy[p]=j;
+}
+
+
+void movpeligro()
+{
+int n;
+for(n=0;n<4;n++)
+  {
+  if(npeligro[n]!=0)
+    {
+    if(npeligro[n]==1)  //determinar sentido
+      {
+      peligrox[n]++;
+      }
+    if(npeligro[n]==-1)  //determinar sentido
+      {
+      peligrox[n]--;
+      }
+    if((peligrox[n]%16)!=0)
+      {
+      if(paisaje[(peligroy[n]+16-(peligroy[n]%16))/16][(peligrox[n]-(peligrox[n]%16))/16]>=32 && paisaje[(peligroy[n]+16-(peligroy[n]%16))/16][(peligrox[n]+16-(peligrox[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
+        {
+        peligrovy[n]=peligrovy[n]+0.5;
+        }
+      else
+        {
+        peligrovy[n]=-4.0;
+        peligroy[n]=peligroy[n]-(peligroy[n]%16);
+        }
+      }
+    else
+      {
+      if(paisaje[(peligroy[n]+16-(peligroy[n]%16))/16][(peligrox[n]-(peligrox[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
+        {
+        peligrovy[n]=peligrovy[n]+0.5;
+        }
+      else
+        {
+        peligrovy[n]=-4.0;
+        peligroy[n]=peligroy[n]-(peligroy[n]%16);
+        }
+      }
+    if(sec%80==0) //seguir a patito
+      {
+      if(peligrox[n]>x)  
+        {
+        npeligro[n]=-1;
+        }
+      else if(peligrox[n]<x)       
+        {
+        npeligro[n]=1;
+        }
+      }
+    if(paisaje[(peligroy[n]-(peligroy[n]%16))/16][(peligrox[n]+16-(peligrox[n]%16))/16]<32) //limite de bloque derecho    
+      {
+      npeligro[n]=-1;
+      peligrox[n]=peligrox[n]-(peligrox[n]%16);
+      }
+    else if(paisaje[(peligroy[n]-(peligroy[n]%16))/16][(peligrox[n]-(peligrox[n]%16))/16]<32) //limite de bloque izquierdo       
+      {
+      npeligro[n]=1;
+      peligrox[n]=peligrox[n]+16-(peligrox[n]%16);
+      }
+    peligroy[n]=peligroy[n]+peligrovy[n];
+    peligrox[n]=peligrox[n]+peligrovx[n];
+    }
+  }
+}
+
+
+void dibpeligro()
+{
+int n,i,j;
+for(n=0;n<4;n++)
+  {
+  if(npeligro[n]!=0)
+    {
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        if(pato0[j][i]!=22)
+          {
+          putpixel(peligrox[n]+i,peligroy[n]+j,pato0[j][i]);
+          }
+        }
+      }
+    }
+  }
+}
+
+
+void elipeligro(int i)
+{
+//borrando variables
+npeligro[i]=0;
+peligrox[i]=0;
+peligroy[i]=0;
+peligrovx[i]=0.0;
+peligrovy[i]=0.0;
+//borrando rastro del dibujo, redibujando fondo
+if((peligroo[i]%16)!=0)  // comprobar que bloques necesitan actualizarse
+  {
+  bloque(peligroo[i]-(peligroo[i]%16),peligrop[i]-(peligrop[i]%16),paisaje[(peligrop[i]-(peligrop[i]%16))/16][(peligroo[i]-(peligroo[i]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+  bloque(peligroo[i]-(peligroo[i]%16)+16,peligrop[i]-(peligrop[i]%16),paisaje[(peligrop[i]-(peligrop[i]%16))/16][(peligroo[i]+16-(peligroo[i]%16))/16]);  //actualizar bloque que esta arriba a la derecha
+  if((peligrop[i]%16)!=0)
+    {
+    bloque(peligroo[i]-(peligroo[i]%16),peligrop[i]-(peligrop[i]%16)+16,paisaje[(peligrop[i]+16-(peligrop[i]%16))/16][(peligroo[i]-(peligroo[i]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+    bloque(peligroo[i]-(peligroo[i]%16)+16,peligrop[i]-(peligrop[i]%16)+16,paisaje[(peligrop[i]+16-(peligrop[i]%16))/16][(peligroo[i]+16-(peligroo[i]%16))/16]);  //actualizar bloque que esta abajo a la derecha
+    }
+  }
+else if((peligrop[i]%16)!=0)
+  {
+  bloque(peligroo[i]-(peligroo[i]%16),peligrop[i]-(peligrop[i]%16),paisaje[(peligrop[i]-(peligrop[i]%16))/16][(peligroo[i]-(peligroo[i]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+  bloque(peligroo[i]-(peligroo[i]%16),peligrop[i]-(peligrop[i]%16)+16,paisaje[(peligrop[i]+16-(peligrop[i]%16))/16][(peligroo[i]-(peligroo[i]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+  }
+else
+  {
+  bloque(peligroo[i],peligrop[i],paisaje[peligrop[i]/16][peligroo[i]/16]);  //actualizar bloque que esta en su posicion
+  }
+}
+
+
+void posicion_peligro()
+{
+int n;
+for(n=0;n<4;n++)
+  {
+  if(npeligro[n]!=0)
+    {
+    peligroo[n]=peligrox[n];
+    peligrop[n]=peligroy[n];
+    }
+  }
+}
+
+
+void refpeligro()
+{
+int n;
+for(n=0;n<4;n++)
+  {
+  if(npeligro[n]!=0)
+    {
+    if((peligroo[n]%16)!=0)  // comprobar que bloques necesitan actualizarse
+      {
+      bloque(peligroo[n]-(peligroo[n]%16),peligrop[n]-(peligrop[n]%16),paisaje[(peligrop[n]-(peligrop[n]%16))/16][(peligroo[n]-(peligroo[n]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+      bloque(peligroo[n]-(peligroo[n]%16)+16,peligrop[n]-(peligrop[n]%16),paisaje[(peligrop[n]-(peligrop[n]%16))/16][(peligroo[n]+16-(peligroo[n]%16))/16]);  //actualizar bloque que esta arriba a la derecha
+      if((peligrop[n]%16)!=0)
+        {
+        bloque(peligroo[n]-(peligroo[n]%16),peligrop[n]-(peligrop[n]%16)+16,paisaje[(peligrop[n]+16-(peligrop[n]%16))/16][(peligroo[n]-(peligroo[n]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+        bloque(peligroo[n]-(peligroo[n]%16)+16,peligrop[n]-(peligrop[n]%16)+16,paisaje[(peligrop[n]+16-(peligrop[n]%16))/16][(peligroo[n]+16-(peligroo[n]%16))/16]);  //actualizar bloque que esta abajo a la derecha
+        }
+      }
+    else if((peligrop[n]%16)!=0)
+      {
+      bloque(peligroo[n]-(peligroo[n]%16),peligrop[n]-(peligrop[n]%16),paisaje[(peligrop[n]-(peligrop[n]%16))/16][(peligroo[n]-(peligroo[n]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+      bloque(peligroo[n]-(peligroo[n]%16),peligrop[n]-(peligrop[n]%16)+16,paisaje[(peligrop[n]+16-(peligrop[n]%16))/16][(peligroo[n]-(peligroo[n]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
+      }
+    else
+      {
+      bloque(peligroo[n],peligrop[n],paisaje[peligrop[n]/16][peligroo[n]/16]);  //actualizar bloque que esta en su posicion
+      }
+    }
+  }
+}
+
+
+void pisar_peligro()  //pisar patos peligrosos
+  {
+  int i;
+  for(i=0;i<4;i++)  //pisar patos peligrosos
+    {
+    if(npeligro[i]!=0)
+      {
+      /*if(x-(x%16)==peligrox[i]-(peligrox[i]%16) || x-(x%16)==peligrox[i]+16-(peligrox[i]%16))
+        {
+        if(y+16-(y%16)==peligroy[i]-(peligroy[i]%16))  //+16 para cuando este arriba del peligroso en -16 sea -16+16=0 y se cumpla
+          {*/
+      if(x<=peligrox[i]+16 && x>=peligrox[i]-16)
+        {
+        if(y<=peligroy[i] && y>=peligroy[i]-16)
+          {
+          if(vy>0.0)
+            {
+            elipeligro(i);
+            puntos=puntos+100;
+            if(tecla[KEY_CUR_ARRIBA])  //saltar 72
+              {
+              vy=-8;
+              }
+            else
+              {
+              vy=-2;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+void peligro_mata()  //peligroso mata cuando los tocas
+{
+int i;
+  for(i=0;i<4;i++)  //peligroso mata
+    {
+    if(npeligro[i]!=0)
+      {
+      if(x<=peligrox[i]+16 && x>=peligrox[i]-16)
+        {
+        if(y-(y%16)==peligroy[i]-(peligroy[i]%16))
+          {
+          if(invensible==0)
+            {
+            estado--;
+            invensible=tiempo_invensible;
+            t_huevo=tiempo-4;  //solo es necesario si su estado es 0
+            }
+          }
+        }
+      }
+    }
+}
+
+
+void peligrofuera()
+{
+int n;
+for(n=0;n<4;n++)
+  {
+  if(npeligro[n]!=0)
+    {
+    if(peligrox[n]>=624) //si llega a la orilla derecha eliminar peligroso
+      {
+      elipeligro(n);
+      }
+    else if(peligrox[n]<=0) //si llega a la orilla izquierda eliminar peligroso
+      {
+      elipeligro(n);
+      }
+    else if(peligroy[n]>=464) //caida
+      {
+      elipeligro(n);
+      }
+    }
+  }
+}
+
+
 void r_bala()  //resetear todas las balas
 {
 int i;
@@ -2741,7 +3883,7 @@ int i;
           if(invensible==0)
             {
             estado--;
-            invensible=222;
+            invensible=tiempo_invensible;
             t_huevo=tiempo-4;  //solo es necesario si su estado es 0
             }
           }
@@ -2780,6 +3922,9 @@ j=j*16;
 tortugax[p]=i;
 tortugay[p]=j;
 tortugavx[p]=1.0;
+tortugavy[p]=0.0;
+tortuga_ax[p]=i;
+tortuga_ay[p]=j;
 }
 
 
@@ -2794,6 +3939,11 @@ for(n=0;n<8;n++)
     tortugay[n]=tortugay[n]+tortugavy[n];
     if((tortugax[n]%16)!=0)
       {
+//tortuga giratoria
+//tortugaangulo[n]=((CPS-sec+(tiempo%10)*CPS)*2*3.1415925437)/300;
+//tortugax[n]=tortuga_ax[n]+cos(tortugaangulo[n])*100;
+//tortugay[n]=tortuga_ay[n]+sin(tortugaangulo[n])*100;
+//gotoxy(1,1); printf("angulo=%f      ",tortugaangulo[n]);
       if(paisaje[(tortugay[n]+16-(tortugay[n]%16))/16][(tortugax[n]-(tortugax[n]%16))/16]>=32 && paisaje[(tortugay[n]+16-(tortugay[n]%16))/16][(tortugax[n]+16-(tortugax[n]%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
         {
         tortugay[n]=tortugay[n]+4;
@@ -3123,7 +4273,7 @@ int i;
             if(invensible==0)
               {
               estado--;
-              invensible=222;
+              invensible=tiempo_invensible;
               t_huevo=tiempo-4;  //solo es necesario si su estado es 0
               }
             }
@@ -3159,6 +4309,410 @@ for(n=0;n<8;n++)
 }
 
 
+void bloque_caja0_calavera()  //caja0 con calavera
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-9)  //caja0 con champiñon
+    {
+    //vy=-vy;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja5
+    bloque(x-(x%16),y-(y%16),5);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,5);
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-9 && x%16!=0)
+    {
+    //vy=-vy;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
+    bloque(x+16-(x%16),y-(y%16),5);
+    c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,5);
+    }
+}
+
+
+void bloque_caja4_moneda()  //caja4 con moneda
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-10) //caja4 con moneda
+    {
+    puntos=puntos+40;
+    monedas++;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=12;  //caja4
+    bloque(x-(x%16),y-(y%16),12);
+    cmoneda((x-(x%16))/16,(y-16-(y%16))/16);
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-10 && x%16!=0)
+    {
+    puntos=puntos+40;
+    monedas++;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=12;
+    bloque(x+16-(x%16),y-(y%16),12);
+    cmoneda((x+16-(x%16))/16,(y-16-(y%16))/16);
+    }
+}
+
+
+void bloque_caja4_10monedas()  //caja4 con 10 momedas
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-11) //caja0 con 10 monedas
+    {
+    cajamone++;
+    monedas++;
+    puntos=puntos+40;
+    cmoneda((x-(x%16))/16,(y-16-(y%16))/16);
+    if(cajamone>=10)
+      {
+      paisaje[(y-(y%16))/16][(x-(x%16))/16]=12;
+      bloque(x-(x%16),y-(y%16),12);
+      cajamone=0;
+      }
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-11 && x%16!=0)
+    {
+    cajamone++;
+    monedas++;
+    puntos=puntos+40;
+    cmoneda((x+16-(x%16))/16,(y-16-(y%16))/16);
+    if(cajamone>=10)
+      {
+      paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=12;
+      bloque(x+16-(x%16),y-(y%16),12);
+      cajamone=0;
+      }
+    }
+}
+
+
+void bloque_caja4_champinon()  //caja4 con champiñon
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-12)  //caja4 con champiñon
+    {
+    //vy=-vy;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=12;  //caja5
+    bloque(x-(x%16),y-(y%16),12);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,1);
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-12 && x%16!=0)
+    {
+    //vy=-vy;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=12;
+    bloque(x+16-(x%16),y-(y%16),12);
+    c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,1);
+    }
+}
+
+
+void bloque_caja4_vida()  //caja4 con vida
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-13)  //caja4 con vida
+    {
+    //vy=-vy;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=12;  //caja5
+    bloque(x-(x%16),y-(y%16),12);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-13 && x%16!=0)
+    {
+    //vy=-vy;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=12;
+    bloque(x+16-(x%16),y-(y%16),12);
+    c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,4);
+    }
+}
+
+
+void bloque_caja4_calavera()  //caja4 con calavera
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-15)  //caja0 con champiñon
+    {
+    //vy=-vy;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=12;  //caja5
+    bloque(x-(x%16),y-(y%16),12);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,5);
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-15 && x%16!=0)
+    {
+    //vy=-vy;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=12;
+    bloque(x+16-(x%16),y-(y%16),2);
+    c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,5);
+    }
+}
+
+
+void bloque_madera_moneda()  //madera con moneda
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-20) //madera con moneda
+    {
+    puntos=puntos+40;
+    monedas++;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=7;  //madera
+    bloque(x-(x%16),y-(y%16),7);
+    cmoneda((x-(x%16))/16,(y-16-(y%16))/16);
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-20 && x%16!=0)
+    {
+    puntos=puntos+40;
+    monedas++;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=7;
+    bloque(x+16-(x%16),y-(y%16),7);
+    cmoneda((x+16-(x%16))/16,(y-16-(y%16))/16);
+    }
+}
+
+
+void bloque_madera_champinon()  //madera con champiñon
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-21)  //madera con champiñon
+    {
+    //vy=-vy;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=7;  //madera
+    bloque(x-(x%16),y-(y%16),7);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,1);
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-21 && x%16!=0)
+    {
+    //vy=-vy;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=7;
+    bloque(x+16-(x%16),y-(y%16),7);
+    c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,1);
+    }
+}
+
+
+void bloque_madera_vida()  //madera con vida
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-22)  //madera con vida
+    {
+    //vy=-vy;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=7;  //madera
+    bloque(x-(x%16),y-(y%16),7);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-22 && x%16!=0)
+    {
+    //vy=-vy;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=7;
+    bloque(x+16-(x%16),y-(y%16),7);
+    c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,4);
+    }
+}
+
+
+
+void bloque_hielo_champinon()  //hielo con champiñon
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-25)  //hielo con champiñon
+    {
+    //vy=-vy;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=11;  //hielo
+    bloque(x-(x%16),y-(y%16),11);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,1);
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-25 && x%16!=0)
+    {
+    //vy=-vy;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=11;
+    bloque(x+16-(x%16),y-(y%16),11);
+    c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,1);
+    }
+}
+
+
+void bloque_hielo_vida()  //hielo con vida
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-26)  //hielo con vida
+    {
+    //vy=-vy;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=11;  //hielo
+    bloque(x-(x%16),y-(y%16),11);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-26 && x%16!=0)
+    {
+    //vy=-vy;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=11;
+    bloque(x+16-(x%16),y-(y%16),11);
+    c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,4);
+    }
+}
+
+
+void cristal0_10monedas()  //cristal amarillo con 10 monedas
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-30) //cristal0 con 10 monedas
+    {
+    cajamone++;
+    monedas++;
+    puntos=puntos+40;
+    cmoneda((x-(x%16))/16,(y-16-(y%16))/16);
+    if(cajamone>=10)
+      {
+      paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;
+      bloque(x-(x%16),y-(y%16),5);
+      cajamone=0;
+      }
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-30 && x%16!=0)
+    {
+    cajamone++;
+    monedas++;
+    puntos=puntos+40;
+    cmoneda((x+16-(x%16))/16,(y-16-(y%16))/16);
+    if(cajamone>=10)
+      {
+      paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
+      bloque(x+16-(x%16),y-(y%16),5);
+      cajamone=0;
+      }
+    }
+}
+
+
+void cristal0_champinon()  //cristal amarillo con champiñon
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-31)  //cristal0 con champiñon
+    {
+    //vy=-vy;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja0
+    bloque(x-(x%16),y-(y%16),5);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,1);
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-31 && x%16!=0)
+    {
+    //vy=-vy;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
+    bloque(x+16-(x%16),y-(y%16),5);
+    c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,1);
+    }
+}
+
+
+void cristal4_10monedas()  //cristal verde con 10 monedas
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-37) //cristal4 con 10 monedas
+    {
+    cajamone++;
+    monedas++;
+    puntos=puntos+40;
+    cmoneda((x-(x%16))/16,(y-16-(y%16))/16);
+    if(cajamone>=10)
+      {
+      paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;
+      bloque(x-(x%16),y-(y%16),5);
+      cajamone=0;
+      }
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-37 && x%16!=0)
+    {
+    cajamone++;
+    monedas++;
+    puntos=puntos+40;
+    cmoneda((x+16-(x%16))/16,(y-16-(y%16))/16);
+    if(cajamone>=10)
+      {
+      paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
+      bloque(x+16-(x%16),y-(y%16),5);
+      cajamone=0;
+      }
+    }
+}
+
+
+void cristal4_champinon()  //cristal verde con champiñon
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-38)  //cristal4 con champiñon
+    {
+    //vy=-vy;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja0
+    bloque(x-(x%16),y-(y%16),5);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,1);
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-38 && x%16!=0)
+    {
+    //vy=-vy;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
+    bloque(x+16-(x%16),y-(y%16),5);
+    c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,1);
+    }
+}
+
+
+void cielo_duro_moneda()  //cielo duro con moneda
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==-44) //cielo duro con moneda
+    {
+    puntos=puntos+40;
+    monedas++;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=12;  //caja22
+    bloque(x-(x%16),y-(y%16),12);
+    cmoneda((x-(x%16))/16,(y-16-(y%16))/16);
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==-44 && x%16!=0)
+    {
+    puntos=puntos+40;
+    monedas++;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=12;
+    bloque(x+16-(x%16),y-(y%16),12);
+    cmoneda((x+16-(x%16))/16,(y-16-(y%16))/16);
+    }
+}
+
+
+void cielo_champinon()  //cielo con champiñon
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==61)  //cielo con champiñon
+    {
+    //vy=-vy;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja0
+    bloque(x-(x%16),y-(y%16),5);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,1);
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==61 && x%16!=0)
+    {
+    //vy=-vy;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
+    bloque(x+16-(x%16),y-(y%16),5);
+    c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,1);
+    }
+}
+
+
+void estrellas_champinon()  //estrellas con champiñon
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==62)  //estrellas con champiñon
+    {
+    //vy=-vy;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja0
+    bloque(x-(x%16),y-(y%16),5);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,1);
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==62 && x%16!=0)
+    {
+    //vy=-vy;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
+    bloque(x+16-(x%16),y-(y%16),5);
+    c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,1);
+    }
+}
+
+
+void estrellas_vida()  //estrellas con vida
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==63)  //estrellas con vida
+    {
+    //vy=-vy;
+    paisaje[(y-(y%16))/16][(x-(x%16))/16]=5;  //caja0
+    bloque(x-(x%16),y-(y%16),5);
+    c_champ((x-(x%16))/16,(y-16-(y%16))/16,4);
+    }
+  else if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==63 && x%16!=0)
+    {
+    //vy=-vy;
+    paisaje[(y-(y%16))/16][(x+16-(x%16))/16]=5;
+    bloque(x+16-(x%16),y-(y%16),5);
+    c_champ((x+16-(x%16))/16,(y-16-(y%16))/16,4);
+    }
+}
+
+
 void obtener_segundos()
   {
   gettime(&hora);
@@ -3181,33 +4735,37 @@ void ajuste_FPS()
       }
     else
       {
-      if(FPS<22)
+      if(FPS<CPS-2)
         {
         if(retraso>1)
           {
           retraso--;
           }
         }
-      if(FPS>26)
+      if(FPS>CPS+2)
         {
         if(retraso<48)
           {
           retraso++;
           }
         }
-      if(FPS<20)
+      if(FPS<CPS-4)
         {
         if(retraso>2)
           {
           retraso=retraso-2;
           }
         }
-      if(FPS>28)
+      if(FPS>CPS+4)
         {
         if(retraso<47)
           {
           retraso=retraso+2;
           }
+        }
+      if(debug)
+        {
+        gotoxy(4,30), printf("FPS=%d ",FPS);
         }
       }
     FPS=0;

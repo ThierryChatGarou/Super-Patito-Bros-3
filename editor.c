@@ -489,7 +489,7 @@ while(tecla[KEY_ENTER]==0)
     letra='.';
     presionado=1;
     }
-  while(tecla[KEY_STRICH])
+  while(tecla[KEY_GUION])
     {
     letra='-';
     presionado=1;

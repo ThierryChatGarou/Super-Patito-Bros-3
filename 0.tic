@@ -30,6 +30,7 @@ tiempo=400
 
 [5-0]
 0,20,2  //pato,x,y
+5,20,20  //tortuga,x,y
 88      //fin
 
 [5-1]

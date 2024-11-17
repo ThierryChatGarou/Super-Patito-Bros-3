@@ -17,9 +17,11 @@ Algunos de los problemas comunes son:
 -No inicia el modo gráfico.
 -No funciona nada.
 
-El emulador DosBox en su ultima versión no ha sido probado aún.
 Recomiendo que se use con Windows 95/98/98SE/98Plus, MSdos, Freedos, o compatible (puedes crear un disco de inicio de MSdos en cualquier version de windows).
-He adaptado un poco el juego para que sea jugable tanto en MSdos como en Windows, pero no hago milagros.
+He adaptado un poco el juego para que sea jugable tanto en MSdos como en Windows y DosBox, pero no hago milagros.
+
+====El emulador DosBox===
+Recomiendo elevar los ciclos del juego hasta que la velocidad sea estable.
 
 ====Para usuarios de MSdos:====
 Problemas comunes:

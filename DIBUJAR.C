@@ -1,6 +1,7 @@
 extern int paisaje[30][40],colorcielo[30][40],moneda0[16][16],sec;
 
-int nexplosionc[64],explosioncx[64],explosioncy[64],ngolpe[4],golpex[4],golpey[4];
+int nexplosionc[64],explosioncx[64],explosioncy[64];  //explosiones chicas. 
+int ngolpe[4],golpex[4],golpey[4];  //efecto de choque del disparo que lanza el pinguino
 
 int piso0 [16][16]={
 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
@@ -170,6 +171,25 @@ int caja4 [16][16]={
 0 ,14,14,14,14,14,14,14,14,14,14,14,14,14,14,0 ,
 0 ,14,0 ,14,14,14,14,14,14,14,14,14,14,0 ,14,0 ,
 0 ,14,14,14,14,14,14,14,14,14,14,14,14,14,14,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+};
+
+int caja20 [16][16]={
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,15,15,15,11,15,15,15,15,15,11,15,15,15,15,0 ,
+0 ,15,0 ,15,0 ,0 ,0 ,0 ,0 ,0 ,0 ,11,15,0 ,15,0 ,
+0 ,15,15,0 ,15,15,15,15,15,15,15,0 ,11,15,15,0 ,
+0 ,15,15,0 ,15,15,15,15,15,15,15,15,0 ,11,15,0 ,
+0 ,15,15,0 ,15,15,0 ,0 ,0 ,0 ,15,15,0 ,15,11,0 ,
+0 ,15,15,0 ,0 ,0 ,0 ,0 ,0 ,15,15,15,0 ,15,15,0 ,
+0 ,11,15,15,15,15,0 ,15,15,15,15,0 ,0 ,15,15,0 ,
+0 ,15,11,15,15,15,0 ,15,15,15,0 ,0 ,15,15,15,0 ,
+0 ,15,15,11,15,15,0 ,0 ,0 ,0 ,0 ,15,11,15,15,0 ,
+0 ,11,15,15,11,15,0 ,15,15,15,0 ,15,15,11,15,0 ,
+0 ,15,11,15,15,11,0 ,15,15,15,0 ,15,15,15,11,0 ,
+0 ,15,15,11,15,15,0 ,0 ,0 ,0 ,0 ,15,15,15,15,0 ,
+0 ,15,0 ,15,11,15,15,11,15,15,15,15,15,0 ,15,0 ,
+0 ,15,15,15,15,11,15,15,11,15,15,15,15,15,15,0 ,
 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
 };
 
@@ -608,6 +628,25 @@ int disparador1[16][16]={
 0 ,0 ,0 ,8 ,0 ,22,22,22,22,22,22,22,22,22,22,22,
 22,22,0 ,0 ,22,22,22,22,22,22,22,22,22,22,22,22,
 22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
+};
+
+int canon0 [16][16]={
+0 ,0 ,0 ,0 ,0 ,22,22,22,22,22,22,0 ,0 ,0 ,0 ,0 ,
+15,15,15,15,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,15,15,0 ,
+15,7 ,7 ,7 ,0 ,0 ,15,15,15,15,15,0 ,7 ,7 ,7 ,0 ,
+15,15,15,15,0 ,0 ,7 ,7 ,7 ,7 ,7 ,0 ,15,15,15,0 ,
+15,15,15,15,0 ,0 ,15,15,15,15,15,0 ,15,15,15,0 ,
+15,7 ,7 ,7 ,0 ,0 ,15,15,15,15,15,0 ,7 ,7 ,7 ,0 ,
+15,7 ,7 ,7 ,0 ,0 ,7 ,7 ,7 ,7 ,7 ,0 ,7 ,7 ,7 ,0 ,
+15,7 ,7 ,7 ,0 ,0 ,0 ,0 ,0 ,0 ,7 ,0 ,7 ,7 ,7 ,0 ,
+15,7 ,7 ,7 ,0 ,15,7 ,7 ,7 ,7 ,0 ,0 ,7 ,7 ,7 ,0 ,
+15,7 ,7 ,7 ,15,7 ,7 ,15,15,7 ,7 ,0 ,7 ,7 ,7 ,0 ,
+15,7 ,7 ,7 ,15,7 ,15,7 ,7 ,0 ,7 ,0 ,7 ,7 ,7 ,0 ,
+15,7 ,7 ,7 ,15,7 ,15,7 ,7 ,0 ,7 ,0 ,7 ,7 ,7 ,0 ,
+15,0 ,0 ,0 ,15,7 ,7 ,0 ,0 ,7 ,7 ,0 ,0 ,0 ,0 ,0 ,
+15,7 ,7 ,7 ,15,7 ,7 ,7 ,7 ,7 ,7 ,0 ,7 ,7 ,7 ,0 ,
+15,0 ,0 ,0 ,15,7 ,7 ,7 ,7 ,7 ,7 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,15,7 ,7 ,7 ,7 ,7 ,7 ,0 ,0 ,0 ,0 ,0 ,
 };
 
 int fuego4[16][16]={
@@ -2793,11 +2832,225 @@ int letrainterrogacioninv [8][8]={
 22,0 ,15,15,15,15,22,22,
 };
 
+int dospuntos [8][8]={
+22,22,22,22,22,22,22,22,
+22,15,15,0 ,22,22,22,22,
+22,15,15,0 ,22,22,22,22,
+22,0 ,0 ,0 ,22,22,22,22,
+22,22,22,22,22,22,22,22,
+22,15,15,0 ,22,22,22,22,
+22,15,15,0 ,22,22,22,22,
+22,0 ,0 ,0 ,22,22,22,22,
+};
+
+
+int punto [8][8]={
+22,22,22,22,22,22,22,22,
+22,22,22,22,22,22,22,22,
+22,22,22,22,22,22,22,22,
+22,22,22,22,22,22,22,22,
+22,22,22,22,22,22,22,22,
+22,15,15,0 ,22,22,22,22,
+22,15,15,0 ,22,22,22,22,
+22,0 ,0 ,0 ,22,22,22,22,
+};
+
+
 bloque(int i2, int j2, int T)  //crear bloque en posición x,y, y el tipo de bloque
 {
 int i,j;
 switch (T)
   {
+  case -44:
+    setfillstyle(1,colorcielo[j2/16][i2/16]); //cielo 10 monedas
+    bar(i2,j2,i2+15,j2+15);
+  break;
+  case -38:  //cristal4 con champiñon rojo
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,cristal4[j][i]);
+        }
+      }
+  break;
+  case -37:  //cristal4 con 10 monedas
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,cristal4[j][i]);
+        }
+      }
+  break;
+  case -31:  //cristal0 con champiñon rojo
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,cristal0[j][i]);
+        }
+      }
+  break;
+  case -30:  //cristal0 con 10 monedas
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,cristal0[j][i]);
+        }
+      }
+  break;
+  case -26:  //hielo con vida
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        if(hielo0[j][i]!=22)
+          {
+          putpixel(i+i2,j+j2,hielo0[j][i]);
+          }
+        else
+          {
+          putpixel(i+i2,j+j2,colorcielo[j2/16][i2/16]);
+          }
+        }
+      }
+  break;
+  case -25:  //hielo con champiñon rojo
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        if(hielo0[j][i]!=22)
+          {
+          putpixel(i+i2,j+j2,hielo0[j][i]);
+          }
+        else
+          {
+          putpixel(i+i2,j+j2,colorcielo[j2/16][i2/16]);
+          }
+        }
+      }
+  break;
+  case -22:  //madera con vida
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        if(madera[j][i]!=22)
+          {
+          putpixel(i+i2,j+j2,madera[j][i]);
+          }
+        else
+          {
+          putpixel(i+i2,j+j2,colorcielo[j2/16][i2/16]);
+          }
+        }
+      }
+  break;
+  case -21:  //madera con champiñon rojo
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        if(madera[j][i]!=22)
+          {
+          putpixel(i+i2,j+j2,madera[j][i]);
+          }
+        else
+          {
+          putpixel(i+i2,j+j2,colorcielo[j2/16][i2/16]);
+          }
+        }
+      }
+  break;
+  case -20:  //madera con moneda
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        if(madera[j][i]!=22)
+          {
+          putpixel(i+i2,j+j2,madera[j][i]);
+          }
+        else
+          {
+          putpixel(i+i2,j+j2,colorcielo[j2/16][i2/16]);
+          }
+        }
+      }
+  break;
+  case -15:  //caja blanca con calavera
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,caja20[j][i]);
+        }
+      }
+  break;
+  case -13:  //caja blanca con champiñon verde
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,caja20[j][i]);
+        }
+      }
+  break;
+  case -12:  //caja blanca con champiñon rojo
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,caja20[j][i]);
+        }
+      }
+  break;
+  case -11:  //caja blanca con 10 monedas
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,caja20[j][i]);
+        }
+      }
+  break;
+  case -10:  //caja blanca con moneda
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,caja20[j][i]);
+        }
+      }
+  break;
+  case -9:  //caja amarilla con calavera
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,caja0[j][i]);
+        }
+      }
+  break;
+  case -3:
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        if(canon0[j][i]!=22)
+          {
+          putpixel(i+i2,j+j2,canon0[j][i]);
+          }
+        else
+          {
+          putpixel(i+i2,j+j2,colorcielo[j2/16][i2/16]);
+          }
+        }
+      }
+  break;
   case -2:
     for(j=0;j<16;j++)
       {
@@ -3513,6 +3766,28 @@ switch (T)
     setfillstyle(1,colorcielo[j2/16][i2/16]);  //azul flujo derecha
     bar(i2,j2,i2+15,j2+15);
   break;  
+  case 61:  //estrellas con champiñon verde
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,estre1[j][i]);
+        }
+      }
+  break;
+  case 62:  //estrellas con champiñon rojo
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,estre1[j][i]);
+        }
+      }
+  break;
+  case 63:
+    setfillstyle(1,colorcielo[j2/16][i2/16]); //cielo champiñon
+    bar(i2,j2,i2+15,j2+15);
+  break;
   case 64:  //apartir de aqui comienzan los bloques tipo aire o fondo
     setfillstyle(1,0); //negro
     bar(i2,j2,i2+15,j2+15);  //15 es para que no borre un pixel de la siguiente figura
@@ -3829,6 +4104,154 @@ bloque_editor(int i2, int j2, int T)  //crear bloque en posición x,y, y el tipo 
 int i,j;
 switch (T)
   {
+  case -44:  //cielo duro con moneda
+    setfillstyle(1,11); 
+    bar(i2,j2,i2+15,j2+15);
+  break;
+  case -38:  //cristal4 con champiñon rojo
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,cristal4[j][i]);
+        }
+      }
+  break;
+  case -37:  //cristal4 con 10 monedas
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,cristal4[j][i]);
+        }
+      }
+  break;
+  case -31:  //cristal0 con champiñon rojo
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,cristal0[j][i]);
+        }
+      }
+  break;
+  case -30:  //cristal0 con 10 monedas
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,cristal0[j][i]);
+        }
+      }
+  break;
+  case -26:  //hielo con vida
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,hielo0[j][i]);
+        }
+      }
+  break;
+  case -25:  //hielo con champiñon rojo
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,hielo0[j][i]);
+        }
+      }
+  break;
+  case -22:  //madera con vida
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,madera[j][i]);
+        }
+      }
+  break;
+  case -21:  //madera con champiñon rojo
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,madera[j][i]);
+        }
+      }
+  break;
+  case -20:  //madera con moneda
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,madera[j][i]);
+        }
+      }
+  break;
+  case -15:
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,caja20[j][i]);
+        }
+      }
+  break;
+  case -13:
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,caja20[j][i]);
+        }
+      }
+  break;
+  case -12:
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,caja20[j][i]);
+        }
+      }
+  break;
+  case -11:
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,caja20[j][i]);
+        }
+      }
+  break;
+  case -10:
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,caja20[j][i]);
+        }
+      }
+  break;
+  case -9:
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,caja0[j][i]);
+        }
+      }
+  break;
+  case -3:
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,canon0[j][i]);
+        }
+      }
+  break;
   case -2:
     for(j=0;j<16;j++)
       {
@@ -4385,6 +4808,28 @@ switch (T)
         }
       }
   break;  
+  case 61:  //estrellas con champiñon verde
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,estre1[j][i]);
+        }
+      }
+  break;
+  case 62:  //estrellas con champiñon rojo
+    for(j=0;j<16;j++)
+      {
+      for(i=0;i<16;i++)
+        {
+        putpixel(i+i2,j+j2,estre1[j][i]);
+        }
+      }
+  break;
+  case 63:  //cielo champiñon
+    setfillstyle(1,11); 
+    bar(i2,j2,i2+15,j2+15);
+  break;
   case 64:  //apartir de aqui comienzan los bloques tipo aire o fondo
     setfillstyle(1,0); //negro
     bar(i2,j2,i2+15,j2+15);  //15 es para que no borre un pixel de la siguiente figura
@@ -5705,6 +6150,38 @@ while(n<80  && txt[n]!='\0' && i2<632)
           putpixel(i+i2,j+j2,colorfondo);
           }
         if(letrainterrogacioninv[j][i]==15)
+          {
+          putpixel(i+i2,j+j2,colortexto);
+          }
+        }
+      }
+    break;
+    case '.':
+    for(j=0;j<8;j++)
+      {
+      for(i=0;i<8;i++)
+        {
+        if(punto[j][i]==0)
+          {
+          putpixel(i+i2,j+j2,colorfondo);
+          }
+        if(punto[j][i]==15)
+          {
+          putpixel(i+i2,j+j2,colortexto);
+          }
+        }
+      }
+    break;
+    case ':':
+    for(j=0;j<8;j++)
+      {
+      for(i=0;i<8;i++)
+        {
+        if(dospuntos[j][i]==0)
+          {
+          putpixel(i+i2,j+j2,colorfondo);
+          }
+        if(dospuntos[j][i]==15)
           {
           putpixel(i+i2,j+j2,colortexto);
           }
