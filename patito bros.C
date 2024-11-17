@@ -24,7 +24,7 @@
 #include<time.h>
 #include<graphics.h>
 
-int patito,nivel=0,escena=0,mundo=0,seguir=1,vidas=4,estado=1,tiempo=0,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nsalta[4],saltax[4],saltay[4],nseguidor[8],seguidorx[8],seguidory[8],npeligro[4],peligrox[4],peligroy[4],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,invensible=0,i,j,x,y,dir=1,paso=1,tecla,sec=0,t_huevo,t_moneda=-88,ciclo=0,jugar=0;
+int patito,nivel=0,escena=0,mundo=0,seguir=1,vidas=4,estado=1,tiempo=0,volar=22,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nsalta[4],saltax[4],saltay[4],nseguidor[8],seguidorx[8],seguidory[8],npeligro[4],peligrox[4],peligroy[4],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,invensible=0,i,j,x,y,dir=1,paso=1,tecla,sec=0,t_huevo,t_moneda=-88,ciclo=0,jugar=0;
 float vx=0,vy=0,saltavx[4],saltavy[4],peligrovx[4],peligrovy[4];
 
 int niv0[30][40],niv1[30][40],niv2[30][40],niv3[30][40],paisaje[30][40];
@@ -2505,7 +2505,7 @@ bloque_nota0()  //nota0
       vy=-6;
       if(tecla==18432)
         {
-        vy=vy-4.0;
+        vy=-10.0;
         }
       }
     }
@@ -2516,17 +2516,20 @@ bloque_nota0()  //nota0
       vy=-6;
       if(tecla==18432)
         {
-        vy=vy-4.0;
+        vy=-10.0;
         }
       }
   }
   if((x%16)!=0)  //dar chance a equivocarse por un bloque
     {
-    if(paisaje[(y+32-(y%16))/16][(x-(x%16))/16]==40 && paisaje[(y+32-(y%16))/16][(x+16-(x%16))/16]==40)
+    if(paisaje[(y+32-(y%16))/16][(x-(x%16))/16]==40 || paisaje[(y+32-(y%16))/16][(x+16-(x%16))/16]==40)
       {
-      if(tecla==18432)
+      if(vy<=0)
         {
-        vy=-10.0;
+        if(tecla==18432)
+          {
+          vy=-10.0;
+          }
         }
       }
     }
@@ -2534,9 +2537,12 @@ bloque_nota0()  //nota0
   {
     if(paisaje[(y+32-(y%16))/16][(x-(x%16))/16]==40)
       {
-      if(tecla==18432)
+      if(vy<=0)
         {
-        vy=-10.0;
+        if(tecla==18432)
+          {
+          vy=-10.0;
+          }
         }
       }
   }
@@ -2612,7 +2618,7 @@ agua_abajo()  //flujo de agua hacia abajo
 {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==57 || paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==57)
     {
-    vy=vy+1.0;
+    vy=vy+0.5;
     }
 }
 
@@ -3117,16 +3123,25 @@ panel()
 
 panelnumerico()
 {
+  int n;
   gotoxy(4,28);
-  printf("Nivel %d-%d   ",nivel,escena);
+  printf("Nivel %d-%d ",nivel,escena);
   gotoxy(4,29);
   printf("Vidas %d   ",vidas);
-  // faltavelocidad
+  gotoxy(15,28);
+  for(n=0;n<volar;n++)
+    {
+    printf("ß");
+    }
+  for(n=volar;n<22;n++)
+    {
+    printf(" ");
+    }
   gotoxy(15,29);
   printf("Puntos %d  ",puntos);
-  gotoxy(36,28);
+  gotoxy(40,28);
   printf("monedas %d  ",monedas);
-  gotoxy(36,29);
+  gotoxy(40,29);
   printf("Tiempo %d  ",tiempo);
 }
 
@@ -3352,6 +3367,14 @@ if(sec%22==0)  //realizar un conteo del tiempo del juego
     {
     estado=0;
     }
+  if(tiempo%2==0)  //para volar
+    {
+    volar++;
+    if(volar>22)
+      {
+      volar=22;
+      }
+    }
   }
 }
 
@@ -3503,7 +3526,11 @@ teclado()
     }
   if(tecla==14624)  //espacio volar 32
     {
-    vy=-4.0;
+    if(volar>0)
+      {
+      volar--;
+      vy=-4.0;
+      }
     }
   if(tecla==18432)  //saltar 72
     {
@@ -3519,6 +3546,9 @@ teclado()
   if(tecla==21248)  //suprimir  truco: elimina patos
     {
     r_pato();
+    r_seguidor();
+    r_salta();
+    r_peligro();
     }
   if(tecla==27392)  //Alt+F4 salir
     {
@@ -3568,6 +3598,7 @@ if(kbhit())  //si se presiono una tecla para omitir la presentacion, pedir que s
 
 getch();
 iniciargraficos();
+randomize();
 
 while(seguir!=0)
   {

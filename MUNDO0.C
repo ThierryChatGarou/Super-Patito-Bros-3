@@ -1912,7 +1912,7 @@ if(tiempo%28==0 && sec%22==0)
 
   //cielo_derecha();  //flujo de aire hacia la derecha
 
-  //agua_abajo();  //flujo de agua hacia abajo
+  agua_abajo();  //flujo de agua hacia abajo
 
   //agua_arriba();  //flujo de agua hacia arriba
 
@@ -2337,7 +2337,7 @@ r_seguidor();
 r_salta();
 r_peligro();
 c_seguidor(6,24);
-c_pato(4,24);
+c_pato(8,24);
 c_pato(22,24);
 
 while(ciclo<1)
@@ -2397,6 +2397,13 @@ while(ciclo<1)
 
   teclado();
 
+////////Especial  crear patos saliendo de la tuberia
+
+if(tiempo%8==0 && sec%22==0)
+  {
+  c_pato(5,22);
+  }
+
 ////////interaccion de los bloques
 
   //bloque_saltar();  //bloque para saltar muy alto
@@ -2411,7 +2418,7 @@ while(ciclo<1)
 
   agua_abajo();  //flujo de agua hacia abajo
 
-  //agua_arriba();  //flujo de agua hacia arriba
+  agua_arriba();  //flujo de agua hacia arriba
 
   //agua_izquierda();  //flujo de agua hacia izquierda
 
@@ -2421,7 +2428,7 @@ while(ciclo<1)
 
   //bloque_caja0_10monedas();  //caja0 con 10 momedas
 
-  //bloque_caja0_champinon();  //caja0 con champiñon
+  bloque_caja0_champinon();  //caja0 con champiñon
 
   //bloque_caja0_vida();  //caja0 con vida
 
