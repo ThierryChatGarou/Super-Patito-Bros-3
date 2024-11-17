@@ -4595,17 +4595,7 @@ for(n=0;n<4;n++)
     {
     if((peligrox[n]%16)!=0)  // comprobar que bloques necesitan actualizarse
       {
-      bloque(peligrox[n]-(peligrox[n]%16),peligroy[n]-(peligroy[n]%16),paisaje[(peligroy[n]-(peligroy[n]%16))/16][(peligrox[n]-(peligrox[n]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
-      bloque(peligrox[n]-(peligrox[n]%16)+16,peligroy[n]-(peligroy[n]%16),paisaje[(peligroy[n]-(peligroy[n]%16))/16][(peligrox[n]+16-(peligrox[n]%16))/16]);  //actualizar bloque que esta arriba a la derecha
-      if((peligroy[n]%16)!=0)
-        {
-        bloque(peligrox[n]-(peligrox[n]%16),peligroy[n]-(peligroy[n]%16)+16,paisaje[(peligroy[n]+16-(peligroy[n]%16))/16][(peligrox[n]-(peligrox[n]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
-        bloque(peligrox[n]-(peligrox[n]%16)+16,peligroy[n]-(peligroy[n]%16)+16,paisaje[(peligroy[n]+16-(peligroy[n]%16))/16][(peligrox[n]+16-(peligrox[n]%16))/16]);  //actualizar bloque que esta abajo a la derecha
-        }
-      }
-    else if((peligroy[n]%16)!=0)
-      {
-      bloque(peligrox[n]-(peligrox[n]%16),peligroy[n]-(peligroy[n]%16),paisaje[(peligroy[n]-(peligroy[n]%16))/16][(peligrox[n]-(peligrox[n]%16))/16]);  //actualizar bloque que esta arriba a la izquierda
+      bloque(peligrox[n]-(peligrox[n]%16),peligroy[n]-(peligroy[n]%1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ;  //actualizar bloque que esta arriba a la izquierda
       bloque(peligrox[n]-(peligrox[n]%16),peligroy[n]-(peligroy[n]%16)+16,paisaje[(peligroy[n]+16-(peligroy[n]%16))/16][(peligrox[n]-(peligrox[n]%16))/16]);  //actualizar bloque que esta abajo a la izquierda
       }
     }
@@ -6559,7 +6549,7 @@ while(ciclo<1)
   refbloques();  //actualizar bloques
   refchamp();
   refpato();
-  refseguidor();
+  //refseguidor();
   //refsalta();
   //refpeligro();
 
@@ -6662,7 +6652,7 @@ while(ciclo<1)
 
   pisar_pato();  //pisar pato
 
-  pisar_seguidor();  //pisar seguidor
+  //pisar_seguidor();  //pisar seguidor
 
   //pisar_salta();  //pisar saltador
 
@@ -6674,7 +6664,7 @@ while(ciclo<1)
 
   pato_mata();  //pato mata cuando los tocas
 
-  seguidor_mata();  //seguidor mata cuando los tocas
+  //seguidor_mata();  //seguidor mata cuando los tocas
 
   //salta_mata();  //saltador mata cuando los tocas
 
@@ -6682,7 +6672,7 @@ while(ciclo<1)
 
   patofuera();  //verificar si un pato se salio de la pantalla
 
-  seguidorfuera();  //verificar si un seguidor se salio de la pantalla
+  //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
 
   //saltafuera();  //verificar si un saltador se salio de la pantalla
 
@@ -6696,7 +6686,7 @@ while(ciclo<1)
 
   movpato();  //mover patos
 
-  movseguidor();  //mover seguidor
+  //movseguidor();  //mover seguidor
 
   //movsalta();  //mover saltador
 
@@ -6740,7 +6730,7 @@ while(ciclo<1)
 
   dibpatos();  //dibujar patos
 
-  dibseguidor();  //dibujar seguidor
+  //dibseguidor();  //dibujar seguidor
 
   //dibsalta();  //dibujar saltador
 
@@ -6770,6 +6760,7 @@ panel();
 r_champ();
 rmonedas();
 r_pato();
+r_seguidor();
 r_salta();
 r_peligro();
 c_pato(16,23);
@@ -6784,6 +6775,7 @@ while(ciclo<1)
   refbloques();  //actualizar bloques
   refchamp();
   refpato();
+  //refseguidor();
   //refsalta();
   //refpeligro();
 
@@ -6912,6 +6904,8 @@ while(ciclo<1)
 
   pisar_pato();  //pisar pato
 
+  //pisar_seguidor();  //pisar seguidor
+
   //pisar_salta();  //pisar saltador
 
   //pisar_peligro();  //pisar peligroso
@@ -6922,11 +6916,15 @@ while(ciclo<1)
 
   pato_mata();  //pato mata cuando los tocas
 
+  //seguidor_mata();  //seguidor mata cuando los tocas
+
   //salta_mata();  //saltador mata cuando los tocas
 
   //peligro_mata();  //peligroso mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
+
+  //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
 
   //saltafuera();  //verificar si un saltador se salio de la pantalla
 
@@ -6939,6 +6937,8 @@ while(ciclo<1)
   mdemone();
 
   movpato();  //mover patos
+
+  //movseguidor();  //mover seguidor
 
   //movsalta();  //mover saltador
 
@@ -6982,6 +6982,8 @@ while(ciclo<1)
 
   dibpatos();  //dibujar patos
 
+  //dibseguidor();  //dibujar seguidor
+
   //dibsalta();  //dibujar saltador
 
   //dibpeligro();  //dibujar peligroso
@@ -7010,6 +7012,7 @@ panel();
 r_champ();
 rmonedas();
 r_pato();
+r_seguidor();
 r_salta();
 r_peligro();
 c_pato(13,24);
@@ -7023,6 +7026,7 @@ while(ciclo<1)
   refbloques();  //actualizar bloques
   refchamp();
   refpato();
+  //refseguidor();
   //refsalta();
   //refpeligro();
 
@@ -7151,6 +7155,8 @@ if(tiempo%28==0 && sec%22==0)
 
   pisar_pato();  //pisar pato
 
+  //pisar_seguidor();  //pisar seguidor
+
   //pisar_salta();  //pisar saltador
 
   //pisar_peligro();  //pisar peligroso
@@ -7161,11 +7167,15 @@ if(tiempo%28==0 && sec%22==0)
 
   pato_mata();  //pato mata cuando los tocas
 
+  //seguidor_mata();  //seguidor mata cuando los tocas
+
   //salta_mata();  //saltador mata cuando los tocas
 
   //peligro_mata();  //peligroso mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
+
+  //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
 
   //saltafuera();  //verificar si un saltador se salio de la pantalla
 
@@ -7178,6 +7188,8 @@ if(tiempo%28==0 && sec%22==0)
   mdemone();
 
   movpato();  //mover patos
+
+  //movseguidor();  //mover seguidor
 
   //movsalta();  //mover saltador
 
@@ -7221,6 +7233,8 @@ if(tiempo%28==0 && sec%22==0)
 
   dibpatos();  //dibujar patos
 
+  //dibseguidor();  //dibujar seguidor
+
   //dibsalta();  //dibujar saltador
 
   //dibpeligro();  //dibujar peligroso
@@ -7249,6 +7263,7 @@ panel();
 r_champ();
 rmonedas();
 r_pato();
+r_seguidor();
 r_salta();
 r_peligro();
 c_pato(4,24);
@@ -7264,6 +7279,7 @@ while(ciclo<1)
   refbloques();  //actualizar bloques
   //refchamp();
   refpato();
+  //refseguidor();
   refsalta();
   //refpeligro();
 
@@ -7373,6 +7389,8 @@ if(tiempo%8==0 && sec%22==0)
 
   pisar_pato();  //pisar pato
 
+  //pisar_seguidor();  //pisar seguidor
+
   pisar_salta();  //pisar saltador
 
   //pisar_peligro();  //pisar peligroso
@@ -7383,11 +7401,15 @@ if(tiempo%8==0 && sec%22==0)
 
   pato_mata();  //pato mata cuando los tocas
 
+  //seguidor_mata();  //seguidor mata cuando los tocas
+
   salta_mata();  //saltador mata cuando los tocas
 
   //peligro_mata();  //peligroso mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
+
+  //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
 
   saltafuera();  //verificar si un saltador se salio de la pantalla
 
@@ -7400,6 +7422,8 @@ if(tiempo%8==0 && sec%22==0)
   mdemone();
 
   movpato();  //mover patos
+
+  //movseguidor();  //mover seguidor
 
   movsalta();  //mover saltador
 
@@ -7443,6 +7467,8 @@ if(tiempo%8==0 && sec%22==0)
 
   dibpatos();  //dibujar patos
 
+  //dibseguidor();  //dibujar seguidor
+
   dibsalta();  //dibujar saltador
 
   //dibpeligro();  //dibujar peligroso
@@ -7477,6 +7503,7 @@ panel();
 r_champ();
 rmonedas();
 r_pato();
+r_seguidor();
 r_salta();
 r_peligro();
 
@@ -7489,6 +7516,7 @@ while(ciclo<1)
   refbloques();  //actualizar bloques
   refchamp();
   refpato();
+  //refseguidor();
   //refsalta();
   //refpeligro();
 
@@ -7608,6 +7636,8 @@ else
 
   pisar_pato();  //pisar pato
 
+  //pisar_seguidor();  //pisar seguidor
+
   //pisar_salta();  //pisar saltador
 
   //pisar_peligro();  //pisar peligroso
@@ -7618,11 +7648,15 @@ else
 
   pato_mata();  //pato mata cuando los tocas
 
+  //seguidor_mata();  //seguidor mata cuando los tocas
+
   //salta_mata();  //saltador mata cuando los tocas
 
   //peligro_mata();  //peligroso mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
+
+  //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
 
   //saltafuera();  //verificar si un saltador se salio de la pantalla
 
@@ -7635,6 +7669,8 @@ else
   mdemone();
 
   movpato();  //mover patos
+
+  //movseguidor();  //mover seguidor
 
   //movsalta();  //mover saltador
 
@@ -7678,6 +7714,8 @@ else
 
   dibpatos();  //dibujar patos
 
+  //dibseguidor();  //dibujar seguidor
+
   //dibsalta();  //dibujar saltador
 
   //dibpeligro();  //dibujar peligroso
@@ -7706,6 +7744,7 @@ panel();
 r_champ();
 rmonedas();
 r_pato();
+r_seguidor();
 r_salta();
 r_peligro();
 c_pato(24,23);
@@ -7720,6 +7759,7 @@ while(ciclo<1)
   refbloques();  //actualizar bloques
   refchamp();
   refpato();
+  //refseguidor();
   //refsalta();
   //refpeligro();
 
@@ -7863,6 +7903,8 @@ while(ciclo<1)
 
   pisar_pato();  //pisar pato
 
+  //pisar_seguidor();  //pisar seguidor
+
   //pisar_salta();  //pisar saltador
 
   //pisar_peligro();  //pisar peligroso
@@ -7873,11 +7915,15 @@ while(ciclo<1)
 
   pato_mata();  //pato mata cuando los tocas
 
+  //seguidor_mata();  //seguidor mata cuando los tocas
+
   //salta_mata();  //saltador mata cuando los tocas
 
   //peligro_mata();  //peligroso mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
+
+  //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
 
   //saltafuera();  //verificar si un saltador se salio de la pantalla
 
@@ -7890,6 +7936,8 @@ while(ciclo<1)
   mdemone();
 
   movpato();  //mover patos
+
+  //movseguidor();  //mover seguidor
 
   //movsalta();  //mover saltador
 
@@ -7933,6 +7981,8 @@ while(ciclo<1)
 
   dibpatos();  //dibujar patos
 
+  //dibseguidor();  //dibujar seguidor
+
   //dibsalta();  //dibujar saltador
 
   //dibpeligro();  //dibujar peligroso
@@ -7961,6 +8011,7 @@ panel();
 r_champ();
 rmonedas();
 r_pato();
+r_seguidor();
 r_salta();
 r_peligro();
 c_pato(22,24);
@@ -7974,6 +8025,7 @@ while(ciclo<1)
   refbloques();  //actualizar bloques
   refchamp();
   refpato();
+  //refseguidor();
   //refsalta();
   //refpeligro();
 
@@ -8087,6 +8139,8 @@ if(tiempo%28==0 && sec%22==0)
 
   pisar_pato();  //pisar pato
 
+  //pisar_seguidor();  //pisar seguidor
+
   //pisar_salta();  //pisar saltador
 
   //pisar_peligro();  //pisar peligroso
@@ -8097,11 +8151,15 @@ if(tiempo%28==0 && sec%22==0)
 
   pato_mata();  //pato mata cuando los tocas
 
+  //seguidor_mata();  //seguidor mata cuando los tocas
+
   //salta_mata();  //saltador mata cuando los tocas
 
   //peligro_mata();  //peligroso mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
+
+  //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
 
   //saltafuera();  //verificar si un saltador se salio de la pantalla
 
@@ -8114,6 +8172,8 @@ if(tiempo%28==0 && sec%22==0)
   mdemone();
 
   movpato();  //mover patos
+
+  //movseguidor();  //mover seguidor
 
   //movsalta();  //mover saltador
 
@@ -8157,6 +8217,8 @@ if(tiempo%28==0 && sec%22==0)
 
   dibpatos();  //dibujar patos
 
+  //dibseguidor();  //dibujar seguidor
+
   //dibsalta();  //dibujar saltador
 
   //dibpeligro();  //dibujar peligroso
@@ -8185,6 +8247,7 @@ panel();
 r_champ();
 rmonedas();
 r_pato();
+r_seguidor();
 r_salta();
 r_peligro();
 
@@ -8197,6 +8260,7 @@ while(ciclo<1)
   refbloques();  //actualizar bloques
   refchamp();
   refpato();
+  //refseguidor();
   //refsalta();
   //refpeligro();
 
@@ -8306,6 +8370,8 @@ if(tiempo%8==0 && sec%22==0)
 
   pisar_pato();  //pisar pato
 
+  //pisar_seguidor();  //pisar seguidor
+
   //pisar_salta();  //pisar saltador
 
   //pisar_peligro();  //pisar peligroso
@@ -8316,11 +8382,15 @@ if(tiempo%8==0 && sec%22==0)
 
   pato_mata();  //pato mata cuando los tocas
 
+  //seguidor_mata();  //seguidor mata cuando los tocas
+
   //salta_mata();  //saltador mata cuando los tocas
 
   //peligro_mata();  //peligroso mata cuando los tocas
 
   patofuera();  //verificar si un pato se salio de la pantalla
+
+  //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
 
   //saltafuera();  //verificar si un saltador se salio de la pantalla
 
@@ -8333,6 +8403,8 @@ if(tiempo%8==0 && sec%22==0)
   mdemone();
 
   movpato();  //mover patos
+
+  //movseguidor();  //mover seguidor
 
   //movsalta();  //mover saltador
 
@@ -8376,6 +8448,8 @@ if(tiempo%8==0 && sec%22==0)
 
   dibpatos();  //dibujar patos
 
+  //dibseguidor();  //dibujar seguidor
+
   //dibsalta();  //dibujar saltador
 
   //dibpeligro();  //dibujar peligroso
@@ -8409,6 +8483,7 @@ t_moneda=-88;  //para resetear la conversion de bloques y monedas
 r_champ();
 rmonedas();
 r_pato();
+r_seguidor();
 r_salta();
 r_peligro();
 vx=0.0;
@@ -8425,6 +8500,7 @@ while(ciclo<1)
   refbloques();  //actualizar bloques
   //refchamp();
   //refpato();
+  //refseguidor();
   //refsalta();
   //refpeligro();
 
@@ -8542,6 +8618,8 @@ while(ciclo<1)
 
   //pisar_pato();  //pisar pato
 
+  //pisar_seguidor();  //pisar seguidor
+
   //pisar_salta();  //pisar saltador
 
   //pisar_peligro();  //pisar peligroso
@@ -8552,11 +8630,15 @@ while(ciclo<1)
 
   //pato_mata();  //pato mata cuando los tocas
 
+  //seguidor_mata();  //seguidor mata cuando los tocas
+
   //salta_mata();  //saltador mata cuando los tocas
 
   //peligro_mata();  //peligroso mata cuando los tocas
 
   //patofuera();  //verificar si un pato se salio de la pantalla
+
+  //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
 
   //saltafuera();  //verificar si un saltador se salio de la pantalla
 
@@ -8569,6 +8651,8 @@ while(ciclo<1)
   //mdemone();
 
   //movpato();  //mover patos
+
+  //movseguidor();  //mover seguidor
 
   //movsalta();  //mover saltador
 
@@ -8608,6 +8692,8 @@ while(ciclo<1)
 
   //dibpatos();  //dibujar patos
 
+  //dibseguidor();  //dibujar seguidor
+
   //dibsalta();  //dibujar saltador
 
   //dibpeligro();  //dibujar peligroso
@@ -8641,6 +8727,7 @@ t_moneda=-88;  //para resetear la conversion de bloques y monedas
 r_champ();
 rmonedas();
 r_pato();
+r_seguidor();
 r_salta();
 r_peligro();
 vx=0.0;
@@ -8657,6 +8744,7 @@ while(ciclo<1)
   refbloques();  //actualizar bloques
   //refchamp();
   //refpato();
+  //refseguidor();
   //refsalta();
   //refpeligro();
 
@@ -8791,6 +8879,8 @@ while(ciclo<1)
 
   //pisar_pato();  //pisar pato
 
+  //pisar_seguidor();  //pisar seguidor
+
   //pisar_salta();  //pisar saltador
 
   //pisar_peligro();  //pisar peligroso
@@ -8801,11 +8891,15 @@ while(ciclo<1)
 
   //pato_mata();  //pato mata cuando los tocas
 
+  //seguidor_mata();  //seguidor mata cuando los tocas
+
   //salta_mata();  //saltador mata cuando los tocas
 
   //peligro_mata();  //peligroso mata cuando los tocas
 
   //patofuera();  //verificar si un pato se salio de la pantalla
+
+  //seguidorfuera();  //verificar si un seguidor se salio de la pantalla
 
   //saltafuera();  //verificar si un saltador se salio de la pantalla
 
@@ -8818,6 +8912,8 @@ while(ciclo<1)
   //mdemone();
 
   //movpato();  //mover patos
+
+  //movseguidor();  //mover seguidor
 
   //movsalta();  //mover saltador
 
@@ -8856,6 +8952,8 @@ while(ciclo<1)
   //dibchamp();  //dibujar champiñones
 
   //dibpatos();  //dibujar patos
+
+  //dibseguidor();  //dibujar seguidor
 
   //dibsalta();  //dibujar saltador
 
