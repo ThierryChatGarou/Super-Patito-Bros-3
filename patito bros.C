@@ -1,17 +1,7 @@
-///////////////////////////////////////////////////////////////////////////////////////////
-//                            ADVERTENCIA:                                               //
-//                                                                                       //
-//  1.- No me hago responsable si te vuelves loco al tratarle de entender a mi programa  //
-//  2.- No soy responsable si no funciona en tu computadora o si se te jode un           //
-//discoduro, un procesador o se te quema tu computadora por mi programa                  //
-//  3.- No soy responsable si hay reclamaciones por los derechos de autor por el         //
-//ligero parecido a super mario bros                                                     //
-//  4.- Puedes hacer lo que se te pegue la gana con este programa pero bajo tu riesgo    //
-//  5.- Si encuentras un error en mi programa me puedes enviar un correo electronico con //
-//tus quejas a Thierry_2222@hotmail.com nota: puede que no responda en mucho tiempo      //
-//  6.- No soy responsable si te causa adiccion jugarlo o modificarlo                    //
-///////////////////////////////////////////////////////////////////////////////////////////
-
+///////////////////////////////////////////
+//     Thierry Garcia Greiner            //
+//     Super Patito Bros en C            //
+///////////////////////////////////////////
 
 #include<stdio.h>
 #include<conio.h>
@@ -23,8 +13,10 @@
 #include<dos.h>
 #include<time.h>
 #include<graphics.h>
+#include"teclas.h"
+#include"teclado.h"
 
-int patito,nivel=0,escena=0,mundo=0,seguir=1,vidas=4,estado=1,tiempo=0,volar=22,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nsalta[4],saltax[4],saltay[4],nseguidor[8],seguidorx[8],seguidory[8],npeligro[4],peligrox[4],peligroy[4],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,invensible=0,i,j,x,y,dir=1,paso=1,tecla,sec=0,t_huevo,t_moneda=-88,ciclo=0,jugar=0;
+int patito,nivel=0,escena=0,mundo=0,seguir=1,vidas=4,estado=1,tiempo=0,volar=22,monedas=0,puntos=0,npato[8],patox[8],patoy[8],nsalta[4],saltax[4],saltay[4],nseguidor[8],seguidorx[8],seguidory[8],npeligro[4],peligrox[4],peligroy[4],nchamp[4],champx[4],champy[4],nmonedas[4],monedax[4],moneday[4],monealt[4],cajamone=0,invensible=0,i,j,x,y,dir=1,paso=1,teclaso=0,sec=0,t_huevo,t_moneda=-88,ciclo=0,jugar=0;
 float vx=0,vy=0,saltavx[4],saltavy[4],peligrovx[4],peligrovy[4];
 
 int niv0[30][40],niv1[30][40],niv2[30][40],niv3[30][40],paisaje[30][40];
@@ -110,25 +102,85 @@ int disparo0[16][16]={
 };
 
 
-
-int gatito0 [16][16]={
-15,15,22,22,22,22,22,15,15,22,22,22,22,22,15,15,
-15,22,22,22,22,22,22,22,22,22,22,22,22,22,22,15,
-22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
-22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
-22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
-22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
-22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
-22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
-22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
-22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
-22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
-22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
-22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
-22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
-22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
-22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
+int pinguinorojo0 [16][16]={
+22,22,22,22,22,22,22,4 ,4 ,4 ,22,22,22,22,22,22,
+22,22,22,22,22,22,4 ,4 ,4 ,15,4 ,22,22,22,22,22,
+22,22,22,22,22,4 ,4 ,4 ,15,4 ,14,14,14,22,22,22,
+22,22,22,22,22,4 ,4 ,4 ,4 ,14,14,14,14,14,22,22,
+22,22,22,22,22,22,4 ,4 ,4 ,4 ,4 ,22,22,22,22,22,
+22,22,22,22,22,4 ,4 ,4 ,4 ,4 ,4 ,4 ,22,22,22,22,
+22,22,22,22,4 ,4 ,4 ,8 ,4 ,8 ,4 ,15,22,22,22,22,
+22,22,22,22,4 ,4 ,4 ,8 ,4 ,4 ,8 ,15,15,22,22,22,
+22,22,22,4 ,4 ,4 ,4 ,8 ,4 ,4 ,8 ,15,15,22,22,22,
+22,22,22,4 ,4 ,4 ,4 ,8 ,4 ,4 ,8 ,15,15,22,22,22,
+22,22,22,4 ,4 ,4 ,8 ,4 ,4 ,8 ,15,15,15,22,22,22,
+22,22,22,4 ,4 ,4 ,8 ,4 ,4 ,8 ,15,15,15,22,22,22,
+22,22,22,4 ,4 ,4 ,4 ,8 ,8 ,15,15,15,22,22,22,22,
+22,22,4 ,4 ,4 ,4 ,4 ,4 ,4 ,15,15,15,22,22,22,22,
+22,22,4 ,4 ,4 ,4 ,4 ,14,14,15,15,22,22,22,22,22,
+22,22,22,22,22,14,14,14,14,14,14,14,22,22,22,22,
 };
+
+
+int pinguinorojo1 [16][16]={
+22,22,22,22,22,22,22,4 ,4 ,4 ,22,22,22,22,22,22,
+22,22,22,22,22,22,4 ,4 ,4 ,15,4 ,22,22,22,22,22,
+22,22,22,22,22,4 ,4 ,4 ,15,4 ,14,14,14,22,22,22,
+22,22,22,22,22,4 ,4 ,4 ,4 ,14,14,14,14,14,22,22,
+22,22,22,22,22,22,4 ,4 ,4 ,4 ,4 ,22,22,22,22,22,
+22,22,22,22,22,4 ,4 ,4 ,4 ,8 ,8 ,4 ,22,22,22,22,
+22,22,22,22,4 ,4 ,4 ,4 ,4 ,4 ,4 ,8 ,8 ,22,22,22,
+22,4 ,8 ,8 ,4 ,4 ,4 ,4 ,4 ,8 ,8 ,4 ,4 ,8 ,8 ,22,
+4 ,4 ,4 ,4 ,4 ,4 ,4 ,4 ,4 ,4 ,4 ,8 ,8 ,4 ,4 ,8 ,
+22,4 ,8 ,8 ,4 ,4 ,4 ,4 ,4 ,4 ,4 ,15,15,8 ,8 ,22,
+22,22,22,4 ,4 ,4 ,4 ,4 ,4 ,4 ,4 ,15,15,22,22,22,
+22,22,22,4 ,4 ,4 ,4 ,4 ,4 ,4 ,15,15,15,22,22,22,
+22,22,14,4 ,4 ,4 ,4 ,4 ,4 ,4 ,15,15,14,22,22,22,
+22,22,14,14,4 ,4 ,4 ,4 ,4 ,4 ,8 ,14,14,14,22,22,
+22,22,22,14,14,14,4 ,4 ,4 ,8 ,14,14,14,22,22,22,
+22,22,22,22,14,14,14,4 ,14,14,14,14,22,22,22,22,
+};
+
+
+int pinguinorojo2 [16][16]={
+22,22,22,22,22,22,4 ,4 ,4 ,22,22,22,22,22,22,22,
+22,22,22,22,22,4 ,15,4 ,4 ,4 ,22,22,22,22,22,22,
+22,22,22,14,14,14,4 ,15,4 ,4 ,4 ,22,22,22,22,22,
+22,22,14,14,14,14,14,4 ,4 ,4 ,4 ,22,22,22,22,22,
+22,22,22,22,22,4 ,4 ,4 ,4 ,4 ,22,22,22,22,22,22,
+22,22,22,22,4 ,4 ,4 ,4 ,4 ,4 ,4 ,22,22,22,22,22,
+22,22,22,22,15,4 ,8 ,4 ,8 ,4 ,4 ,4 ,22,22,22,22,
+22,22,22,15,15,8 ,4 ,4 ,8 ,4 ,4 ,4 ,22,22,22,22,
+22,22,22,15,15,8 ,4 ,4 ,8 ,4 ,4 ,4 ,4 ,22,22,22,
+22,22,22,15,15,8 ,4 ,4 ,8 ,4 ,4 ,4 ,4 ,22,22,22,
+22,22,22,15,15,15,8 ,4 ,4 ,8 ,4 ,4 ,4 ,22,22,22,
+22,22,22,15,15,15,8 ,4 ,4 ,8 ,4 ,4 ,4 ,22,22,22,
+22,22,22,22,15,15,15,8 ,8 ,4 ,4 ,4 ,4 ,22,22,22,
+22,22,22,22,15,15,15,4 ,4 ,4 ,4 ,4 ,4 ,4 ,22,22,
+22,22,22,22,22,15,15,14,14,4 ,4 ,4 ,4 ,4 ,22,22,
+22,22,22,22,14,14,14,14,14,14,14,22,22,22,22,22,
+};
+
+
+int pinguinorojo3 [16][16]={
+22,22,22,22,22,22,4 ,4 ,4 ,22,22,22,22,22,22,22,
+22,22,22,22,22,4 ,15,4 ,4 ,4 ,22,22,22,22,22,22,
+22,22,22,14,14,14,4 ,15,4 ,4 ,4 ,22,22,22,22,22,
+22,22,14,14,14,14,14,4 ,4 ,4 ,4 ,22,22,22,22,22,
+22,22,22,22,22,4 ,4 ,4 ,4 ,4 ,22,22,22,22,22,22,
+22,22,22,22,4 ,8 ,8 ,4 ,4 ,4 ,4 ,22,22,22,22,22,
+22,22,22,8 ,8 ,4 ,4 ,4 ,4 ,4 ,4 ,4 ,22,22,22,22,
+22,8 ,8 ,4 ,4 ,8 ,8 ,4 ,4 ,4 ,4 ,4 ,8 ,8 ,4 ,22,
+8 ,4 ,4 ,8 ,8 ,4 ,4 ,4 ,4 ,4 ,4 ,4 ,4 ,4 ,4 ,4 ,
+22,8 ,8 ,15,15,4 ,4 ,4 ,4 ,4 ,4 ,4 ,8 ,8 ,4 ,22,
+22,22,22,15,15,4 ,4 ,4 ,4 ,4 ,4 ,4 ,4 ,22,22,22,
+22,22,22,15,15,15,4 ,4 ,4 ,4 ,4 ,4 ,4 ,22,22,22,
+22,22,22,14,15,15,4 ,4 ,4 ,4 ,4 ,4 ,4 ,14,22,22,
+22,22,14,14,14,8 ,4 ,4 ,4 ,4 ,4 ,4 ,14,14,22,22,
+22,22,22,14,14,14,8 ,4 ,4 ,4 ,14,14,14,22,22,22,
+22,22,22,22,14,14,14,14,4 ,14,14,14,22,22,22,22,
+};
+
 
 int pinguino0 [16][16]={
 22,22,22,22,22,22,22,0 ,0 ,0 ,22,22,22,22,22,22,
@@ -149,6 +201,7 @@ int pinguino0 [16][16]={
 22,22,22,22,22,14,14,14,14,14,14,14,22,22,22,22,
 };
 
+
 int pinguino1 [16][16]={
 22,22,22,22,22,22,22,0 ,0 ,0 ,22,22,22,22,22,22,
 22,22,22,22,22,22,0 ,0 ,0 ,15,0 ,22,22,22,22,22,
@@ -167,6 +220,7 @@ int pinguino1 [16][16]={
 22,22,22,14,14,14,0 ,0 ,0 ,8 ,14,14,14,22,22,22,
 22,22,22,22,14,14,14,0 ,14,14,14,14,22,22,22,22,
 };
+
 
 int pinguino2 [16][16]={
 22,22,22,22,22,22,0 ,0 ,0 ,22,22,22,22,22,22,22,
@@ -187,6 +241,7 @@ int pinguino2 [16][16]={
 22,22,22,22,14,14,14,14,14,14,14,22,22,22,22,22,
 };
 
+
 int pinguino3 [16][16]={
 22,22,22,22,22,22,0 ,0 ,0 ,22,22,22,22,22,22,22,
 22,22,22,22,22,0 ,15,0 ,0 ,0 ,22,22,22,22,22,22,
@@ -206,6 +261,7 @@ int pinguino3 [16][16]={
 22,22,22,22,14,14,14,14,0 ,14,14,14,22,22,22,22,
 };
 
+
 int pato0 [16][16]={
 22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
 22,22,22,22,22,22,0 ,0 ,0 ,0 ,22,22,22,22,22,22,
@@ -224,6 +280,7 @@ int pato0 [16][16]={
 22,0 ,0 ,0 ,0 ,0 ,15,15,15,15,0 ,0 ,0 ,0 ,0 ,22,
 0 ,0 ,0 ,0 ,0 ,0 ,0 ,15,15,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
 };
+
 
 /*int pato1 [16][16]={
 22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,
@@ -690,6 +747,7 @@ if (archivo==NULL)
   {
   printf( "No se puede abrir el archivo nivel%i-%i.txt para el mapa del nivel %i escena %i",nivel,escena,nivel,escena);
   getch();
+  DesinstalaTeclado();
   exit( 1 );
   }
 
@@ -2035,7 +2093,7 @@ if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==36)  //poder0
     vy=0;
     y=y-(y%16);
     }
-  if(tecla==18432)
+  if(tecla[KEY_CUR_ARRIBA])  //18432
     {
       vy=-8;
     }
@@ -2055,7 +2113,7 @@ else if((paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]==36) && x%16!=0)  //poder0
     vy=0;
     y=y-(y%16);
     }
-  if(tecla==18432)
+  if(tecla[KEY_CUR_ARRIBA]) //18432
     {
       vy=-8;
     }
@@ -2503,7 +2561,7 @@ bloque_nota0()  //nota0
     if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==40 || paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]==40)  //rebote por arriba
       {
       vy=-6;
-      if(tecla==18432)
+      if(tecla[KEY_CUR_ARRIBA])
         {
         vy=-10.0;
         }
@@ -2514,7 +2572,7 @@ bloque_nota0()  //nota0
     if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==40)  //rebote por arriba
       {
       vy=-6;
-      if(tecla==18432)
+      if(tecla[KEY_CUR_ARRIBA])
         {
         vy=-10.0;
         }
@@ -2526,7 +2584,7 @@ bloque_nota0()  //nota0
       {
       if(vy<=0)
         {
-        if(tecla==18432)
+        if(tecla[KEY_CUR_ARRIBA])
           {
           vy=-10.0;
           }
@@ -2539,7 +2597,7 @@ bloque_nota0()  //nota0
       {
       if(vy<=0)
         {
-        if(tecla==18432)
+        if(tecla[KEY_CUR_ARRIBA])
           {
           vy=-10.0;
           }
@@ -2558,12 +2616,12 @@ bloque_nota0()  //nota0
     }
   if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==40) //rebote derecho de nota0
     {
-    vx=-vx;
+    vx=-vx-4.0;
     x=x-(x%16);
     }
   else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==40) //rebote izquierdo de nota 0
     {
-    vx=-vx;
+    vx=-vx+4.0;
     x=x+16-(x%16);
     }
 }
@@ -2670,7 +2728,7 @@ if((x%16)!=0)
   {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==49 && paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==49)
     {
-    if(tecla==18432)  //saltar 72
+    if(tecla[KEY_CUR_ARRIBA])  //saltar 72
       {
       vy=-2.0;
       }
@@ -2698,7 +2756,7 @@ else
   {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==49)
     {
-    if(tecla==18432)  //saltar 72
+    if(tecla[KEY_CUR_ARRIBA])  //saltar 72
       {
       vy=-2.0;
       }
@@ -2726,7 +2784,7 @@ if((x%16)!=0)
   {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==50 && paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==50)
     {
-    if(tecla==18432)  //saltar 72
+    if(tecla[KEY_CUR_ARRIBA])  //saltar 72
       {
       vy=-8.0;
       }
@@ -2754,7 +2812,7 @@ else
   {
   if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==50)
     {
-    if(tecla==18432)  //saltar 72
+    if(tecla[KEY_CUR_ARRIBA])  //saltar 72
       {
       vy=-8.0;
       }
@@ -3068,7 +3126,7 @@ bloque_cuadrado0()  //puedes pararte sobre el bloque pero no golpearlo por abajo
         }
       }
     }
-  if(tecla==18432)  //saltar
+  if(tecla[KEY_CUR_ARRIBA])  //saltar
     {
     if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==42 || (paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]==42 && x%16!=0))  //bloque cuadrado
       {
@@ -3102,7 +3160,7 @@ bloque_cuadrado1()  //puedes pararte sobre el bloque pero no golpearlo por abajo
         }
       }
     }
-  if(tecla==18432)  //saltar
+  if(tecla[KEY_CUR_ARRIBA])  //saltar
     {
     if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]==45 || (paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]==45 && x%16!=0))  //bloque cuadrado
       {
@@ -3270,13 +3328,76 @@ verestado()  //verificar el estado de pato y dibujarlo segun el estado
         }
     break;
     case 4:
-      for(j=0;j<16;j++)
+      if(vx==0)
         {
-        for(i=0;i<16;i++)
+        paso=1;
+        }
+      else
+        {
+        if((x%8)<=3)
           {
-          if(gatito0[j][i]!=22)
+        paso=1;
+          }
+        else if ((x%8)>=4)
+          {
+        paso=-1;
+          }
+        }
+      if(dir>0)
+        {
+        if(paso==1)
+          {
+          for(j=0;j<16;j++)
             {
-            putpixel(x+i,y+j,gatito0[j][i]);
+            for(i=0;i<16;i++)
+              {
+              if(pinguinorojo0[j][i]!=22)
+                {
+                putpixel(x+i,y+j,pinguinorojo0[j][i]);
+                }
+              }
+            }
+          }
+        if(paso==-1)
+          {
+          for(j=0;j<16;j++)
+            {
+            for(i=0;i<16;i++)
+              {
+              if(pinguinorojo1[j][i]!=22)
+                {
+                putpixel(x+i,y+j,pinguinorojo1[j][i]);
+                }
+              }
+            }
+          }
+        }
+      if(dir<0)
+        {
+        if(paso==1)
+          {
+          for(j=0;j<16;j++)
+            {
+            for(i=0;i<16;i++)
+              {
+              if(pinguinorojo2[j][i]!=22)
+                {
+                putpixel(x+i,y+j,pinguinorojo2[j][i]);
+                }
+              }
+            }
+          }
+        if(paso==-1)
+          {
+          for(j=0;j<16;j++)
+            {
+            for(i=0;i<16;i++)
+              {
+              if(pinguinorojo3[j][i]!=22)
+                {
+                putpixel(x+i,y+j,pinguinorojo3[j][i]);
+                }
+              }
             }
           }
         }
@@ -3324,8 +3445,7 @@ panel();
 
 pausa()
 {
-int x2,y2,n=0;
-tecla=0;
+int x2,y2;
 for(y2=0;y2<16;y2++)
   {
   for(x2=0;x2<16;x2++)
@@ -3340,16 +3460,9 @@ for(y2=0;y2<16;y2++)
     putpixel(x2+320,y2+208,pausa1[y2][x2]);
     }
   }
-while(n==0)
+delay(200);
+while(!tecla[KEY_ENTER])
   {
-  if(bioskey(1))  //funciona igual que kbhit()
-    {
-    tecla = bioskey(0);  //capturar tecla presionada
-    }
-  if(tecla==7181)
-    {
-    n=1;
-    }
   }
 fondo();
 panel();
@@ -3486,12 +3599,8 @@ for(n=0;n<4;n++)
 
 teclado()
 {
-  tecla=0;
-  if(bioskey(1))  //funciona igual que kbhit() con la diferecia que con bioskey que si no presionas una tecla despues de un tiempo se alenta el cheque del teclado
-    {
-    tecla = bioskey(0);  //capturar tecla presionada
-    }
-  if(tecla == 0);
+teclaso=0;
+  if(teclaso == 0);
     {
     if(vx<0)  //disminuir la velocidad
       {
@@ -3510,12 +3619,12 @@ teclado()
       vy=vy-0.125;
       }*/
     }
-  if(tecla==19200)  //izquierda 75
+  if(tecla[KEY_CUR_ATRAS])  //izquierda 75
     {
     vx=vx-0.5;
     dir=-1;
     }
-  if(tecla==19712)  //derecha 77
+  if(tecla[KEY_CUR_ADELANTE])  //derecha 77
     {
     dir=1;
     if(vx<1 && vx>=0)  //esto no deberia existir pero hay problemas para avanzar a la derecha
@@ -3524,7 +3633,7 @@ teclado()
       }
     vx=vx+0.5;
     }
-  if(tecla==14624)  //espacio volar 32
+  if(tecla[KEY_ESPACIO])  //espacio volar 32
     {
     if(volar>0)
       {
@@ -3532,33 +3641,34 @@ teclado()
       vy=-4.0;
       }
     }
-  if(tecla==18432)  //saltar 72
+  if(tecla[KEY_CUR_ARRIBA])  //saltar 72
     {
     if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]<32 || (paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]<32 && x%16!=0))  //bloques en general
       {
       vy=-8.0;
       }
     }
-  if(tecla==7181)  //enter pausar el juego
+  if(tecla[KEY_ENTER])  //enter pausar el juego
     {
     pausa();
     }
-  if(tecla==21248)  //suprimir  truco: elimina patos
+  if(tecla[KEY_DELETE])  //suprimir  truco: elimina patos
     {
     r_pato();
     r_seguidor();
     r_salta();
     r_peligro();
     }
-  if(tecla==27392)  //Alt+F4 salir
+  if(tecla[KEY_F4])  //Alt+F4 salir
     {
+    DesinstalaTeclado();
     exit (2);
     }
-  if(tecla==15104)  //F1 ayuda 
+  if(tecla[KEY_F1])  //F1 ayuda 
     {
     ayuda();
     }
-  if(tecla==283)  //esc 27
+  if(tecla[KEY_ESC])  //esc 27
     {
     //menu();
     }
@@ -3598,6 +3708,7 @@ if(kbhit())  //si se presiono una tecla para omitir la presentacion, pedir que s
 
 getch();
 iniciargraficos();
+InstalaTeclado();
 randomize();
 
 while(seguir!=0)
@@ -3706,7 +3817,7 @@ while(seguir!=0)
       }
     }
   }
-
+DesinstalaTeclado();
 closegraph();
 return(0);
 }

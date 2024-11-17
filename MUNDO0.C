@@ -1,7 +1,8 @@
-extern int ciclo,tiempo,x,y,invensible,tecla,dir,nivel,escena,vidas,mundo,monedas,estado,jugar,t_huevo,npato[8],sec,t_moneda,paisaje[30][40],niv1[30][40];
+extern int ciclo,tiempo,x,y,invensible,dir,nivel,escena,vidas,mundo,monedas,estado,jugar,t_huevo,npato[8],sec,t_moneda,paisaje[30][40],niv1[30][40];
 extern float vx,vy;
+extern unsigned char tecla[128];
 
-
+#include"teclas.h"
 
 //=========================================================================================================
 //==                                            niveles                                                  ==
@@ -22,7 +23,6 @@ panel();
 
 while(ciclo<1)
   {
-
 ////////operaciones del los bloques
 
   refbloquemundo();  //actualizar bloques
@@ -75,49 +75,25 @@ while(ciclo<1)
 
 ////////teclado
 
-  tecla=0;
-  if(bioskey(1))  //funciona igual que kbhit() con la diferecia que con bioskey que si no presionas una tecla despues de un tiempo se alenta el cheque del teclado
+  if(tecla[KEY_CUR_ATRAS])  //izquierda 75
     {
-    tecla = bioskey(0);  //capturar tecla presionada
-    }
-  /*if(tecla == 0);
-    {
-    if(vx<0)  //disminuir la velocidad
-      {
-      vx=vx+0.0625;
-      }
-    else if(vx>0)
-      {
-      vx=vx-0.0625;
-      }
-    if(vy<0)  //disminuir la velocidad
-      {
-      vy=vy+0.0625;
-      }
-    else if(vy>0)
-      {
-      vy=vy-0.0625;
-      }
-    }*/
-  if(tecla==19200)  //izquierda 75
-    {
-    vx=vx-4.0;
+    vx=-4.0;
     dir=-1;
     }
-  if(tecla==19712)  //derecha 77
+  if(tecla[KEY_CUR_ADELANTE])  //derecha 77
     {
     dir=1;
     vx=4.0;
     }
-  if(tecla==18432)  //arriba
+  if(tecla[KEY_CUR_ARRIBA])  //arriba
     {
     vy=-4.0;
     }
-  if(tecla==20480)  //abajo
+  if(tecla[KEY_CUR_ABAJO])  //abajo
     {
     vy=4.0;
     }
-  if(tecla==7181)  //Enter
+  if(tecla[KEY_ENTER])  //Enter
     {
     if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==32)  //nivel 0
       {
@@ -180,15 +156,16 @@ while(ciclo<1)
       escena=0;
       }
     }
-  if(tecla==27392)  //Alt+F4 salir
+  if(tecla[KEY_F4])  //Alt+F4 salir
     {
+    DesinstalaTeclado();
     exit (2);
     }
-  if(tecla==15104)  //F1 ayuda 
+  if(tecla[KEY_F1])  //F1 ayuda 
     {
     ayuda();
     }
-  if(tecla==283)  //esc 27
+  if(tecla[KEY_ESC])  //esc 27
     {
     //menu();
     }
@@ -235,7 +212,7 @@ while(ciclo<1)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(16);
+  delay(20);
 }
 return(0);
 }
@@ -482,7 +459,7 @@ while(ciclo<1)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(16);
+  delay(20);
 
 }
 guardar_fondo(0);
@@ -750,7 +727,7 @@ while(ciclo<1)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(16);
+  delay(20);
 
 }
 guardar_fondo(1);
@@ -842,7 +819,7 @@ if(tiempo%28==0 && sec%22==0)
   }
 
 ////////especial para entrar a tuberia en 25,17 y 26,17
-  if(tecla==18432)  //arriba
+  if(tecla[KEY_CUR_ARRIBA])  //arriba
     {
     if(((y-(y%16))/16 == 17) && ((x-(x%16))/16 == 26))
       {
@@ -1017,7 +994,7 @@ if(tiempo%28==0 && sec%22==0)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(16);
+  delay(20);
 
 }
 guardar_fondo(2);
@@ -1267,7 +1244,7 @@ if(tiempo%8==0 && sec%22==0)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(16);
+  delay(20);
 
 }
 guardar_fondo(3);
@@ -1530,7 +1507,7 @@ else
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(16);
+  delay(20);
 
 }
 guardar_fondo(0);
@@ -1666,7 +1643,7 @@ while(ciclo<1)
     }
 
 ////////especial para entrar a tuberia en 11,15 y 12,15
-  if(tecla==20480)  //abajo
+  if(tecla[KEY_CUR_ABAJO])  //abajo
     {
     if(((y-(y%16))/16 == 15) && ((x-(x%16))/16 == 12))
       {
@@ -1813,7 +1790,7 @@ while(ciclo<1)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(16);
+  delay(20);
 
 }
 guardar_fondo(1);
@@ -2061,7 +2038,7 @@ if(tiempo%28==0 && sec%22==0)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(16);
+  delay(20);
 
 }
 guardar_fondo(2);
@@ -2308,7 +2285,7 @@ if(tiempo%8==0 && sec%22==0)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(16);
+  delay(20);
 
 }
 guardar_fondo(3);
@@ -2565,7 +2542,7 @@ if(tiempo%8==0 && sec%22==0)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(16);
+  delay(20);
 
 }
 guardar_fondo(0);
@@ -2833,7 +2810,7 @@ while(ciclo<1)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(16);
+  delay(20);
 
 }
 guardar_fondo(1);
@@ -2925,7 +2902,7 @@ if(tiempo%28==0 && sec%22==0)
   }
 
 ////////especial para entrar a tuberia en 25,17 y 26,17
-  if(tecla==18432)  //arriba
+  if(tecla[KEY_CUR_ARRIBA])  //arriba
     {
     if(((y-(y%16))/16 == 17) && ((x-(x%16))/16 == 26))
       {
@@ -3100,7 +3077,7 @@ if(tiempo%28==0 && sec%22==0)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(16);
+  delay(20);
 
 }
 
@@ -3351,7 +3328,7 @@ if(tiempo%8==0 && sec%22==0)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(16);
+  delay(20);
 
 }
 guardar_fondo(3);
@@ -3600,7 +3577,7 @@ while(ciclo<1)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(16);
+  delay(20);
 
 }
 guardar_fondo(0);
@@ -3868,7 +3845,7 @@ while(ciclo<1)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(16);
+  delay(20);
 
 }
 guardar_fondo(1);
@@ -3960,7 +3937,7 @@ if(tiempo%28==0 && sec%22==0)
   }
 
 ////////especial para entrar a tuberia en 25,17 y 26,17
-  if(tecla==18432)  //arriba
+  if(tecla[KEY_CUR_ARRIBA])  //arriba
     {
     if(((y-(y%16))/16 == 17) && ((x-(x%16))/16 == 26))
       {
@@ -4135,7 +4112,7 @@ if(tiempo%28==0 && sec%22==0)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(16);
+  delay(20);
 
 }
 guardar_fondo(2);
@@ -4385,7 +4362,7 @@ if(tiempo%8==0 && sec%22==0)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(16);
+  delay(20);
 
 }
 guardar_fondo(3);
@@ -4476,7 +4453,7 @@ while(ciclo<1)
   teclado();
 
 ////////especial para entrar a tuberia en 36,4 y 37,4
-  if(tecla==18432)  //arriba
+  if(tecla[KEY_CUR_ARRIBA])  //arriba
     {
     if(((y-(y%16))/16 == 4) && ((x-(x%16))/16 == 37))
       {
@@ -4647,7 +4624,7 @@ while(ciclo<1)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(16);
+  delay(20);
 
 }
 vx=0.0;
@@ -4737,7 +4714,7 @@ while(ciclo<1)
 
 ////////especial para entrar a tuberia en 4,22 y 4,23
 
-  if(tecla==19200)  //derecha
+  if(tecla[KEY_CUR_ATRAS])  //izquierda
     {
     if(((y-(y%16))/16 == 22) && ((x-(x%16))/16 == 4))
       {
@@ -4753,7 +4730,7 @@ while(ciclo<1)
 
 ////////especial para entrar a tuberia en 35,22 y 35,23
 
-  if(tecla==19712)  //izquierda
+  if(tecla[KEY_CUR_ADELANTE])  //derecha
     {
     if(((y-(y%16))/16 == 22) && ((x-(x%16))/16 == 35))
       {
@@ -4924,7 +4901,7 @@ while(ciclo<1)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(16);
+  delay(20);
 
 }
 x=344;
@@ -5030,7 +5007,7 @@ while(ciclo<1)
   teclado();
 
 ////////especial para entrar a tuberia en 36,4 y 37,4
-  if(tecla==18432)  //arriba
+  if(tecla[KEY_CUR_ARRIBA])  //arriba
     {
     if(((y-(y%16))/16 == 4) && ((x-(x%16))/16 == 37))
       {
@@ -5201,7 +5178,7 @@ while(ciclo<1)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(16);
+  delay(20);
 
 }
 vx=0.0;
@@ -5290,7 +5267,7 @@ while(ciclo<1)
   teclado();
 
 ////////especial para entrar a tuberia en 36,4 y 37,4
-  if(tecla==18432)  //arriba
+  if(tecla[KEY_CUR_ARRIBA])  //arriba
     {
     if(((y-(y%16))/16 == 4) && ((x-(x%16))/16 == 37))
       {
@@ -5461,7 +5438,7 @@ while(ciclo<1)
 
   panelnumerico();  //actualizar datos numericos del panel
 
-  delay(16);
+  delay(20);
 
 }
 vx=0.0;
