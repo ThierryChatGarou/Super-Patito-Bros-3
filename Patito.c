@@ -1384,7 +1384,7 @@ int cajaf7 [16][16]={
 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,11,11,11,11,11,
 };
 
-int cajaf10 [16][16]={
+/*int cajaf10 [16][16]={
 11,11,11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
 11,11,11,0 ,0 ,15,15,15,15,15,15,15,15,15,15,15,
 11,11,0 ,15,15,15,15,15,15,15,15,15,15,15,15,15,
@@ -1534,7 +1534,7 @@ int cajaf17 [16][16]={
 15,15,15,15,15,15,15,15,15,15,15,15,15,0 ,11,11,
 15,15,15,15,15,15,15,15,15,15,15,0 ,0 ,11,11,11,
 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,11,11,11,11,11,
-};
+};*/
 
 int gatito0 [16][16]={
 15,15,22,22,22,22,22,15,15,22,22,22,22,22,15,15,
@@ -1783,7 +1783,7 @@ int champi4 [16][16]={
 22,22,22,0 ,10,10,10,10,10,10,10,10,0 ,22,22,22,
 };
 
-/*int TNT [16][16]={
+int TNT [16][16]={
 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
 0 ,14,14,14,14,14,14,14,14,14,14,14,14,14,14,0 ,
 0 ,14,14,14,14,14,14,14,14,14,14,14,14,14,14,0 ,
@@ -1819,7 +1819,26 @@ int NITRO [16][16]={
 10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,
 10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,
 2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,
-};*/
+};
+
+int agua1 [16][16]={
+11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,
+11,11,11,11,11,15,15,11,11,11,11,11,11,11,11,11,
+11,11,11,15,15,9 ,9 ,15,15,15,11,11,11,15,15,15,
+15,15,15,9 ,9 ,9 ,9 ,9 ,9 ,9 ,15,15,15,9 ,9 ,9 ,
+9 ,9 ,9 ,15,15,15,9 ,9 ,15,15,9 ,9 ,9 ,9 ,9 ,9 ,
+9 ,9 ,9 ,9 ,9 ,9 ,15,15,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,
+9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,
+9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,
+9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,
+9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,
+9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,
+9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,
+9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,
+9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,
+9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,
+9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,9 ,
+};
 
 int g_niv1 [16][16]={
 11,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
@@ -3378,6 +3397,35 @@ switch (T)
       }
   break;*/
   case 47:
+    for(y2=0;y2<16;y2++)
+      {
+      for(x2=0;x2<16;x2++)
+	{
+	putpixel(x2+i,y2+j,TNT[y2][x2]);
+	}
+      }
+  break;
+  case 48:
+    for(y2=0;y2<16;y2++)
+      {
+      for(x2=0;x2<16;x2++)
+	{
+	putpixel(x2+i,y2+j,NITRO[y2][x2]);
+	}
+      }
+  break;
+  case 49:
+    setfillstyle(1,9);  //azul claro
+    bar(i,j,i+15,j+15);
+  break;
+  case 50:
+    for(y2=0;y2<16;y2++)
+      {
+      for(x2=0;x2<16;x2++)
+	{
+	putpixel(x2+i,y2+j,agua1[y2][x2]);
+	}
+      }
   break;
   case 64:  //apartir de aqui comienzan los bloques tipo aire o fondo
     setfillstyle(1,0); //negro
@@ -4648,6 +4696,146 @@ bloque_nota0()  //nota0
 }
 
 
+/*bloque_saltar()  
+{
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==xx)  //saltar
+    {
+    vy=vy-6.0;
+    }
+}*/
+
+
+bloque_agua()  
+{
+if((x%16)!=0)
+  {
+  if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]<32 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]<32)  //verificar si hay bloques solidos
+    {
+    vy=vy+0.5;
+    }
+  }
+else
+  {
+  if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]<32)  //verificar si hay bloques solidos
+    {
+    vy=vy+0.5;
+    }
+  }
+if((x%16)!=0)
+  {
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==49 && paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==49)
+    {
+    if(tecla==18432)  //saltar 72
+      {
+      vy=-2.0;
+      }
+    vy=vy+0.0625;
+    vy=vy-0.5;
+    if(vy>2.0)  //aumentar viscocidad segun velocidad
+      {
+      vy=vy-0.25;
+      }
+    else if(vy<-2.0)
+      {
+      vy=vy+0.25;
+      }
+    if(vx>2.0)
+      {
+      vx=vx-0.25;
+      }
+    else if(vx<-2.0)
+      {
+      vx=vx+0.25;
+      }
+    }
+  }
+else
+  {
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==49)
+    {
+    if(tecla==18432)  //saltar 72
+      {
+      vy=-2.0;
+      }
+    vy=vy+0.0625;
+    vy=vy-0.5;
+    if(vy>2.0)  //aumentar viscocidad segun velocidad
+      {
+      vy=vy-0.25;
+      }
+    else if(vy<-2.0)
+      {
+      vy=vy+0.25;
+      }
+    if(vx>2.0)
+      {
+      vx=vx-0.25;
+      }
+    else if(vx<-2.0)
+      {
+      vx=vx+0.25;
+      }
+    }
+  }
+if((x%16)!=0)
+  {
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==50 && paisaje[(y-(y%16))/16][(x+16-(x%16))/16]==50)
+    {
+    if(tecla==18432)  //saltar 72
+      {
+      vy=-8.0;
+      }
+    vy=vy+0.0625;
+    vy=vy-0.5;
+    if(vy>2.0)  //aumentar viscocidad segun velocidad
+      {
+      vy=vy-0.25;
+      }
+    else if(vy<-2.0)
+      {
+      vy=vy+0.25;
+      }
+    if(vx>2.0)
+      {
+      vx=vx-0.25;
+      }
+    else if(vx<-2.0)
+      {
+      vx=vx+0.25;
+      }
+    }
+  }
+else
+  {
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]==50)
+    {
+    if(tecla==18432)  //saltar 72
+      {
+      vy=-8.0;
+      }
+    vy=vy+0.0625;
+    vy=vy-0.5;
+    if(vy>2.0)  //aumentar viscocidad segun velocidad
+      {
+      vy=vy-0.25;
+      }
+    else if(vy<-2.0)
+      {
+      vy=vy+0.25;
+      }
+    if(vx>2.0)
+      {
+      vx=vx-0.25;
+      }
+    else if(vx<-2.0)
+      {
+      vx=vx+0.25;
+      }
+    }
+  }
+}
+
+
 tocar_champinon()  //tocar champiñon
 {
   for(i=0;i<4;i++)
@@ -5281,7 +5469,7 @@ return(0);
 escena0()
 {
 ciclo=0;
-invensible=0;
+//invensible=0;
 act_fondo(0);
 fondo();
 panel();
@@ -5465,6 +5653,8 @@ while(ciclo<1)
 
   //bloque_nota0();  //nota0
 
+  //bloque_agua();
+
   //cielo_vida();  //cielo cyan con moneda
 
   //cielo_moneda();  //cielo cyan con vida
@@ -5539,7 +5729,7 @@ return(0);
 escena1()
 {
 ciclo=0;
-invensible=0;
+//invensible=0;
 act_fondo(1);
 fondo();
 panel();
@@ -5749,6 +5939,8 @@ while(ciclo<1)
 
   //bloque_nota0();  //nota0
 
+  //bloque_agua();
+
   //cielo_vida();  //cielo cyan con moneda
 
   //cielo_moneda();  //cielo cyan con vida
@@ -5823,7 +6015,7 @@ return(0);
 escena2()
 {
 ciclo=0;
-invensible=0;
+//invensible=0;
 act_fondo(2);
 fondo();
 panel();
@@ -6006,6 +6198,8 @@ while(ciclo<1)
 
   //bloque_nota0();  //nota0
 
+  bloque_agua();
+
   //cielo_vida();  //cielo cyan con moneda
 
   //cielo_moneda();  //cielo cyan con vida
@@ -6080,7 +6274,7 @@ return(0);
 escena3()
 {
 ciclo=0;
-invensible=0;
+//invensible=0;
 act_fondo(3);
 fondo();
 panel();
@@ -6263,6 +6457,8 @@ while(ciclo<1)
   //bloque_moneda();  //monedas
 
   //bloque_nota0();  //nota0
+
+  //bloque_agua();
 
   //cielo_vida();  //cielo cyan con moneda
 
