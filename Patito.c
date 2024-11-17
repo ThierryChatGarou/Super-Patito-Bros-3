@@ -4829,6 +4829,7 @@ verestado()  //verificar el estado de pato y dibujarlo segun el estado
         estado++;
         vidas--;
         ciclo=1;
+        jugar=0;
         }
       //musiquita y pantalla de perder
     break;
@@ -5083,7 +5084,7 @@ for(n=0;n<8;n++)
 mundo0()
 {
 ciclo=0;
-tiempo=200;
+tiempo=0;
 invensible=0;
 x=32;
 y=32;
@@ -5247,6 +5248,12 @@ while(ciclo<1)
 }
 abrir(0,0);
 abrir(0,1);
+x=16;
+y=384;
+vx=0;
+vy=0;
+tiempo=400;
+escena=0;
 return(0);
 }
 
@@ -5254,12 +5261,7 @@ return(0);
 escena0()
 {
 ciclo=0;
-tiempo=200;
 invensible=0;
-x=16;
-y=384;
-vx=0;
-vy=0;
 act_fondo(0);
 fondo();
 panel();
@@ -5471,18 +5473,21 @@ while(ciclo<1)
     {
     ciclo=1;
     escena++;
+    x=0;
     }
   else if(x<=-4) //si llega a la orilla izquierda pasar a la anterior escena
     {
     ciclo=1;
     escena--;
+    x=608;
     }
   else if(y>=464) //caida
     {
     ciclo=1;
     estado=1;
     vidas--;
-    t_huevo=tiempo-4;
+    //t_huevo=tiempo-4; //parece no ser necesario
+    jugar=0;
     }
   else if(tiempo==0) //tiempo terminado
     {
@@ -5513,14 +5518,8 @@ return(0);
 
 escena1()
 {
-int da,db;
 ciclo=0;
-tiempo=200;
 invensible=0;
-x=16;
-y=368;
-vx=0;
-vy=0;
 act_fondo(1);
 fondo();
 panel();
@@ -5759,18 +5758,21 @@ while(ciclo<1)
     {
     ciclo=1;
     escena++;
+    x=0;
     }
   else if(x<=-4) //si llega a la orilla izquierda pasar a la anterior escena
     {
     ciclo=1;
     escena--;
+    x=608;
     }
   else if(y>=464) //caida
     {
     ciclo=1;
     estado=1;
     vidas--;
-    t_huevo=tiempo-4;
+    //t_huevo=tiempo-4;  //parece no ser necesario
+    jugar=0;
     }
   else if(tiempo==0) //tiempo terminado
     {
