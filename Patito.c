@@ -1139,22 +1139,22 @@ int moneda0 [16][16]={
 };*/
 
 int moneda4 [16][16]={
-11,11,11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,11,11,11,11,11,
-11,11,0 ,0 ,0 ,15,15,15,15,15,15,0 ,0 ,0 ,11,11,
-11,0 ,0 ,15,15,15,15,15,15,15,15,15,15,0 ,0 ,11,
-11,0 ,15,15,15,15,15,15,15,6 ,15,15,15,15,0 ,11,
-11,0 ,15,15,15,15,15,15,15,6 ,15,15,15,15,0 ,11,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,15,15,15,15,15,15,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,15,15,15,15,15,15,15,15,15,15,0 ,0 ,0 ,
+0 ,0 ,15,15,15,15,15,15,15,6 ,15,15,15,15,0 ,0 ,
+0 ,0 ,15,15,15,15,15,15,15,6 ,15,15,15,15,0 ,0 ,
 0 ,15,15,15,15,15,15,15,15,6 ,15,15,15,15,15,0 ,
 0 ,15,15,15,15,15,15,15,15,6 ,15,15,15,15,15,0 ,
 0 ,15,15,15,15,15,15,15,15,6 ,15,15,15,15,15,0 ,
 0 ,15,15,15,15,15,15,15,15,6 ,15,15,15,15,15,0 ,
 0 ,15,15,15,15,15,15,15,15,6 ,15,15,15,15,15,0 ,
 0 ,15,15,15,15,15,15,15,15,6 ,15,15,15,15,15,0 ,
-11,0 ,15,15,15,15,15,15,15,6 ,15,15,15,15,0 ,11,
-11,0 ,15,15,15,15,15,6 ,6 ,6 ,15,15,15,15,0 ,11,
-11,0 ,0 ,15,15,15,15,15,15,15,15,15,15,0 ,0 ,11,
-11,11,0 ,0 ,0 ,15,15,15,15,15,15,0 ,0 ,0 ,11,11,
-11,11,11,11,11,0 ,0 ,0 ,0 ,0 ,0 ,11,11,11,11,11,
+0 ,0 ,15,15,15,15,15,15,15,6 ,15,15,15,15,0 ,0 ,
+0 ,0 ,15,15,15,15,15,6 ,6 ,6 ,15,15,15,15,0 ,0 ,
+0 ,0 ,0 ,15,15,15,15,15,15,15,15,15,15,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,15,15,15,15,15,15,0 ,0 ,0 ,0 ,0 ,
+0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,
 };
 
 /*int moneda6 [16][16]={
@@ -2500,6 +2500,9 @@ switch (nivel)
       case 3:
         archivo = fopen("1-3.txt","rb");
       break;
+      case 20:  //escena secreta
+        archivo = fopen("1-20.txt","rb");
+      break;
       default:
         archivo = fopen("0.txt","rb");
       break;
@@ -3291,6 +3294,13 @@ switch (T)
   case 11:
   break;
   case 12:
+    for(y2=0;y2<16;y2++)
+      {
+      for(x2=0;x2<16;x2++)
+	{
+	putpixel(x2+i,y2+j,caja22[y2][x2]);
+	}
+      }
   break;
   case 13:
   break;
@@ -4390,7 +4400,7 @@ for(y2=0;y2<30;y2++)
   }
 }
 
-fondomundo()
+fondomundo()  //aguas fondomundo() no es lo mismo que fondo() por bloque() y bloque0()
 {
 int x2,y2;
 for(y2=0;y2<30;y2++)
@@ -7007,6 +7017,21 @@ while(ciclo<1)
       }
     }
 
+////////especial para entrar a tuberia en 11,14 y 12,14
+  if(tecla==20480)  //abajo
+    {
+    if(((y-(y%16))/16 == 14) && ((x-(x%16))/16 == 12))
+      {
+      ciclo=1;
+      escena=20;  //escena secreta
+      }
+    else if(((y-(y%16))/16 == 14) && ((x-(x%16))/16 == 11))
+      {
+      ciclo=1;
+      escena=20;  //escena secreta
+      }
+    }
+
   //cristal0_moneda();  //cristal0 con moneda
 
   //cristal4_moneda();  //cristal4 con moneda
@@ -7509,6 +7534,197 @@ return(0);
 }
 
 
+//===========================Especial=============================
+
+
+escena1_20()
+{
+ciclo=0;
+//invensible=0;
+//act_fondo(1);
+abrir(nivel,escena);
+fondo();
+panel();
+r_champ();
+rmonedas();
+r_pato();
+x=320;
+y=32;
+
+while(ciclo<1)
+  {
+
+////////operaciones del los bloques
+
+  tinvensible();
+  refbloques();  //actualizar bloques
+  refchamp();
+  refpato();
+
+  if((x%16)!=0)
+    {
+    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32 && paisaje[(y+16-(y%16))/16][(x+16-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda o el bloque de abajo a la derecha es aire
+      {
+      vy=vy+0.5;
+      }
+    else
+      {
+      vy=0;
+      y=y-(y%16);
+      }
+    }
+  else
+    {
+    if(paisaje[(y+16-(y%16))/16][(x-(x%16))/16]>=32)  //gravedad verificando si el bloque de abajo a la izquierda es aire
+      {
+      vy=vy+0.5;
+      }
+    else
+      {
+      vy=0;
+      y=y-(y%16);
+      }
+    }
+
+  if(paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque derecho   nota: (y%16)==0 es para que si se golpea un bloque por abajo no se cumpla
+    {
+    vx=0.0;
+    x=x-(x%16);
+    }
+  else if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32 && (y%16)==0 ) //limite de bloque izquierdo
+    {
+    vx=0.0;
+    x=x+16-(x%16);
+    }
+
+////////interaccion de los bloques
+
+  //bloque_poder0();  //poder0
+
+////////teclado
+
+  teclado();
+
+////////interaccion de los bloques
+
+  bloque_saltar();  //bloque para saltar muy alto
+
+  bloque_caja0_moneda();  //caja0 con moneda
+
+  //bloque_caja0_10monedas();  //caja0 con 10 momedas
+
+  bloque_caja0_champinon();  //caja0 con champiñon
+
+  //bloque_caja0_vida();  //caja0 con vida
+
+  //cristal0_moneda();  //cristal0 con moneda
+
+  //cristal4_moneda();  //cristal4 con moneda
+
+  //cristal0_vida();  //cristal0 con vida
+
+  //cristal4_vida();  //cristal4 con vida
+
+  //bloque_cristal();  //cristal golpe por abajo
+
+  //bloque_moneda0();  //monedas
+
+  bloque_moneda4();  //monedas plateadas
+
+  //estrella_moneda();  //Estrella con moneda
+
+  //cielo_vida();  //cielo cyan con moneda
+
+  //cielo_moneda();  //cielo cyan con vida
+
+  if(paisaje[(y-(y%16))/16][(x-(x%16))/16]<32)  //bloques solidos golpe por abajo
+    {
+    y=y+16-(y%16);
+    vy=-vy;
+    }
+  else if((paisaje[(y-(y%16))/16][(x+16-(x%16))/16]<32) && x%16!=0)
+    {
+    y=y+16-(y%16);
+    vy=-vy;
+    }
+
+  //bloque_nota0();  //nota0
+
+  //bloque_agua();
+
+  //bloque_cuadrado0();  //pisarlos pero no golpearlos  (azul claro 9)
+
+  //bloque_cuadrado1();  //pisarlos pero no golpearlos  (blanco 15)
+
+  //tocar_champinon();  //tocar champiñon
+
+  //pisar_pato();  //pisar pato
+
+  //NITRO_mata();  //no toques la nitroglicerina
+
+  //pato_mata();  //pato mata cuando los tocas
+
+  //patofuera();  //verificar si un pato se salio de la pantalla
+
+  //champifuera();  //verificar si un champiñon se salio de la pantalla
+
+  //movchamp();  //mover champiñones
+
+  //mdemone();
+
+  //movpato();  //mover patos
+
+  if(monedas>=100) //por cada 100 monedas aumentar una vida
+    {
+    monedas=0;
+    vidas++;
+    }
+  if(x>=624) //si llega a la orilla derecha pasar a la siguiente escena
+    {
+    ciclo=1;
+    escena=1;
+    x=64;
+    }
+  else if(x<=0) //si llega a la orilla izquierda pasar a la anterior escena
+    {
+    ciclo=1;
+    escena=1;
+    x=64;
+    }
+  else if(y>=464) //caida
+    {
+    ciclo=1;
+    estado=1;
+    vidas--;
+    //t_huevo=tiempo-4;  //parece no ser necesario
+    jugar=0;
+    }
+  else if(tiempo==0) //tiempo terminado
+    {
+    estado=0;
+    t_huevo=tiempo-4;
+    }
+
+  x=x+vx;
+  y=y+vy;
+
+  //dibchamp();  //dibujar champiñones
+
+  //dibpatos();  //dibujar patos
+
+  segundos();  //realizar un conteo del tiempo del juego
+
+  verestado();  //verificar el estado de pato y dibujarlo segun el estado
+
+  panelnumerico();  //actualizar datos numericos del panel
+
+  delay(16);
+
+}
+guardar_fondo(3);
+return(0);
+}
+
 
 
 main()
@@ -7571,6 +7787,9 @@ while(seguir!=0)
           break;
           case 3:
             escena13();
+          break;
+          case 20:
+            escena1_20();
           break;
           default:
             jugar=0;
