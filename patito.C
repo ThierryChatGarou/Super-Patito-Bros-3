@@ -21,7 +21,7 @@
 #else
 #include"conio2.h"
 #include"dos2.h"
-#include"graphics.h"  //libreria grafica
+#include"glgraphics.h"  //libreria grafica
 #endif // MSDOS
 #include"teclado.h"  //libreria para el teclado con interrupciones
 #include"teclas.h"  //Lista de teclas

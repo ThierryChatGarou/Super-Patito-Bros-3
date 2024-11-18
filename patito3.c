@@ -5,7 +5,7 @@
 #ifdef MSDOS
 #include<graphics.h>
 #else
-#include"graphics.h"
+#include"glgraphics.h"
 #endif // MSDOS
 #include"teclas.h"
 

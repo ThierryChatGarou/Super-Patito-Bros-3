@@ -9,7 +9,7 @@ extern int retraso;
 #include"teclas.h"
 #ifndef MSDOS
 #include"editor.h"
-#include"graphics.h"
+#include"glgraphics.h"
 #include"conio2.h"
 #endif // MSDOS
 

@@ -599,7 +599,6 @@ return(0);
 
 escena00()
 {
-
 ciclo=0;
 nadando=0;
 act_fondo(0);

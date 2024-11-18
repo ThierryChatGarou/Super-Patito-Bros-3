@@ -40,16 +40,16 @@
 	<ctype.h>
 	<conio.h>
 
-1576789623 c:\programasc\patito\patitobros2\conio2.h
+1576789624 c:\programasc\patito\patitobros2\conio2.h
 
-1547324886 source:c:\programasc\patito\patitobros2\dos2.c
+1547324888 source:c:\programasc\patito\patitobros2\dos2.c
 	"dos2.h"
 	<windows.h>
 	<dos.h>
 
-1547324886 c:\programasc\patito\patitobros2\dos2.h
+1547324888 c:\programasc\patito\patitobros2\dos2.h
 
-1614877828 source:c:\programasc\patito\patitobros2\editor.c
+1614877830 source:c:\programasc\patito\patitobros2\editor.c
 	<stdio.h>
 	<dos.h>
 	"teclas.h"
@@ -57,11 +57,11 @@
 	"graphics.h"
 	"conio2.h"
 
-1614877582 c:\programasc\patito\patitobros2\teclas.h
+1614877584 c:\programasc\patito\patitobros2\teclas.h
 	"patito.h"
 	<windows.h>
 
-1577159342 source:c:\programasc\patito\patitobros2\graphics.c
+1577159344 source:c:\programasc\patito\patitobros2\graphics.c
 	<stdio.h>
 	<math.h>
 	"graphics.h"
@@ -81,19 +81,19 @@
 	"teclado.h"
 	"teclas.h"
 
-1614877582 c:\programasc\patito\patitobros2\teclado.h
+1614877584 c:\programasc\patito\patitobros2\teclado.h
 	"patito.h"
 	<dos.h>
 	"teclas.h"
 
-1614849836 source:c:\programasc\patito\patitobros2\mundo0.c
+1614849838 source:c:\programasc\patito\patitobros2\mundo0.c
 	<stdio.h>
 	"teclas.h"
 
-1614877582 source:c:\programasc\patito\patitobros2\patito1.c
+1614877584 source:c:\programasc\patito\patitobros2\patito1.c
 	"patito.h"
 
-1614877582 source:c:\programasc\patito\patitobros2\patito2.c
+1614877584 source:c:\programasc\patito\patitobros2\patito2.c
 	"patito.h"
 	<stdio.h>
 	<dos.h>
@@ -101,7 +101,7 @@
 	"teclas.h"
 	<time.h>
 
-1614877582 source:c:\programasc\patito\patitobros2\patito3.c
+1614877584 source:c:\programasc\patito\patitobros2\patito3.c
 	"patito.h"
 	<stdio.h>
 	<dir.h>
@@ -110,13 +110,14 @@
 	"graphics.h"
 	"teclas.h"
 
-1615078697 source:c:\programasc\patito\patitobros2\patito.c
+1615926020 source:c:\programasc\patito\patitobros2\patito.c
 	"patito.h"
 	<stdio.h>
 	<stdlib.h>
 	<conio.h>
 	<dos.h>
 	<graphics.h>
+	"svgautil.h"
 	"conio2.h"
 	"dos2.h"
 	"graphics.h"
@@ -385,5 +386,5 @@
 
 1614878594 c:\programsc\testing\patito\patito.h
 
-1614878594 c:\programasc\patito\patitobros2\patito.h
+1614878596 c:\programasc\patito\patitobros2\patito.h
 
